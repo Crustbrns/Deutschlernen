@@ -19,26 +19,25 @@ type WortProps = {
 function Wort(props: WortProps) {
   const pan = useRef(new Animated.ValueXY({x: 0, y: 0})).current;
   const angle = useRef(new Animated.Value(0));
+  const lockX = useRef(true);
 
   const panResponder = useRef(
     PanResponder.create({
-      onMoveShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: () => lockX.current,
       onPanResponderMove: (evt, gestureState) => {
-        // console.log(gestureState.dx);
-        // Animated.event([null, {dx: pan.x, dy: pan.y}], {
-        //   useNativeDriver: false,
-        // })(evt, gestureState);
-        pan.setValue({
-          x: gestureState.dx,
-          y: gestureState.dy,
-        });
-        angle.current.setValue(
-          Math.atan2(gestureState.dx * -6, 4000 - gestureState.moveY),
-        );
-        // console.log(angle.current);
+          lockX.current = Math.abs(gestureState.dx) > 100;
+          pan.setValue({
+            x: gestureState.dx,
+            y: gestureState.dy,
+          });
+          angle.current.setValue(
+            Math.atan2(gestureState.dx * -6, 4000 - gestureState.moveY),
+          );
+          // console.log(angle.current);
       },
       onPanResponderRelease: () => {
         console.log(pan.x, pan.y);
+        lockX.current = true;
 
         Animated.timing(pan, {
           toValue: {x: 0, y: 0},
@@ -97,7 +96,11 @@ function Wort(props: WortProps) {
           }),
         }}
         {...panResponder.panHandlers}>
-        <ScrollView style={styles.container}>
+        <ScrollView onTouchMove={(event)=>{console.log('moving')}} onTouchStart={(event)=> {
+            event.stopPropagation();
+            event.preventDefault();
+            console.log('started clicking');
+            }} style={styles.container}>
           <Animated.View>
             {/* <Text style={styles.text}>{props.wort}</Text> */}
             <View style={styles.title_container}>
