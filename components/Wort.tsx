@@ -31,20 +31,31 @@ function Wort(props: WortProps) {
         pan.setValue({x: gestureState.dx, y: gestureState.dy});
         angle.current.setValue(
           Math.atan2(
-            Dimensions.get('screen').width / 2 - gestureState.moveX,
-            1500 - gestureState.moveY,
+            (Dimensions.get('screen').width / 2 - gestureState.moveX) * 2,
+            2500 - gestureState.moveY,
           ),
         );
         console.log(angle.current);
       },
       onPanResponderRelease: () => {
         console.log(pan.x, pan.y);
-        pan.setValue({
-          x: 20*0,
-          y: 20*0,
-        });
-        angle.current.setValue(0);
-        pan.extractOffset();
+
+        Animated.timing(pan, {
+            toValue: { x: 0, y: 0 },
+            duration: 500,            // Длительность анимации в миллисекундах (500 мс)
+            useNativeDriver: false,
+          }).start();
+        // pan.setValue({
+        //   x: 20*0,
+        //   y: 20*0,
+        // });
+
+        Animated.timing(angle.current, {
+            toValue: 0,
+            duration: 500,            // Длительность анимации в миллисекундах (500 мс)
+            useNativeDriver: false,
+          }).start();
+        // pan.extractOffset();
         console.log(pan.x, pan.y);
       },
     }),
