@@ -20,7 +20,6 @@ function Wort(props: WortProps) {
     <SafeAreaView style={styles.main_container}>
       <ScrollView style={styles.container}>
         <Animated.View>
-          {...this.panResponder.panHandlers}
           {/* <Text style={styles.text}>{props.wort}</Text> */}
           <View style={styles.title_container}>
             <View style={styles.color_box}></View>
