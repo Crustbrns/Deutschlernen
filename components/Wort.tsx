@@ -28,33 +28,33 @@ function Wort(props: WortProps) {
         // Animated.event([null, {dx: pan.x, dy: pan.y}], {
         //   useNativeDriver: false,
         // })(evt, gestureState);
-        pan.setValue({x: gestureState.dx, y: gestureState.dy});
+        pan.setValue({
+          x: gestureState.dx,
+          y: gestureState.dy,
+        });
         angle.current.setValue(
-          Math.atan2(
-            (Dimensions.get('screen').width / 2 - gestureState.moveX) * 2,
-            2500 - gestureState.moveY,
-          ),
+          Math.atan2(gestureState.dx * -6, 4000 - gestureState.moveY),
         );
-        console.log(angle.current);
+        // console.log(angle.current);
       },
       onPanResponderRelease: () => {
         console.log(pan.x, pan.y);
 
         Animated.timing(pan, {
-            toValue: { x: 0, y: 0 },
-            duration: 500,            // Длительность анимации в миллисекундах (500 мс)
-            useNativeDriver: false,
-          }).start();
+          toValue: {x: 0, y: 0},
+          duration: 500, // Длительность анимации в миллисекундах (500 мс)
+          useNativeDriver: false,
+        }).start();
         // pan.setValue({
         //   x: 20*0,
         //   y: 20*0,
         // });
 
         Animated.timing(angle.current, {
-            toValue: 0,
-            duration: 500,            // Длительность анимации в миллисекундах (500 мс)
-            useNativeDriver: false,
-          }).start();
+          toValue: 0,
+          duration: 500, // Длительность анимации в миллисекундах (500 мс)
+          useNativeDriver: false,
+        }).start();
         // pan.extractOffset();
         console.log(pan.x, pan.y);
       },
@@ -78,6 +78,12 @@ function Wort(props: WortProps) {
             {translateX: pan.x},
             {translateY: pan.y},
             {
+              scale: angle.current.interpolate({
+                inputRange: [-0.5, 0, 0.5],
+                outputRange: [0.4, 1, 0.4],
+              }),
+            },
+            {
               rotateZ: angle.current.interpolate({
                 inputRange: [-1, 1],
                 outputRange: ['45deg', '-45deg'],
@@ -85,6 +91,10 @@ function Wort(props: WortProps) {
             },
             // {rotateY: `rotate(${pan.x}deg) !important`},
           ],
+          opacity: angle.current.interpolate({
+            inputRange: [-0.5, 0, 0.5],
+            outputRange: [0.3, 1, 0.3],
+          }),
         }}
         {...panResponder.panHandlers}>
         <ScrollView style={styles.container}>
