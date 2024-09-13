@@ -19,31 +19,53 @@ type WortProps = {
 function Wort(props: WortProps) {
   const pan = useRef(new Animated.ValueXY({x: 0, y: 0})).current;
   const angle = useRef(new Animated.Value(0));
+  const opacity = useRef(new Animated.Value(1));
   const lockX = useRef(true);
+  let isVerticalSwipe = false;
 
   const panResponder = useRef(
     PanResponder.create({
-      onMoveShouldSetPanResponder: () => lockX.current,
+      onMoveShouldSetPanResponder: (evt, gestureState) => {
+        const {dx, dy} = gestureState;
+        // Проверяем, есть ли большее перемещение по горизонтали или вертикали
+        if (Math.abs(dx) > Math.abs(dy)) {
+          // Если большее смещение по горизонтали — включаем PanResponder
+          return true;
+        }
+        // Если большее смещение по вертикали — пусть ScrollView обрабатывает
+        return false;
+      },
       onPanResponderMove: (evt, gestureState) => {
-          lockX.current = Math.abs(gestureState.dx) > 100;
-          pan.setValue({
-            x: gestureState.dx,
-            y: gestureState.dy,
-          });
-          angle.current.setValue(
-            Math.atan2(gestureState.dx * -6, 4000 - gestureState.moveY),
-          );
-          // console.log(angle.current);
+        lockX.current = Math.abs(gestureState.dx) > 100;
+        pan.setValue({
+          x: gestureState.dx,
+          y: gestureState.dy,
+        });
+        angle.current.setValue(
+          Math.atan2(gestureState.dx * -6, 8000 - gestureState.moveY),
+        );
+        // console.log(angle.current);
       },
       onPanResponderRelease: () => {
         console.log(pan.x, pan.y);
         lockX.current = true;
 
-        Animated.timing(pan, {
-          toValue: {x: 0, y: 0},
-          duration: 500, // Длительность анимации в миллисекундах (500 мс)
-          useNativeDriver: false,
-        }).start();
+        if (
+          Math.abs(Number.parseInt(JSON.stringify(pan.x))) >=
+          Dimensions.get('screen').width / 3
+        ) {
+          Animated.timing(opacity.current, {
+            toValue: 0,
+            duration: 500, // Длительность анимации в миллисекундах (500 мс)
+            useNativeDriver: false,
+          }).start();
+        } else {
+          Animated.timing(pan, {
+            toValue: {x: 0, y: 0},
+            duration: 500, // Длительность анимации в миллисекундах (500 мс)
+            useNativeDriver: false,
+          }).start();
+        }
         // pan.setValue({
         //   x: 20*0,
         //   y: 20*0,
@@ -90,17 +112,23 @@ function Wort(props: WortProps) {
             },
             // {rotateY: `rotate(${pan.x}deg) !important`},
           ],
-          opacity: angle.current.interpolate({
-            inputRange: [-0.5, 0, 0.5],
-            outputRange: [0.3, 1, 0.3],
+          opacity: opacity.current.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, 1],
           }),
         }}
         {...panResponder.panHandlers}>
-        <ScrollView onTouchMove={(event)=>{console.log('moving')}} onTouchStart={(event)=> {
+        <ScrollView
+          scrollEnabled={!isVerticalSwipe}
+          onTouchMove={event => {
+            console.log('moving');
+          }}
+          onTouchStart={event => {
             event.stopPropagation();
             event.preventDefault();
             console.log('started clicking');
-            }} style={styles.container}>
+          }}
+          style={styles.container}>
           <Animated.View>
             {/* <Text style={styles.text}>{props.wort}</Text> */}
             <View style={styles.title_container}>
