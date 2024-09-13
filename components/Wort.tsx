@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Animated,
   Dimensions,
   SafeAreaView,
   ScrollView,
@@ -18,13 +19,16 @@ function Wort(props: WortProps) {
   return (
     <SafeAreaView style={styles.main_container}>
       <ScrollView style={styles.container}>
-        {/* <Text style={styles.text}>{props.wort}</Text> */}
-        <View style={styles.title_container}>
-          <View style={styles.color_box}></View>
-          <Text style={styles.text_title}>Изучение слова</Text>
-        </View>
-        <Bild />
-        <Antwort />
+        <Animated.View>
+          {...this.panResponder.panHandlers}
+          {/* <Text style={styles.text}>{props.wort}</Text> */}
+          <View style={styles.title_container}>
+            <View style={styles.color_box}></View>
+            <Text style={styles.text_title}>Изучение слова</Text>
+          </View>
+          <Bild />
+          <Antwort />
+        </Animated.View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -43,9 +47,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#090909',
   },
   container: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
     padding: 30,
     flex: 1,
-    height: 1000,
+    height: 550,
+    transform: 'rotate(0deg)',
+    // height: 1000,
     width: Dimensions.get('screen').width - 40,
     // width: '90%',
     backgroundColor: '#191919',

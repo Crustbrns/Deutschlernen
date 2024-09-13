@@ -60,14 +60,15 @@ function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
-    backgroundColor: Colors.lighter
+    backgroundColor: Colors.lighter,
     // backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
   return (
     <SafeAreaView style={backgroundStyle}>
+      <StatusBar barStyle="default" backgroundColor="#000000" />
       {/* <Text>Hello m8</Text> */}
-      <Wort wort='asd'/>
+      <Wort wort="asd" />
     </SafeAreaView>
   );
 }

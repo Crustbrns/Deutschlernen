@@ -15,7 +15,7 @@ function Bild() {
 const styles = StyleSheet.create({
     container: {
         marginTop: 45,
-        gap: 15,
+        gap: 18,
         flexDirection: 'column',
         flex: 1
     },
@@ -26,14 +26,16 @@ const styles = StyleSheet.create({
     },
     title: {
         color: '#86898c',
-        fontSize: 16
+        fontSize: 16,
+        opacity: 0.7
     },
     wort: {
-        color: '#eeeeee',
         fontSize: 45,
         width: '90%',
-        lineHeight: 46,
-        textTransform: 'lowercase'
+        lineHeight: 45,
+        textTransform: 'lowercase',
+        color: '#eeeeee',
+        opacity: 0.9
     }
 });
 
