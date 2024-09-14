@@ -13,7 +13,10 @@ import Bild from './Bild';
 import Antwort from './Antwort';
 
 type WortProps = {
-  wort: string;
+  word: string,
+  image: string,
+  thema: string,
+  HandleIndex: any
 };
 
 function Wort(props: WortProps) {
@@ -59,6 +62,20 @@ function Wort(props: WortProps) {
             duration: 500, // Длительность анимации в миллисекундах (500 мс)
             useNativeDriver: false,
           }).start();
+          
+          setTimeout(()=>{
+            props.HandleIndex();
+            Animated.timing(opacity.current, {
+              toValue: 1,
+              duration: 100, // Длительность анимации в миллисекундах (500 мс)
+              useNativeDriver: false,
+            }).start();
+            Animated.timing(pan, {
+              toValue: {x: 0, y: 0},
+              duration: 0, // Длительность анимации в миллисекундах (500 мс)
+              useNativeDriver: false,
+            }).start();
+          }, 500);
         } else {
           Animated.timing(pan, {
             toValue: {x: 0, y: 0},
@@ -130,14 +147,13 @@ function Wort(props: WortProps) {
           }}
           style={styles.container}>
           <Animated.View>
-            {/* <Text style={styles.text}>{props.wort}</Text> */}
             <View style={styles.title_container}>
               <View style={styles.color_box}></View>
               <Text style={styles.text_title}>
                 Изучение слова
               </Text>
             </View>
-            <Bild />
+            <Bild thema={props.thema} image={props.image} word={props.word} />
             <Antwort />
           </Animated.View>
         </ScrollView>

@@ -1,12 +1,18 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 
-function Bild() {
+type BildProps = {
+    thema: string,
+    image: string,
+    word: string
+}
+
+function Bild({thema, image, word} : BildProps) {
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Предметы в быту</Text>
-            <Image style={styles.image} src='https://www.raten-kauf.com/pre/wp-content/uploads/sites/2/2020/04/Herd-auf-Raten-kaufen.png'/>
-            <Text style={styles.wort}>Печка, печь, плита</Text>
+            <Text style={styles.title}>{thema}</Text>
+            <Image style={styles.image} src={image}/>
+            <Text style={styles.wort}>{word}</Text>
         </View>
     );
 }

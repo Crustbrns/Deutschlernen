@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 5,
+    paddingBottom: 12
   },
   text: {
     color: '#86898c',
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
   flex_container: {
     gap: 10,
     flexDirection: 'row',
-    marginTop: 10
+    marginTop: 7
   },
   word_container: {
     flex: 1,
