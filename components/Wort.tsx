@@ -16,6 +16,7 @@ type WortProps = {
   word: string;
   image: string;
   thema: string;
+  antwort: string;
   HandleIndex: any;
 };
 
@@ -69,14 +70,15 @@ function Wort(props: WortProps) {
             duration: 500, // Длительность анимации в миллисекундах (500 мс)
             useNativeDriver: false,
           }).start();
-
+          
           setTimeout(() => {
+            console.log('asds');
+            props.HandleIndex();
             Animated.timing(scale.current, {
               toValue: 0.8,
               duration: 0, // Длительность анимации в миллисекундах (500 мс)
               useNativeDriver: false,
             }).start();
-            props.HandleIndex();
             Animated.timing(opacity.current, {
               toValue: 1,
               duration: 100, // Длительность анимации в миллисекундах (500 мс)
@@ -171,7 +173,7 @@ function Wort(props: WortProps) {
               <Text style={styles.text_title}>Изучение слова</Text>
             </View>
             <Bild thema={props.thema} image={props.image} word={props.word} />
-            <Antwort />
+            <Antwort antwort={props.antwort} />
           </Animated.View>
         </ScrollView>
       </Animated.View>
@@ -209,7 +211,7 @@ const styles = StyleSheet.create({
   color_box: {
     width: 15,
     height: 15,
-    backgroundColor: 'orange',
+    backgroundColor: '#ea1d5d',
     borderRadius: 4,
   },
   text_title: {

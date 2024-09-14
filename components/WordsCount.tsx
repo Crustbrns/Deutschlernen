@@ -2,9 +2,12 @@ import React from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
-function WordsCount() {
-  let array = [1, 3, 5, 4];
-  let index = 2;
+type WordsProps = {
+    index: any,
+    words: any
+}
+
+function WordsCount({index, words} : WordsProps) {
 
   return (
     <View style={styles.container}>
@@ -13,9 +16,9 @@ function WordsCount() {
         <View>
           <Text style={styles.text}>Слов повторено</Text>
         </View>
-        <View style={styles.flex_container}>
-          {array.map((x, i) => {
-            return <View style={[styles.word_container, {backgroundColor: i <= index ? "orange" : "#333333"}]} key={x}></View>;
+        <View style={[styles.flex_container, {gap: words.length < 6 ? 15 : words.length * 3 / 10}]}>
+          {words.map((x:any, i:number) => {
+            return <View style={[styles.word_container, {backgroundColor: i <= index-1 ? "#ea1d5d" : "#333333"}]} key={i}></View>;
           })}
         </View>
       </View>
