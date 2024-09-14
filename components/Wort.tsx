@@ -52,7 +52,7 @@ function Wort(props: WortProps) {
 
         if (
           Math.abs(Number.parseInt(JSON.stringify(pan.x))) >=
-          Dimensions.get('screen').width / 3
+          Dimensions.get('screen').width / 2
         ) {
           Animated.timing(opacity.current, {
             toValue: 0,
@@ -134,8 +134,7 @@ function Wort(props: WortProps) {
             <View style={styles.title_container}>
               <View style={styles.color_box}></View>
               <Text style={styles.text_title}>
-                Изучение слова {Number.parseInt(JSON.stringify(pan.x))}{' '}
-                {Number.parseInt(JSON.stringify(pan.y))}
+                Изучение слова
               </Text>
             </View>
             <Bild />
@@ -156,7 +155,7 @@ const styles = StyleSheet.create({
   },
   container: {
     position: 'absolute',
-    top: 20,
+    top: 50,
     left: 20,
     padding: 30,
     flex: 1,

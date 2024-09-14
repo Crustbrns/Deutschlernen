@@ -25,6 +25,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import Wort from './components/Wort';
+import WordsCount from './components/WordsCount';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -68,6 +69,7 @@ function App(): React.JSX.Element {
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle="default" backgroundColor="#000000" />
       {/* <Text>Hello m8</Text> */}
+      <WordsCount />
       <Wort wort="asd" />
     </SafeAreaView>
   );
