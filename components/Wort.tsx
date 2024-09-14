@@ -13,16 +13,17 @@ import Bild from './Bild';
 import Antwort from './Antwort';
 
 type WortProps = {
-  word: string,
-  image: string,
-  thema: string,
-  HandleIndex: any
+  word: string;
+  image: string;
+  thema: string;
+  HandleIndex: any;
 };
 
 function Wort(props: WortProps) {
   const pan = useRef(new Animated.ValueXY({x: 0, y: 0})).current;
   const angle = useRef(new Animated.Value(0));
   const opacity = useRef(new Animated.Value(1));
+  const scale = useRef(new Animated.Value(1));
   const lockX = useRef(true);
   let isVerticalSwipe = false;
 
@@ -44,6 +45,12 @@ function Wort(props: WortProps) {
           x: gestureState.dx,
           y: gestureState.dy,
         });
+        scale.current.setValue(
+          1 -
+            Math.abs(
+              Math.atan2(gestureState.dx * -6, 8000 - gestureState.moveY),
+            ),
+        );
         angle.current.setValue(
           Math.atan2(gestureState.dx * -6, 8000 - gestureState.moveY),
         );
@@ -62,17 +69,32 @@ function Wort(props: WortProps) {
             duration: 500, // Длительность анимации в миллисекундах (500 мс)
             useNativeDriver: false,
           }).start();
-          
-          setTimeout(()=>{
+
+          setTimeout(() => {
+            Animated.timing(scale.current, {
+              toValue: 0.8,
+              duration: 0, // Длительность анимации в миллисекундах (500 мс)
+              useNativeDriver: false,
+            }).start();
             props.HandleIndex();
             Animated.timing(opacity.current, {
               toValue: 1,
               duration: 100, // Длительность анимации в миллисекундах (500 мс)
               useNativeDriver: false,
             }).start();
+            Animated.timing(scale.current, {
+              toValue: 1,
+              duration: 200, // Длительность анимации в миллисекундах (500 мс)
+              useNativeDriver: false,
+            }).start();
+            Animated.timing(pan, {
+              toValue: {x: 0, y: 60},
+              duration: 0, // Длительность анимации в миллисекундах (500 мс)
+              useNativeDriver: false,
+            }).start();
             Animated.timing(pan, {
               toValue: {x: 0, y: 0},
-              duration: 0, // Длительность анимации в миллисекундах (500 мс)
+              duration: 200, // Длительность анимации в миллисекундах (500 мс)
               useNativeDriver: false,
             }).start();
           }, 500);
@@ -116,10 +138,7 @@ function Wort(props: WortProps) {
             {translateX: pan.x},
             {translateY: pan.y},
             {
-              scale: angle.current.interpolate({
-                inputRange: [-0.5, 0, 0.5],
-                outputRange: [0.4, 1, 0.4],
-              }),
+              scale: scale.current,
             },
             {
               rotateZ: angle.current.interpolate({
@@ -149,9 +168,7 @@ function Wort(props: WortProps) {
           <Animated.View>
             <View style={styles.title_container}>
               <View style={styles.color_box}></View>
-              <Text style={styles.text_title}>
-                Изучение слова
-              </Text>
+              <Text style={styles.text_title}>Изучение слова</Text>
             </View>
             <Bild thema={props.thema} image={props.image} word={props.word} />
             <Antwort />
