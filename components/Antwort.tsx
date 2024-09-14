@@ -1,23 +1,29 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import EntypoIcon from 'react-native-vector-icons/Feather';
 
 type AntwortProps = {
   antwort: string;
 };
 
 function Antwort({antwort}: AntwortProps) {
+  const [show, setShow] = useState(false);
 
   function displayArtikel() {
-    if(antwort.length > 3 && antwort[3] === ' '){
+    if (antwort.length > 3 && antwort[3] === ' ') {
       let artikel = antwort.slice(0, 3);
-      if(artikel === 'der') {
-        return <Text style={[styles.artikel, {color: '#0087d2'}]}>{artikel}</Text>
-      }
-      else if(artikel === 'das') {
-        return <Text style={[styles.artikel, {color: '#0eb24e'}]}>{artikel}</Text>
-      }
-      else if(artikel === 'die') {
-        return <Text style={[styles.artikel, {color: '#cd004b'}]}>{artikel}</Text>
+      if (artikel === 'der') {
+        return (
+          <Text style={[styles.artikel, {color: '#0087d2'}]}>{artikel}</Text>
+        );
+      } else if (artikel === 'das') {
+        return (
+          <Text style={[styles.artikel, {color: '#0eb24e'}]}>{artikel}</Text>
+        );
+      } else if (artikel === 'die') {
+        return (
+          <Text style={[styles.artikel, {color: '#cd004b'}]}>{artikel}</Text>
+        );
       }
     }
   }
@@ -28,9 +34,18 @@ function Antwort({antwort}: AntwortProps) {
         <View style={styles.triangle}></View>
         <View style={styles.line}></View>
       </View>
-      <Text style={styles.text}>
-        {displayArtikel()}{antwort.slice(3)}
+      <Text>
+        <EntypoIcon name="eye" size={30} color="white" />;
       </Text>
+      {!show && ( <View>
+        </View>
+    )}
+      {show && (
+        <Text style={styles.text}>
+          {displayArtikel()}
+          {antwort.slice(3)}
+        </Text>
+      )}
     </View>
   );
 }
