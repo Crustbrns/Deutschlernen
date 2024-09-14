@@ -33,15 +33,16 @@ const styles = StyleSheet.create({
     title: {
         color: '#86898c',
         fontSize: 16,
-        opacity: 0.7
+        opacity: 0.7,
+        fontFamily: 'WorkSans-Thin'
     },
     wort: {
         fontSize: 45,
-        width: '90%',
         lineHeight: 45,
         textTransform: 'lowercase',
         color: '#eeeeee',
-        opacity: 0.9
+        opacity: 0.9,
+        fontFamily: 'WorkSans-Regular'
     }
 });
 
