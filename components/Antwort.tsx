@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import EntypoIcon from 'react-native-vector-icons/Feather';
+import IconButton from './buttons/IconButton';
 
 type AntwortProps = {
   antwort: string;
@@ -35,11 +36,9 @@ function Antwort({antwort}: AntwortProps) {
         <View style={styles.line}></View>
       </View>
       <Text>
-        <EntypoIcon name="eye" size={30} color="white" />;
+        <IconButton icon={<EntypoIcon name="eye" size={30} color="white" />} />
       </Text>
-      {!show && ( <View>
-        </View>
-    )}
+      {!show && <View></View>}
       {show && (
         <Text style={styles.text}>
           {displayArtikel()}

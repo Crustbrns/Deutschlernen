@@ -102,7 +102,7 @@ function Wort(props: WortProps) {
           }, 500);
         } else {
           Animated.timing(pan, {
-            toValue: {x: 0, y: 0},
+            toValue: {x: 0, y: 20},
             duration: 500, // Длительность анимации в миллисекундах (500 мс)
             useNativeDriver: false,
           }).start();
@@ -217,6 +217,7 @@ const styles = StyleSheet.create({
   text_title: {
     color: '#efe9e5',
     fontSize: 20,
+    fontFamily: 'WorkSans-Regular'
   },
   text: {
     color: 'white',

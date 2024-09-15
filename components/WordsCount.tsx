@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     color: '#86898c',
     fontSize: 16,
     opacity: 0.7,
+    fontFamily: 'WorkSans-Regular'
   },
   flex_container: {
     gap: 10,
