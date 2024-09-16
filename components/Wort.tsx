@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Animated,
   Dimensions,
@@ -26,6 +26,8 @@ function Wort(props: WortProps) {
   const opacity = useRef(new Animated.Value(1));
   const scale = useRef(new Animated.Value(1));
   const lockX = useRef(true);
+
+  const [showWord, setShowWord] = useState(false);
   let isVerticalSwipe = false;
 
   const panResponder = useRef(
@@ -72,7 +74,7 @@ function Wort(props: WortProps) {
           }).start();
           
           setTimeout(() => {
-            console.log('asds');
+            setShowWord(false);
             props.HandleIndex();
             Animated.timing(scale.current, {
               toValue: 0.8,
@@ -173,7 +175,7 @@ function Wort(props: WortProps) {
               <Text style={styles.text_title}>Изучение слова</Text>
             </View>
             <Bild thema={props.thema} image={props.image} word={props.word} />
-            <Antwort antwort={props.antwort} />
+            <Antwort antwort={props.antwort} show={showWord} setShow={(show: boolean)=>setShowWord(show)} />
           </Animated.View>
         </ScrollView>
       </Animated.View>

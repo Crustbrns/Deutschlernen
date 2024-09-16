@@ -1,14 +1,43 @@
-import React, {useState} from 'react';
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import React, {useRef, useState} from 'react';
+import {
+  Animated,
+  Dimensions,
+  Easing,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import EntypoIcon from 'react-native-vector-icons/Feather';
 import IconButton from './buttons/IconButton';
 
 type AntwortProps = {
   antwort: string;
+  show: any;
+  setShow: any;
 };
 
-function Antwort({antwort}: AntwortProps) {
-  const [show, setShow] = useState(false);
+function Antwort({antwort, show, setShow}: AntwortProps) {
+  const coord = useRef(new Animated.ValueXY({x: 0, y: 15})).current;
+  // const [show, setShow] = useState(false);
+
+  function showWord() {
+
+    if(show === false) {
+      Animated.timing(coord, {
+        toValue: {x: 0, y: 15},
+        duration: 0,
+        useNativeDriver: false,
+      }).start();
+    }
+
+    Animated.timing(coord, {
+      toValue: {x: 0, y: 0},
+      duration: 500,
+      easing: Easing.inOut(Easing.ease),
+      useNativeDriver: false,
+    }).start();
+    setShow(true);
+  }
 
   function displayArtikel() {
     if (antwort.length > 3 && antwort[3] === ' ') {
@@ -35,15 +64,24 @@ function Antwort({antwort}: AntwortProps) {
         <View style={styles.triangle}></View>
         <View style={styles.line}></View>
       </View>
-      <Text>
-        <IconButton icon={<EntypoIcon name="eye" size={30} color="white" />} />
-      </Text>
-      {!show && <View></View>}
-      {show && (
-        <Text style={styles.text}>
-          {displayArtikel()}
-          {antwort.slice(3)}
+      {!show && (
+        <Text>
+          <IconButton
+            icon={<EntypoIcon name="eye" size={30} color="white" />}
+            func={() => showWord()}
+          />
         </Text>
+      )}
+      {show && (
+        <Animated.View
+          style={{
+            transform: [{translateX: coord.x}, {translateY: coord.y}],
+          }}>
+          <Text style={styles.text}>
+            {displayArtikel()}
+            {antwort.slice(3)}
+          </Text>
+        </Animated.View>
       )}
     </View>
   );
