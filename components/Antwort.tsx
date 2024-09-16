@@ -65,12 +65,26 @@ function Antwort({antwort, show, setShow}: AntwortProps) {
         <View style={styles.line}></View>
       </View>
       {!show && (
+        <View style={styles.holder}>
         <Text>
           <IconButton
-            icon={<EntypoIcon name="eye" size={30} color="white" />}
+            icon={<EntypoIcon name="edit-3" size={25} color="white" />}
             func={() => showWord()}
           />
         </Text>
+        <Text>
+          <IconButton
+            icon={<EntypoIcon name="eye" size={25} color="white" />}
+            func={() => showWord()}
+          />
+        </Text>
+        <Text>
+          <IconButton
+            icon={<EntypoIcon name="menu" size={25} color="white" />}
+            func={() => showWord()}
+          />
+        </Text>
+        </View>
       )}
       {show && (
         <Animated.View
@@ -119,6 +133,12 @@ const styles = StyleSheet.create({
     opacity: 0.9,
     fontSize: 40,
   },
+  holder: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20
+  }
 });
 
 export default Antwort;

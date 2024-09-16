@@ -20,7 +20,7 @@ function Bild({thema, image, word} : BildProps) {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 45,
+        marginTop: 30,
         gap: 18,
         flexDirection: 'column',
         flex: 1

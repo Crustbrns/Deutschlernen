@@ -5,10 +5,10 @@
  * @format
  */
 
-
 import React, {useState} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
+  Dimensions,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -27,9 +27,10 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import Wort from './components/Wort';
 import WordsCount from './components/WordsCount';
-import { Word } from './src/classes/Word';
-import { wordsManager } from './src/classes/WordsManager';
-
+import {Word} from './src/classes/Word';
+import {wordsManager} from './src/classes/WordsManager';
+import Feather from 'react-native-vector-icons/Feather';
+import ButtonBack from './components/buttons/ButtonBack';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -63,6 +64,16 @@ function App(): React.JSX.Element {
           HandleIndex={HandleIndex}
         />
       )}
+      {index >= words.length && (
+        <View style={styles.container}>
+          <View style={styles.holder}>
+            <Text><Feather name='thumbs-up' size={40} color={'#ea1d5d'}/></Text>
+            <Text style={styles.text}>Все слова пройдены</Text>
+            <Text style={styles.text_small}>Неизвестные слова были добавлены в список изучаемых слов</Text>
+            <ButtonBack/>
+          </View>
+        </View>
+      )}
     </SafeAreaView>
   );
 }
@@ -70,6 +81,34 @@ function App(): React.JSX.Element {
 const styles = StyleSheet.create({
   highlight: {
     fontWeight: '700',
+  },
+  container: {
+    width: Dimensions.get('screen').width,
+    height: Dimensions.get('screen').height,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#090909',
+  },
+  holder: {
+    width: Dimensions.get('screen').width - 40,
+    borderRadius: 20,
+    padding: 30,
+    alignItems: 'center',
+    backgroundColor: '#191919',
+    gap: 10
+  },
+  text: {
+    color: '#efe9e5',
+    fontSize: 20,
+    fontFamily: 'WorkSans-Regular',
+    marginTop: 5
+  },
+  text_small: {
+    color: '#86898c',
+    fontSize: 18,
+    fontFamily: 'WorkSans-Regular',
+    textAlign: 'center',
+    marginBottom: 15
   },
 });
 

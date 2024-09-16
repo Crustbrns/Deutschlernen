@@ -5,15 +5,16 @@ import ContinueButton from './ContinueButton';
 type ContinueHolderProps = {
     next: any;
     prev: any;
+    direction: any;
 }
 
-function ContinueHolder({next, prev} : ContinueHolderProps) {
+function ContinueHolder({next, prev, direction} : ContinueHolderProps) {
     return (
         <View style={styles.holder}>
         <View style={styles.container}>
-            <ContinueButton text="Я не помню слово" func={()=>console.log('prev')}/>
+            <ContinueButton color={"#ec1c24"} rely={-1} direction={direction} text="Я не знаю это слово" func={()=>console.log('prev')}/>
             <View style={styles.divider}></View>
-            <ContinueButton text="Я вспомнил слово" func={()=>console.log('next')}/>
+            <ContinueButton color={"#0eb24e"} rely={1} direction={direction} text="Я уже знаю это слово" func={()=>console.log('next')}/>
         </View>
         </View>
     );

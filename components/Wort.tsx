@@ -28,6 +28,8 @@ function Wort(props: WortProps) {
   const opacity = useRef(new Animated.Value(1));
   const scale = useRef(new Animated.Value(1));
   const lockX = useRef(true);
+  const dir = useRef(0);
+  const [direction, setDirection] = useState(dir.current);
 
   const [showWord, setShowWord] = useState(false);
   let isVerticalSwipe = false;
@@ -59,15 +61,17 @@ function Wort(props: WortProps) {
         angle.current.setValue(
           Math.atan2(gestureState.dx * -6, 8000 - gestureState.moveY),
         );
+        dir.current = gestureState.dx > 0 ? 1 : -1;
+        setDirection(dir.current);
         // console.log(angle.current);
       },
       onPanResponderRelease: () => {
         console.log(pan.x, pan.y);
         lockX.current = true;
-
+        setDirection(0);
         if (
           Math.abs(Number.parseInt(JSON.stringify(pan.x))) >=
-          Dimensions.get('screen').width / 2
+          Dimensions.get('screen').width / 4
         ) {
           Animated.timing(opacity.current, {
             toValue: 0,
@@ -182,7 +186,7 @@ function Wort(props: WortProps) {
             <View>
               <View style={styles.title_container}>
                 <View style={styles.color_box}></View>
-                <Text style={styles.text_title}>Изучение слова</Text>
+                <Text style={styles.text_title}>Новое слово</Text>
               </View>
               <Bild thema={props.thema} image={props.image} word={props.word} />
               <Antwort
@@ -193,6 +197,7 @@ function Wort(props: WortProps) {
             </View>
             <View>
               <ContinueHolder
+                direction={direction}
                 next={() => {
                   console.log('next');
                 }}
@@ -257,7 +262,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flex: 1,
     flexDirection: 'column',
-    gap: 60
+    gap: 30
   }
 });
 

@@ -4,12 +4,21 @@ import {StyleSheet, Text, View} from 'react-native';
 type ContinueButtonProps = {
   func: any;
   text: string;
+  rely: number;
+  direction: any;
+  color: string;
 };
 
-function ContinueButton({func, text}: ContinueButtonProps) {
+function ContinueButton({func, text, rely, direction, color}: ContinueButtonProps) {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>{text}</Text>
+    <View
+      style={[
+        styles.container,
+        rely === direction ? {backgroundColor: color} : '',
+      ]}>
+      <Text style={[styles.text, 
+        rely === direction ? {color: 'white'} : '',
+    ]}>{text}</Text>
     </View>
   );
 }
@@ -17,7 +26,7 @@ function ContinueButton({func, text}: ContinueButtonProps) {
 const styles = StyleSheet.create({
   container: {
     padding: 12,
-    paddingHorizontal: 2,
+    paddingHorizontal: 4,
     // borderWidth: 1,
     borderRadius: 10,
     borderColor: 'white',

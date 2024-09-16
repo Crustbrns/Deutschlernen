@@ -17,7 +17,7 @@ export const wordsManager: Array<Word> = new Array<Word>(
         'Предметы в быту',
         'https://www.einrichten-design.de/media/c8/53/33/1599490339/Tische_Erlebniswelt001.jpg',
         'Стол',
-        'der Schrank (die Schränke)'
+        'der Tisch (die Tische)'
     ),
     new Word(
         'Предметы в быту',

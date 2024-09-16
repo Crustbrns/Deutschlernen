@@ -22,7 +22,7 @@ function IconButton({icon, func} : IconButtonProps) {
 
 const styles = StyleSheet.create({
     container: {
-        padding: 20,
+        padding: 16,
         borderColor: 'white',
         borderWidth: 1,
         borderRadius: 10
