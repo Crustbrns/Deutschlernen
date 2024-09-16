@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {
   Animated,
   Dimensions,
+  Easing,
   PanResponder,
   SafeAreaView,
   ScrollView,
@@ -11,6 +12,7 @@ import {
 } from 'react-native';
 import Bild from './Bild';
 import Antwort from './Antwort';
+import ContinueHolder from './buttons/ContinueHolder';
 
 type WortProps = {
   word: string;
@@ -72,7 +74,7 @@ function Wort(props: WortProps) {
             duration: 500, // Длительность анимации в миллисекундах (500 мс)
             useNativeDriver: false,
           }).start();
-          
+
           setTimeout(() => {
             setShowWord(false);
             props.HandleIndex();
@@ -104,8 +106,15 @@ function Wort(props: WortProps) {
           }, 500);
         } else {
           Animated.timing(pan, {
-            toValue: {x: 0, y: 20},
+            toValue: {x: 0, y: 0},
+            easing: Easing.inOut(Easing.cubic),
             duration: 500, // Длительность анимации в миллисекундах (500 мс)
+            useNativeDriver: false,
+          }).start();
+
+          Animated.timing(scale.current, {
+            toValue: 1,
+            duration: 500,
             useNativeDriver: false,
           }).start();
         }
@@ -169,13 +178,29 @@ function Wort(props: WortProps) {
             console.log('started clicking');
           }}
           style={styles.container}>
-          <Animated.View>
-            <View style={styles.title_container}>
-              <View style={styles.color_box}></View>
-              <Text style={styles.text_title}>Изучение слова</Text>
+          <Animated.View style={styles.justify}>
+            <View>
+              <View style={styles.title_container}>
+                <View style={styles.color_box}></View>
+                <Text style={styles.text_title}>Изучение слова</Text>
+              </View>
+              <Bild thema={props.thema} image={props.image} word={props.word} />
+              <Antwort
+                antwort={props.antwort}
+                show={showWord}
+                setShow={(show: boolean) => setShowWord(show)}
+              />
             </View>
-            <Bild thema={props.thema} image={props.image} word={props.word} />
-            <Antwort antwort={props.antwort} show={showWord} setShow={(show: boolean)=>setShowWord(show)} />
+            <View>
+              <ContinueHolder
+                next={() => {
+                  console.log('next');
+                }}
+                prev={() => {
+                  console.log('prev');
+                }}
+              />
+            </View>
           </Animated.View>
         </ScrollView>
       </Animated.View>
@@ -196,7 +221,7 @@ const styles = StyleSheet.create({
     left: 20,
     padding: 30,
     flex: 1,
-    height: 550,
+    // height: 550,
     transform: 'rotate(0deg)',
     // height: 1000,
     width: Dimensions.get('screen').width - 40,
@@ -219,7 +244,7 @@ const styles = StyleSheet.create({
   text_title: {
     color: '#efe9e5',
     fontSize: 20,
-    fontFamily: 'WorkSans-Regular'
+    fontFamily: 'WorkSans-Regular',
   },
   text: {
     color: 'white',
@@ -227,6 +252,13 @@ const styles = StyleSheet.create({
   highlight: {
     fontWeight: '700',
   },
+  justify: {
+    justifyContent: 'space-between',
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'column',
+    gap: 60
+  }
 });
 
 export default Wort;

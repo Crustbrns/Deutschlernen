@@ -14,7 +14,7 @@ function WordsCount({index, words} : WordsProps) {
       <View></View>
       <View>
         <View>
-          <Text style={styles.text}>Слов повторено</Text>
+          <Text style={styles.text}><Text style={styles.index}>{index}</Text> Слов пройдено</Text>
         </View>
         <View style={[styles.flex_container, {gap: words.length < 6 ? 15 : words.length * 3 / 10}]}>
           {words.map((x:any, i:number) => {
@@ -38,6 +38,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 5,
     paddingBottom: 12
+  },
+  index: {
+    fontSize: 20,
+    color: 'white',
+    fontFamily: 'WorkSans-Regular',
   },
   text: {
     color: '#86898c',
