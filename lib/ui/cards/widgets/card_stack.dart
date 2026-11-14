@@ -4,6 +4,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/ui/cards/widgets/swipeable_card.dart';
 import 'package:deutschlernen/ui/cards/widgets/word_card.dart';
+import 'package:deutschlernen/ui/core/app_style.dart';
 
 class CardStack extends StatelessWidget {
   const CardStack({
@@ -47,17 +48,18 @@ class CardStack extends StatelessWidget {
             scale: 1 - depth * 0.05,
             duration: _animation,
             curve: Curves.easeOut,
-            child: IgnorePointer(
-              ignoring: depth != 0,
-              child: SwipeableCard(
-                enabled: depth == 0,
-                controller: controller,
-                enterFrom: depth == 0 ? enterFrom : null,
-                onSwipeStarted: onSwipeStarted,
-                onSwiped: onSwiped,
-                child: WordCard(word: words[i], onSpeak: onSpeak),
-              ),
-            ),
+            // Only the top card is a real card. The ones behind are plain
+            // shapes, so their content is not built or painted in advance.
+            child: depth == 0
+                ? SwipeableCard(
+                    enabled: true,
+                    controller: controller,
+                    enterFrom: enterFrom,
+                    onSwipeStarted: onSwipeStarted,
+                    onSwiped: onSwiped,
+                    child: WordCard(word: words[i], onSpeak: onSpeak),
+                  )
+                : const _CardBackdrop(),
           ),
         ),
       );
@@ -67,6 +69,25 @@ class CardStack extends StatelessWidget {
       fit: StackFit.expand,
       clipBehavior: Clip.none, // lets the card fly past the edge
       children: children,
+    );
+  }
+}
+
+/// Empty card shape shown behind the top card.
+class _CardBackdrop extends StatelessWidget {
+  const _CardBackdrop();
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
+    return Material(
+      color: AppColors.card,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(28), // same as WordCard
+        side: BorderSide(color: colors.outlineVariant),
+      ),
+      child: const SizedBox.expand(),
     );
   }
 }

@@ -171,7 +171,7 @@ class SwipeableCardState extends State<SwipeableCard>
       onHorizontalDragEnd: widget.enabled ? _onDragEnd : null,
       child: AnimatedBuilder(
         animation: _controller,
-        child: widget.child,
+        child: RepaintBoundary(child: widget.child),
         builder: (context, child) {
           final dx = _dx;
           return Transform.translate(
