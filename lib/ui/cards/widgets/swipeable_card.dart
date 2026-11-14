@@ -7,13 +7,21 @@ enum SwipeDirection { left, right }
 
 Springier or calmer snap-back: stiffness and ratio in _snapBackSpring. Lower ratio means more bounce.
 Flight speed limits: the 140 and 320 ms values in swipe.
-Tilt: 0.3. Arc: 0.06.*/
+Tilt: 0.3. Button swipe arc: _buttonArc.
+Highlight strength: _highlightDistance (fraction of the screen width that fully lights a button).*/
 
-/// Lets other widgets (the bottom buttons) swipe the top card programmatically.
+/// Lets other widgets (the bottom buttons) swipe the top card programmatically,
+/// and tells them how far the card is being dragged.
 class SwipeController {
   SwipeableCardState? _state;
 
+  /// How far the top card is dragged sideways, from -1 (fully towards "later")
+  /// to 1 (fully towards "remembered"). 0 when the card is at rest.
+  final ValueNotifier<double> dragProgress = ValueNotifier<double>(0);
+
   void swipe(SwipeDirection direction) => _state?.swipe(direction);
+
+  void dispose() => dragProgress.dispose();
 }
 
 class SwipeableCard extends StatefulWidget {
@@ -44,10 +52,17 @@ class SwipeableCard extends StatefulWidget {
 
 class SwipeableCardState extends State<SwipeableCard>
     with SingleTickerProviderStateMixin {
-  // The controller's value IS the horizontal offset in logical pixels.
-  // Dragging just sets the value, so no setState is needed.
+  /// Where the card is, in logical pixels. Dragging just sets the value,
+  /// so no setState is needed.
+  final ValueNotifier<Offset> _offset = ValueNotifier<Offset>(Offset.zero);
+
+  /// Runs an animation from [_from] to [_to] as a 0..1 progress value.
+  /// Unbounded, so the snap-back spring may overshoot.
   late final AnimationController _controller =
-      AnimationController.unbounded(vsync: this);
+      AnimationController.unbounded(vsync: this)..addListener(_onAnimationTick);
+
+  Offset _from = Offset.zero;
+  Offset _to = Offset.zero;
 
   static final _snapBackSpring = SpringDescription.withDampingRatio(
     mass: 1,
@@ -55,12 +70,22 @@ class SwipeableCardState extends State<SwipeableCard>
     ratio: 0.7, // slight overshoot, feels springy
   );
 
+  /// Direction the button swipes fly in: slightly upward.
+  static const _buttonArc = -0.08;
+
+  /// Horizontal drag (fraction of the width) that fully lights a button.
+  static const _highlightDistance = 0.3;
+
   bool _isSwiping = false;
   bool _enterHandled = false;
+
+  /// True while the card flies in after an undo. The buttons stay unlit then.
+  bool _isEntering = false;
 
   @override
   void initState() {
     super.initState();
+    _offset.addListener(_publishProgress);
     _attachIfEnabled();
   }
 
@@ -76,13 +101,14 @@ class SwipeableCardState extends State<SwipeableCard>
     final from = widget.enterFrom;
     if (!_enterHandled && from != null && widget.enabled) {
       _enterHandled = true;
+      _isEntering = true;
       final width = MediaQuery.sizeOf(context).width;
-      _controller.value = from == SwipeDirection.right ? width * 1.2 : -width * 1.2;
-      _controller.animateTo(
-        0,
+      _offset.value = Offset(from == SwipeDirection.right ? width * 1.2 : -width * 1.2, 0);
+      _animateTo(
+        Offset.zero,
         duration: const Duration(milliseconds: 380),
         curve: Curves.easeOutCubic,
-      );
+      ).whenComplete(() => _isEntering = false);
     }
   }
 
@@ -90,6 +116,7 @@ class SwipeableCardState extends State<SwipeableCard>
   void dispose() {
     if (widget.controller._state == this) widget.controller._state = null;
     _controller.dispose();
+    _offset.dispose();
     super.dispose();
   }
 
@@ -97,65 +124,122 @@ class SwipeableCardState extends State<SwipeableCard>
     if (widget.enabled) widget.controller._state = this;
   }
 
+  void _onAnimationTick() {
+    _offset.value = Offset.lerp(_from, _to, _controller.value)!;
+  }
+
+  void _publishProgress() {
+    if (!widget.enabled || _isEntering) return;
+    final width = MediaQuery.sizeOf(context).width;
+    widget.controller.dragProgress.value =
+        (_offset.value.dx / (width * _highlightDistance))
+            .clamp(-1.0, 1.0)
+            .toDouble();
+  }
+
+  TickerFuture _animateTo(
+    Offset target, {
+    required Duration duration,
+    required Curve curve,
+  }) {
+    _from = _offset.value;
+    _to = target;
+    _controller.value = 0;
+    return _controller.animateTo(1, duration: duration, curve: curve);
+  }
+
   void _onDragStart(DragStartDetails details) {
     if (_isSwiping) return;
     _controller.stop(); // grab the card even while it is still springing back
+    _isEntering = false;
   }
 
   void _onDragUpdate(DragUpdateDetails details) {
     if (_isSwiping) return;
-    _controller.value += details.delta.dx;
+    _offset.value += details.delta;
   }
 
   void _onDragEnd(DragEndDetails details) {
     if (_isSwiping) return;
 
     final width = MediaQuery.sizeOf(context).width;
-    final velocity = details.velocity.pixelsPerSecond.dx;
-    final dx = _controller.value;
+    final velocity = details.velocity.pixelsPerSecond;
+    final offset = _offset.value;
 
-    final flung = velocity.abs() > 700;
-    final draggedFarEnough = dx.abs() > width * 0.25;
+    // The decision depends on the horizontal part only, so a diagonal
+    // swipe counts as left or right.
+    final flung = velocity.dx.abs() > 700;
+    final draggedFarEnough = offset.dx.abs() > width * 0.25;
 
     if (flung || draggedFarEnough) {
-      final goRight = flung ? velocity > 0 : dx > 0;
+      final heading = flung ? velocity : offset;
       swipe(
-        goRight ? SwipeDirection.right : SwipeDirection.left,
-        velocity: velocity,
+        heading.dx > 0 ? SwipeDirection.right : SwipeDirection.left,
+        heading: heading,
+        speed: velocity.distance,
       );
     } else {
       _snapBack(velocity);
     }
   }
 
-  void _snapBack(double velocity) {
+  void _snapBack(Offset velocity) {
+    final from = _offset.value;
+    final distanceSquared = from.dx * from.dx + from.dy * from.dy;
+    if (distanceSquared < 0.01) return;
+
+    _from = from;
+    _to = Offset.zero;
+    _controller.value = 0;
+
+    // Progress runs 0 -> 1 while the card moves from -> zero, so the
+    // release velocity is projected onto that line.
+    final progressVelocity =
+        -(velocity.dx * from.dx + velocity.dy * from.dy) / distanceSquared;
     _controller.animateWith(
-      SpringSimulation(_snapBackSpring, _controller.value, 0, velocity),
+      SpringSimulation(_snapBackSpring, 0, 1, progressVelocity),
     );
   }
 
   /// Flies the card off screen. Used by drags and by the bottom buttons.
-  void swipe(SwipeDirection direction, {double velocity = 0}) {
+  ///
+  /// [heading] is the direction of flight; the card leaves along it until it
+  /// is past the screen edge. Buttons pass none and get a slight upward arc.
+  void swipe(
+    SwipeDirection direction, {
+    Offset? heading,
+    double speed = 0,
+  }) {
     if (_isSwiping || !widget.enabled) return;
     _isSwiping = true;
     widget.onSwipeStarted();
 
     final width = MediaQuery.sizeOf(context).width;
-    final target = direction == SwipeDirection.right ? width * 1.3 : -width * 1.3;
-    final distance = (target - _controller.value).abs();
+    final sign = direction == SwipeDirection.right ? 1.0 : -1.0;
+    final exitX = width * 1.3;
+
+    var dir = heading ?? Offset(sign, _buttonArc);
+    if (dir.dx.abs() < 1e-3) dir = Offset(sign, dir.dy);
+
+    final scale = exitX / dir.dx.abs();
+    final target = Offset(
+      sign * exitX,
+      (dir.dy * scale).clamp(-width * 2, width * 2).toDouble(),
+    );
+    final distance = (target - _offset.value).distance;
 
     // The faster the flick, the shorter the flight.
-    final speed = velocity.abs().clamp(900, 4000);
-    final ms = (distance / speed * 1000).clamp(140, 320);
+    final flightSpeed = speed.clamp(900, 4000);
+    final ms = (distance / flightSpeed * 1000).clamp(140, 320);
 
-    _controller
-        .animateTo(
-          target,
-          duration: Duration(milliseconds: ms.round()),
-          curve: Curves.easeOutCubic,
-        )
-        .whenComplete(() {
-      if (mounted) widget.onSwiped(direction);
+    _animateTo(
+      target,
+      duration: Duration(milliseconds: ms.round()),
+      curve: Curves.easeOutCubic,
+    ).whenComplete(() {
+      if (!mounted) return;
+      widget.controller.dragProgress.value = 0;
+      widget.onSwiped(direction);
     });
   }
 
@@ -163,24 +247,24 @@ class SwipeableCardState extends State<SwipeableCard>
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
 
-    // Horizontal drags only, so the vertical scroll inside the card still works.
+    // Pan instead of horizontal drag, so the card follows the finger in
+    // every direction. A scrollable child still wins vertical drags.
     return GestureDetector(
-      onHorizontalDragStart: widget.enabled ? _onDragStart : null,
-      onHorizontalDragUpdate: widget.enabled ? _onDragUpdate : null,
-      onHorizontalDragEnd: widget.enabled ? _onDragEnd : null,
-      onHorizontalDragCancel: widget.enabled && !_isSwiping
-          ? () => _snapBack(0)
+      onPanStart: widget.enabled ? _onDragStart : null,
+      onPanUpdate: widget.enabled ? _onDragUpdate : null,
+      onPanEnd: widget.enabled ? _onDragEnd : null,
+      onPanCancel: widget.enabled && !_isSwiping
+          ? () => _snapBack(Offset.zero)
           : null,
-      child: AnimatedBuilder(
-        animation: _controller,
+      child: ValueListenableBuilder<Offset>(
+        valueListenable: _offset,
         // Painted once, then only moved around while swiping.
         child: RepaintBoundary(child: widget.child),
-        builder: (context, child) {
-          final dx = _controller.value;
+        builder: (context, offset, child) {
           return Transform.translate(
-            offset: Offset(dx, -dx.abs() * 0.06), // slight upward arc
+            offset: offset,
             child: Transform.rotate(
-              angle: (dx / width) * 0.3,
+              angle: (offset.dx / width) * 0.3,
               alignment: Alignment.bottomCenter,
               child: child,
             ),

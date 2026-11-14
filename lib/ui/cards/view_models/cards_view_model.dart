@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:deutschlernen/data/repositories/language_repository.dart';
 import 'package:deutschlernen/data/repositories/settings_repository.dart';
 import 'package:deutschlernen/data/repositories/word_repository.dart';
-import 'package:deutschlernen/data/services/sound_service.dart';
 import 'package:deutschlernen/data/services/speech_service.dart';
 import 'package:deutschlernen/domain/models/app_language.dart';
 import 'package:deutschlernen/domain/models/card_decision.dart';
@@ -14,14 +13,12 @@ class CardsViewModel extends ChangeNotifier {
     required this._wordRepository,
     required this._languageRepository,
     required this._settingsRepository,
-    required this._soundService,
     required this._speechService,
   });
 
   final WordRepository _wordRepository;
   final LanguageRepository _languageRepository;
   final SettingsRepository _settingsRepository;
-  final SoundService _soundService;
   final SpeechService _speechService;
 
   List<Word> _words = [];
@@ -102,7 +99,6 @@ class CardsViewModel extends ChangeNotifier {
   /// The card has been released and starts flying off screen.
   void onSwipeStarted() {
     _isSwiping = true;
-    _soundService.playSwipe();
   }
 
   /// The card has left the screen.
@@ -116,7 +112,6 @@ class CardsViewModel extends ChangeNotifier {
   void undo() {
     if (!canUndo || _isSwiping) return;
     _lastUndone = _history.removeLast();
-    _soundService.playSwipe();
     notifyListeners();
   }
 

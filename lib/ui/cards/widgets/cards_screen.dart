@@ -34,7 +34,13 @@ class _CardsScreenState extends State<CardsScreen> {
         null => null,
       };
 
-    void _openLanguageSheet() {
+  @override
+  void dispose() {
+    _swipeController.dispose();
+    super.dispose();
+  }
+
+  void _openLanguageSheet() {
     showLanguageSheet(
       context: context,
       strings: _vm.strings,
@@ -101,6 +107,7 @@ class _CardsScreenState extends State<CardsScreen> {
                               _swipeController.swipe(SwipeDirection.left),
                           onRemembered: () =>
                               _swipeController.swipe(SwipeDirection.right),
+                          dragProgress: _swipeController.dragProgress,
                         ),
                       ),
                     ),
