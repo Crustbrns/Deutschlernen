@@ -3,8 +3,7 @@ import 'package:deutschlernen/data/services/asset_service.dart';
 import 'package:deutschlernen/domain/models/app_language.dart';
 
 class LanguageRepository {
-  LanguageRepository({required AssetService assetService})
-      : _assetService = assetService;
+  LanguageRepository({required this._assetService});
 
   final AssetService _assetService;
 
@@ -23,7 +22,9 @@ class LanguageRepository {
 
     if (language.code != fallbackCode) {
       try {
-        texts.addAll(_toStrings(await _assetService.loadUiTexts(language.code)));
+        texts.addAll(
+          _toStrings(await _assetService.loadUiTexts(language.code)),
+        );
       } catch (e) {
         debugPrint('Could not load ${language.code} UI texts: $e');
       }

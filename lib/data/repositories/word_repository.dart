@@ -5,8 +5,7 @@ import 'package:deutschlernen/domain/models/example_sentence.dart';
 import 'package:deutschlernen/domain/models/word.dart';
 
 class WordRepository {
-  WordRepository({required AssetService assetService})
-      : _assetService = assetService;
+  WordRepository({required this._assetService});
 
   final AssetService _assetService;
 

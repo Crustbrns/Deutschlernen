@@ -11,16 +11,12 @@ import 'package:deutschlernen/ui/core/app_strings.dart';
 
 class CardsViewModel extends ChangeNotifier {
   CardsViewModel({
-    required WordRepository wordRepository,
-    required LanguageRepository languageRepository,
-    required SettingsRepository settingsRepository,
-    required SoundService soundService,
-    required SpeechService speechService,
-  })  : _wordRepository = wordRepository,
-        _languageRepository = languageRepository,
-        _settingsRepository = settingsRepository,
-        _soundService = soundService,
-        _speechService = speechService;
+    required this._wordRepository,
+    required this._languageRepository,
+    required this._settingsRepository,
+    required this._soundService,
+    required this._speechService,
+  });
 
   final WordRepository _wordRepository;
   final LanguageRepository _languageRepository;
@@ -30,7 +26,11 @@ class CardsViewModel extends ChangeNotifier {
 
   List<Word> _words = [];
   List<AppLanguage> _languages = [];
-  AppLanguage _language = const AppLanguage(code: 'en', label: 'English', country: 'GB');
+  AppLanguage _language = const AppLanguage(
+    code: 'en',
+    label: 'English',
+    country: 'GB',
+  );
   AppStrings _strings = const AppStrings({});
   final List<CardDecision> _history = [];
   CardDecision? _lastUndone;
