@@ -1,0 +1,6 @@
+[
+  { "code": "ru", "label": "Русский", "country": "RU" },
+  { "code": "en", "label": "English", "country": "GB" },
+  { "code": "es", "label": "Español", "country": "ES" },
+  { "code": "zh", "label": "中文（简体）", "country": "CN" }
+]

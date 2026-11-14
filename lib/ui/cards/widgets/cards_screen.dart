@@ -4,7 +4,9 @@ import 'package:deutschlernen/ui/cards/view_models/cards_view_model.dart';
 import 'package:deutschlernen/ui/cards/widgets/card_stack.dart';
 import 'package:deutschlernen/ui/cards/widgets/cards_top_bar.dart';
 import 'package:deutschlernen/ui/cards/widgets/decision_bar.dart';
+import 'package:deutschlernen/ui/cards/widgets/language_sheet.dart';
 import 'package:deutschlernen/ui/cards/widgets/swipeable_card.dart';
+import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 
 class CardsScreen extends StatefulWidget {
@@ -32,6 +34,16 @@ class _CardsScreenState extends State<CardsScreen> {
         null => null,
       };
 
+    void _openLanguageSheet() {
+    showLanguageSheet(
+      context: context,
+      strings: _vm.strings,
+      languages: _vm.languages,
+      current: _vm.language,
+      onSelected: _vm.setLanguage,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,50 +55,57 @@ class _CardsScreenState extends State<CardsScreen> {
               return const Center(child: CircularProgressIndicator());
             }
 
-            return Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
-                  child: CardsTopBar(
-                    progress: _vm.progress,
-                    onClose: () {}, // later
-                    onUndo: _vm.canUndo ? _vm.undo : null,
+            return AppStringsScope(
+              strings: _vm.strings,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+                    child: CardsTopBar(
+                      progress: _vm.progress,
+                      onClose: () {}, // later
+                      onUndo: _vm.canUndo ? _vm.undo : null,
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: _vm.isFinished
-                      ? _FinishedView(onRestart: _vm.restart)
-                      : Padding(
-                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 40),
-                          child: Center(
-                            child: ConstrainedBox(
-                              constraints: const BoxConstraints(maxWidth: 560),
-                              child: CardStack(
-                                words: _vm.words,
-                                index: _vm.index,
-                                controller: _swipeController,
-                                enterFrom: _enterFrom,
-                                onSwipeStarted: _vm.onSwipeStarted,
-                                onSwiped: (direction) =>
-                                    _vm.onCardSwiped(_decisionFor(direction)),
-                                onSpeak: _vm.speak,
+                  Expanded(
+                    child: _vm.isFinished
+                        ? _FinishedView(onRestart: _vm.restart)
+                        : Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 40),
+                            child: Center(
+                              child: ConstrainedBox(
+                                constraints:
+                                    const BoxConstraints(maxWidth: 560),
+                                child: CardStack(
+                                  words: _vm.words,
+                                  index: _vm.index,
+                                  controller: _swipeController,
+                                  enterFrom: _enterFrom,
+                                  onSwipeStarted: _vm.onSwipeStarted,
+                                  onSwiped: (direction) => _vm
+                                      .onCardSwiped(_decisionFor(direction)),
+                                  onSpeak: _vm.speak,
+                                  onMenu: _openLanguageSheet,
+                                ),
                               ),
                             ),
                           ),
+                  ),
+                  if (!_vm.isFinished)
+                    Material(
+                      color: AppColors.background,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                        child: DecisionBar(
+                          onLater: () =>
+                              _swipeController.swipe(SwipeDirection.left),
+                          onRemembered: () =>
+                              _swipeController.swipe(SwipeDirection.right),
                         ),
-                ),
-                if (!_vm.isFinished)
-  Material(
-    color: AppColors.background,
-    child: Padding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-      child: DecisionBar(
-        onLater: () => _swipeController.swipe(SwipeDirection.left),
-        onRemembered: () => _swipeController.swipe(SwipeDirection.right),
-      ),
-    ),
-  ),
-              ],
+                      ),
+                    ),
+                ],
+              ),
             );
           },
         ),
@@ -102,16 +121,21 @@ class _FinishedView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = AppStrings.of(context);
+
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Good work!',
+            strings.goodWork,
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           const SizedBox(height: 24),
-          FilledButton(onPressed: onRestart, child: const Text('Restart')),
+          FilledButton(
+            onPressed: onRestart,
+            child: Text(strings.restart),
+          ),
         ],
       ),
     );

@@ -1,0 +1,40 @@
+{
+  "tee": {
+    "word": "té",
+    "examples": [
+      { "german": "Ich trinke gerne **Tee**.", "translation": "Me gusta beber **té**." },
+      { "german": "Der **Tee** ist heiß.", "translation": "El **té** está caliente." }
+    ]
+  },
+  "hund": {
+    "word": "perro",
+    "examples": [
+      { "german": "Der **Hund** spielt im Garten.", "translation": "El **perro** juega en el jardín." },
+      { "german": "Ich gehe mit dem **Hund** spazieren.", "translation": "Paseo con el **perro**." },
+      { "german": "Mein **Hund** ist sehr klein.", "translation": "Mi **perro** es muy pequeño." }
+    ]
+  },
+  "haus": {
+    "word": "casa",
+    "examples": [
+      { "german": "Das **Haus** ist groß.", "translation": "La **casa** es grande." },
+      { "german": "Wir kaufen ein **Haus**.", "translation": "Vamos a comprar una **casa**." },
+      { "german": "Ich gehe nach **Hause**.", "translation": "Voy a **casa**." }
+    ]
+  },
+  "katze": {
+    "word": "gato",
+    "examples": [
+      { "german": "Die **Katze** schläft auf dem Sofa.", "translation": "El **gato** duerme en el sofá." },
+      { "german": "Ich habe eine schwarze **Katze**.", "translation": "Tengo un **gato** negro." }
+    ]
+  },
+  "wasser": {
+    "word": "agua",
+    "examples": [
+      { "german": "Ich trinke ein Glas **Wasser**.", "translation": "Bebo un vaso de **agua**." },
+      { "german": "Das **Wasser** ist kalt.", "translation": "El **agua** está fría." },
+      { "german": "Kann ich bitte **Wasser** haben?", "translation": "¿Me das **agua**, por favor?" }
+    ]
+  }
+}

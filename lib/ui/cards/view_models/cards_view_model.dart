@@ -1,30 +1,46 @@
 import 'package:flutter/foundation.dart';
+import 'package:deutschlernen/data/repositories/language_repository.dart';
+import 'package:deutschlernen/data/repositories/settings_repository.dart';
 import 'package:deutschlernen/data/repositories/word_repository.dart';
 import 'package:deutschlernen/data/services/sound_service.dart';
 import 'package:deutschlernen/data/services/speech_service.dart';
+import 'package:deutschlernen/domain/models/app_language.dart';
 import 'package:deutschlernen/domain/models/card_decision.dart';
 import 'package:deutschlernen/domain/models/word.dart';
+import 'package:deutschlernen/ui/core/app_strings.dart';
 
 class CardsViewModel extends ChangeNotifier {
   CardsViewModel({
     required WordRepository wordRepository,
+    required LanguageRepository languageRepository,
+    required SettingsRepository settingsRepository,
     required SoundService soundService,
     required SpeechService speechService,
   })  : _wordRepository = wordRepository,
+        _languageRepository = languageRepository,
+        _settingsRepository = settingsRepository,
         _soundService = soundService,
         _speechService = speechService;
 
   final WordRepository _wordRepository;
+  final LanguageRepository _languageRepository;
+  final SettingsRepository _settingsRepository;
   final SoundService _soundService;
   final SpeechService _speechService;
 
   List<Word> _words = [];
+  List<AppLanguage> _languages = [];
+  AppLanguage _language = const AppLanguage(code: 'en', label: 'English', country: 'GB');
+  AppStrings _strings = const AppStrings({});
   final List<CardDecision> _history = [];
   CardDecision? _lastUndone;
   bool _isLoading = true;
   bool _isSwiping = false;
 
   List<Word> get words => _words;
+  List<AppLanguage> get languages => _languages;
+  AppLanguage get language => _language;
+  AppStrings get strings => _strings;
   bool get isLoading => _isLoading;
 
   /// Index of the current card = number of decisions made so far.
@@ -40,12 +56,47 @@ class CardsViewModel extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    _words = await _wordRepository.getWords();
+    _languages = await _languageRepository.getLanguages();
+    final savedCode = await _settingsRepository.loadLanguageCode();
+    _language = _pickLanguage(savedCode);
+
+    _words = await _wordRepository.getWords(_language);
+    _strings = AppStrings(await _languageRepository.getUiTexts(_language));
     _history.clear();
     _lastUndone = null;
 
     _isLoading = false;
     notifyListeners();
+  }
+
+  /// Saved choice, else the device language, else English, else the first one.
+  AppLanguage _pickLanguage(String? savedCode) {
+    AppLanguage? find(String? code) {
+      for (final language in _languages) {
+        if (language.code == code) return language;
+      }
+      return null;
+    }
+
+    return find(savedCode) ??
+        find(_settingsRepository.deviceLanguageCode) ??
+        find(LanguageRepository.fallbackCode) ??
+        _languages.first;
+  }
+
+  /// Switches the language without losing the learning progress.
+  Future<void> setLanguage(AppLanguage language) async {
+    if (language == _language) return;
+
+    final words = await _wordRepository.getWords(language);
+    final texts = await _languageRepository.getUiTexts(language);
+
+    _language = language;
+    _words = words;
+    _strings = AppStrings(texts);
+    notifyListeners();
+
+    await _settingsRepository.saveLanguageCode(language.code);
   }
 
   /// The card has been released and starts flying off screen.

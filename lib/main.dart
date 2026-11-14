@@ -1,7 +1,10 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:deutschlernen/data/repositories/settings_repository.dart';
 import 'package:deutschlernen/data/repositories/word_repository.dart';
 import 'package:deutschlernen/data/services/sound_service.dart';
 import 'package:deutschlernen/data/services/speech_service.dart';
+import 'package:deutschlernen/data/repositories/language_repository.dart';
+import 'package:deutschlernen/data/services/asset_service.dart';
 import 'package:deutschlernen/ui/cards/view_models/cards_view_model.dart';
 import 'package:deutschlernen/ui/cards/widgets/cards_screen.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
@@ -18,10 +21,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final _assetService = AssetService();
   final _soundService = SoundService();
   final _speechService = SpeechService();
   late final CardsViewModel _cardsViewModel = CardsViewModel(
-    wordRepository: WordRepository(),
+    wordRepository: WordRepository(assetService: _assetService),
+    languageRepository: LanguageRepository(assetService: _assetService),
+    settingsRepository: SettingsRepository(),
     soundService: _soundService,
     speechService: _speechService,
   )..load();

@@ -1,13 +1,20 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/ui/cards/widgets/example_tile.dart';
+import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 
 class WordCard extends StatefulWidget {
-  const WordCard({super.key, required this.word, required this.onSpeak});
+  const WordCard({
+    super.key,
+    required this.word,
+    required this.onSpeak,
+    required this.onMenu,
+  });
 
   final Word word;
   final ValueChanged<String> onSpeak;
+  final VoidCallback onMenu;
 
   @override
   State<WordCard> createState() => _WordCardState();
@@ -19,6 +26,7 @@ class _WordCardState extends State<WordCard> {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    final strings = AppStrings.of(context);
     final word = widget.word;
 
     return Material(
@@ -32,7 +40,7 @@ class _WordCardState extends State<WordCard> {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 16, 12, 0),
-            child: _Header(level: word.level),
+            child: _Header(level: word.level, onMenu: widget.onMenu),
           ),
           Expanded(
             child: SingleChildScrollView(
@@ -54,13 +62,19 @@ class _WordCardState extends State<WordCard> {
                         children: [
                           TextSpan(
                             text: '${word.article} ',
-                            style: TextStyle(color: AppColors.forArticle(word.article)),
+                            style: TextStyle(
+                              color: AppColors.forArticle(word.article),
+                            ),
                           ),
                           TextSpan(text: word.german),
                         ],
                       ),
                     ),
                   ),
+                  if (word.plural != null) ...[
+                    const SizedBox(height: 8),
+                    _PluralLine(label: strings.plural, plural: word.plural!),
+                  ],
                   const SizedBox(height: 16),
                   Center(
                     child: OutlinedButton(
@@ -124,7 +138,7 @@ class _WordCardState extends State<WordCard> {
                               child: FilledButton.tonal(
                                 onPressed: () =>
                                     setState(() => _translationVisible = true),
-                                child: const Text('Показать перевод'),
+                                child: Text(strings.showTranslation),
                               ),
                             ),
                     ),
@@ -148,14 +162,56 @@ class _WordCardState extends State<WordCard> {
   }
 }
 
-class _Header extends StatelessWidget {
-  const _Header({required this.level});
+class _PluralLine extends StatelessWidget {
+  const _PluralLine({required this.label, required this.plural});
 
-  final String level;
+  final String label;
+  final String plural;
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+
+    return Text.rich(
+      textAlign: TextAlign.center,
+      TextSpan(
+        style: TextStyle(
+          fontFamily: AppFonts.serif,
+          fontSize: 20,
+          color: colors.onSurfaceVariant,
+        ),
+        children: [
+          TextSpan(text: '$label: '),
+          TextSpan(
+            text: 'die ',
+            style: TextStyle(
+              color: AppColors.forArticle('die'),
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          TextSpan(
+            text: plural,
+            style: TextStyle(
+              color: colors.onSurface,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Header extends StatelessWidget {
+  const _Header({required this.level, required this.onMenu});
+
+  final String level;
+  final VoidCallback onMenu;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    final strings = AppStrings.of(context);
 
     return Row(
       children: [
@@ -186,12 +242,12 @@ class _Header extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 8),
-        const Expanded(
+        Expanded(
           child: Text(
-            'Новое слово',
+            strings.newWord,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
+            style: const TextStyle(
               fontFamily: AppFonts.serif,
               fontSize: 17,
               fontWeight: FontWeight.w600,
@@ -199,7 +255,8 @@ class _Header extends StatelessWidget {
           ),
         ),
         IconButton.outlined(
-          onPressed: () {}, // menu, later
+          onPressed: onMenu,
+          tooltip: strings.menu,
           icon: const Icon(Icons.more_horiz),
         ),
       ],

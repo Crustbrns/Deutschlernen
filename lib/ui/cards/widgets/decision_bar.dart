@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 
 class DecisionBar extends StatelessWidget {
@@ -14,6 +15,7 @@ class DecisionBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    final strings = AppStrings.of(context);
     const textStyle = TextStyle(fontSize: 18, fontWeight: FontWeight.w700);
 
     return Row(
@@ -25,14 +27,14 @@ class DecisionBar extends StatelessWidget {
               foregroundColor: colors.onSurface,
               minimumSize: const Size.fromHeight(56),
             ),
-            child: const Row(
+            child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.arrow_back),
-                SizedBox(width: 12),
+                const Icon(Icons.arrow_back),
+                const SizedBox(width: 12),
                 Flexible(
                   child: Text(
-                    'Отложить',
+                    strings.later,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: textStyle,
@@ -50,19 +52,19 @@ class DecisionBar extends StatelessWidget {
               foregroundColor: AppColors.accentTeal,
               minimumSize: const Size.fromHeight(56),
             ),
-            child: const Row(
+            child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Flexible(
                   child: Text(
-                    'Запомнил',
+                    strings.remembered,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: textStyle,
                   ),
                 ),
-                SizedBox(width: 12),
-                Icon(Icons.arrow_forward),
+                const SizedBox(width: 12),
+                const Icon(Icons.arrow_forward),
               ],
             ),
           ),

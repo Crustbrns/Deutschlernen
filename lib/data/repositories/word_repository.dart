@@ -1,63 +1,68 @@
+import 'package:flutter/foundation.dart';
+import 'package:deutschlernen/data/services/asset_service.dart';
+import 'package:deutschlernen/domain/models/app_language.dart';
 import 'package:deutschlernen/domain/models/example_sentence.dart';
 import 'package:deutschlernen/domain/models/word.dart';
 
 class WordRepository {
-  // In examples, wrap the learned word in ** ** to show it in bold.
-  Future<List<Word>> getWords() async {
-    return const [
-      Word(
-        article: 'der',
-        german: 'Tee',
-        translation: 'чай',
-        level: 'A1',
-        transcription: '[te:]',
-        definition: 'Ein heißes Getränk, das man aus getrockneten Blättern zubereitet.',
-        examples: [
-          ExampleSentence(german: 'Ich trinke gerne **Tee**.', translation: 'Я люблю пить **чай**.'),
-          ExampleSentence(german: 'Der **Tee** ist heiß.', translation: '**Чай** горячий.'),
-          ExampleSentence(german: 'Möchtest du einen **Tee**?', translation: 'Хочешь **чай**?'),
-          ExampleSentence(german: 'Ich bereite einen **Tee** zu.', translation: 'Я завариваю **чай**.'),
-        ],
-      ),
-      Word(
-        article: 'der',
-        german: 'Hund',
-        translation: 'собака',
-        level: 'A1',
-        transcription: '[hʊnt]',
-        definition: 'Ein Tier, das bellt und oft als Haustier gehalten wird.',
-        examples: [
-          ExampleSentence(german: 'Der **Hund** spielt im Garten.', translation: '**Собака** играет в саду.'),
-          ExampleSentence(german: 'Ich gehe mit dem **Hund** spazieren.', translation: 'Я гуляю с **собакой**.'),
-          ExampleSentence(german: 'Mein **Hund** ist sehr klein.', translation: 'Моя **собака** очень маленькая.'),
-        ],
-      ),
-      Word(
-        article: 'das',
-        german: 'Haus',
-        translation: 'дом',
-        level: 'A1',
-        transcription: '[haʊs]',
-        definition: 'Ein Gebäude, in dem Menschen wohnen.',
-        examples: [
-          ExampleSentence(german: 'Das **Haus** ist groß.', translation: '**Дом** большой.'),
-          ExampleSentence(german: 'Wir kaufen ein **Haus**.', translation: 'Мы покупаем **дом**.'),
-          ExampleSentence(german: 'Ich gehe nach **Hause**.', translation: 'Я иду **домой**.'),
-        ],
-      ),
-      Word(
-        article: 'die',
-        german: 'Katze',
-        translation: 'кошка',
-        level: 'A1',
-        transcription: '[ˈkatsə]',
-        definition: 'Ein kleines Haustier, das miaut und gern Mäuse jagt.',
-        examples: [
-          ExampleSentence(german: 'Die **Katze** schläft auf dem Sofa.', translation: '**Кошка** спит на диване.'),
-          ExampleSentence(german: 'Ich habe eine schwarze **Katze**.', translation: 'У меня чёрная **кошка**.'),
-          ExampleSentence(german: 'Die **Katze** trinkt Milch.', translation: '**Кошка** пьёт молоко.'),
-        ],
-      ),
+  WordRepository({required AssetService assetService})
+      : _assetService = assetService;
+
+  final AssetService _assetService;
+
+  /// German content merged with the translations and examples of [language].
+  Future<List<Word>> getWords(AppLanguage language) async {
+    final words = await _assetService.loadWords();
+
+    Map<String, dynamic> translations;
+    try {
+      translations = await _assetService.loadTranslations(language.code);
+    } catch (e) {
+      debugPrint('Could not load ${language.code} translations: $e');
+      translations = const {};
+    }
+
+    return [
+      for (final json in words)
+        _toWord(
+          json,
+          translations[json['id']] as Map<String, dynamic>?,
+          language,
+        ),
     ];
+  }
+
+  Word _toWord(
+    Map<String, dynamic> json,
+    Map<String, dynamic>? translation,
+    AppLanguage language,
+  ) {
+    final id = json['id'] as String;
+
+    final word = translation?['word'] as String?;
+    if (word == null || word.isEmpty) {
+      debugPrint('Missing ${language.code} translation for "$id"');
+    }
+
+    final examples = (translation?['examples'] as List<dynamic>? ?? const [])
+        .cast<Map<String, dynamic>>();
+
+    return Word(
+      id: id,
+      article: json['article'] as String,
+      german: json['lemma'] as String,
+      plural: json['plural'] as String?,
+      level: json['level'] as String,
+      transcription: json['transcription'] as String,
+      definition: json['definition'] as String,
+      translation: word ?? '',
+      examples: [
+        for (final example in examples)
+          ExampleSentence(
+            german: example['german'] as String,
+            translation: example['translation'] as String,
+          ),
+      ],
+    );
   }
 }

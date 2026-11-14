@@ -1,0 +1,47 @@
+[
+  {
+    "id": "tee",
+    "article": "der",
+    "lemma": "Tee",
+    "plural": "Tees",
+    "level": "A1",
+    "transcription": "[te:]",
+    "definition": "Ein heißes Getränk, das man aus getrockneten Blättern zubereitet."
+  },
+  {
+    "id": "hund",
+    "article": "der",
+    "lemma": "Hund",
+    "plural": "Hunde",
+    "level": "A1",
+    "transcription": "[hʊnt]",
+    "definition": "Ein Tier, das bellt und oft als Haustier gehalten wird."
+  },
+  {
+    "id": "haus",
+    "article": "das",
+    "lemma": "Haus",
+    "plural": "Häuser",
+    "level": "A1",
+    "transcription": "[haʊs]",
+    "definition": "Ein Gebäude, in dem Menschen wohnen."
+  },
+  {
+    "id": "katze",
+    "article": "die",
+    "lemma": "Katze",
+    "plural": "Katzen",
+    "level": "A1",
+    "transcription": "[ˈkatsə]",
+    "definition": "Ein kleines Haustier, das miaut und gern Mäuse jagt."
+  },
+  {
+    "id": "wasser",
+    "article": "das",
+    "lemma": "Wasser",
+    "plural": null,
+    "level": "A1",
+    "transcription": "[ˈvasɐ]",
+    "definition": "Eine klare Flüssigkeit, die man trinken kann."
+  }
+]

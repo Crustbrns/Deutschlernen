@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:deutschlernen/ui/core/app_strings.dart';
 
 class CardsTopBar extends StatelessWidget {
   const CardsTopBar({
@@ -14,11 +15,12 @@ class CardsTopBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = AppStrings.of(context);
     return Row(
       children: [
         IconButton.filledTonal(
           onPressed: onClose,
-          tooltip: 'Закрыть',
+          tooltip: strings.close,
           icon: const Icon(Icons.close),
         ),
         Expanded(
@@ -29,7 +31,7 @@ class CardsTopBar extends StatelessWidget {
         ),
         IconButton.filledTonal(
           onPressed: onUndo,
-          tooltip: 'Назад',
+          tooltip: strings.back,
           icon: const Icon(Icons.arrow_back),
         ),
       ],
