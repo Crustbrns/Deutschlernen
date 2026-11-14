@@ -1,16 +1,17 @@
 import 'package:material_ui/material_ui.dart';
 
-/// Splits [text] so the first occurrence of [target] gets [style].
-List<TextSpan> highlightSpans(String text, String target, TextStyle style) {
-  if (target.isEmpty) return [TextSpan(text: text)];
+/// Turns "Ich trinke gerne **Tee**." into spans where "Tee" is bold.
+List<TextSpan> markedSpans(String text, TextStyle boldStyle) {
+  final parts = text.split('**');
+  final spans = <TextSpan>[];
 
-  final start = text.toLowerCase().indexOf(target.toLowerCase());
-  if (start < 0) return [TextSpan(text: text)];
-
-  final end = start + target.length;
-  return [
-    TextSpan(text: text.substring(0, start)),
-    TextSpan(text: text.substring(start, end), style: style),
-    TextSpan(text: text.substring(end)),
-  ];
+  for (var i = 0; i < parts.length; i++) {
+    if (parts[i].isEmpty) continue;
+    // Odd parts are the ones between the ** markers.
+    spans.add(TextSpan(text: parts[i], style: i.isOdd ? boldStyle : null));
+  }
+  return spans;
 }
+
+/// Plain text without markers, e.g. for text-to-speech.
+String stripMarkup(String text) => text.replaceAll('**', '');

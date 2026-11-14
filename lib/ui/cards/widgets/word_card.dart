@@ -134,8 +134,6 @@ class _WordCardState extends State<WordCard> {
                     ExampleTile(
                       key: ValueKey(word.examples[i].german),
                       example: word.examples[i],
-                      germanHighlight: word.german,
-                      translationHighlight: word.translation,
                       initiallyExpanded: i == 0,
                       onSpeak: widget.onSpeak,
                     ),

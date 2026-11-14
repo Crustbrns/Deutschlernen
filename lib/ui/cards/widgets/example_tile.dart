@@ -7,15 +7,11 @@ class ExampleTile extends StatefulWidget {
   const ExampleTile({
     super.key,
     required this.example,
-    required this.germanHighlight,
-    required this.translationHighlight,
     required this.initiallyExpanded,
     required this.onSpeak,
   });
 
   final ExampleSentence example;
-  final String germanHighlight;
-  final String translationHighlight;
   final bool initiallyExpanded;
   final ValueChanged<String> onSpeak;
 
@@ -56,11 +52,7 @@ class _ExampleTileState extends State<ExampleTile> {
                     Text.rich(
                       TextSpan(
                         style: base,
-                        children: highlightSpans(
-                          widget.example.german,
-                          widget.germanHighlight,
-                          bold,
-                        ),
+                        children: markedSpans(widget.example.german, bold),
                       ),
                     ),
                     AnimatedSize(
@@ -73,11 +65,8 @@ class _ExampleTileState extends State<ExampleTile> {
                               child: Text.rich(
                                 TextSpan(
                                   style: base,
-                                  children: highlightSpans(
-                                    widget.example.translation,
-                                    widget.translationHighlight,
-                                    bold,
-                                  ),
+                                  children:
+                                      markedSpans(widget.example.translation, bold),
                                 ),
                               ),
                             )
@@ -88,7 +77,8 @@ class _ExampleTileState extends State<ExampleTile> {
               ),
             ),
             IconButton(
-              onPressed: () => widget.onSpeak(widget.example.german),
+              onPressed: () =>
+                  widget.onSpeak(stripMarkup(widget.example.german)),
               icon: const Icon(Icons.play_arrow_outlined),
               color: AppColors.accentBlue,
             ),
