@@ -54,7 +54,7 @@ class _WordCardState extends State<WordCard> {
                         children: [
                           TextSpan(
                             text: '${word.article} ',
-                            style: const TextStyle(color: AppColors.accentBlue),
+                            style: TextStyle(color: AppColors.forArticle(word.article)),
                           ),
                           TextSpan(text: word.german),
                         ],
