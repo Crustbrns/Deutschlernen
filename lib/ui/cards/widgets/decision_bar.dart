@@ -98,7 +98,7 @@ class _DecisionButton extends StatelessWidget {
       child: TextButton(
         onPressed: onPressed,
         style: TextButton.styleFrom(
-          foregroundColor: AppColors.decisionText, // text and arrows
+          foregroundColor: AppPalette.of(context).decisionText, // text and arrows
           backgroundColor: highlightColor.withValues(
             alpha: _maxHighlightAlpha * highlight,
           ),
@@ -124,7 +124,7 @@ class _DoubleDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const color = AppColors.decisionDivider;
+    final color = AppPalette.of(context).decisionDivider;
     final line = Container(
       width: 1.4,
       height: 27.5,

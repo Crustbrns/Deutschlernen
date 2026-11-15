@@ -16,6 +16,7 @@ class CardStack extends StatelessWidget {
     required this.onSwipeStarted,
     required this.onSwiped,
     required this.onSpeak,
+    required this.showTranscription,
     required this.bottomBar,
   });
 
@@ -26,6 +27,7 @@ class CardStack extends StatelessWidget {
   final VoidCallback onSwipeStarted;
   final ValueChanged<SwipeDirection> onSwiped;
   final ValueChanged<String> onSpeak;
+  final bool showTranscription;
   final Widget bottomBar; // goes into the top card
 
   static const _visibleCards = 3;
@@ -62,6 +64,7 @@ class CardStack extends StatelessWidget {
                     child: WordCard(
                       word: words[i],
                       onSpeak: onSpeak,
+                      showTranscription: showTranscription,
                       otherTranslations: [
                         for (final other in words)
                           if (other.id != words[i].id) other.translation,
@@ -92,7 +95,7 @@ class _CardBackdrop extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
 
     return Material(
-      color: AppColors.card,
+      color: AppPalette.of(context).card,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(32), // same as WordCard
         side: BorderSide(color: colors.outlineVariant.withValues(alpha: 0.4)),
