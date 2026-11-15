@@ -12,6 +12,7 @@ class SettingsRepository {
   static const _notificationsKey = 'notifications';
   static const _autoSpeakKey = 'auto_speak';
   static const _speechRateKey = 'speech_rate';
+  static const _learnLevelsKey = 'learn_levels';
 
   /// One shared choice, saved before the two were separated.
   static const _legacyLanguageKey = 'language';
@@ -73,6 +74,13 @@ class SettingsRepository {
 
   Future<void> saveSpeechRate(double value) =>
       _prefs.setDouble(_speechRateKey, value);
+
+  /// Levels picked for learning; null = never chosen.
+  Future<List<String>?> loadLearnLevels() =>
+      _prefs.getStringList(_learnLevelsKey);
+
+  Future<void> saveLearnLevels(Set<String> levels) =>
+      _prefs.setStringList(_learnLevelsKey, levels.toList());
 
   String get deviceLanguageCode =>
       PlatformDispatcher.instance.locale.languageCode;

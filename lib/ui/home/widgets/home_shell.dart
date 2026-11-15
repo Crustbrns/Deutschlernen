@@ -4,6 +4,7 @@ import 'package:deutschlernen/ui/cards/view_models/cards_view_model.dart';
 import 'package:deutschlernen/ui/cards/widgets/cards_screen.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/home/widgets/app_bottom_bar.dart';
+import 'package:deutschlernen/ui/main_menu/widgets/level_sheet.dart';
 import 'package:deutschlernen/ui/main_menu/widgets/main_menu_screen.dart';
 import 'package:deutschlernen/ui/settings/view_models/settings_view_model.dart';
 import 'package:deutschlernen/ui/settings/widgets/settings_screen.dart';
@@ -83,7 +84,22 @@ class _HomeShellState extends State<HomeShell> {
               body: IndexedStack(
                 index: _tab.index,
                 children: [
-                  MainMenuScreen(onStartLearning: _openCards),
+                  MainMenuScreen(
+                    selectedLevelCount: _vm.learnLevels.length,
+                    onChooseLevels: () => showLevelSheet(
+                      context: context,
+                      strings: _vm.strings,
+                      selected: _vm.learnLevels,
+                      wordCounts: {
+                        for (final level in Word.levels)
+                          level: _vm.words
+                              .where((w) => w.level == level)
+                              .length,
+                      },
+                      onChanged: _vm.setLearnLevels,
+                    ),
+                    onLearnNewWords: _openCards,
+                  ),
                   VocabularyScreen(
                     words: _vm.words,
                     onWordSelected: _openWord,

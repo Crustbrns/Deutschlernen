@@ -81,7 +81,7 @@ class _CardsScreenState extends State<CardsScreen> {
                                   maxWidth: 560,
                                 ),
                                 child: CardStack(
-                                  words: _vm.words,
+                                  words: _vm.deck,
                                   index: _vm.index,
                                   controller: _swipeController,
                                   enterFrom: _enterFrom,

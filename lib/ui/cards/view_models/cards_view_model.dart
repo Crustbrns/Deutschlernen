@@ -33,6 +33,12 @@ class CardsViewModel extends ChangeNotifier {
   List<Word> _words = [];
   List<AppLanguage> _languages = [];
 
+  /// Levels the learning session takes words from; all by default.
+  Set<String> _learnLevels = {...Word.levels};
+
+  /// Words of the current session: [_words] filtered by [_learnLevels].
+  List<Word> _deck = [];
+
   /// Word id → times opened from the vocabulary search.
   Map<String, int> _lookupCounts = {};
   static const _defaultLanguage = AppLanguage(
@@ -52,7 +58,12 @@ class CardsViewModel extends ChangeNotifier {
   bool _isLoading = true;
   bool _isSwiping = false;
 
+  /// All words, for the vocabulary.
   List<Word> get words => _words;
+
+  /// Words of the learning session (selected levels only).
+  List<Word> get deck => _deck;
+  Set<String> get learnLevels => _learnLevels;
   List<AppLanguage> get languages => _languages;
   AppLanguage get uiLanguage => _uiLanguage;
   AppLanguage get wordLanguage => _wordLanguage;
@@ -74,9 +85,9 @@ class CardsViewModel extends ChangeNotifier {
 
   /// Index of the current card = number of decisions made so far.
   int get index => _history.length;
-  bool get isFinished => !_isLoading && index >= _words.length;
+  bool get isFinished => !_isLoading && index >= _deck.length;
   bool get canUndo => _history.isNotEmpty;
-  double get progress => _words.isEmpty ? 0 : index / _words.length;
+  double get progress => _deck.isEmpty ? 0 : index / _deck.length;
 
   /// Set after an undo, so the UI can fly the card back in from the right side.
   CardDecision? get lastUndone => _lastUndone;
@@ -93,6 +104,14 @@ class CardsViewModel extends ChangeNotifier {
 
     _words = await _wordRepository.getWords(_wordLanguage);
     _lookupCounts = await _lookupRepository.loadCounts();
+    // Unknown saved levels are dropped; nothing valid left = all levels.
+    final savedLevels = (await _settingsRepository.loadLearnLevels())
+        ?.where(Word.levels.contains)
+        .toSet();
+    _learnLevels = (savedLevels == null || savedLevels.isEmpty)
+        ? {...Word.levels}
+        : savedLevels;
+    _rebuildDeck();
     _strings = AppStrings(
       await _languageRepository.getUiTexts(_uiLanguage),
       languageCode: _uiLanguage.code,
@@ -140,9 +159,27 @@ class CardsViewModel extends ChangeNotifier {
 
     _wordLanguage = language;
     _words = words;
+    // Same ids in the same order, so the session position stays valid.
+    _rebuildDeck();
     notifyListeners();
 
     await _settingsRepository.saveWordLanguageCode(language.code);
+  }
+
+  /// Changes the levels to learn from. The session starts over: the old
+  /// position points into a different list of words.
+  Future<void> setLearnLevels(Set<String> levels) async {
+    if (levels.isEmpty) return; // an empty session makes no sense
+    _learnLevels = levels;
+    _rebuildDeck();
+    _history.clear();
+    _lastUndone = null;
+    notifyListeners();
+    await _settingsRepository.saveLearnLevels(levels);
+  }
+
+  void _rebuildDeck() {
+    _deck = _words.where((w) => _learnLevels.contains(w.level)).toList();
   }
 
   /// The card has been released and starts flying off screen.
@@ -177,7 +214,7 @@ class CardsViewModel extends ChangeNotifier {
 
   void _speakCurrentIfAuto() {
     if (!_settingsViewModel.autoSpeak || _isLoading || isFinished) return;
-    _speechService.speak(_words[index].withArticle);
+    _speechService.speak(_deck[index].withArticle);
   }
 
   void speak(String text) => _speechService.speak(text);

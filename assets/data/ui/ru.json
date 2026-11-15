@@ -52,5 +52,13 @@
   "lookupCountOne": "Искали {n} раз",
   "lookupCountFew": "Искали {n} раза",
   "lookupCountMany": "Искали {n} раз",
-  "lookupCountOther": "Искали {n} раза"
+  "lookupCountOther": "Искали {n} раза",
+  "learnNewWords": "Учить новые слова",
+  "repeatWords": "Повторить слова",
+  "chooseLevels": "Категории",
+  "levelsSelectedOne": "Выбрана {n} категория",
+  "levelsSelectedFew": "Выбрано {n} категории",
+  "levelsSelectedMany": "Выбрано {n} категорий",
+  "levelsSelectedOther": "Выбрано {n} категории",
+  "soonLabel": "Скоро"
 }
