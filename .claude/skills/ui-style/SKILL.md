@@ -11,7 +11,7 @@ The app has a dark and a light theme. All colors, fonts and sizes come from
   `mutedText`, `decisionDivider`. A new theme-dependent color goes here, with a value for both themes.
 - `AppColors` — fixed accents (`accentBlue`, article colors, …) and helpers computed from the
   `ColorScheme` (`divider`, `quietText`).
-- `AppFonts`, `AppSizes`.
+- `AppSizes`, `AppListText` (list row typography).
 
 Never write a hex color or `Colors.white`/`Colors.black` in a widget — it breaks one of the themes.
 Main text uses `colors.onSurface`.

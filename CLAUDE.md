@@ -36,7 +36,7 @@ Layered, following Flutter's recommended app architecture: `lib/data` (services 
 - **Strings**: `AppStrings.of(context)` reads an `AppStringsScope` inherited widget provided by `HomeShell`. Pushed routes and Hero flight shuttles are outside that scope, so they wrap their content in `AppStringsScope` again. A missing key renders as the key name itself.
 - **`WordCard`** (`lib/ui/cards/widgets/word_card.dart`) is shared: the learning mode (answer modes Show/Write/Choose, swipes, decision bar) and `lookup: true` for the compact card opened from the vocabulary search (translation shown, close button via `onClose`). Change one mode without breaking the other.
 - **Vocabulary search → card** uses a Hero (`WordHero` in `lib/ui/vocabulary/widgets/word_hero.dart`) with a custom shuttle and a non-opaque `PageRouteBuilder` (`WordDetailScreen.route`) with a solid black barrier: the list is hidden behind the open card but stays painted for the hero flight back.
-- Styling constants (colors, fonts, sizes) live in `lib/ui/core/app_style.dart`. There is a dark and a light theme (`AppTheme`): theme-dependent colors come from `AppPalette.of(context)` (a `ThemeExtension`), fixed accents from `AppColors`. All text uses the theme font; `assets/fonts/` holds only the Phosphor icon font plus the no longer used Fraunces and Lora.
+- Styling constants (colors, fonts, sizes) live in `lib/ui/core/app_style.dart`. There is a dark and a light theme (`AppTheme`): theme-dependent colors come from `AppPalette.of(context)` (a `ThemeExtension`), fixed accents from `AppColors`. All text uses the theme font; `assets/fonts/` holds only the Phosphor icon font.
 - TTS: `SpeechService` wraps `flutter_tts` with `de-DE`.
 
 ## Git workflow

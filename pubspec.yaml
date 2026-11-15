@@ -65,14 +65,6 @@ flutter:
     - assets/data/translations/
     - assets/data/ui/
   fonts:
-    # Variable font (axes: wght, opsz, SOFT, WONK), license: assets/fonts/Fraunces-OFL.txt
-    - family: Fraunces
-      fonts:
-        - asset: assets/fonts/Fraunces.ttf
-    # Variable font (axis: wght), has Cyrillic. License: assets/fonts/Lora-OFL.txt
-    - family: Lora
-      fonts:
-        - asset: assets/fonts/Lora.ttf
     # Phosphor Regular icon font, used via AppIcons. License: assets/fonts/Phosphor-MIT.txt
     - family: Phosphor
       fonts:
