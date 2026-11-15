@@ -27,7 +27,6 @@ abstract final class AppIcons {
   static const circle = IconData(0xe18a, fontFamily: _font);
   static const clockCounterClockwise = IconData(0xe1a0, fontFamily: _font);
   static const deviceMobile = IconData(0xe1e0, fontFamily: _font);
-  static const faders = IconData(0xe228, fontFamily: _font);
   static const eye = IconData(0xe220, fontFamily: _font);
   static const info = IconData(0xe2ce, fontFamily: _font);
   static const listChecks = IconData(0xeadc, fontFamily: _font);
@@ -50,4 +49,13 @@ abstract final class AppIcons {
   static const _boldFont = 'PhosphorBold';
 
   static const caretDownBold = IconData(0xe136, fontFamily: _boldFont);
+
+  // Phosphor Fill (solid), only for the bottom bar tabs. Same code points
+  // as in Regular (phosphor_icons_fill.dart in the same repo).
+  static const _fillFont = 'PhosphorFill';
+
+  static const fileTextFill = IconData(0xe23a, fontFamily: _fillFont);
+  static const gearFill = IconData(0xe270, fontFamily: _fillFont);
+  static const houseFill = IconData(0xe2c2, fontFamily: _fillFont);
+  static const squaresFourFill = IconData(0xe464, fontFamily: _fillFont);
 }

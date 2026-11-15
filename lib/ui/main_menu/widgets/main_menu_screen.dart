@@ -4,7 +4,7 @@ import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
 
-/// Practice tab: title, then one block with the entry points: categories
+/// Learn tab (was "Practice"): title, then one block with the entry points: categories
 /// (which levels new words come from), new words, and review.
 class MainMenuScreen extends StatelessWidget {
   const MainMenuScreen({

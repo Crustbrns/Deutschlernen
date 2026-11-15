@@ -70,6 +70,10 @@ flutter:
     - family: Phosphor
       fonts:
         - asset: assets/fonts/Phosphor.ttf
+    # Phosphor Fill (solid), only for the bottom bar tabs. Same license.
+    - family: PhosphorFill
+      fonts:
+        - asset: assets/fonts/PhosphorFill.ttf
     # Phosphor Bold, only for the example rows' chevron. Same license.
     - family: PhosphorBold
       fonts:

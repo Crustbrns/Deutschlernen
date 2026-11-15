@@ -148,8 +148,9 @@ Tab: icon 27, 2px gap, 12px w600 label.
 
 Selection: a lighter pill behind the selected tab (`colors.onSurface` α 0.1, 6px inset from
 the bar's edge). All icons and labels are `colors.onSurface` (white in dark); the pill alone
-marks the selected tab. Icons stay Regular (earlier tries: blue color only; Fill when
-selected; muted unselected tabs — all replaced by this design).
+marks the selected tab. All tab icons are **Phosphor Fill** (solid), selected or not — the
+user's choice (earlier tries: blue color only; Fill only when selected; muted unselected
+tabs; all-Regular line icons — all replaced by this design).
 
 Liquid-glass motion (iOS 26 style): on a tap the pill lifts into a lens and settles back in one
 continuous arc (lift = sin²(π·t) over a 420 ms `easeInOutQuart` slide: slow–fast–slow, user asked for it — no hand-off between
@@ -160,9 +161,9 @@ soapy blur and the rainbow rim. Dragging along the bar holds the lens up and mov
 finger, a haptic tick per tab crossed; release snaps to the nearest tab. Taps are handled by
 the bar, not the tabs.
 
-Tabs and their icons (`AppIcons`): Практика / Practice — `cards` (flashcard stack),
-Категории / Categories — `squaresFour`, Прогресс / Progress — `chartLineUp`,
-Настройки — `faders` turned a quarter clockwise (`RotatedBox`): three flat lines with tick knobs.
+Tabs and their icons (`AppIcons`, font `assets/fonts/PhosphorFill.ttf`): Учить / Learn —
+`houseFill`, Категории / Categories — `squaresFourFill`, Прогресс / Progress —
+`fileTextFill` (a sheet with text lines), Настройки — `gearFill` (8 rounded teeth).
 
 `HomeShell` uses `extendBody: true`, so tab content scrolls under the bar. Every scrollable
 tab screen adds `MediaQuery.paddingOf(context).bottom` to its bottom padding, and
@@ -172,7 +173,8 @@ under the bar.
 ## Icons
 
 - All icons are **Phosphor Regular** (thin line icons with rounded ends) — except the example
-  rows' chevron, `caretDownBold` from Phosphor Bold — via `AppIcons`
+  rows' chevron, `caretDownBold` from Phosphor Bold, and the bottom bar tabs (Phosphor Fill,
+  see above) — via `AppIcons`
   (`lib/ui/core/app_icons.dart`, font `assets/fonts/Phosphor.ttf`): `AppIcons.x`, `.arrowLeft`,
   `.speakerHigh`, … Never use Material `Icons.*` or `CupertinoIcons.*` — the app must look like
   one icon set. Do NOT add the `phosphor_flutter` package: it doesn't compile with current
