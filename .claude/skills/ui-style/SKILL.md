@@ -70,13 +70,32 @@ Separate blocks are only for different kinds of content (e.g. a title, then a li
 - In compact layouts set `tapTargetSize: MaterialTapTargetSize.shrinkWrap`, otherwise
   Material adds invisible padding up to 48px and spacing looks wrong.
 
+## Bottom navigation bar
+
+`AppBottomBar` (`lib/ui/home/widgets/app_bottom_bar.dart`) is frosted glass: `BackdropFilter`
+blur 20 over `palette.card` at α 0.7, **no outline or top line**, no indicator pill, no ripple.
+It is a custom row of tabs, not Material's `NavigationBar` (that one forces a big gap under the
+icon): icon 26, then a 2px gap, then the 12px label. Selected tab = `AppColors.accentBlue`
+icon and label, others `palette.mutedText`.
+
+Tabs and their icons (`AppIcons`):
+Учить / Learn — `cards` (flashcard stack), Словарь — `bookOpen`, Прогресс / Progress —
+`chartLineUp`, Настройки — `slidersHorizontal`.
+
+`HomeShell` uses `extendBody: true`, so tab content scrolls under the bar. Every scrollable
+tab screen adds `MediaQuery.paddingOf(context).bottom` to its bottom padding, and
+centered screens keep `SafeArea` with `bottom: true` — otherwise the last items hide
+under the bar.
+
 ## Icons
 
-- Material **outlined** variants by default (`Icons.volume_up_outlined`, `Icons.edit_outlined`,
-  `Icons.settings_outlined`, …). The filled variant only marks a selected state
-  (bottom navigation: `home_outlined` → `home`).
-- Exception: play uses `CupertinoIcons.play` (from `cupertino_ui`) — its triangle has rounded
-  corners, Material's outlined play is sharp.
+- All icons are **Phosphor Regular** (thin line icons with rounded ends) via `AppIcons`
+  (`lib/ui/core/app_icons.dart`, font `assets/fonts/Phosphor.ttf`): `AppIcons.x`, `.arrowLeft`,
+  `.speakerHigh`, … Never use Material `Icons.*` or `CupertinoIcons.*` — the app must look like
+  one icon set. Do NOT add the `phosphor_flutter` package: it doesn't compile with current
+  Flutter. To add an icon, follow the comment at the top of `app_icons.dart`.
+- A selected state is shown by **color only** (blue icon and label), not by switching to
+  another icon variant and not by a highlight behind the icon.
 - Sizes: 20 in rows and small buttons, 24 default, 28 in large mode buttons.
 - Colors: `colors.onSurfaceVariant` when inactive, `AppColors.accentBlue` when active,
   `colors.onSurface` on filled neutral buttons.

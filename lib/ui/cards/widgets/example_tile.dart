@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/domain/models/example_sentence.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/highlight.dart';
@@ -125,7 +126,7 @@ class _ExpandableTileState extends State<ExpandableTile> {
                           duration: const Duration(milliseconds: 300),
                           curve: Curves.easeOut,
                           child: const Icon(
-                            Icons.keyboard_arrow_down,
+                            AppIcons.caretDown,
                             size: _chevronSize,
                           ),
                         ),
@@ -202,7 +203,7 @@ class DefinitionTile extends StatelessWidget {
       trailing: SizedBox.square(
         dimension: 48,
         child: Icon(
-          Icons.info_outline,
+          AppIcons.info,
           // Half transparent = ~50% darker on the dark card.
           color: Theme.of(context).colorScheme.onSurfaceVariant
               .withValues(alpha: 0.5),

@@ -28,7 +28,13 @@ class WordList extends StatelessWidget {
     // A Column builds every row at once; fine for now, switch to a lazy list
     // if the dictionary grows to thousands of words.
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+      // + bottom inset: the last row stays above the bottom bar / home indicator.
+      padding: EdgeInsets.fromLTRB(
+        16,
+        0,
+        16,
+        24 + MediaQuery.paddingOf(context).bottom,
+      ),
       // Scrolling hides the keyboard, as in iOS search.
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       child: GroupedCard(

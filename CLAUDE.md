@@ -49,7 +49,7 @@ Layered, following Flutter's recommended app architecture: `lib/data` (services 
 
 - Visual rules (colors, buttons, icons, grouped lists) are in the `ui-style` skill (`.claude/skills/ui-style/SKILL.md`); follow it for any UI change.
 
-- Import `package:material_ui/material_ui.dart` (and `cupertino_ui` for Cupertino icons) instead of `package:flutter/material.dart`.
+- Import `package:material_ui/material_ui.dart` instead of `package:flutter/material.dart`. Icons come only from `AppIcons` (`lib/ui/core/app_icons.dart`, Phosphor Regular font in `assets/fonts/`), see the `ui-style` skill. Don't add the `phosphor_flutter` package — it fails to compile with current Flutter (`IconData` is final).
 - Adding a UI string means adding the key to all four `assets/data/ui/*.json` files and a getter in `AppStrings`. Text with a number ("5 слов") uses plural forms: keys `<name>One/Few/Many/Other` with `{n}`, chosen by the language's rule in `AppStrings` (see `wordCount`); ru needs One/Few/Many, en/es One/Other, zh Other. A new word needs an entry in `words.json` and the same `id` in every `translations/*.json`.
 - Code comments are short, in English, and only on non-obvious places.
 - `lib/ui/screens/home_screen.dart` and `greeting_card.dart` are unused template leftovers.

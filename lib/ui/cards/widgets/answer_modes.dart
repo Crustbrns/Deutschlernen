@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:material_ui/material_ui.dart';
+import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
@@ -30,7 +31,7 @@ class AnswerModeBar extends StatelessWidget {
       children: [
         Expanded(
           child: _ModeButton(
-            icon: Icons.visibility_outlined,
+            icon: AppIcons.eye,
             label: strings.modeShow,
             isSelected: selected == AnswerMode.show,
             onPressed: () => onPressed(AnswerMode.show),
@@ -39,7 +40,7 @@ class AnswerModeBar extends StatelessWidget {
         const SizedBox(width: 10),
         Expanded(
           child: _ModeButton(
-            icon: Icons.edit_outlined,
+            icon: AppIcons.pencilSimple,
             label: strings.modeWrite,
             isSelected: selected == AnswerMode.write,
             onPressed: () => onPressed(AnswerMode.write),
@@ -48,7 +49,7 @@ class AnswerModeBar extends StatelessWidget {
         const SizedBox(width: 10),
         Expanded(
           child: _ModeButton(
-            icon: Icons.checklist,
+            icon: AppIcons.listChecks,
             label: strings.modeChoice,
             isSelected: selected == AnswerMode.choice,
             onPressed: () => onPressed(AnswerMode.choice),
@@ -327,8 +328,8 @@ class _ChoiceOption extends StatelessWidget {
       _ => null,
     };
     final icon = switch (state) {
-      _OptionState.correct => Icons.check_circle,
-      _OptionState.wrong => Icons.cancel,
+      _OptionState.correct => AppIcons.checkCircle,
+      _OptionState.wrong => AppIcons.xCircle,
       _ => null,
     };
 

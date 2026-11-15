@@ -6,10 +6,9 @@ import 'package:deutschlernen/domain/models/app_settings.dart';
 
 class SettingsViewModel extends ChangeNotifier {
   SettingsViewModel({
-    required SettingsRepository settingsRepository,
-    required SpeechService speechService,
-  }) : _settingsRepository = settingsRepository,
-       _speechService = speechService;
+    required this._settingsRepository,
+    required this._speechService,
+  });
 
   final SettingsRepository _settingsRepository;
   final SpeechService _speechService;

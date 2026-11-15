@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/widgets/round_icon_button.dart';
@@ -35,7 +36,7 @@ class LevelWordsScreen extends StatelessWidget {
               child: Row(
                 children: [
                   RoundIconButton(
-                    icon: Icons.arrow_back,
+                    icon: AppIcons.arrowLeft,
                     tooltip: strings.back,
                     onPressed: () => Navigator.of(context).pop(),
                   ),
