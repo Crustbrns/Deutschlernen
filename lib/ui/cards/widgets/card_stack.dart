@@ -16,7 +16,6 @@ class CardStack extends StatelessWidget {
     required this.onSwipeStarted,
     required this.onSwiped,
     required this.onSpeak,
-    required this.onMenu,
     required this.bottomBar,
   });
 
@@ -27,7 +26,6 @@ class CardStack extends StatelessWidget {
   final VoidCallback onSwipeStarted;
   final ValueChanged<SwipeDirection> onSwiped;
   final ValueChanged<String> onSpeak;
-  final VoidCallback onMenu;
   final Widget bottomBar; // goes into the top card
 
   static const _visibleCards = 3;
@@ -64,7 +62,10 @@ class CardStack extends StatelessWidget {
                     child: WordCard(
                       word: words[i],
                       onSpeak: onSpeak,
-                      onMenu: onMenu,
+                      otherTranslations: [
+                        for (final other in words)
+                          if (other.id != words[i].id) other.translation,
+                      ],
                       bottomBar: bottomBar,
                     ),
                   )

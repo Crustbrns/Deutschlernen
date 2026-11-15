@@ -17,6 +17,10 @@ abstract final class AppColors {
   static const accentBlue = Color(0xFF1AA7FF);
   static const accentTeal = Color(0xFF2EE6D6);
 
+  // Answer feedback.
+  static const correct = Color(0xFF3DDC84);
+  static const wrong = Color(0xFFFF6B6B);
+
   // Article colors by grammatical gender.
   static const articleMasculine = Color(0xFF1AA7FF); // der
   static const articleNeuter = Color(0xFFFFC83D); // das
