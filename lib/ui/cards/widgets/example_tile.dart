@@ -7,7 +7,7 @@ import 'package:deutschlernen/ui/core/highlight.dart';
 ({TextStyle base, TextStyle bold}) _tileStyles(BuildContext context) {
   final colors = Theme.of(context).colorScheme;
   final base = TextStyle(
-    fontSize: 17,
+    fontSize: 16,
     height: 1.35,
     color: colors.onSurfaceVariant,
   );
@@ -52,10 +52,12 @@ class _ExpandableTileState extends State<ExpandableTile> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(4, 16, 16, 0),
+              // No left inset, small gap to the text: more room for words.
+              // Top 16 + 22px icon centers it on the first text line.
+              padding: const EdgeInsets.fromLTRB(0, 16, 8, 0),
               child: Icon(
                 _expanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-                size: 28,
+                size: 22,
               ),
             ),
             Expanded(
@@ -96,6 +98,18 @@ class DefinitionTile extends StatelessWidget {
 
     return ExpandableTile(
       initiallyExpanded: false,
+      // Plain icon, not a button: the whole row is already tappable.
+      // 48x48 matches the play buttons of the examples, so texts line up.
+      trailing: SizedBox.square(
+        dimension: 48,
+        child: Icon(
+          Icons.info_outline,
+          // Half transparent = ~50% darker on the dark card.
+          color: Theme.of(
+            context,
+          ).colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
+        ),
+      ),
       builder: (context, expanded) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

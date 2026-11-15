@@ -116,10 +116,23 @@ class _WordCardState extends State<WordCard> {
                             )
                           : Center(
                               key: const ValueKey('hidden'),
-                              child: FilledButton.tonal(
+                              child: IconButton.filledTonal(
                                 onPressed: () =>
                                     setState(() => _translationVisible = true),
-                                child: Text(strings.showTranslation),
+                                // Text is kept as tooltip and for screen readers.
+                                tooltip: strings.showTranslation,
+                                icon: const Icon(Icons.visibility, size: 28),
+                                // Neutral dark grey instead of the tonal
+                                // accent, so the button doesn't stand out.
+                                style: IconButton.styleFrom(
+                                  backgroundColor: AppColors.subtleButton,
+                                  foregroundColor: colors.onSurfaceVariant,
+                                  // Same icon, bigger box = more padding.
+                                  fixedSize: const Size.square(68),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(14),
+                                  ),
+                                ),
                               ),
                             ),
                     ),
