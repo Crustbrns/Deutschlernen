@@ -5,8 +5,8 @@ import 'package:deutschlernen/data/services/speech_service.dart';
 import 'package:deutschlernen/data/repositories/language_repository.dart';
 import 'package:deutschlernen/data/services/asset_service.dart';
 import 'package:deutschlernen/ui/cards/view_models/cards_view_model.dart';
-import 'package:deutschlernen/ui/cards/widgets/cards_screen.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
+import 'package:deutschlernen/ui/home/widgets/home_shell.dart';
 
 void main() {
   runApp(const MyApp());
@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
         colorSchemeSeed: AppColors.accentBlue,
         scaffoldBackgroundColor: AppColors.background,
       ),
-      home: CardsScreen(viewModel: _cardsViewModel),
+      home: HomeShell(viewModel: _cardsViewModel),
     );
   }
 }

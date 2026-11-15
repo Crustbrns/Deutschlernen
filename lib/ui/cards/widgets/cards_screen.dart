@@ -68,7 +68,7 @@ class _CardsScreenState extends State<CardsScreen> {
                     padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
                     child: CardsTopBar(
                       progress: _vm.progress,
-                      onClose: () {}, // later
+                      onClose: () => Navigator.of(context).pop(),
                       onUndo: _vm.canUndo ? _vm.undo : null,
                     ),
                   ),

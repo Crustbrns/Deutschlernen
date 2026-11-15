@@ -9,5 +9,12 @@
   "menu": "菜单",
   "language": "语言",
   "goodWork": "做得好！",
-  "restart": "重新开始"
+  "restart": "重新开始",
+  "tabMain": "主页",
+  "tabVocabulary": "词汇",
+  "tabStatistics": "统计",
+  "tabSettings": "设置",
+  "startLearning": "开始学习",
+  "dictionaries": "词典",
+  "comingSoon": "敬请期待"
 }

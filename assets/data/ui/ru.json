@@ -9,5 +9,12 @@
   "menu": "Меню",
   "language": "Язык",
   "goodWork": "Отличная работа!",
-  "restart": "Начать заново"
+  "restart": "Начать заново",
+  "tabMain": "Главная",
+  "tabVocabulary": "Словарь",
+  "tabStatistics": "Статистика",
+  "tabSettings": "Настройки",
+  "startLearning": "Начать учить",
+  "dictionaries": "Словари",
+  "comingSoon": "Скоро появится"
 }

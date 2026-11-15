@@ -9,5 +9,12 @@
   "menu": "Menú",
   "language": "Idioma",
   "goodWork": "¡Buen trabajo!",
-  "restart": "Reiniciar"
+  "restart": "Reiniciar",
+  "tabMain": "Inicio",
+  "tabVocabulary": "Vocabulario",
+  "tabStatistics": "Estadísticas",
+  "tabSettings": "Ajustes",
+  "startLearning": "Empezar a aprender",
+  "dictionaries": "Diccionarios",
+  "comingSoon": "Próximamente"
 }

@@ -19,6 +19,13 @@ class AppStrings {
   String get language => _get('language');
   String get goodWork => _get('goodWork');
   String get restart => _get('restart');
+  String get tabMain => _get('tabMain');
+  String get tabVocabulary => _get('tabVocabulary');
+  String get tabStatistics => _get('tabStatistics');
+  String get tabSettings => _get('tabSettings');
+  String get startLearning => _get('startLearning');
+  String get dictionaries => _get('dictionaries');
+  String get comingSoon => _get('comingSoon');
 
   /// Texts for the current language: `AppStrings.of(context).known`.
   static AppStrings of(BuildContext context) {
