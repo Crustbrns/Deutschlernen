@@ -25,14 +25,14 @@ class _CardsScreenState extends State<CardsScreen> {
 
   CardDecision _decisionFor(SwipeDirection direction) =>
       direction == SwipeDirection.left
-          ? CardDecision.known
-          : CardDecision.learn;
+      ? CardDecision.known
+      : CardDecision.learn;
 
   SwipeDirection? get _enterFrom => switch (_vm.lastUndone) {
-        CardDecision.known => SwipeDirection.left,
-        CardDecision.learn => SwipeDirection.right,
-        null => null,
-      };
+    CardDecision.known => SwipeDirection.left,
+    CardDecision.learn => SwipeDirection.right,
+    null => null,
+  };
 
   @override
   void dispose() {
@@ -80,16 +80,17 @@ class _CardsScreenState extends State<CardsScreen> {
                             padding: const EdgeInsets.fromLTRB(16, 0, 16, 40),
                             child: Center(
                               child: ConstrainedBox(
-                                constraints:
-                                    const BoxConstraints(maxWidth: 560),
+                                constraints: const BoxConstraints(
+                                  maxWidth: 560,
+                                ),
                                 child: CardStack(
                                   words: _vm.words,
                                   index: _vm.index,
                                   controller: _swipeController,
                                   enterFrom: _enterFrom,
                                   onSwipeStarted: _vm.onSwipeStarted,
-                                  onSwiped: (direction) => _vm
-                                      .onCardSwiped(_decisionFor(direction)),
+                                  onSwiped: (direction) =>
+                                      _vm.onCardSwiped(_decisionFor(direction)),
                                   onSpeak: _vm.speak,
                                   onMenu: _openLanguageSheet,
                                 ),
@@ -139,10 +140,7 @@ class _FinishedView extends StatelessWidget {
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           const SizedBox(height: 24),
-          FilledButton(
-            onPressed: onRestart,
-            child: Text(strings.restart),
-          ),
+          FilledButton(onPressed: onRestart, child: Text(strings.restart)),
         ],
       ),
     );

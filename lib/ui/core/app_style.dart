@@ -17,6 +17,14 @@ abstract final class AppColors {
   static const articleNeuter = Color(0xFFFFC83D); // das
   static const articleFeminine = Color(0xFFFF5C8A); // die
 
+  /// Mixes [color] with black: amount 0.2 = 20% darker.
+  static Color darken(Color color, double amount) =>
+      Color.lerp(color, const Color(0xFF000000), amount)!;
+
+  /// Lines between the example rows.
+  static Color divider(ColorScheme colors) =>
+      darken(colors.outlineVariant, 0.18);
+
   static Color forArticle(String article) {
     return switch (article.toLowerCase()) {
       'der' => articleMasculine,

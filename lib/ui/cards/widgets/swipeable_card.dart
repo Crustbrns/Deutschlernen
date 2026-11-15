@@ -58,8 +58,9 @@ class SwipeableCardState extends State<SwipeableCard>
 
   /// Runs an animation from [_from] to [_to] as a 0..1 progress value.
   /// Unbounded, so the snap-back spring may overshoot.
-  late final AnimationController _controller =
-      AnimationController.unbounded(vsync: this)..addListener(_onAnimationTick);
+  late final AnimationController _controller = AnimationController.unbounded(
+    vsync: this,
+  )..addListener(_onAnimationTick);
 
   Offset _from = Offset.zero;
   Offset _to = Offset.zero;
@@ -103,7 +104,10 @@ class SwipeableCardState extends State<SwipeableCard>
       _enterHandled = true;
       _isEntering = true;
       final width = MediaQuery.sizeOf(context).width;
-      _offset.value = Offset(from == SwipeDirection.right ? width * 1.2 : -width * 1.2, 0);
+      _offset.value = Offset(
+        from == SwipeDirection.right ? width * 1.2 : -width * 1.2,
+        0,
+      );
       _animateTo(
         Offset.zero,
         duration: const Duration(milliseconds: 380),
@@ -205,11 +209,7 @@ class SwipeableCardState extends State<SwipeableCard>
   ///
   /// [heading] is the direction of flight; the card leaves along it until it
   /// is past the screen edge. Buttons pass none and get a slight upward arc.
-  void swipe(
-    SwipeDirection direction, {
-    Offset? heading,
-    double speed = 0,
-  }) {
+  void swipe(SwipeDirection direction, {Offset? heading, double speed = 0}) {
     if (_isSwiping || !widget.enabled) return;
     _isSwiping = true;
     widget.onSwipeStarted();

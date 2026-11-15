@@ -37,8 +37,9 @@ Future<void> showLanguageSheet({
                     ),
                     title: Text(language.label),
                     selected: language == current,
-                    trailing:
-                        language == current ? const Icon(Icons.check) : null,
+                    trailing: language == current
+                        ? const Icon(Icons.check)
+                        : null,
                     onTap: () {
                       onSelected(language);
                       Navigator.of(sheetContext).pop();

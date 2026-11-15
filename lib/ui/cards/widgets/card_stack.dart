@@ -59,7 +59,11 @@ class CardStack extends StatelessWidget {
                     enterFrom: enterFrom,
                     onSwipeStarted: onSwipeStarted,
                     onSwiped: onSwiped,
-                    child: WordCard(word: words[i], onSpeak: onSpeak, onMenu: onMenu),
+                    child: WordCard(
+                      word: words[i],
+                      onSpeak: onSpeak,
+                      onMenu: onMenu,
+                    ),
                   )
                 : const _CardBackdrop(),
           ),

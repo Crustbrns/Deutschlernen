@@ -99,7 +99,9 @@ class _DecisionButton extends StatelessWidget {
           backgroundColor: colors.onSurface.withValues(
             alpha: _maxHighlightAlpha * highlight,
           ),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
           padding: const EdgeInsets.symmetric(horizontal: 8),
           minimumSize: const Size.fromHeight(64),
         ),

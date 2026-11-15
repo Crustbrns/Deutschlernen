@@ -19,8 +19,8 @@ class AppLanguage {
 
   /// Flag emoji built from the country code ("RU" -> 🇷🇺).
   String get flag => String.fromCharCodes(
-        country.toUpperCase().codeUnits.map((unit) => 0x1F1E6 + unit - 0x41),
-      );
+    country.toUpperCase().codeUnits.map((unit) => 0x1F1E6 + unit - 0x41),
+  );
 
   @override
   bool operator ==(Object other) => other is AppLanguage && other.code == code;

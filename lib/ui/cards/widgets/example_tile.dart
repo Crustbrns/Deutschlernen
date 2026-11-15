@@ -40,6 +40,9 @@ class ExpandableTile extends StatefulWidget {
 class _ExpandableTileState extends State<ExpandableTile> {
   // Width of IconButton's default tap area; the info icon uses the same.
   static const _trailingWidth = 48.0;
+  static const _chevronSize = 22.0;
+  static const _chevronGap = 8.0;
+  static const _trailingShift = (_trailingWidth - 24) / 2;
 
   // Minimum time the highlight stays visible after a quick tap.
   static const _minHighlight = Duration(milliseconds: 150);
@@ -96,61 +99,66 @@ class _ExpandableTileState extends State<ExpandableTile> {
             padding: const EdgeInsets.symmetric(horizontal: AppSizes.cardInset),
             child: DecoratedBox(
               decoration: BoxDecoration(
-                border: Border(top: BorderSide(color: colors.outlineVariant)),
+                border: Border(
+                  top: BorderSide(color: AppColors.divider(colors)),
+                ),
               ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Padding(
-                    // No left inset, small gap to the text: more room.
-                    // Top 16 + 22px icon centers it on the first text line.
-                    padding: const EdgeInsets.fromLTRB(0, 16, 8, 0),
-                    // One "down" icon rotated by half a turn instead of swapping
-                    // two icons: swapping can't be animated, rotation can.
-                    child: AnimatedRotation(
-                      turns: _expanded ? 0.5 : 0,
-                      duration: const Duration(milliseconds: 150),
-                      curve: Curves.easeOut,
-                      child: const Icon(Icons.keyboard_arrow_down, size: 22),
-                    ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        // The trailing button is centered on the title only,
-                        // so it stays in place when the details open below.
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 16,
-                                ),
-                                child: widget.title,
-                              ),
-                            ),
-                            if (widget.trailing != null)
-                              SizedBox(
-                                width: _trailingWidth,
-                                child: Center(child: widget.trailing),
-                              ),
-                          ],
-                        ),
-                        // AnimatedSize smooths the height change on toggle.
-                        AnimatedSize(
-                          duration: const Duration(milliseconds: 200),
+                  // Chevron and trailing button are centered on the title
+                  // only, so they stay in place when the details open below.
+                  Row(
+                    children: [
+                      Padding(
+                        // No left inset, small gap to the text: more room.
+                        padding: const EdgeInsets.only(right: _chevronGap),
+                        // One "down" icon rotated by half a turn instead of
+                        // swapping two icons: rotation can be animated.
+                        child: AnimatedRotation(
+                          turns: _expanded ? 0.5 : 0,
+                          duration: const Duration(milliseconds: 300),
                           curve: Curves.easeOut,
-                          alignment: Alignment.topLeft,
-                          child: _expanded && details != null
-                              ? Padding(
-                                  padding: const EdgeInsets.only(bottom: 16),
-                                  child: details,
-                                )
-                              : const SizedBox(width: double.infinity),
+                          child: const Icon(
+                            Icons.keyboard_arrow_down,
+                            size: _chevronSize,
+                          ),
                         ),
-                      ],
-                    ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          child: widget.title,
+                        ),
+                      ),
+                      if (widget.trailing != null)
+                        SizedBox(
+                          width: _trailingWidth,
+                          // The 24px icon sits in a 48px slot, i.e. 12px from its right
+                          // edge. Shifting by 12 puts the icon at the same distance from
+                          // the card edge as the chevron on the left (cardInset).
+                          child: Transform.translate(
+                            offset: const Offset(_trailingShift, 0),
+                            child: Center(child: widget.trailing),
+                          ),
+                        ),
+                    ],
+                  ),
+                  // AnimatedSize smooths the height change on toggle.
+                  AnimatedSize(
+                    duration: const Duration(milliseconds: 170),
+                    curve: Curves.easeOut,
+                    alignment: Alignment.topLeft,
+                    child: _expanded && details != null
+                        ? Padding(
+                            // Left inset lines the details up with the title.
+                            padding: const EdgeInsets.only(
+                              left: _chevronSize + _chevronGap,
+                              bottom: 16,
+                            ),
+                            child: details,
+                          )
+                        : const SizedBox(width: double.infinity),
                   ),
                 ],
               ),

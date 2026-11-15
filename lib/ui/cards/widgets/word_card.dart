@@ -172,7 +172,7 @@ class _WordCardState extends State<WordCard> {
               child: Divider(
                 height: 1,
                 thickness: 1,
-                color: colors.outlineVariant,
+                color: AppColors.divider(colors),
               ),
             ),
             // Extra scroll room, so the last example can be lifted up
@@ -202,21 +202,23 @@ class _TranscriptionButton extends StatelessWidget {
       onPressed: onPressed,
       style: OutlinedButton.styleFrom(
         shape: const StadiumBorder(),
-        backgroundColor: colors.surfaceContainer,
-        side: BorderSide(color: colors.outlineVariant),
+        // 25% darker fill and border than the theme defaults.
+        backgroundColor: AppColors.darken(colors.surfaceContainer, 0.25),
+        side: BorderSide(color: AppColors.darken(colors.outlineVariant, 0.25)),
         foregroundColor: colors.onSurface,
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-        minimumSize: const Size(0, 48),
+        // All sizes are 75% of the previous ones.
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
+        minimumSize: const Size(0, 36),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             transcription,
-            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
+            style: const TextStyle(fontSize: 16.5, fontWeight: FontWeight.w500),
           ),
-          const SizedBox(width: 16),
-          const Icon(Icons.volume_up_outlined, size: 26),
+          const SizedBox(width: 12),
+          const Icon(Icons.volume_up_outlined, size: 19.5),
         ],
       ),
     );
