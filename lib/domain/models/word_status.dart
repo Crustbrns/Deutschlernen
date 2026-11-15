@@ -10,11 +10,11 @@ enum WordStatus {
   /// Not seen yet.
   newWord,
 
-  /// Short FSRS steps (minutes): just started, or forgotten and relearning.
+  /// Chosen to learn, not reviewed even once yet.
   learning,
 
-  /// On review intervals shorter than [matureInterval], or any review word
-  /// whose time has come.
+  /// Reviewed at least once (whatever the answer), interval shorter than
+  /// [matureInterval]; or any word whose review time has come.
   review,
 
   /// Interval of [matureInterval] or more and not due yet: learned well.
@@ -32,11 +32,13 @@ enum WordStatus {
     final card = progress.card;
     if (card == null) return (status: known, due: null);
     final due = card.due;
-    if (card.state != fsrs.State.review) return (status: learning, due: due);
-    // Review cards always have a last review; the gap to the due date is
-    // the current interval.
-    final interval = due.difference(card.lastReview ?? due);
-    final mature = interval >= matureInterval && !progress.isDue(now);
+    final lastReview = card.lastReview;
+    if (lastReview == null) return (status: learning, due: due);
+    // The gap between the last review and the due date is the interval.
+    final mature =
+        card.state == fsrs.State.review &&
+        due.difference(lastReview) >= matureInterval &&
+        !progress.isDue(now);
     return (status: mature ? learned : review, due: due);
   }
 }

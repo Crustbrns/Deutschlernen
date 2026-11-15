@@ -55,12 +55,11 @@
   "remembered": "记得",
   "statusNew": "新单词",
   "statusKnown": "已经认识",
-  "statusLearning": "学习中",
-  "statusLearned": "已掌握",
   "reviewNow": "现在复习",
   "reviewInMinutesOther": "{n} 分钟后复习",
   "reviewInHoursOther": "{n} 小时后复习",
   "reviewInDaysOther": "{n} 天后复习",
   "reviewInMonthsOther": "{n} 个月后复习",
-  "resetProgress": "重置该单词进度"
+  "resetProgress": "重置该单词进度",
+  "statusLearning": "学习中"
 }

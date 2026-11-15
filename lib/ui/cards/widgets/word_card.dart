@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/domain/models/word.dart';
+import 'package:deutschlernen/domain/models/word_status.dart';
 import 'package:deutschlernen/ui/cards/widgets/answer_modes.dart';
 import 'package:deutschlernen/ui/cards/widgets/example_tile.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
@@ -17,11 +18,17 @@ class WordCard extends StatefulWidget {
     required this.bottomBar,
     this.lookup = false,
     this.lookupCount = 0,
+    this.lookupState = (status: WordStatus.newWord, due: null),
     this.onClose,
   });
 
-  /// Lookup mode only: "Искали 3 раза" next to the level; hidden when 0.
+  /// Lookup mode only: "Искали 3 раза" chip under the translation; hidden
+  /// when 0.
   final int lookupCount;
+
+  /// Lookup mode only: shown in the header as a colored square + caption
+  /// ("Повтор через 4 дн.").
+  final WordState lookupState;
 
   /// When set, a close button is pinned to the card's top right corner.
   final VoidCallback? onClose;
@@ -108,12 +115,19 @@ class _WordCardState extends State<WordCard> {
                         child: _Header(
                           level: word.level,
                           status: lookup
-                              ? (widget.lookupCount > 0
-                                    ? AppStrings.of(context)
-                                          .lookupCount(widget.lookupCount)
-                                    : null)
+                              ? AppStrings.of(context).wordState(
+                                  widget.lookupState,
+                                  DateTime.now().toUtc(),
+                                )
                               : AppStrings.of(context).newWord,
-                          showSquare: !lookup,
+                          // Lookup: the same color as the word's strip in
+                          // the list. Learning: a neutral gray.
+                          squareColor: lookup
+                              ? AppColors.forWordStatus(
+                                  widget.lookupState.status,
+                                  colors,
+                                )
+                              : colors.outline,
                         ),
                       ),
                       Padding(
@@ -182,10 +196,21 @@ class _WordCardState extends State<WordCard> {
                               ),
                             ),
                             SizedBox(height: lookup ? 6 : 20),
-                            if (lookup)
+                            if (lookup) ...[
                               // Nothing to guess here: just the translation.
-                              _buildTranslation(word)
-                            else ...[
+                              _buildTranslation(word),
+                              if (widget.lookupCount > 0) ...[
+                                const SizedBox(height: 10),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: _Chip(
+                                    AppStrings.of(context)
+                                        .lookupCount(widget.lookupCount),
+                                    radius: 8,
+                                  ),
+                                ),
+                              ],
+                            ] else ...[
                               AnswerModeBar(
                                 selected: _mode,
                                 // The eye shows the translation right away.
@@ -372,59 +397,68 @@ class _Header extends StatelessWidget {
   const _Header({
     required this.level,
     required this.status,
-    required this.showSquare,
+    required this.squareColor,
   });
 
   final String level;
 
-  /// Gray text next to the level ("New word", "Искали 3 раза"); null = none.
-  final String? status;
-  final bool showSquare; // status square before the text (learning mode)
+  /// Gray text next to the level ("New word", "Повтор через 4 дн.").
+  final String status;
+  final Color squareColor; // status square before the text
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
-    final status = this.status;
-
     return Row(
       children: [
-        DecoratedBox(
+        _Chip(level, radius: 24),
+        const SizedBox(width: 10),
+        Container(
+          width: 12,
+          height: 12,
           decoration: BoxDecoration(
-            color: colors.surfaceContainerHighest,
-            borderRadius: BorderRadius.circular(24),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-            child: Text(level, style: const TextStyle(fontSize: 13.5)),
+            color: squareColor,
+            borderRadius: BorderRadius.circular(3),
           ),
         ),
-        if (status != null) ...[
-          const SizedBox(width: 16),
-          if (showSquare) ...[
-            Container(
-              width: 12,
-              height: 12,
-              decoration: BoxDecoration(
-                color: colors.outline,
-                borderRadius: BorderRadius.circular(3),
-              ),
-            ),
-            const SizedBox(width: 10),
-          ],
-          Expanded(
-            child: Text(
-              status,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 14.5,
-                fontWeight: FontWeight.w600,
-                color: AppPalette.of(context).mutedText,
-              ),
+        const SizedBox(width: 6),
+        Expanded(
+          child: Text(
+            status,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: 14.5,
+              fontWeight: FontWeight.w600,
+              // Condensed: at the default spacing the letters looked apart.
+              letterSpacing: -0.5,
+              color: AppPalette.of(context).mutedText,
             ),
           ),
-        ],
+        ),
       ],
+    );
+  }
+}
+
+/// Small gray plate with text: the level in the header (round) and the
+/// lookup count under the translation (squarer).
+class _Chip extends StatelessWidget {
+  const _Chip(this.text, {required this.radius});
+
+  final String text;
+  final double radius;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(radius),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+        child: Text(text, style: const TextStyle(fontSize: 13.5)),
+      ),
     );
   }
 }

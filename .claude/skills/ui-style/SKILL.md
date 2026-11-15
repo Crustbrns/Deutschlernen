@@ -51,20 +51,31 @@ render them as separate cards with gaps between them.
 - Word rows (`WordRow` in `word_list.dart`, category lists and search results) start with a
   status strip: 4px wide, radius 2, full text height, 12px gap to the text. Row padding is
   8 left / 2 right (tighter than other rows). Color by
-  `WordStatus`: new — `colors.onSurface` (white in dark), learning — `AppColors.statusLearning`
-  pink, due for review — `statusReview` yellow, learned — `statusLearned` green,
-  "already know" — gray: `onSurfaceVariant` moved 35% toward `AppColors.divider` (user wanted
-  it a bit darker than onSurfaceVariant, but not as dark as the divider).
-  The caption above the German word (`palette.mutedText`, semibold) names the status and the
-  next review: "Новое слово", "Уже знаю", "Учится · повтор через 8 мин", "Повтор через 4 дн." /
-  "Повторить сейчас", "Выучено · повтор через 2 мес." (`AppStrings.wordState`); in search
+  `WordStatus`: new — gray (`onSurfaceVariant` moved 60% toward `AppColors.divider`), learning — `AppColors.statusLearning`
+  pink (chosen to learn, never reviewed), reviewed at least once or due — `statusReview`
+  orange-yellow, learned — `statusLearned` green (one mapping:
+  `AppColors.forWordStatus`),
+  "already know" — `colors.onSurface` (white in dark). New/known were swapped by the user:
+  untouched words should look quiet.
+  The caption above the German word (`palette.mutedText`, semibold): "Новое слово", "Уже знаю",
+  "Учится" (pink, never reviewed), or only when the word comes back — "Повтор через 8 мин" /
+  "Повтор через 4 дн." / "Повторить сейчас" (`AppStrings.wordState`). No "Выучено": green says
+  that (user's choice); in search
   results it is prefixed with the level ("A1 · …"). Green = interval ≥ 21 days
   (`WordStatus.matureInterval`), a due word is always yellow.
-  Caption and translation 16px, German word 17px; line height 1.27, letter spacing -0.2, 2.2px
-  apart. Caption gray w600, German word `onSurface` bold, translation `onSurface` w600.
-- Navigation rows (a row that opens a list, e.g. a level): no chevron. A count on the right is
-  written with its noun ("5 слов", via `AppStrings.wordCount`), font size 15, in the quiet gray
-  `AppColors.quietText(colors)`.
+  Caption, word and translation use `AppListText.caption/title/subtitle` (see "List row
+  typography" below).
+- **List row typography (`AppListText` in `app_style.dart`)** — every two/three-line list row
+  uses it, so all lists look like the word list: `title` (17 bold `onSurface`, like the German
+  word), `subtitle` (16 w600 `onSurface`, like the translation), `caption` (16 w600
+  `mutedText`, the status line above a word); line height 1.27, letter spacing -0.2,
+  `AppListText.gap` (2.2) between lines. Don't style list text inline; don't use ListTile's
+  title/subtitle for such rows (it adds its own spacing) — build the row with InkWell + Column.
+- Navigation rows (a row that opens a list, e.g. a level): no chevron. Level rows: level name
+  as `title`, word count under it in `subtitle` style but `mutedText` gray ("5 слов",
+  `AppStrings.wordCount`), and on the right the share of seen words ("40 %" with a
+  non-breaking space — known or started learning) in `subtitle` style, color halfway between
+  `onSurface` and `mutedText`. Padding 16 horizontal, 12 vertical.
 
 Separate blocks are only for different kinds of content (e.g. a title, then a list).
 
@@ -81,7 +92,14 @@ Separate blocks are only for different kinds of content (e.g. a title, then a li
   The word itself is played from the transcription pill on the word card.
 - A button that sits over a transparent or dimmed background (overlay routes) always
   gets a fill, otherwise it blends with what is under it.
-- Word card opened from a list (`WordDetailScreen`): a word with progress gets a full-width
+- Card header: level chip, 10px, 12px square, 6px, status text (14.5 w600 muted, letter
+  spacing -0.5).
+- Opened word card header (lookup mode): level chip, then a 12px square in the word's status
+  color (`AppColors.forWordStatus`, the same as the list strip) and the same caption as in
+  the list (`AppStrings.wordState`). The lookup count ("Искали 3 раза") is a chip under the
+  translation, right-aligned, radius 8 (squarer than the round level chip).
+- Word card opened from a list (`WordDetailScreen`) sits on a solid black backdrop (barrier
+  `Colors.black`, fades in) — the list behind must not show. A word with progress gets a full-width
   "Сбросить прогресс по слову" button under the card, styled like the card itself (fill
   `palette.card`, outline `outlineVariant` α 0.4, radius 32, text `onSurface` 16 w600, 12px above); the card shrinks just enough to fit it. Reset is instant, no dialog
   (user's choice); the button then collapses with `AnimatedSize`.

@@ -58,8 +58,6 @@
   "remembered": "Remember",
   "statusNew": "New word",
   "statusKnown": "Already know",
-  "statusLearning": "Learning",
-  "statusLearned": "Learned",
   "reviewNow": "review now",
   "reviewInMinutesOther": "review in {n} min",
   "reviewInHoursOther": "review in {n} h",
@@ -67,5 +65,6 @@
   "reviewInDaysOther": "review in {n} days",
   "reviewInMonthsOne": "review in {n} month",
   "reviewInMonthsOther": "review in {n} months",
-  "resetProgress": "Reset word progress"
+  "resetProgress": "Reset word progress",
+  "statusLearning": "Learning"
 }

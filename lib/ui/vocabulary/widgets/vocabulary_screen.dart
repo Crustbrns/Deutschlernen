@@ -161,16 +161,53 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
   }
 
   Widget _buildLevelRow(String level, List<Word> words, ColorScheme colors) {
-    return ListTile(
-      // 16 = divider indent, so text and lines start at one edge.
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-      title: Text(level),
-      // "5 слов": same quiet gray as the search hint.
-      trailing: Text(
-        AppStrings.of(context).wordCount(words.length),
-        style: TextStyle(fontSize: 15, color: AppColors.quietText(colors)),
-      ),
+    // Seen = the user decided on it: "already know" or started learning.
+    final seen = words
+        .where((w) => widget.stateOf(w.id).status != WordStatus.newWord)
+        .length;
+    final percent = words.isEmpty ? 0 : (seen * 100 / words.length).round();
+
+    // Same typography as a word row: level like the German word, count like
+    // the translation. Own row instead of ListTile, which adds its own
+    // spacing between title and subtitle.
+    return InkWell(
       onTap: () => _openLevel(level, words),
+      child: Padding(
+        // 16 = divider indent, so text and lines start at one edge.
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(level, style: AppListText.title(colors)),
+                  const SizedBox(height: AppListText.gap),
+                  // Gray: secondary to the level name.
+                  Text(
+                    AppStrings.of(context).wordCount(words.length),
+                    style: AppListText.subtitle(colors)
+                        .copyWith(color: AppPalette.of(context).mutedText),
+                  ),
+                ],
+              ),
+            ),
+            // Share of the level's words already seen. Non-breaking space:
+            // "40 %" never splits across lines.
+            Text(
+              '$percent\u00A0%',
+              style: AppListText.subtitle(colors).copyWith(
+                // Light gray: between the main text and the muted count.
+                color: Color.lerp(
+                  colors.onSurface,
+                  AppPalette.of(context).mutedText,
+                  0.5,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

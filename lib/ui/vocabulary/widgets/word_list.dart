@@ -73,12 +73,6 @@ class WordRow extends StatelessWidget {
     this.showLevel = true,
   });
 
-  static const _fontSize = 16.0;
-  static const _wordFontSize = 17.0; // German word: a touch bigger
-  static const _lineHeight = 1.27; // a bit tighter than the default
-  static const _letterSpacing = -0.2; // slightly condensed
-  static const _gap = 2.2; // between the three lines
-
   final Word word;
   final WordState state;
   final VoidCallback onTap;
@@ -119,41 +113,13 @@ class WordRow extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          caption,
-                          // The three lines share size, line height and
-                          // spacing; color and weight tell them apart.
-                          style: TextStyle(
-                            color: AppPalette.of(context).mutedText,
-                            fontSize: _fontSize,
-                            fontWeight: FontWeight.w600,
-                            height: _lineHeight,
-                            letterSpacing: _letterSpacing,
-                          ),
-                        ),
-                        const SizedBox(height: _gap),
-                        Text(
-                          forms,
-                          style: TextStyle(
-                            // onSurface: white in the dark theme, near-black
-                            // in the light one (plain white would vanish).
-                            color: colors.onSurface,
-                            fontSize: _wordFontSize,
-                            fontWeight: FontWeight.bold,
-                            height: _lineHeight,
-                            letterSpacing: _letterSpacing,
-                          ),
-                        ),
-                        const SizedBox(height: _gap),
+                        Text(caption, style: AppListText.caption(context)),
+                        const SizedBox(height: AppListText.gap),
+                        Text(forms, style: AppListText.title(colors)),
+                        const SizedBox(height: AppListText.gap),
                         Text(
                           word.translation,
-                          style: TextStyle(
-                            color: colors.onSurface,
-                            fontSize: _fontSize,
-                            fontWeight: FontWeight.w600,
-                            height: _lineHeight,
-                            letterSpacing: _letterSpacing,
-                          ),
+                          style: AppListText.subtitle(colors),
                         ),
                       ],
                     ),
@@ -178,20 +144,10 @@ class _StatusStrip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
-    final color = switch (status) {
-      // Main text color: white in the dark theme (black in the light one).
-      WordStatus.newWord => colors.onSurface,
-      WordStatus.learning => AppColors.statusLearning,
-      WordStatus.review => AppColors.statusReview,
-      WordStatus.learned => AppColors.statusLearned,
-      // Gray between the light secondary text and the dark divider.
-      WordStatus.known => Color.lerp(
-        colors.onSurfaceVariant,
-        AppColors.divider(colors),
-        0.35,
-      )!,
-    };
+    final color = AppColors.forWordStatus(
+      status,
+      Theme.of(context).colorScheme,
+    );
 
     return Container(
       width: 4,
