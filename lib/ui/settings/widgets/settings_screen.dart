@@ -3,19 +3,23 @@ import 'package:deutschlernen/domain/models/app_language.dart';
 import 'package:deutschlernen/ui/cards/widgets/language_sheet.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 
-/// Concept of the settings tab. For now it only holds the language choice,
-/// which used to live behind the "..." button of the card.
+/// Concept of the settings tab. For now it only holds two language choices:
+/// the interface language and the language of the word translations.
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({
     super.key,
     required this.languages,
-    required this.current,
-    required this.onLanguageSelected,
+    required this.uiLanguage,
+    required this.wordLanguage,
+    required this.onUiLanguageSelected,
+    required this.onWordLanguageSelected,
   });
 
   final List<AppLanguage> languages;
-  final AppLanguage current;
-  final ValueChanged<AppLanguage> onLanguageSelected;
+  final AppLanguage uiLanguage;
+  final AppLanguage wordLanguage;
+  final ValueChanged<AppLanguage> onUiLanguageSelected;
+  final ValueChanged<AppLanguage> onWordLanguageSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -33,21 +37,57 @@ class SettingsScreen extends StatelessWidget {
               style: Theme.of(context).textTheme.headlineSmall,
             ),
           ),
-          ListTile(
-            leading: Text(current.flag, style: const TextStyle(fontSize: 28)),
-            title: Text(strings.language),
-            subtitle: Text(current.label),
-            trailing: const Icon(Icons.chevron_right),
+          _LanguageTile(
+            icon: Icons.phone_android_outlined,
+            title: strings.interfaceLanguage,
+            current: uiLanguage,
             onTap: () => showLanguageSheet(
               context: context,
-              strings: strings,
+              title: strings.interfaceLanguage,
               languages: languages,
-              current: current,
-              onSelected: onLanguageSelected,
+              current: uiLanguage,
+              onSelected: onUiLanguageSelected,
+            ),
+          ),
+          _LanguageTile(
+            icon: Icons.translate,
+            title: strings.wordsLanguage,
+            current: wordLanguage,
+            onTap: () => showLanguageSheet(
+              context: context,
+              title: strings.wordsLanguage,
+              languages: languages,
+              current: wordLanguage,
+              onSelected: onWordLanguageSelected,
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class _LanguageTile extends StatelessWidget {
+  const _LanguageTile({
+    required this.icon,
+    required this.title,
+    required this.current,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String title;
+  final AppLanguage current;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Icon(icon),
+      title: Text(title),
+      subtitle: Text('${current.flag}  ${current.label}'),
+      trailing: const Icon(Icons.chevron_right),
+      onTap: onTap,
     );
   }
 }

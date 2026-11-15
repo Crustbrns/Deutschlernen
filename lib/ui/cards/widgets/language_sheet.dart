@@ -1,10 +1,9 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/domain/models/app_language.dart';
-import 'package:deutschlernen/ui/core/app_strings.dart';
 
 Future<void> showLanguageSheet({
   required BuildContext context,
-  required AppStrings strings,
+  required String title,
   required List<AppLanguage> languages,
   required AppLanguage current,
   required ValueChanged<AppLanguage> onSelected,
@@ -20,7 +19,7 @@ Future<void> showLanguageSheet({
           Padding(
             padding: const EdgeInsets.fromLTRB(24, 0, 24, 8),
             child: Text(
-              strings.language,
+              title,
               style: Theme.of(sheetContext).textTheme.titleLarge,
             ),
           ),
