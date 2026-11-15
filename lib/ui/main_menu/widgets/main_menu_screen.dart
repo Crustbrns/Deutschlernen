@@ -4,19 +4,25 @@ import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
 
-/// Learn tab: title, then one block with the entry points:
-/// categories (which levels to learn), new words, and review (not built yet).
+/// Practice tab: title, then one block with the entry points: categories
+/// (which levels new words come from), new words, and review.
 class MainMenuScreen extends StatelessWidget {
   const MainMenuScreen({
     super.key,
     required this.selectedLevelCount,
+    required this.newWordsLeft,
+    required this.dueCount,
     required this.onChooseLevels,
     required this.onLearnNewWords,
+    required this.onReview,
   });
 
   final int selectedLevelCount;
+  final int newWordsLeft; // 0 = all words of the chosen levels are seen
+  final int dueCount; // words waiting for review right now
   final VoidCallback onChooseLevels;
   final VoidCallback onLearnNewWords;
+  final VoidCallback onReview;
 
   @override
   Widget build(BuildContext context) {
@@ -54,20 +60,24 @@ class MainMenuScreen extends StatelessWidget {
                 icon: AppIcons.plusCircle,
                 iconColor: AppColors.menuNewWords,
                 title: strings.learnNewWords,
-                onTap: onLearnNewWords,
+                // Disabled when the chosen levels have no unseen words.
+                onTap: newWordsLeft > 0 ? onLearnNewWords : null,
               ),
-              // Placeholder until spaced repetition exists.
               _MenuRow(
                 icon: AppIcons.clockCounterClockwise,
                 iconColor: AppColors.menuRepeat,
                 title: strings.repeatWords,
-                trailing: Text(
-                  strings.soonLabel,
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: AppColors.quietText(colors),
-                  ),
-                ),
+                // "5 слов" waiting; disabled when there is nothing to review.
+                trailing: dueCount > 0
+                    ? Text(
+                        strings.wordCount(dueCount),
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: AppColors.quietText(colors),
+                        ),
+                      )
+                    : null,
+                onTap: dueCount > 0 ? onReview : null,
               ),
             ],
           ),

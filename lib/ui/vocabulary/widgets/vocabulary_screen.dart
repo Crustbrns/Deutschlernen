@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/domain/models/word.dart';
+import 'package:deutschlernen/domain/models/word_status.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
@@ -18,6 +19,7 @@ class VocabularyScreen extends StatefulWidget {
     required this.onWordSelected,
     required this.onSearchResultSelected,
     required this.onSpeak,
+    required this.stateOf,
   });
 
   final List<Word> words;
@@ -28,6 +30,9 @@ class VocabularyScreen extends StatefulWidget {
   /// Word opened from the search results: counts as a lookup.
   final ValueChanged<Word> onSearchResultSelected;
   final ValueChanged<String> onSpeak; // German text-to-speech
+
+  /// Learning status of a word, for the strip and caption next to it.
+  final WordState Function(String wordId) stateOf;
 
   @override
   State<VocabularyScreen> createState() => _VocabularyScreenState();
@@ -98,6 +103,7 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
       words: results,
       onWordSelected: widget.onSearchResultSelected,
       onSpeak: widget.onSpeak,
+      stateOf: widget.stateOf,
     );
   }
 
@@ -114,6 +120,7 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
             words: words,
             onWordSelected: widget.onWordSelected,
             onSpeak: widget.onSpeak,
+            stateOf: widget.stateOf,
           ),
         ),
       ),

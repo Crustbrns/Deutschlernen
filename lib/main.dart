@@ -1,5 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/data/repositories/lookup_repository.dart';
+import 'package:deutschlernen/data/repositories/progress_repository.dart';
+import 'package:deutschlernen/data/services/review_scheduler.dart';
 import 'package:deutschlernen/data/repositories/settings_repository.dart';
 import 'package:deutschlernen/data/repositories/word_repository.dart';
 import 'package:deutschlernen/data/services/speech_service.dart';
@@ -34,6 +36,8 @@ class _MyAppState extends State<MyApp> {
     languageRepository: LanguageRepository(assetService: _assetService),
     settingsRepository: _settingsRepository,
     lookupRepository: LookupRepository(),
+    progressRepository: ProgressRepository(),
+    reviewScheduler: ReviewScheduler(),
     speechService: _speechService,
     settingsViewModel: _settingsViewModel,
   )..load();

@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/domain/models/word.dart';
+import 'package:deutschlernen/domain/models/word_status.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/widgets/round_icon_button.dart';
 import 'package:deutschlernen/ui/vocabulary/widgets/word_list.dart';
@@ -13,12 +14,14 @@ class LevelWordsScreen extends StatelessWidget {
     required this.words,
     required this.onWordSelected,
     required this.onSpeak,
+    required this.stateOf,
   });
 
   final String level;
   final List<Word> words; // already filtered to [level]
   final ValueChanged<Word> onWordSelected;
   final ValueChanged<String> onSpeak;
+  final WordState Function(String wordId) stateOf;
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +63,7 @@ class LevelWordsScreen extends StatelessWidget {
                       showLevel: false,
                       onWordSelected: onWordSelected,
                       onSpeak: onSpeak,
+                      stateOf: stateOf,
                     ),
             ),
           ],

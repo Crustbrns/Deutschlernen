@@ -9,7 +9,6 @@
   "menu": "Меню",
   "language": "Язык",
   "goodWork": "Отличная работа!",
-  "restart": "Начать заново",
   "tabMain": "Практика",
   "tabVocabulary": "Категории",
   "tabStatistics": "Прогресс",
@@ -60,5 +59,16 @@
   "levelsSelectedFew": "Выбрано {n} категории",
   "levelsSelectedMany": "Выбрано {n} категорий",
   "levelsSelectedOther": "Выбрано {n} категории",
-  "soonLabel": "Скоро"
+  "finish": "Готово",
+  "forgot": "Не\nпомню",
+  "remembered": "Помню",
+  "statusNew": "Новое слово",
+  "statusKnown": "Уже знаю",
+  "statusLearning": "Учится",
+  "statusLearned": "Выучено",
+  "reviewNow": "повторить сейчас",
+  "reviewInMinutesOther": "повтор через {n} мин",
+  "reviewInHoursOther": "повтор через {n} ч",
+  "reviewInDaysOther": "повтор через {n} дн.",
+  "reviewInMonthsOther": "повтор через {n} мес."
 }

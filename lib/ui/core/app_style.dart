@@ -99,6 +99,11 @@ abstract final class AppColors {
   static const menuNewWords = Color(0xFFFF5C8A); // pink
   static const menuRepeat = Color(0xFFFFC83D); // yellow
 
+  // Word status strips in the word lists (new words use a theme gray).
+  static const statusLearning = Color(0xFFFF5C8A); // pink
+  static const statusReview = Color(0xFFFFC83D); // yellow
+  static const statusLearned = Color(0xFF34C759); // green
+
   // Answer feedback.
   static const correct = Color(0xFF3DDC84);
   static const wrong = Color(0xFFFF6B6B);
