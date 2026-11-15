@@ -16,5 +16,12 @@
   "tabSettings": "Settings",
   "startLearning": "Start learning",
   "dictionaries": "Dictionaries",
-  "comingSoon": "Coming soon"
+  "comingSoon": "Coming soon",
+  "modeShow": "Show",
+  "modeWrite": "Write",
+  "modeChoice": "Choose",
+  "checkAnswer": "Check answer",
+  "answerHint": "Type the translation or the German word",
+  "correct": "Correct!",
+  "wrongAnswer": "Not quite. Correct answer:"
 }

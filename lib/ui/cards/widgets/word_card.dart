@@ -1,5 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/domain/models/word.dart';
+import 'package:deutschlernen/ui/cards/widgets/answer_modes.dart';
 import 'package:deutschlernen/ui/cards/widgets/example_tile.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
@@ -9,13 +10,15 @@ class WordCard extends StatefulWidget {
     super.key,
     required this.word,
     required this.onSpeak,
-    required this.onMenu,
+    required this.otherTranslations,
     required this.bottomBar,
   });
 
   final Word word;
   final ValueChanged<String> onSpeak;
-  final VoidCallback onMenu;
+
+  /// Translations of the other words, used as wrong options in the choice mode.
+  final List<String> otherTranslations;
 
   /// Pinned to the bottom of the card, outside the scrolling content.
   final Widget bottomBar;
@@ -27,12 +30,32 @@ class WordCard extends StatefulWidget {
 class _WordCardState extends State<WordCard> {
   static const _fadeHeight = 24.0;
 
-  bool _translationVisible = false;
+  AnswerMode? _mode; // null = only the three buttons are visible
+
+  /// Mode 1: the translation, revealed by the eye button above.
+  Widget _buildShownTranslation(Word word) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: Center(
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            word.translation,
+            style: const TextStyle(
+              fontFamily: AppFonts.translation,
+              fontSize: 42,
+              fontWeight: FontWeight.w600, // = wght
+              fontVariations: AppFonts.translationVariations,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    final strings = AppStrings.of(context);
     final word = widget.word;
 
     return Material(
@@ -52,20 +75,15 @@ class _WordCardState extends State<WordCard> {
             child: Stack(
               children: [
                 SingleChildScrollView(
-                  // Top 10, not 20: the header row is as tall as the 48px menu button,
-                  // and the ~28px level chip is centered in it (+10px). So the chip ends
-                  // up 20px from the top, the same as its 20px inset from the left.
-                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 24),
+                  // 20px from the top, the same as the level chip's inset from the left.
+                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 24),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       // Header is inside the scroll view, so it scrolls away.
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 0, 16, 0),
-                        child: _Header(
-                          level: word.level,
-                          onMenu: widget.onMenu,
-                        ),
+                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                        child: _Header(level: word.level),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
@@ -129,60 +147,33 @@ class _WordCardState extends State<WordCard> {
                                     widget.onSpeak(word.withArticle),
                               ),
                             ),
-                            const SizedBox(height: 16),
-                            SizedBox(
-                              height: 80, // must fit the 76px eye button
-
-                              child: AnimatedSwitcher(
-                                duration: const Duration(milliseconds: 250),
-                                child: _translationVisible
-                                    ? Center(
-                                        key: const ValueKey('shown'),
-                                        child: FittedBox(
-                                          fit: BoxFit.scaleDown,
-                                          child: Text(
-                                            word.translation,
-                                            style: const TextStyle(
-                                              fontFamily: AppFonts.translation,
-                                              fontSize: 42,
-                                              fontWeight:
-                                                  FontWeight.w600, // = wght
-                                              fontVariations: AppFonts
-                                                  .translationVariations,
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    : Center(
-                                        key: const ValueKey('hidden'),
-                                        child: IconButton.filledTonal(
-                                          onPressed: () => setState(
-                                            () => _translationVisible = true,
-                                          ),
-                                          // Text is kept as tooltip and for screen readers.
-                                          tooltip: strings.showTranslation,
-                                          icon: const Icon(
-                                            Icons.visibility,
-                                            size: 28,
-                                          ),
-                                          // Neutral dark grey instead of the tonal
-                                          // accent, so the button doesn't stand out.
-                                          style: IconButton.styleFrom(
-                                            backgroundColor:
-                                                AppColors.subtleButton,
-                                            foregroundColor: colors
-                                                .onSurfaceVariant
-                                                .withValues(alpha: 0.6),
-                                            // Same icon, bigger box = more padding.
-                                            fixedSize: const Size.square(76),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(14),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                              ),
+                            const SizedBox(height: 20),
+                            AnswerModeBar(
+                              selected: _mode,
+                              // The eye shows the translation right away.
+                              onPressed: (mode) =>
+                                  setState(() => _mode = mode),
+                            ),
+                            // Panel of the selected mode, right above the examples.
+                            AnimatedSize(
+                              duration: const Duration(milliseconds: 200),
+                              curve: Curves.easeOut,
+                              alignment: Alignment.topCenter,
+                              child: switch (_mode) {
+                                null => const SizedBox(width: double.infinity),
+                                AnswerMode.show => _buildShownTranslation(word),
+                                AnswerMode.write => Padding(
+                                  padding: const EdgeInsets.only(top: 16),
+                                  child: WriteAnswerPanel(word: word),
+                                ),
+                                AnswerMode.choice => Padding(
+                                  padding: const EdgeInsets.only(top: 16),
+                                  child: ChoiceAnswerPanel(
+                                    word: word,
+                                    otherTranslations: widget.otherTranslations,
+                                  ),
+                                ),
+                              },
                             ),
                             const SizedBox(height: 28),
                           ],
@@ -299,10 +290,9 @@ class _TranscriptionButton extends StatelessWidget {
 }
 
 class _Header extends StatelessWidget {
-  const _Header({required this.level, required this.onMenu});
+  const _Header({required this.level});
 
   final String level;
-  final VoidCallback onMenu;
 
   @override
   Widget build(BuildContext context) {
@@ -341,20 +331,6 @@ class _Header extends StatelessWidget {
               fontWeight: FontWeight.w600,
               color: AppColors.mutedText,
             ),
-          ),
-        ),
-        IconButton.outlined(
-          onPressed: onMenu,
-          tooltip: strings.menu,
-          icon: const Icon(Icons.more_horiz),
-          // ~26% smaller than the default (40px circle, 24px icon).
-          // The tap area stays 48px (default tapTargetSize), so it is still
-          // easy to hit and the header row keeps its height.
-          iconSize: 17.6,
-          style: IconButton.styleFrom(
-            fixedSize: const Size.square(29.7),
-            minimumSize: Size.zero,
-            padding: EdgeInsets.zero,
           ),
         ),
       ],

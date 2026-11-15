@@ -27,6 +27,20 @@ class Word {
 
   String get withArticle => '$article $german';
 
+  /// True when [input] is the translation or the German word (with or without
+  /// the article). Ignores case, extra spaces and trailing punctuation.
+  bool accepts(String input) {
+    final given = _normalize(input);
+    if (given.isEmpty) return false;
+    return {translation, german, withArticle}.map(_normalize).contains(given);
+  }
+
+  static String _normalize(String text) => text
+      .trim()
+      .toLowerCase()
+      .replaceAll(RegExp(r'\s+'), ' ')
+      .replaceAll(RegExp(r'[.!?。！？]+$'), '');
+
   /// Grammatical gender by article: der → m., die → f., das → n.
   /// null when there is no known article, i.e. the word is not a noun.
   String? get genderMark => switch (article.toLowerCase()) {

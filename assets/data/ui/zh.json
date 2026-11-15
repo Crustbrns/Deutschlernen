@@ -16,5 +16,12 @@
   "tabSettings": "设置",
   "startLearning": "开始学习",
   "dictionaries": "词典",
-  "comingSoon": "敬请期待"
+  "comingSoon": "敬请期待",
+  "modeShow": "显示",
+  "modeWrite": "输入",
+  "modeChoice": "选择",
+  "checkAnswer": "检查答案",
+  "answerHint": "输入翻译或德语单词",
+  "correct": "正确！",
+  "wrongAnswer": "不对。正确答案："
 }

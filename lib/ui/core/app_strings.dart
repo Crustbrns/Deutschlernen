@@ -26,6 +26,13 @@ class AppStrings {
   String get startLearning => _get('startLearning');
   String get dictionaries => _get('dictionaries');
   String get comingSoon => _get('comingSoon');
+  String get modeShow => _get('modeShow');
+  String get modeWrite => _get('modeWrite');
+  String get modeChoice => _get('modeChoice');
+  String get checkAnswer => _get('checkAnswer');
+  String get answerHint => _get('answerHint');
+  String get correct => _get('correct');
+  String get wrongAnswer => _get('wrongAnswer');
 
   /// Texts for the current language: `AppStrings.of(context).known`.
   static AppStrings of(BuildContext context) {

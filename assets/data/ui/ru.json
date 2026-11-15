@@ -16,5 +16,12 @@
   "tabSettings": "Настройки",
   "startLearning": "Начать учить",
   "dictionaries": "Словари",
-  "comingSoon": "Скоро появится"
+  "comingSoon": "Скоро появится",
+  "modeShow": "Показать",
+  "modeWrite": "Написать",
+  "modeChoice": "Выбрать",
+  "checkAnswer": "Проверить",
+  "answerHint": "Введите перевод или немецкое слово",
+  "correct": "Верно!",
+  "wrongAnswer": "Неверно. Правильный ответ:"
 }

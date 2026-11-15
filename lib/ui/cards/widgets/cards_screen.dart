@@ -4,7 +4,6 @@ import 'package:deutschlernen/ui/cards/view_models/cards_view_model.dart';
 import 'package:deutschlernen/ui/cards/widgets/card_stack.dart';
 import 'package:deutschlernen/ui/cards/widgets/cards_top_bar.dart';
 import 'package:deutschlernen/ui/cards/widgets/decision_bar.dart';
-import 'package:deutschlernen/ui/cards/widgets/language_sheet.dart';
 import 'package:deutschlernen/ui/cards/widgets/swipeable_card.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 
@@ -37,16 +36,6 @@ class _CardsScreenState extends State<CardsScreen> {
   void dispose() {
     _swipeController.dispose();
     super.dispose();
-  }
-
-  void _openLanguageSheet() {
-    showLanguageSheet(
-      context: context,
-      strings: _vm.strings,
-      languages: _vm.languages,
-      current: _vm.language,
-      onSelected: _vm.setLanguage,
-    );
   }
 
   @override
@@ -91,7 +80,6 @@ class _CardsScreenState extends State<CardsScreen> {
                                   onSwiped: (direction) =>
                                       _vm.onCardSwiped(_decisionFor(direction)),
                                   onSpeak: _vm.speak,
-                                  onMenu: _openLanguageSheet,
                                   bottomBar: DecisionBar(
                                     onKnown: () => _swipeController.swipe(
                                       SwipeDirection.left,

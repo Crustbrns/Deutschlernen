@@ -16,5 +16,12 @@
   "tabSettings": "Ajustes",
   "startLearning": "Empezar a aprender",
   "dictionaries": "Diccionarios",
-  "comingSoon": "Próximamente"
+  "comingSoon": "Próximamente",
+  "modeShow": "Mostrar",
+  "modeWrite": "Escribir",
+  "modeChoice": "Elegir",
+  "checkAnswer": "Comprobar",
+  "answerHint": "Escribe la traducción o la palabra alemana",
+  "correct": "¡Correcto!",
+  "wrongAnswer": "No exactamente. Respuesta correcta:"
 }
