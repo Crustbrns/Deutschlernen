@@ -190,7 +190,10 @@ class _WordCardState extends State<WordCard> {
                       ),
                       // Definition is the first row of the examples block.
                       DefinitionTile(
-                        definition: word.definition,
+                        // "(f.) Der Zustand, ..." — gender mark only for nouns.
+                        definition: word.genderMark == null
+                            ? word.definition
+                            : '(${word.genderMark}) ${word.definition}',
                         translation: word.definitionTranslation,
                       ),
                       for (var i = 0; i < word.examples.length; i++)
@@ -336,7 +339,7 @@ class _Header extends StatelessWidget {
             style: TextStyle(
               fontSize: 14.5,
               fontWeight: FontWeight.w600,
-              color: colors.onSurfaceVariant,
+              color: AppColors.mutedText,
             ),
           ),
         ),

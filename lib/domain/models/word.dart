@@ -26,4 +26,13 @@ class Word {
   final List<ExampleSentence> examples;
 
   String get withArticle => '$article $german';
+
+  /// Grammatical gender by article: der → m., die → f., das → n.
+  /// null when there is no known article, i.e. the word is not a noun.
+  String? get genderMark => switch (article.toLowerCase()) {
+    'der' => 'm.',
+    'die' => 'f.',
+    'das' => 'n.',
+    _ => null,
+  };
 }

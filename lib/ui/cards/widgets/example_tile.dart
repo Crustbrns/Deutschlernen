@@ -1,3 +1,4 @@
+import 'package:cupertino_ui/cupertino_ui.dart' show CupertinoIcons;
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/domain/models/example_sentence.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
@@ -26,12 +27,17 @@ class ExpandableTile extends StatefulWidget {
     required this.title,
     this.details,
     this.trailing,
+    this.trailingVisualSize = 24,
   });
 
   final bool initiallyExpanded;
   final Widget title;
   final Widget? details; // null = nothing to expand
   final Widget? trailing;
+
+  /// Visible size of [trailing] (icon or circle). Used to line its right
+  /// edge up with the card inset.
+  final double trailingVisualSize;
 
   @override
   State<ExpandableTile> createState() => _ExpandableTileState();
@@ -42,7 +48,6 @@ class _ExpandableTileState extends State<ExpandableTile> {
   static const _trailingWidth = 48.0;
   static const _chevronSize = 22.0;
   static const _chevronGap = 8.0;
-  static const _trailingShift = (_trailingWidth - 24) / 2;
 
   // Minimum time the highlight stays visible after a quick tap.
   static const _minHighlight = Duration(milliseconds: 150);
@@ -134,11 +139,15 @@ class _ExpandableTileState extends State<ExpandableTile> {
                       if (widget.trailing != null)
                         SizedBox(
                           width: _trailingWidth,
-                          // The 24px icon sits in a 48px slot, i.e. 12px from its right
-                          // edge. Shifting by 12 puts the icon at the same distance from
-                          // the card edge as the chevron on the left (cardInset).
+                          // The visible icon is centered in a 48px slot, so there is
+                          // (48 - size) / 2 of empty space on its right. Shifting by
+                          // that puts it at the same distance from the card edge as
+                          // the chevron on the left (cardInset).
                           child: Transform.translate(
-                            offset: const Offset(_trailingShift, 0),
+                            offset: Offset(
+                              (_trailingWidth - widget.trailingVisualSize) / 2,
+                              0,
+                            ),
                             child: Center(child: widget.trailing),
                           ),
                         ),
@@ -220,15 +229,21 @@ class ExampleTile extends StatelessWidget {
   final bool initiallyExpanded;
   final ValueChanged<String> onSpeak;
 
+  static const _playSize = 20.0;
+
   @override
   Widget build(BuildContext context) {
     final styles = _tileStyles(context);
 
     return ExpandableTile(
       initiallyExpanded: initiallyExpanded,
+      // Outlined triangle with rounded corners. Material has no such icon
+      // (its outlined play is sharp), Cupertino does.
+      trailingVisualSize: _playSize, // keeps the right edge aligned
       trailing: IconButton(
         onPressed: () => onSpeak(stripMarkup(example.german)),
-        icon: const Icon(Icons.play_arrow_outlined),
+        icon: const Icon(CupertinoIcons.play),
+        iconSize: _playSize,
         color: AppColors.accentBlue,
       ),
       title: Text.rich(
