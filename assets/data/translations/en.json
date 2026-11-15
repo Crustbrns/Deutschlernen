@@ -48,5 +48,305 @@
       { "german": "Kann ich bitte **Wasser** haben?", "translation": "Can I have some **water**, please?" },
       { "german": "Ein stilles **Wasser**, bitte.", "translation": "A still **water**, please." }
     ]
+  },
+  "brot": {
+    "word": "bread",
+    "definition": "A food made from flour, water and yeast that is baked.",
+    "examples": [
+      { "german": "Ich kaufe frisches **Brot** beim Bäcker.", "translation": "I buy fresh **bread** at the bakery." },
+      { "german": "Das **Brot** ist noch warm.", "translation": "The **bread** is still warm." },
+      { "german": "Möchtest du Butter auf dein **Brot**?", "translation": "Would you like butter on your **bread**?" },
+      { "german": "Wir essen zum Frühstück **Brot** mit Käse.", "translation": "We eat **bread** with cheese for breakfast." }
+    ]
+  },
+  "apfel": {
+    "word": "apple",
+    "definition": "A round fruit that can be red, green or yellow.",
+    "examples": [
+      { "german": "Ich esse jeden Tag einen **Apfel**.", "translation": "I eat an **apple** every day." },
+      { "german": "Die **Äpfel** sind sehr süß.", "translation": "The **apples** are very sweet." },
+      { "german": "Kannst du ein Kilo **Äpfel** kaufen?", "translation": "Can you buy a kilo of **apples**?" },
+      { "german": "Der **Apfel** liegt auf dem Tisch.", "translation": "The **apple** is on the table." }
+    ]
+  },
+  "milch": {
+    "word": "milk",
+    "definition": "A white drink that comes from cows.",
+    "examples": [
+      { "german": "Ich trinke Kaffee mit **Milch**.", "translation": "I drink coffee with **milk**." },
+      { "german": "Die **Milch** ist im Kühlschrank.", "translation": "The **milk** is in the fridge." },
+      { "german": "Wir brauchen noch **Milch** und Eier.", "translation": "We still need **milk** and eggs." },
+      { "german": "Die **Milch** ist leider sauer.", "translation": "Unfortunately, the **milk** has gone sour." }
+    ]
+  },
+  "zug": {
+    "word": "train",
+    "definition": "A long vehicle that runs on rails.",
+    "examples": [
+      { "german": "Der **Zug** hat zehn Minuten Verspätung.", "translation": "The **train** is ten minutes late." },
+      { "german": "Ich fahre mit dem **Zug** nach Berlin.", "translation": "I'm taking the **train** to Berlin." },
+      { "german": "Wann fährt der nächste **Zug**?", "translation": "When does the next **train** leave?" },
+      { "german": "Die **Züge** sind heute sehr voll.", "translation": "The **trains** are very full today." }
+    ]
+  },
+  "buch": {
+    "word": "book",
+    "definition": "Many pages with text bound together.",
+    "examples": [
+      { "german": "Ich lese gerade ein spannendes **Buch**.", "translation": "I'm reading an exciting **book** right now." },
+      { "german": "Das **Buch** gehört meiner Schwester.", "translation": "The **book** belongs to my sister." },
+      { "german": "In der Bibliothek gibt es viele **Bücher**.", "translation": "There are many **books** in the library." },
+      { "german": "Kannst du mir das **Buch** leihen?", "translation": "Can you lend me the **book**?" }
+    ]
+  },
+  "stadt": {
+    "word": "city",
+    "definition": "A large place where many people live and work.",
+    "examples": [
+      { "german": "Dresden ist eine schöne **Stadt**.", "translation": "Dresden is a beautiful **city**." },
+      { "german": "Ich wohne in der **Stadt**.", "translation": "I live in the **city**." },
+      { "german": "Wir fahren am Samstag in die **Stadt**.", "translation": "We're going into **town** on Saturday." },
+      { "german": "Große **Städte** sind oft laut.", "translation": "Big **cities** are often noisy." }
+    ]
+  },
+  "freund": {
+    "word": "friend",
+    "definition": "A person you like and trust.",
+    "examples": [
+      { "german": "Das ist mein bester **Freund**.", "translation": "This is my best **friend**." },
+      { "german": "Ich treffe heute meine **Freunde**.", "translation": "I'm meeting my **friends** today." },
+      { "german": "Mein **Freund** hilft mir beim Umzug.", "translation": "My **friend** is helping me move." },
+      { "german": "Wir sind seit sieben Jahren **Freunde**.", "translation": "We have been **friends** for seven years." }
+    ]
+  },
+  "tisch": {
+    "word": "table",
+    "definition": "A piece of furniture with a flat top where you eat or work.",
+    "examples": [
+      { "german": "Das Essen steht auf dem **Tisch**.", "translation": "The food is on the **table**." },
+      { "german": "Wir brauchen einen neuen **Tisch**.", "translation": "We need a new **table**." },
+      { "german": "Kannst du bitte den **Tisch** decken?", "translation": "Can you set the **table**, please?" },
+      { "german": "Ich habe einen **Tisch** für zwei reserviert.", "translation": "I've reserved a **table** for two." }
+    ]
+  },
+  "wohnung": {
+    "word": "apartment",
+    "definition": "Several rooms in a building where you live.",
+    "examples": [
+      { "german": "Wir suchen eine **Wohnung** in Dresden.", "translation": "We are looking for an **apartment** in Dresden." },
+      { "german": "Die **Wohnung** hat zwei Zimmer.", "translation": "The **apartment** has two rooms." },
+      { "german": "Die **Wohnungen** im Zentrum sind teuer.", "translation": "The **apartments** in the centre are expensive." },
+      { "german": "Ich räume am Wochenende die **Wohnung** auf.", "translation": "I tidy up the **apartment** at the weekend." }
+    ]
+  },
+  "termin": {
+    "word": "appointment",
+    "definition": "A fixed time to meet someone, for example at the doctor's.",
+    "examples": [
+      { "german": "Ich habe morgen einen **Termin** beim Arzt.", "translation": "I have a doctor's **appointment** tomorrow." },
+      { "german": "Können wir den **Termin** verschieben?", "translation": "Can we reschedule the **appointment**?" },
+      { "german": "Ich möchte gern einen **Termin** vereinbaren.", "translation": "I would like to make an **appointment**." },
+      { "german": "Diese Woche habe ich viele **Termine**.", "translation": "I have a lot of **appointments** this week." }
+    ]
+  },
+  "rechnung": {
+    "word": "bill",
+    "definition": "A paper that shows how much you have to pay.",
+    "examples": [
+      { "german": "Die **Rechnung**, bitte!", "translation": "The **bill**, please!" },
+      { "german": "Ich bezahle die **Rechnung** online.", "translation": "I pay the **bill** online." },
+      { "german": "Die **Rechnung** für den Strom ist gekommen.", "translation": "The electricity **bill** has arrived." },
+      { "german": "Bitte heben Sie alle **Rechnungen** auf.", "translation": "Please keep all **bills**." }
+    ]
+  },
+  "arzt": {
+    "word": "doctor",
+    "definition": "A person who examines and treats sick people.",
+    "examples": [
+      { "german": "Ich muss heute zum **Arzt**.", "translation": "I have to go to the **doctor** today." },
+      { "german": "Der **Arzt** hat mir Tabletten verschrieben.", "translation": "The **doctor** prescribed me tablets." },
+      { "german": "In der Praxis arbeiten drei **Ärzte**.", "translation": "Three **doctors** work at the practice." },
+      { "german": "Rufen Sie bitte einen **Arzt**!", "translation": "Please call a **doctor**!" }
+    ]
+  },
+  "fahrkarte": {
+    "word": "ticket",
+    "definition": "A ticket that lets you travel by bus, tram or train.",
+    "examples": [
+      { "german": "Ich kaufe die **Fahrkarte** am Automaten.", "translation": "I buy the **ticket** at the machine." },
+      { "german": "Ihre **Fahrkarte**, bitte!", "translation": "Your **ticket**, please!" },
+      { "german": "Die **Fahrkarte** gilt nur heute.", "translation": "The **ticket** is only valid today." },
+      { "german": "Wir brauchen zwei **Fahrkarten** nach Leipzig.", "translation": "We need two **tickets** to Leipzig." }
+    ]
+  },
+  "geschenk": {
+    "word": "gift",
+    "definition": "Something you give to someone without wanting money for it.",
+    "examples": [
+      { "german": "Das ist ein **Geschenk** für dich.", "translation": "This is a **gift** for you." },
+      { "german": "Ich packe die **Geschenke** ein.", "translation": "I'm wrapping the **gifts**." },
+      { "german": "Vielen Dank für das schöne **Geschenk**!", "translation": "Thank you so much for the lovely **gift**!" },
+      { "german": "Was für ein **Geschenk** kaufen wir für Mama?", "translation": "What kind of **gift** shall we buy for Mum?" }
+    ]
+  },
+  "wetter": {
+    "word": "weather",
+    "definition": "What it is like outside: sun, rain, wind or snow.",
+    "examples": [
+      { "german": "Wie ist das **Wetter** heute?", "translation": "What's the **weather** like today?" },
+      { "german": "Das **Wetter** ist schön, wir gehen spazieren.", "translation": "The **weather** is nice, we're going for a walk." },
+      { "german": "Bei diesem **Wetter** bleibe ich zu Hause.", "translation": "In this **weather** I'm staying at home." },
+      { "german": "Morgen soll das **Wetter** besser werden.", "translation": "The **weather** is supposed to get better tomorrow." }
+    ]
+  },
+  "anmeldung": {
+    "word": "registration",
+    "definition": "Officially signing up somewhere, for example registering your address at the citizens' office.",
+    "examples": [
+      { "german": "Für die **Anmeldung** brauche ich einen Termin beim Bürgeramt.", "translation": "I need an appointment at the citizens' office for the **registration**." },
+      { "german": "Nach dem Umzug muss man die **Anmeldung** innerhalb von zwei Wochen machen.", "translation": "After moving, you have to do the **registration** within two weeks." },
+      { "german": "Die **Anmeldung** zum Sprachkurs ist online möglich.", "translation": "**Registration** for the language course is possible online." },
+      { "german": "Haben Sie die Bestätigung der **Anmeldung** dabei?", "translation": "Do you have the **registration** confirmation with you?" }
+    ]
+  },
+  "vertrag": {
+    "word": "contract",
+    "definition": "A document in which two parties agree on fixed rules and sign it.",
+    "examples": [
+      { "german": "Ich habe den **Vertrag** noch nicht unterschrieben.", "translation": "I haven't signed the **contract** yet." },
+      { "german": "Der **Vertrag** läuft zwei Jahre.", "translation": "The **contract** runs for two years." },
+      { "german": "Bitte lesen Sie den **Vertrag** genau durch.", "translation": "Please read the **contract** carefully." },
+      { "german": "Die **Verträge** liegen im Ordner.", "translation": "The **contracts** are in the folder." }
+    ]
+  },
+  "bewerbung": {
+    "word": "application",
+    "definition": "Documents you send to try to get a job or a place.",
+    "examples": [
+      { "german": "Ich schicke heute meine **Bewerbung** ab.", "translation": "I'm sending off my **application** today." },
+      { "german": "Zu einer **Bewerbung** gehören Lebenslauf und Anschreiben.", "translation": "An **application** includes a CV and a cover letter." },
+      { "german": "Vielen Dank für Ihre **Bewerbung**.", "translation": "Thank you for your **application**." },
+      { "german": "Ich habe schon zwanzig **Bewerbungen** geschrieben.", "translation": "I've already written twenty **applications**." }
+    ]
+  },
+  "erfahrung": {
+    "word": "experience",
+    "definition": "Knowledge and skills you gain by living through and practising things.",
+    "examples": [
+      { "german": "Ich habe drei Jahre **Erfahrung** als Entwickler.", "translation": "I have three years of **experience** as a developer." },
+      { "german": "Das war eine wichtige **Erfahrung** für mich.", "translation": "That was an important **experience** for me." },
+      { "german": "Wir haben gute **Erfahrungen** mit dieser Firma gemacht.", "translation": "We have had good **experiences** with this company." },
+      { "german": "Aus **Erfahrung** weiß ich, dass das dauert.", "translation": "From **experience** I know that this takes time." }
+    ]
+  },
+  "miete": {
+    "word": "rent",
+    "definition": "The money you pay for a flat every month.",
+    "examples": [
+      { "german": "Die **Miete** beträgt 650 Euro warm.", "translation": "The **rent** is 650 euros including utilities." },
+      { "german": "Ich überweise die **Miete** am Monatsanfang.", "translation": "I transfer the **rent** at the start of the month." },
+      { "german": "Die **Mieten** in München sind sehr hoch.", "translation": "**Rents** in Munich are very high." },
+      { "german": "Ist die **Miete** inklusive Nebenkosten?", "translation": "Does the **rent** include utilities?" }
+    ]
+  },
+  "versicherung": {
+    "word": "insurance",
+    "definition": "A contract that pays you money if something bad happens.",
+    "examples": [
+      { "german": "Ohne **Versicherung** ist ein Arztbesuch teuer.", "translation": "Without **insurance** a doctor's visit is expensive." },
+      { "german": "Ich habe die Rechnung an die **Versicherung** geschickt.", "translation": "I sent the bill to the **insurance company**." },
+      { "german": "Welche **Versicherungen** braucht man wirklich?", "translation": "Which kinds of **insurance** do you really need?" },
+      { "german": "Die **Versicherung** zahlt den Schaden.", "translation": "The **insurance** pays for the damage." }
+    ]
+  },
+  "umzug": {
+    "word": "move",
+    "definition": "When you take all your things to another flat.",
+    "examples": [
+      { "german": "Der **Umzug** ist am nächsten Samstag.", "translation": "The **move** is next Saturday." },
+      { "german": "Kannst du mir beim **Umzug** helfen?", "translation": "Can you help me with the **move**?" },
+      { "german": "Nach dem **Umzug** war ich total müde.", "translation": "After the **move** I was completely exhausted." },
+      { "german": "Zwei **Umzüge** in einem Jahr sind zu viel.", "translation": "Two **moves** in one year are too many." }
+    ]
+  },
+  "gehalt": {
+    "word": "salary",
+    "definition": "The money you get for your work every month.",
+    "examples": [
+      { "german": "Das **Gehalt** kommt am Ende des Monats.", "translation": "The **salary** comes at the end of the month." },
+      { "german": "Im Vorstellungsgespräch haben wir über das **Gehalt** gesprochen.", "translation": "We talked about the **salary** in the job interview." },
+      { "german": "Die **Gehälter** in der IT sind gut.", "translation": "**Salaries** in IT are good." },
+      { "german": "Ich bekomme ab Januar mehr **Gehalt**.", "translation": "From January I'll get a higher **salary**." }
+    ]
+  },
+  "behoerde": {
+    "word": "authority",
+    "definition": "A state or city office that carries out public tasks.",
+    "examples": [
+      { "german": "Für den Antrag muss ich zur **Behörde**.", "translation": "I have to go to the **authorities** for the application." },
+      { "german": "Die **Behörde** hat meinen Antrag noch nicht bearbeitet.", "translation": "The **authority** hasn't processed my application yet." },
+      { "german": "Der Kontakt mit deutschen **Behörden** ist oft kompliziert.", "translation": "Dealing with German **authorities** is often complicated." },
+      { "german": "Diese Frage klärt die zuständige **Behörde**.", "translation": "The responsible **authority** will clarify this question." }
+    ]
+  },
+  "aufenthaltstitel": {
+    "word": "residence permit",
+    "definition": "A document that allows you to live in Germany for a certain time.",
+    "examples": [
+      { "german": "Mein **Aufenthaltstitel** ist bis März gültig.", "translation": "My **residence permit** is valid until March." },
+      { "german": "Ich muss meinen **Aufenthaltstitel** rechtzeitig verlängern.", "translation": "I have to extend my **residence permit** in time." },
+      { "german": "Für den neuen Job brauche ich einen anderen **Aufenthaltstitel**.", "translation": "For the new job I need a different **residence permit**." },
+      { "german": "Die Ausländerbehörde stellt **Aufenthaltstitel** aus.", "translation": "The immigration office issues **residence permits**." }
+    ]
+  },
+  "voraussetzung": {
+    "word": "requirement",
+    "definition": "Something that must be there so that something else is possible.",
+    "examples": [
+      { "german": "Deutschkenntnisse sind eine wichtige **Voraussetzung** für den Job.", "translation": "German skills are an important **requirement** for the job." },
+      { "german": "Welche **Voraussetzungen** muss ich für die Einbürgerung erfüllen?", "translation": "Which **requirements** do I have to meet for naturalisation?" },
+      { "german": "Unter dieser **Voraussetzung** bin ich einverstanden.", "translation": "On this **condition** I agree." },
+      { "german": "Eine abgeschlossene Ausbildung ist keine **Voraussetzung**.", "translation": "Completed vocational training is not a **requirement**." }
+    ]
+  },
+  "kuendigung": {
+    "word": "notice, termination",
+    "definition": "A statement that you are ending a contract, a flat or a job.",
+    "examples": [
+      { "german": "Ich habe die **Kündigung** schriftlich eingereicht.", "translation": "I handed in my **notice** in writing." },
+      { "german": "Die **Kündigung** der Wohnung muss drei Monate vorher erfolgen.", "translation": "**Notice** for the flat must be given three months in advance." },
+      { "german": "Nach der **Kündigung** habe ich sofort einen neuen Job gesucht.", "translation": "After my **dismissal** I immediately looked for a new job." },
+      { "german": "Der Vermieter hat mir die **Kündigung** geschickt.", "translation": "The landlord sent me a **notice of termination**." }
+    ]
+  },
+  "verantwortung": {
+    "word": "responsibility",
+    "definition": "The duty to take care of something or someone and answer for it.",
+    "examples": [
+      { "german": "Als Teamleiter trägt er viel **Verantwortung**.", "translation": "As team lead he carries a lot of **responsibility**." },
+      { "german": "Ich übernehme die **Verantwortung** für den Fehler.", "translation": "I take **responsibility** for the mistake." },
+      { "german": "Kinder zu haben ist eine große **Verantwortung**.", "translation": "Having children is a big **responsibility**." },
+      { "german": "In meinem neuen Job habe ich mehr **Verantwortung**.", "translation": "In my new job I have more **responsibility**." }
+    ]
+  },
+  "nachweis": {
+    "word": "proof",
+    "definition": "A document that shows that something is true.",
+    "examples": [
+      { "german": "Bitte bringen Sie einen **Nachweis** über Ihr Einkommen mit.", "translation": "Please bring **proof** of your income." },
+      { "german": "Als **Nachweis** reicht eine Kopie des Zeugnisses.", "translation": "A copy of the certificate is enough as **proof**." },
+      { "german": "Für den Kurs brauche ich einen **Nachweis** über mein Sprachniveau.", "translation": "For the course I need **proof** of my language level." },
+      { "german": "Alle **Nachweise** müssen auf Deutsch sein.", "translation": "All **supporting documents** must be in German." }
+    ]
+  },
+  "zustaendigkeit": {
+    "word": "responsibility, competence",
+    "definition": "The right and duty to take care of a certain task.",
+    "examples": [
+      { "german": "Das liegt nicht in meiner **Zuständigkeit**.", "translation": "That is not my **responsibility**." },
+      { "german": "Die **Zuständigkeit** für Visa liegt bei der Ausländerbehörde.", "translation": "**Responsibility** for visas lies with the immigration office." },
+      { "german": "Im Team sind die **Zuständigkeiten** klar verteilt.", "translation": "In the team the **responsibilities** are clearly divided." },
+      { "german": "Wer hat hier die **Zuständigkeit**?", "translation": "Who is **in charge** here?" }
+    ]
   }
 }
