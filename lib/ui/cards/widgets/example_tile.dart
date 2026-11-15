@@ -11,6 +11,7 @@ import 'package:deutschlernen/ui/core/widgets/play_button.dart';
   final base = TextStyle(
     fontSize: 16,
     height: 1.35,
+    letterSpacing: -0.2, // condensed like the rest of the card
     color: colors.onSurfaceVariant,
   );
   return (

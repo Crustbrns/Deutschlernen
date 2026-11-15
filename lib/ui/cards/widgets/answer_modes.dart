@@ -60,6 +60,36 @@ class AnswerModeBar extends StatelessWidget {
   }
 }
 
+/// Only the eye, no label: for new words, where there is nothing to test
+/// yet, just a translation to peek at. The card replaces it with the
+/// translation once tapped.
+class RevealButton extends StatelessWidget {
+  const RevealButton({super.key, required this.onPressed});
+
+  final VoidCallback onPressed;
+
+  static const size = 64.0;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
+    return Material(
+      // Slightly darker than the other neutral buttons; no outline.
+      color: AppColors.darken(AppPalette.of(context).subtleButton, 0.1),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: onPressed,
+        child: SizedBox.square(
+          dimension: size,
+          child: Icon(AppIcons.eye, size: 28, color: colors.onSurfaceVariant),
+        ),
+      ),
+    );
+  }
+}
+
 class _ModeButton extends StatelessWidget {
   const _ModeButton({
     required this.icon,
@@ -219,15 +249,14 @@ class _WriteAnswerPanelState extends State<WriteAnswerPanel> {
               style: TextStyle(color: colors.onSurfaceVariant, fontSize: 14),
             ),
             const SizedBox(height: 4),
-            // The right answer, in the same font as the hidden translation.
+            // The right answer, in the same style as the hidden translation.
             Text(
               widget.word.translation,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                fontFamily: AppFonts.translation,
                 fontSize: 28,
                 fontWeight: FontWeight.w600,
-                fontVariations: AppFonts.translationVariations,
+                letterSpacing: -0.5,
               ),
             ),
           ],

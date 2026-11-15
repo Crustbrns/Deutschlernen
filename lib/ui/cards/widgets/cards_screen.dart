@@ -99,6 +99,9 @@ class _CardsScreenState extends State<CardsScreen> {
                                       _vm.onCardSwiped(_decisionFor(direction)),
                                   onSpeak: _vm.speak,
                                   showTranscription: _vm.showTranscription,
+                                  // New words: only the eye; review: all
+                                  // three answer modes.
+                                  answerModes: review,
                                   bottomBar: DecisionBar(
                                     leftLabel: review
                                         ? strings.forgot

@@ -18,6 +18,7 @@ class CardStack extends StatelessWidget {
     required this.onSpeak,
     required this.showTranscription,
     required this.bottomBar,
+    required this.answerModes,
   });
 
   final List<Word> words;
@@ -29,6 +30,7 @@ class CardStack extends StatelessWidget {
   final ValueChanged<String> onSpeak;
   final bool showTranscription;
   final Widget bottomBar; // goes into the top card
+  final bool answerModes; // see WordCard.answerModes
 
   static const _visibleCards = 3;
   static const _animation = Duration(milliseconds: 300);
@@ -70,6 +72,7 @@ class CardStack extends StatelessWidget {
                           if (other.id != words[i].id) other.translation,
                       ],
                       bottomBar: bottomBar,
+                      answerModes: answerModes,
                     ),
                   )
                 : const _CardBackdrop(),
