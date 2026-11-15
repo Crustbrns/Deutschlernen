@@ -58,8 +58,6 @@
   "remembered": "La\nrecuerdo",
   "statusNew": "Palabra nueva",
   "statusKnown": "Ya la sé",
-  "statusLearning": "Aprendiendo",
-  "statusLearned": "Aprendida",
   "reviewNow": "repasar ahora",
   "reviewInMinutesOther": "repaso en {n} min",
   "reviewInHoursOther": "repaso en {n} h",
@@ -67,5 +65,6 @@
   "reviewInDaysOther": "repaso en {n} días",
   "reviewInMonthsOne": "repaso en {n} mes",
   "reviewInMonthsOther": "repaso en {n} meses",
-  "resetProgress": "Reiniciar el progreso de la palabra"
+  "resetProgress": "Reiniciar el progreso de la palabra",
+  "statusLearning": "Aprendiendo"
 }

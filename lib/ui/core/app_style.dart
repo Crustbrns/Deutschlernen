@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:deutschlernen/domain/models/word_status.dart';
 
 abstract final class AppSizes {
   /// Horizontal inset of the card content from the card edge.
@@ -101,7 +102,7 @@ abstract final class AppColors {
 
   // Word status strips in the word lists (new words use a theme gray).
   static const statusLearning = Color(0xFFFF5C8A); // pink
-  static const statusReview = Color(0xFFFFC83D); // yellow
+  static const statusReview = Color(0xFFFFA530); // orange-yellow
   static const statusLearned = Color(0xFF34C759); // green
 
   // Answer feedback.
@@ -127,6 +128,23 @@ abstract final class AppColors {
   static Color quietText(ColorScheme colors) =>
       Color.lerp(divider(colors), colors.onSurface, 0.3)!;
 
+  /// Color of a word's status: the strip in word lists and the square on
+  /// the opened card use the same one.
+  static Color forWordStatus(WordStatus status, ColorScheme colors) =>
+      switch (status) {
+        // Gray between the light secondary text and the dark divider.
+        WordStatus.newWord => Color.lerp(
+          colors.onSurfaceVariant,
+          divider(colors),
+          0.6,
+        )!,
+        WordStatus.learning => statusLearning,
+        WordStatus.review => statusReview,
+        WordStatus.learned => statusLearned,
+        // Main text color: white in the dark theme (black in the light one).
+        WordStatus.known => colors.onSurface,
+      };
+
   static Color forArticle(String article) {
     return switch (article.toLowerCase()) {
       'der' => articleMasculine,
@@ -135,6 +153,44 @@ abstract final class AppColors {
       _ => accentBlue, // fallback for unknown articles
     };
   }
+}
+
+/// Text of list rows (word lists, category list): every line has the same
+/// size, line height and spacing; color and weight tell them apart.
+/// title = the German word / category name, subtitle = the translation /
+/// word count, caption = the gray line above a word (status).
+abstract final class AppListText {
+  static const _size = 16.0;
+  static const _height = 1.27; // a bit tighter than the default
+  static const _spacing = -0.2; // slightly condensed
+
+  /// Gap between the lines of one row.
+  static const gap = 2.2;
+
+  static TextStyle title(ColorScheme colors) => TextStyle(
+    // onSurface: white in the dark theme, near-black in the light one.
+    color: colors.onSurface,
+    fontSize: 17, // a touch bigger than the other lines
+    fontWeight: FontWeight.bold,
+    height: _height,
+    letterSpacing: _spacing,
+  );
+
+  static TextStyle subtitle(ColorScheme colors) => TextStyle(
+    color: colors.onSurface,
+    fontSize: _size,
+    fontWeight: FontWeight.w600,
+    height: _height,
+    letterSpacing: _spacing,
+  );
+
+  static TextStyle caption(BuildContext context) => TextStyle(
+    color: AppPalette.of(context).mutedText,
+    fontSize: _size,
+    fontWeight: FontWeight.w600,
+    height: _height,
+    letterSpacing: _spacing,
+  );
 }
 
 abstract final class AppFonts {

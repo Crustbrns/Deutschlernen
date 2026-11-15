@@ -1,5 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/domain/models/word.dart';
+import 'package:deutschlernen/domain/models/word_status.dart';
 import 'package:deutschlernen/ui/cards/widgets/word_card.dart';
 import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
@@ -9,8 +10,8 @@ import 'package:deutschlernen/ui/vocabulary/widgets/word_hero.dart';
 /// One word's card opened from the vocabulary.
 /// Same card as in learning, in its compact lookup mode. A word with
 /// progress gets a "reset progress" button under the card.
-/// Has a transparent background: the vocabulary tab stays visible, dimmed,
-/// under the card (see [WordDetailScreen.route]).
+/// Shown over a solid black backdrop that hides the list behind it
+/// (see [WordDetailScreen.route]).
 class WordDetailScreen extends StatefulWidget {
   const WordDetailScreen({
     super.key,
@@ -19,7 +20,7 @@ class WordDetailScreen extends StatefulWidget {
     required this.showTranscription,
     required this.lookupCount,
     required this.onSpeak,
-    required this.hasProgress,
+    required this.state,
     required this.onResetProgress,
   });
 
@@ -29,19 +30,23 @@ class WordDetailScreen extends StatefulWidget {
   final int lookupCount; // times opened from the search, shown in the header
   final ValueChanged<String> onSpeak;
 
-  /// False for a new word: nothing to reset, no button.
-  final bool hasProgress;
+  /// Shown in the card header; a new word has nothing to reset, no button.
+  final WordState state;
   final VoidCallback onResetProgress;
 
-  /// Route that keeps the previous screen under it. The card grows out of
-  /// the search row via [WordHero]; the barrier dims the screen below.
+  /// The card grows out of the list row via [WordHero] while the barrier
+  /// fades in to solid black, so the list is hidden once the card is open.
   static Route<void> route({
     required AppStrings strings,
     required WordDetailScreen screen,
   }) {
     return PageRouteBuilder<void>(
-      opaque: false, // previous screen is still painted below
-      barrierColor: Colors.black54,
+      // Not opaque: the list stays painted while the barrier fades in and
+      // out, and the hero has its row to fly back to on close.
+      opaque: false,
+      // Solid black, not a dim: the list behind must not show (user's
+      // choice). The barrier is not themed, black in both themes.
+      barrierColor: Colors.black,
       transitionDuration: const Duration(milliseconds: 350),
       reverseTransitionDuration: const Duration(milliseconds: 300),
       // A pushed route is not under the shell's AppStringsScope,
@@ -59,12 +64,13 @@ class WordDetailScreen extends StatefulWidget {
 }
 
 class _WordDetailScreenState extends State<WordDetailScreen> {
-  // Local copy: after a reset the button goes away while the card stays.
-  late bool _hasProgress = widget.hasProgress;
+  // Local copy: after a reset the card shows "new" and the button goes
+  // away while the card stays open.
+  late WordState _state = widget.state;
 
   void _reset() {
     widget.onResetProgress();
-    setState(() => _hasProgress = false);
+    setState(() => _state = (status: WordStatus.newWord, due: null));
   }
 
   @override
@@ -98,6 +104,7 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
                           bottomBar: const SizedBox.shrink(),
                           lookup: true,
                           lookupCount: widget.lookupCount,
+                          lookupState: _state,
                           onClose: () => Navigator.of(context).pop(),
                         ),
                       ),
@@ -107,7 +114,7 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
                   AnimatedSize(
                     duration: const Duration(milliseconds: 250),
                     curve: Curves.easeOutCubic,
-                    child: _hasProgress
+                    child: _state.status != WordStatus.newWord
                         ? Padding(
                             padding: const EdgeInsets.only(top: 12),
                             child: _ResetButton(
@@ -129,7 +136,7 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
 
 /// Full-width button under the card, styled as a piece of the card: same
 /// fill, outline and corner radius (see WordCard). Filled: it sits over the
-/// dimmed screen and would blend in without a fill.
+/// black backdrop and would blend in without a fill.
 class _ResetButton extends StatelessWidget {
   const _ResetButton({required this.label, required this.onPressed});
 

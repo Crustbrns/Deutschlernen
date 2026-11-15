@@ -64,12 +64,11 @@
   "remembered": "Помню",
   "statusNew": "Новое слово",
   "statusKnown": "Уже знаю",
-  "statusLearning": "Учится",
-  "statusLearned": "Выучено",
   "reviewNow": "повторить сейчас",
   "reviewInMinutesOther": "повтор через {n} мин",
   "reviewInHoursOther": "повтор через {n} ч",
   "reviewInDaysOther": "повтор через {n} дн.",
   "reviewInMonthsOther": "повтор через {n} мес.",
-  "resetProgress": "Сбросить прогресс по слову"
+  "resetProgress": "Сбросить прогресс по слову",
+  "statusLearning": "Учится"
 }

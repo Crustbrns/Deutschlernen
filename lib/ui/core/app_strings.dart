@@ -77,22 +77,25 @@ class AppStrings {
   /// "Выбрано 3 категории": the learn menu's categories row.
   String levelsSelected(int n) => _plural('levelsSelected', n);
 
-  /// Caption of a word in the lists: "Новое слово", "Учится · повтор через
-  /// 8 мин", "Повтор через 4 дн.", "Повторить сейчас", …
+  /// Caption of a word in the lists and the opened card's header:
+  /// "Новое слово", "Уже знаю", "Учится" (chosen, never reviewed), or just
+  /// when it comes back: "Повтор через 8 мин" / "Повторить сейчас".
   String wordState(WordState state, DateTime now) {
-    final due = state.due;
-    // Due already, or no date (new / known words).
-    final wait = due?.difference(now);
-    final when = (wait == null || wait <= Duration.zero)
-        ? _get('reviewNow')
-        : reviewIn(wait);
-    return switch (state.status) {
-      WordStatus.newWord => _get('statusNew'),
-      WordStatus.known => _get('statusKnown'),
-      WordStatus.learning => '${_get('statusLearning')} · $when',
-      WordStatus.review => _capitalize(when),
-      WordStatus.learned => '${_get('statusLearned')} · $when',
-    };
+    switch (state.status) {
+      case WordStatus.newWord:
+        return _get('statusNew');
+      case WordStatus.known:
+        return _get('statusKnown');
+      case WordStatus.learning:
+        return _get('statusLearning');
+      case WordStatus.review || WordStatus.learned:
+        final wait = state.due?.difference(now);
+        return _capitalize(
+          (wait == null || wait <= Duration.zero)
+              ? _get('reviewNow')
+              : reviewIn(wait),
+        );
+    }
   }
 
   /// "повтор через 5 мин / 3 ч / 4 дн. / 2 мес." Rounded up, so it never

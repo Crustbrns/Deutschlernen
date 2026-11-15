@@ -1,6 +1,5 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/domain/models/word.dart';
-import 'package:deutschlernen/domain/models/word_status.dart';
 import 'package:deutschlernen/ui/cards/view_models/cards_view_model.dart';
 import 'package:deutschlernen/ui/cards/widgets/cards_screen.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
@@ -55,7 +54,7 @@ class _HomeShellState extends State<HomeShell> {
           showTranscription: widget.settingsViewModel.showTranscription,
           lookupCount: _vm.lookupCount(word.id),
           onSpeak: _vm.speak,
-          hasProgress: _vm.stateOf(word.id).status != WordStatus.newWord,
+          state: _vm.stateOf(word.id),
           onResetProgress: () => _vm.resetProgress(word.id),
         ),
       ),
