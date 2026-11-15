@@ -27,6 +27,7 @@ abstract final class AppIcons {
   static const circle = IconData(0xe18a, fontFamily: _font);
   static const clockCounterClockwise = IconData(0xe1a0, fontFamily: _font);
   static const deviceMobile = IconData(0xe1e0, fontFamily: _font);
+  static const faders = IconData(0xe228, fontFamily: _font);
   static const eye = IconData(0xe220, fontFamily: _font);
   static const info = IconData(0xe2ce, fontFamily: _font);
   static const listChecks = IconData(0xeadc, fontFamily: _font);
@@ -35,7 +36,6 @@ abstract final class AppIcons {
   static const pencilSimple = IconData(0xe3b4, fontFamily: _font);
   static const play = IconData(0xe3d0, fontFamily: _font);
   static const plusCircle = IconData(0xe3d6, fontFamily: _font);
-  static const slidersHorizontal = IconData(0xe434, fontFamily: _font);
   static const smiley = IconData(0xe436, fontFamily: _font);
   static const smileySad = IconData(0xe43e, fontFamily: _font);
   static const speakerHigh = IconData(0xe44a, fontFamily: _font);

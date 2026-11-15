@@ -162,7 +162,7 @@ the bar, not the tabs.
 
 Tabs and their icons (`AppIcons`): Практика / Practice — `cards` (flashcard stack),
 Категории / Categories — `squaresFour`, Прогресс / Progress — `chartLineUp`,
-Настройки — `slidersHorizontal`.
+Настройки — `faders` turned a quarter clockwise (`RotatedBox`): three flat lines with tick knobs.
 
 `HomeShell` uses `extendBody: true`, so tab content scrolls under the bar. Every scrollable
 tab screen adds `MediaQuery.paddingOf(context).bottom` to its bottom padding, and
