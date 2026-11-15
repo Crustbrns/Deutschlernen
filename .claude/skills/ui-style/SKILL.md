@@ -72,16 +72,29 @@ Separate blocks are only for different kinds of content (e.g. a title, then a li
 
 ## Bottom navigation bar
 
-`AppBottomBar` (`lib/ui/home/widgets/app_bottom_bar.dart`) is frosted glass: `BackdropFilter`
-blur 20 over `palette.card` at α 0.7, **no outline or top line**, no indicator pill, no ripple.
-It is a custom row of tabs, not Material's `NavigationBar` (that one forces a big gap under the
-icon): icon 27, then a 1px gap, then the 11px label; row padding 12 horizontal, 5 vertical. Selected tab = `AppColors.accentBlue`
-icon and label, others `palette.mutedText`.
+`AppBottomBar` (`lib/ui/home/widgets/app_bottom_bar.dart`) is a **floating pill** of frosted
+glass: 16 from the screen sides, above the home indicator (12 from the bottom without one),
+radius 34, `BackdropFilter` blur 20 over `palette.card` at α 0.75, thin border
+`colors.outlineVariant` α 0.4, no ripple. A custom row of tabs, not Material's `NavigationBar`.
+Tab: icon 27, 2px gap, 12px w600 label.
 
-Tabs and their icons (`AppIcons`): Regular when not selected, the `*Fill` (solid) variant when
-selected — all-solid was tried and looked too heavy.
-Учить / Learn — `cards` (flashcard stack), Словарь — `bookOpen`, Прогресс / Progress —
-`chartLineUp`, Настройки — `slidersHorizontal`.
+Selection: a lighter pill behind the selected tab (`colors.onSurface` α 0.1, 6px inset from
+the bar's edge). All icons and labels are `colors.onSurface` (white in dark); the pill alone
+marks the selected tab. Icons stay Regular (earlier tries: blue color only; Fill when
+selected; muted unselected tabs — all replaced by this design).
+
+Liquid-glass motion (iOS 26 style): on a tap the pill lifts into a lens and settles back in one
+continuous arc (lift = sin²(π·t) over a 420 ms `easeInOutQuart` slide: slow–fast–slow, user asked for it — no hand-off between
+animations, it looked jerky). The lens grows a little (1.2× wide, 1.22× tall), `RawMagnifier`
+enlarges the tabs under it (×1.12) and `LiquidGlass` (package `liquid_glass_renderer`, Impeller
+only) refracts them at the edges: blur 0 and chromatic aberration 0 — the user rejected both the
+soapy blur and the rainbow rim. Dragging along the bar holds the lens up and moves it with the
+finger, a haptic tick per tab crossed; release snaps to the nearest tab. Taps are handled by
+the bar, not the tabs.
+
+Tabs and their icons (`AppIcons`): Практика / Practice — `cards` (flashcard stack),
+Категории / Categories — `squaresFour`, Прогресс / Progress — `chartLineUp`,
+Настройки — `slidersHorizontal`.
 
 `HomeShell` uses `extendBody: true`, so tab content scrolls under the bar. Every scrollable
 tab screen adds `MediaQuery.paddingOf(context).bottom` to its bottom padding, and
@@ -90,14 +103,13 @@ under the bar.
 
 ## Icons
 
-- All icons are **Phosphor Regular** (thin line icons with rounded ends) — except the selected
-  bottom bar tab, which uses Phosphor Fill (`*Fill` in `AppIcons`, font `assets/fonts/PhosphorFill.ttf`) — via `AppIcons`
+- All icons are **Phosphor Regular** (thin line icons with rounded ends) via `AppIcons`
   (`lib/ui/core/app_icons.dart`, font `assets/fonts/Phosphor.ttf`): `AppIcons.x`, `.arrowLeft`,
   `.speakerHigh`, … Never use Material `Icons.*` or `CupertinoIcons.*` — the app must look like
   one icon set. Do NOT add the `phosphor_flutter` package: it doesn't compile with current
   Flutter. To add an icon, follow the comment at the top of `app_icons.dart`.
 - A selected state is shown by **color** (blue icon and label), not by a highlight behind the
-  icon. Only the bottom bar also switches the icon to its Fill variant.
+  icon. Only the bottom bar uses a highlight pill (see above).
 - Sizes: 20 in rows and small buttons, 24 default, 28 in large mode buttons.
 - Colors: `colors.onSurfaceVariant` when inactive, `AppColors.accentBlue` when active,
   `colors.onSurface` on filled neutral buttons.
