@@ -26,5 +26,6 @@
   "searchHint": "搜索单词",
   "nothingFound": "未找到结果",
   "interfaceLanguage": "界面语言",
-  "wordsLanguage": "词汇语言"
+  "wordsLanguage": "词汇语言",
+  "noWordsYet": "这里还没有单词"
 }

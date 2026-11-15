@@ -36,6 +36,7 @@ class AppStrings {
   String get wrongAnswer => _get('wrongAnswer');
   String get searchHint => _get('searchHint');
   String get nothingFound => _get('nothingFound');
+  String get noWordsYet => _get('noWordsYet');
 
   /// Texts for the current language: `AppStrings.of(context).known`.
   static AppStrings of(BuildContext context) {

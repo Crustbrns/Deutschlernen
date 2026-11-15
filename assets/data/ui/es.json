@@ -26,5 +26,6 @@
   "searchHint": "Buscar palabras",
   "nothingFound": "No se encontró nada",
   "interfaceLanguage": "Idioma de la interfaz",
-  "wordsLanguage": "Idioma de las palabras"
+  "wordsLanguage": "Idioma de las palabras",
+  "noWordsYet": "Aquí aún no hay palabras"
 }
