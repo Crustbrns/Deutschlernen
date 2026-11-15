@@ -23,5 +23,7 @@
   "checkAnswer": "检查答案",
   "answerHint": "输入翻译或德语单词",
   "correct": "正确！",
-  "wrongAnswer": "不对。正确答案："
+  "wrongAnswer": "不对。正确答案：",
+  "interfaceLanguage": "界面语言",
+  "wordsLanguage": "词汇语言"
 }

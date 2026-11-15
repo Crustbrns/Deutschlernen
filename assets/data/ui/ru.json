@@ -23,5 +23,7 @@
   "checkAnswer": "Проверить",
   "answerHint": "Введите перевод или немецкое слово",
   "correct": "Верно!",
-  "wrongAnswer": "Неверно. Правильный ответ:"
+  "wrongAnswer": "Неверно. Правильный ответ:",
+  "interfaceLanguage": "Язык интерфейса",
+  "wordsLanguage": "Язык слов"
 }

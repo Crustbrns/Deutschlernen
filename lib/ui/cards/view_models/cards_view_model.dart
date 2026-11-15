@@ -23,11 +23,17 @@ class CardsViewModel extends ChangeNotifier {
 
   List<Word> _words = [];
   List<AppLanguage> _languages = [];
-  AppLanguage _language = const AppLanguage(
+  static const _defaultLanguage = AppLanguage(
     code: 'en',
     label: 'English',
     country: 'GB',
   );
+
+  /// Language of the interface texts.
+  AppLanguage _uiLanguage = _defaultLanguage;
+
+  /// Language of the word translations.
+  AppLanguage _wordLanguage = _defaultLanguage;
   AppStrings _strings = const AppStrings({});
   final List<CardDecision> _history = [];
   CardDecision? _lastUndone;
@@ -36,7 +42,8 @@ class CardsViewModel extends ChangeNotifier {
 
   List<Word> get words => _words;
   List<AppLanguage> get languages => _languages;
-  AppLanguage get language => _language;
+  AppLanguage get uiLanguage => _uiLanguage;
+  AppLanguage get wordLanguage => _wordLanguage;
   AppStrings get strings => _strings;
   bool get isLoading => _isLoading;
 
@@ -54,11 +61,13 @@ class CardsViewModel extends ChangeNotifier {
     notifyListeners();
 
     _languages = await _languageRepository.getLanguages();
-    final savedCode = await _settingsRepository.loadLanguageCode();
-    _language = _pickLanguage(savedCode);
+    _uiLanguage = _pickLanguage(await _settingsRepository.loadUiLanguageCode());
+    _wordLanguage = _pickLanguage(
+      await _settingsRepository.loadWordLanguageCode(),
+    );
 
-    _words = await _wordRepository.getWords(_language);
-    _strings = AppStrings(await _languageRepository.getUiTexts(_language));
+    _words = await _wordRepository.getWords(_wordLanguage);
+    _strings = AppStrings(await _languageRepository.getUiTexts(_uiLanguage));
     _history.clear();
     _lastUndone = null;
 
@@ -81,19 +90,30 @@ class CardsViewModel extends ChangeNotifier {
         _languages.first;
   }
 
-  /// Switches the language without losing the learning progress.
-  Future<void> setLanguage(AppLanguage language) async {
-    if (language == _language) return;
+  /// Switches the interface language. Words and progress stay as they are.
+  Future<void> setUiLanguage(AppLanguage language) async {
+    if (language == _uiLanguage) return;
 
-    final words = await _wordRepository.getWords(language);
     final texts = await _languageRepository.getUiTexts(language);
 
-    _language = language;
-    _words = words;
+    _uiLanguage = language;
     _strings = AppStrings(texts);
     notifyListeners();
 
-    await _settingsRepository.saveLanguageCode(language.code);
+    await _settingsRepository.saveUiLanguageCode(language.code);
+  }
+
+  /// Switches the language of the translations without losing the progress.
+  Future<void> setWordLanguage(AppLanguage language) async {
+    if (language == _wordLanguage) return;
+
+    final words = await _wordRepository.getWords(language);
+
+    _wordLanguage = language;
+    _words = words;
+    notifyListeners();
+
+    await _settingsRepository.saveWordLanguageCode(language.code);
   }
 
   /// The card has been released and starts flying off screen.

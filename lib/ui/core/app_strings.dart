@@ -17,6 +17,8 @@ class AppStrings {
   String get back => _get('back');
   String get menu => _get('menu');
   String get language => _get('language');
+  String get interfaceLanguage => _get('interfaceLanguage');
+  String get wordsLanguage => _get('wordsLanguage');
   String get goodWork => _get('goodWork');
   String get restart => _get('restart');
   String get tabMain => _get('tabMain');

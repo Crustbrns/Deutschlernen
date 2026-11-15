@@ -23,5 +23,7 @@
   "checkAnswer": "Check answer",
   "answerHint": "Type the translation or the German word",
   "correct": "Correct!",
-  "wrongAnswer": "Not quite. Correct answer:"
+  "wrongAnswer": "Not quite. Correct answer:",
+  "interfaceLanguage": "Interface language",
+  "wordsLanguage": "Words language"
 }
