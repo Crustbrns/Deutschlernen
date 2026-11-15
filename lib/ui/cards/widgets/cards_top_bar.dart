@@ -1,5 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
+import 'package:deutschlernen/ui/core/widgets/round_icon_button.dart';
 
 class CardsTopBar extends StatelessWidget {
   const CardsTopBar({
@@ -18,10 +19,10 @@ class CardsTopBar extends StatelessWidget {
     final strings = AppStrings.of(context);
     return Row(
       children: [
-        IconButton.filledTonal(
-          onPressed: onClose,
+        RoundIconButton(
+          icon: Icons.close,
           tooltip: strings.close,
-          icon: const Icon(Icons.close),
+          onPressed: onClose,
         ),
         Expanded(
           child: Padding(
@@ -29,10 +30,10 @@ class CardsTopBar extends StatelessWidget {
             child: _ProgressBar(progress: progress),
           ),
         ),
-        IconButton.filledTonal(
-          onPressed: onUndo,
+        RoundIconButton(
+          icon: Icons.arrow_back,
           tooltip: strings.back,
-          icon: const Icon(Icons.arrow_back),
+          onPressed: onUndo,
         ),
       ],
     );

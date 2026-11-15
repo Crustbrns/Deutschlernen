@@ -4,6 +4,7 @@ import 'package:deutschlernen/ui/cards/widgets/answer_modes.dart';
 import 'package:deutschlernen/ui/cards/widgets/example_tile.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
+import 'package:deutschlernen/ui/core/widgets/round_icon_button.dart';
 
 class WordCard extends StatefulWidget {
   const WordCard({
@@ -13,7 +14,17 @@ class WordCard extends StatefulWidget {
     required this.showTranscription,
     required this.otherTranslations,
     required this.bottomBar,
+    this.lookup = false,
+    this.onClose,
   });
+
+  /// When set, a close button is pinned to the card's top right corner.
+  final VoidCallback? onClose;
+
+  /// Opened from the vocabulary to look a word up, not to learn it:
+  /// translation shown right away instead of the answer modes, no
+  /// "new word" status, no extra space under the examples.
+  final bool lookup;
 
   final Word word;
   final ValueChanged<String> onSpeak;
@@ -36,21 +47,21 @@ class _WordCardState extends State<WordCard> {
 
   AnswerMode? _mode; // null = only the three buttons are visible
 
-  /// Mode 1: the translation, revealed by the eye button above.
-  Widget _buildShownTranslation(Word word) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 16),
-      child: Center(
-        child: FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Text(
-            word.translation,
-            style: const TextStyle(
-              fontFamily: AppFonts.translation,
-              fontSize: 42,
-              fontWeight: FontWeight.w600, // = wght
-              fontVariations: AppFonts.translationVariations,
-            ),
+  /// Lookup is a compact card: the word block's fonts are 20% smaller.
+  double get _scale => widget.lookup ? 0.8 : 1.0;
+
+  /// Big translation: revealed by the eye button, or always shown in lookup.
+  Widget _buildTranslation(Word word) {
+    return Center(
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Text(
+          word.translation,
+          style: TextStyle(
+            fontFamily: AppFonts.translation,
+            fontSize: 42 * _scale,
+            fontWeight: FontWeight.w600, // = wght
+            fontVariations: AppFonts.translationVariations,
           ),
         ),
       ),
@@ -62,6 +73,7 @@ class _WordCardState extends State<WordCard> {
     final colors = Theme.of(context).colorScheme;
     final palette = AppPalette.of(context);
     final word = widget.word;
+    final lookup = widget.lookup;
 
     return Material(
       color: palette.card,
@@ -81,14 +93,14 @@ class _WordCardState extends State<WordCard> {
               children: [
                 SingleChildScrollView(
                   // 20px from the top, the same as the level chip's inset from the left.
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 24),
+                  padding: EdgeInsets.fromLTRB(0, 20, 0, lookup ? 0 : 24),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       // Header is inside the scroll view, so it scrolls away.
                       Padding(
                         padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                        child: _Header(level: word.level),
+                        child: _Header(level: word.level, showStatus: !lookup),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
@@ -97,7 +109,7 @@ class _WordCardState extends State<WordCard> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            const SizedBox(height: 30),
+                            SizedBox(height: lookup ? 12 : 30),
                             // FittedBox shrinks long German words instead of overflowing.
                             FittedBox(
                               fit: BoxFit.scaleDown,
@@ -105,7 +117,7 @@ class _WordCardState extends State<WordCard> {
                                 TextSpan(
                                   style: TextStyle(
                                     fontFamily: AppFonts.display,
-                                    fontSize: 44,
+                                    fontSize: 44 * _scale,
                                     fontWeight: FontWeight
                                         .w600, // keep in sync with wght
                                     fontVariations: AppFonts.word,
@@ -128,14 +140,14 @@ class _WordCardState extends State<WordCard> {
                               // Negative gap: the line boxes of big fonts leave extra
                               // space, so the plural is pulled up a bit.
                               Transform.translate(
-                                offset: const Offset(0, -6),
+                                offset: Offset(0, -6 * _scale),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   child: Text(
                                     '(die ${word.plural})', // plural is always "die"
                                     style: TextStyle(
                                       fontFamily: AppFonts.display,
-                                      fontSize: 21,
+                                      fontSize: 21 * _scale,
                                       fontWeight: FontWeight.w400, // regular
                                       fontVariations: AppFonts.plural,
                                       color: colors.onSurfaceVariant,
@@ -144,45 +156,57 @@ class _WordCardState extends State<WordCard> {
                                 ),
                               ),
                             ],
-                            const SizedBox(height: 16),
+                            SizedBox(height: lookup ? 6 : 16),
                             Center(
                               child: _TranscriptionButton(
                                 transcription: widget.showTranscription
                                     ? word.transcription
                                     : null,
+                                scale: _scale,
                                 onPressed: () =>
                                     widget.onSpeak(word.withArticle),
                               ),
                             ),
-                            const SizedBox(height: 20),
-                            AnswerModeBar(
-                              selected: _mode,
-                              // The eye shows the translation right away.
-                              onPressed: (mode) =>
-                                  setState(() => _mode = mode),
-                            ),
-                            // Panel of the selected mode, right above the examples.
-                            AnimatedSize(
-                              duration: const Duration(milliseconds: 200),
-                              curve: Curves.easeOut,
-                              alignment: Alignment.topCenter,
-                              child: switch (_mode) {
-                                null => const SizedBox(width: double.infinity),
-                                AnswerMode.show => _buildShownTranslation(word),
-                                AnswerMode.write => Padding(
-                                  padding: const EdgeInsets.only(top: 16),
-                                  child: WriteAnswerPanel(word: word),
-                                ),
-                                AnswerMode.choice => Padding(
-                                  padding: const EdgeInsets.only(top: 16),
-                                  child: ChoiceAnswerPanel(
-                                    word: word,
-                                    otherTranslations: widget.otherTranslations,
+                            SizedBox(height: lookup ? 6 : 20),
+                            if (lookup)
+                              // Nothing to guess here: just the translation.
+                              _buildTranslation(word)
+                            else ...[
+                              AnswerModeBar(
+                                selected: _mode,
+                                // The eye shows the translation right away.
+                                onPressed: (mode) =>
+                                    setState(() => _mode = mode),
+                              ),
+                              // Panel of the selected mode, right above the examples.
+                              AnimatedSize(
+                                duration: const Duration(milliseconds: 200),
+                                curve: Curves.easeOut,
+                                alignment: Alignment.topCenter,
+                                child: switch (_mode) {
+                                  null => const SizedBox(
+                                    width: double.infinity,
                                   ),
-                                ),
-                              },
-                            ),
-                            const SizedBox(height: 28),
+                                  AnswerMode.show => Padding(
+                                    padding: const EdgeInsets.only(top: 16),
+                                    child: _buildTranslation(word),
+                                  ),
+                                  AnswerMode.write => Padding(
+                                    padding: const EdgeInsets.only(top: 16),
+                                    child: WriteAnswerPanel(word: word),
+                                  ),
+                                  AnswerMode.choice => Padding(
+                                    padding: const EdgeInsets.only(top: 16),
+                                    child: ChoiceAnswerPanel(
+                                      word: word,
+                                      otherTranslations:
+                                          widget.otherTranslations,
+                                    ),
+                                  ),
+                                },
+                              ),
+                            ],
+                            SizedBox(height: lookup ? 16 : 28),
                           ],
                         ),
                       ),
@@ -203,53 +227,73 @@ class _WordCardState extends State<WordCard> {
                           initiallyExpanded: false,
                           onSpeak: widget.onSpeak,
                         ),
-                      // Closing line under the last row, same as the rows' top borders.
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AppSizes.cardInset,
+                      // Lookup: the last example ends at the card's bottom edge,
+                      // so no closing line and no extra room.
+                      if (!lookup) ...[
+                        // Closing line under the last row, same as the rows' top borders.
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppSizes.cardInset,
+                          ),
+                          child: Divider(
+                            height: 1,
+                            thickness: 1,
+                            color: AppColors.divider(colors),
+                          ),
                         ),
-                        child: Divider(
-                          height: 1,
-                          thickness: 1,
-                          color: AppColors.divider(colors),
-                        ),
-                      ),
-                      // Extra scroll room, so the last example can be lifted up
-                      // away from the card's bottom edge.
-                      const SizedBox(height: 100),
+                        // Extra scroll room, so the last example can be lifted up
+                        // away from the card's bottom edge.
+                        const SizedBox(height: 100),
+                      ],
                     ],
                   ),
                 ),
                 // Fade at the bottom edge: the content dissolves into the
                 // card color right above the buttons instead of being cut.
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  height: _fadeHeight,
-                  // IgnorePointer: taps go through to the rows underneath.
-                  child: IgnorePointer(
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            palette.card.withValues(alpha: 0),
-                            palette.card,
-                          ],
+                // Not in lookup: there are no buttons, and at the end of the
+                // scroll it would fade the last example.
+                if (!lookup)
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    height: _fadeHeight,
+                    // IgnorePointer: taps go through to the rows underneath.
+                    child: IgnorePointer(
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              palette.card.withValues(alpha: 0),
+                              palette.card,
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
+                // Pinned, not in the scroll view: stays reachable while
+                // the examples are scrolled. Centered on the level chip row.
+                if (widget.onClose case final onClose?)
+                  Positioned(
+                    top: 14,
+                    right: 14,
+                    child: RoundIconButton(
+                      icon: Icons.close,
+                      tooltip: AppStrings.of(context).close,
+                      onPressed: onClose,
+                    ),
+                  ),
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
-            child: widget.bottomBar,
-          ),
+          if (!lookup)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
+              child: widget.bottomBar,
+            ),
         ],
       ),
     );
@@ -260,11 +304,13 @@ class _TranscriptionButton extends StatelessWidget {
   const _TranscriptionButton({
     required this.transcription,
     required this.onPressed,
+    this.scale = 1,
   });
 
   /// null = show only the speaker icon.
   final String? transcription;
   final VoidCallback onPressed;
+  final double scale; // shrinks text, icon and padding together
 
   @override
   Widget build(BuildContext context) {
@@ -279,8 +325,14 @@ class _TranscriptionButton extends StatelessWidget {
         side: BorderSide(color: AppColors.darken(colors.outlineVariant, 0.25)),
         foregroundColor: colors.onSurface,
         // All sizes are 75% of the previous ones.
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
-        minimumSize: const Size(0, 36),
+        padding: EdgeInsets.symmetric(
+          horizontal: 15 * scale,
+          vertical: 6 * scale,
+        ),
+        minimumSize: Size(0, 36 * scale),
+        // Otherwise Material pads the button to 48px tall, eating the
+        // compact spacing around it.
+        tapTargetSize: scale < 1 ? MaterialTapTargetSize.shrinkWrap : null,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -288,14 +340,14 @@ class _TranscriptionButton extends StatelessWidget {
           if (transcription != null) ...[
             Text(
               transcription!,
-              style: const TextStyle(
-                fontSize: 16.5,
+              style: TextStyle(
+                fontSize: 16.5 * scale,
                 fontWeight: FontWeight.w500,
               ),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: 12 * scale),
           ],
-          const Icon(Icons.volume_up_outlined, size: 19.5),
+          Icon(Icons.volume_up_outlined, size: 19.5 * scale),
         ],
       ),
     );
@@ -303,9 +355,10 @@ class _TranscriptionButton extends StatelessWidget {
 }
 
 class _Header extends StatelessWidget {
-  const _Header({required this.level});
+  const _Header({required this.level, required this.showStatus});
 
   final String level;
+  final bool showStatus; // square + "New word" next to the level
 
   @override
   Widget build(BuildContext context) {
@@ -324,13 +377,15 @@ class _Header extends StatelessWidget {
             child: Text(level, style: const TextStyle(fontSize: 13.5)),
           ),
         ),
-        const SizedBox(width: 16),
-        Container(
-          width: 12,
-          height: 12,
-          decoration: BoxDecoration(
-            color: colors.outline,
-            borderRadius: BorderRadius.circular(3),
+        if (showStatus) ...[
+          const SizedBox(width: 16),
+          Container(
+            width: 12,
+            height: 12,
+            decoration: BoxDecoration(
+              color: colors.outline,
+              borderRadius: BorderRadius.circular(3),
+            ),
           ),
         ),
         const SizedBox(width: 10),
@@ -345,7 +400,7 @@ class _Header extends StatelessWidget {
               color: AppPalette.of(context).mutedText,
             ),
           ),
-        ),
+        ],
       ],
     );
   }

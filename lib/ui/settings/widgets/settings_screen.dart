@@ -5,6 +5,7 @@ import 'package:deutschlernen/ui/cards/widgets/language_sheet.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/settings/view_models/settings_view_model.dart';
+import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
 
 /// Settings, grouped into categories. Each category is a small titled card.
 class SettingsScreen extends StatelessWidget {
@@ -257,6 +258,8 @@ class _LanguageTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      // 16 = divider indent of the GroupedCard.
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
       leading: Icon(icon),
       title: Text(title),
       subtitle: Text('${current.flag}  ${current.label}'),
