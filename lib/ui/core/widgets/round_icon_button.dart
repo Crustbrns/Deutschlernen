@@ -8,11 +8,13 @@ class RoundIconButton extends StatelessWidget {
     required this.icon,
     required this.tooltip,
     required this.onPressed,
+    this.iconColor,
   });
 
   final IconData icon;
   final String tooltip;
   final VoidCallback? onPressed; // null = disabled
+  final Color? iconColor; // default: colors.onSurface
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class RoundIconButton extends StatelessWidget {
       tooltip: tooltip,
       style: IconButton.styleFrom(
         backgroundColor: subtle,
-        foregroundColor: colors.onSurface,
+        foregroundColor: iconColor ?? colors.onSurface,
         // Disabled: same fill, faded icon, so the button keeps its place.
         disabledBackgroundColor: subtle,
         disabledForegroundColor: colors.onSurface.withValues(alpha: 0.3),

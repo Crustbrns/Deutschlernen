@@ -5,7 +5,6 @@ import 'package:deutschlernen/ui/cards/widgets/language_sheet.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/settings/view_models/settings_view_model.dart';
-import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
 
 /// Settings, grouped into categories. Each category is a small titled card.
 class SettingsScreen extends StatelessWidget {

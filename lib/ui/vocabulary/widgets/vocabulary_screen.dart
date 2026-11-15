@@ -3,12 +3,13 @@ import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
-import 'package:deutschlernen/ui/core/widgets/play_button.dart';
-import 'package:deutschlernen/ui/vocabulary/widgets/word_hero.dart';
+import 'package:deutschlernen/ui/core/widgets/round_icon_button.dart';
+import 'package:deutschlernen/ui/vocabulary/widgets/level_words_screen.dart';
+import 'package:deutschlernen/ui/vocabulary/widgets/word_list.dart';
 
-/// Vocabulary tab: title, word search under it, below them the dictionaries.
-/// While the search has text, the matching words replace the dictionaries.
-/// The dictionary list is a placeholder; real ones will come from a repository.
+/// Vocabulary tab: title, word search under it, below them the levels
+/// (A1, A2, …) with their word counts; a level opens its words.
+/// While the search has text, the matching words replace the levels.
 class VocabularyScreen extends StatefulWidget {
   const VocabularyScreen({
     super.key,
@@ -26,10 +27,7 @@ class VocabularyScreen extends StatefulWidget {
 }
 
 class _VocabularyScreenState extends State<VocabularyScreen> {
-  static const _dictionaries = ['A1', 'A2', 'B1', 'B2'];
-
   final _searchController = TextEditingController();
-  int _selected = 0;
 
   @override
   void dispose() {
@@ -66,7 +64,7 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
           ),
           Expanded(
             child: query.isEmpty
-                ? _buildDictionaries(context)
+                ? _buildLevels(context)
                 : _buildResults(context, query),
           ),
         ],
@@ -89,57 +87,73 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
       );
     }
 
-    // A Column builds every row at once; fine for now, switch to a lazy list
-    // if the dictionary grows to thousands of words.
-    return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-      // Scrolling the results hides the keyboard, as in iOS search.
-      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-      child: GroupedCard(
-        children: [
-          for (final word in results)
-            _ResultRow(
-              word: word,
-              onTap: () {
-                FocusScope.of(context).unfocus();
-                widget.onWordSelected(word);
-              },
-              onSpeak: () => widget.onSpeak(word.withArticle),
-            ),
-        ],
+    return WordList(
+      words: results,
+      onWordSelected: widget.onWordSelected,
+      onSpeak: widget.onSpeak,
+    );
+  }
+
+  void _openLevel(String level, List<Word> words) {
+    final strings = AppStrings.of(context);
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        // A pushed route is not under the shell's AppStringsScope,
+        // so the scope is provided again.
+        builder: (_) => AppStringsScope(
+          strings: strings,
+          child: LevelWordsScreen(
+            level: level,
+            words: words,
+            onWordSelected: widget.onWordSelected,
+            onSpeak: widget.onSpeak,
+          ),
+        ),
       ),
     );
   }
 
-  Widget _buildDictionaries(BuildContext context) {
+  Widget _buildLevels(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
       child: GroupedCard(
         children: [
-          for (var i = 0; i < _dictionaries.length; i++)
-            ListTile(
-              // 16 = divider indent, so text and lines start at one edge.
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-              title: Text(_dictionaries[i]),
-              // In a shared card a row can't have its own outline, so the
-              // selection is shown by the check only.
-              trailing: Icon(
-                i == _selected ? Icons.check_circle : Icons.circle_outlined,
-                color: i == _selected
-                    ? AppColors.accentBlue
-                    : colors.onSurfaceVariant,
-              ),
-              onTap: () => setState(() => _selected = i),
+          for (final level in Word.levels)
+            _buildLevelRow(
+              level,
+              widget.words.where((w) => w.level == level).toList(),
+              colors,
             ),
         ],
       ),
     );
   }
+
+  Widget _buildLevelRow(String level, List<Word> words, ColorScheme colors) {
+    return ListTile(
+      // 16 = divider indent, so text and lines start at one edge.
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+      title: Text(level),
+      // "5 слов": same quiet gray as the search hint.
+      trailing: Text(
+        AppStrings.of(context).wordCount(words.length),
+        style: TextStyle(
+          fontSize: 15,
+          color: AppColors.quietText(colors),
+        ),
+      ),
+      onTap: () => _openLevel(level, words),
+    );
+  }
 }
 
-class _SearchField extends StatelessWidget {
+/// Pill-shaped search field, iOS-style. Idle: no outline, full width.
+/// Active (focused or holding text): blue outline while focused, and the
+/// field shrinks to make room for a round close button on its right.
+/// The button clears the text, hides the keyboard and returns the idle look.
+class _SearchField extends StatefulWidget {
   const _SearchField({
     required this.controller,
     required this.hint,
@@ -151,117 +165,91 @@ class _SearchField extends StatelessWidget {
   final VoidCallback onChanged;
 
   @override
-  Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
-    OutlineInputBorder border(Color color) => OutlineInputBorder(
-      borderRadius: BorderRadius.circular(20),
-      borderSide: BorderSide(color: color),
-    );
-
-    return TextField(
-      controller: controller,
-      onChanged: (_) => onChanged(),
-      autocorrect: false,
-      enableSuggestions: false,
-      textInputAction: TextInputAction.search,
-      decoration: InputDecoration(
-        hintText: hint,
-        prefixIcon: const Icon(Icons.search),
-        // Clear button only when there is something to clear.
-        suffixIcon: controller.text.isEmpty
-            ? null
-            : IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: () {
-                  controller.clear();
-                  onChanged();
-                },
-              ),
-        filled: true,
-        fillColor: AppPalette.of(context).card,
-        border: border(colors.outlineVariant.withValues(alpha: 0.4)),
-        enabledBorder: border(colors.outlineVariant.withValues(alpha: 0.4)),
-        focusedBorder: border(AppColors.accentBlue),
-      ),
-    );
-  }
+  State<_SearchField> createState() => _SearchFieldState();
 }
 
-/// Search result: level on top, "der Hund · die Hunde" in the middle,
-/// translation below, left-aligned; play button on the right.
-class _ResultRow extends StatelessWidget {
-  const _ResultRow({
-    required this.word,
-    required this.onTap,
-    required this.onSpeak,
-  });
+class _SearchFieldState extends State<_SearchField> {
+  final _focusNode = FocusNode();
 
-  final Word word;
-  final VoidCallback onTap;
-  final VoidCallback onSpeak;
+  @override
+  void initState() {
+    super.initState();
+    // Rebuild on focus changes: the outline and the button depend on it.
+    _focusNode.addListener(() => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  // Also active with text but no focus (e.g. after scrolling the results
+  // hid the keyboard), so the text can still be cleared.
+  bool get _isActive =>
+      _focusNode.hasFocus || widget.controller.text.isNotEmpty;
+
+  void _close() {
+    widget.controller.clear();
+    _focusNode.unfocus();
+    widget.onChanged();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final pill = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(100), // fully round ends
+      borderSide: BorderSide.none,
+    );
+    // Quiet grays, so the search doesn't draw attention from the content:
+    // the outline is the divider color, hint and close icon a bit more
+    // visible to stay readable.
     final colors = Theme.of(context).colorScheme;
-    final forms = [word.withArticle, ?word.pluralWithArticle].join(' · ');
+    final gray = AppColors.divider(colors);
+    final lightGray = AppColors.quietText(colors);
 
-    // No own background: the row sits inside the shared results card.
-    // Hero: the opened card grows out of this row and shrinks back into it.
-    return WordHero(
-      wordId: word.id,
-      // Transparent Material: InkWell needs one, and the row is moved out
-      // of the results card while the hero flies.
-      child: Material(
-        type: MaterialType.transparency,
-        child: InkWell(
-          onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 4, 8),
-            child: Row(
-              children: [
-                // Expanded: long words wrap instead of pushing the button out.
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        word.level,
-                        style: TextStyle(
-                          color: AppPalette.of(context).mutedText,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          height: 1.2, // tighter than the default line height
-                        ),
-                      ),
-                      const SizedBox(height: 3),
-                      Text(
-                        forms,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          height: 1.2,
-                        ),
-                      ),
-                      const SizedBox(height: 3),
-                      Text(
-                        word.translation,
-                        style: TextStyle(
-                          color: colors.onSurfaceVariant,
-                          fontWeight: FontWeight.w600,
-                          height: 1.2,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                // Own tap target: plays the word without opening the card.
-                PlayButton(onPressed: onSpeak),
-              ],
+    return Row(
+      children: [
+        Expanded(
+          child: TextField(
+            controller: widget.controller,
+            focusNode: _focusNode,
+            onChanged: (_) => widget.onChanged(),
+            autocorrect: false,
+            enableSuggestions: false,
+            textInputAction: TextInputAction.search,
+            decoration: InputDecoration(
+              hintText: widget.hint,
+              hintStyle: TextStyle(color: lightGray),
+              prefixIcon: const Icon(Icons.search),
+              filled: true,
+              fillColor: AppPalette.of(context).card,
+              isDense: true,
+              contentPadding: const EdgeInsets.symmetric(vertical: 10),
+              border: pill,
+              enabledBorder: pill,
+              focusedBorder: pill.copyWith(borderSide: BorderSide(color: gray)),
             ),
           ),
         ),
-      ),
+        // AnimatedSize: the field shrinks/grows smoothly as the button
+        // appears/disappears instead of jumping.
+        AnimatedSize(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOutCubic,
+          child: _isActive
+              ? Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: RoundIconButton(
+                    icon: Icons.close,
+                    tooltip: AppStrings.of(context).close,
+                    iconColor: lightGray,
+                    onPressed: _close,
+                  ),
+                )
+              : const SizedBox.shrink(),
+        ),
+      ],
     );
   }
 }

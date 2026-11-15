@@ -1,6 +1,10 @@
 import 'package:deutschlernen/domain/models/example_sentence.dart';
 
 class Word {
+  /// Levels (categories) shown in the vocabulary tab, in this order.
+  /// Every word's [level] is one of them.
+  static const levels = ['A1', 'A2', 'B1', 'B2'];
+
   const Word({
     required this.id,
     required this.article,

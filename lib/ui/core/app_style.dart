@@ -111,6 +111,12 @@ abstract final class AppColors {
   static Color divider(ColorScheme colors) =>
       darken(colors.outlineVariant, 0.18);
 
+  /// Quiet gray for low-priority text and icons (search hint, word counts):
+  /// the divider color moved 30% toward the text color, so it is a bit
+  /// lighter in the dark theme and a bit darker in the light one.
+  static Color quietText(ColorScheme colors) =>
+      Color.lerp(divider(colors), colors.onSurface, 0.3)!;
+
   static Color forArticle(String article) {
     return switch (article.toLowerCase()) {
       'der' => articleMasculine,
