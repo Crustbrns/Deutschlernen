@@ -157,12 +157,13 @@ class _AppBottomBarState extends State<AppBottomBar>
 
     final tabs = [
       // Practice: learning sessions, a stack of flashcards.
-      (AppIcons.cards, strings.tabMain),
+      (AppIcons.cards, strings.tabMain, 0),
       // Categories: the word levels and the search.
-      (AppIcons.squaresFour, strings.tabVocabulary),
-      (AppIcons.chartLineUp, strings.tabStatistics),
-      // Sliders instead of a gear: lighter and less "system settings".
-      (AppIcons.slidersHorizontal, strings.tabSettings),
+      (AppIcons.squaresFour, strings.tabVocabulary, 0),
+      (AppIcons.chartLineUp, strings.tabStatistics, 0),
+      // Faders instead of a gear: lighter and less "system settings".
+      // Phosphor has them only vertical, so turned a quarter to lie flat.
+      (AppIcons.faders, strings.tabSettings, 1),
     ];
 
     // Floats above the home indicator; on phones without one, a fixed gap.
@@ -217,7 +218,7 @@ class _AppBottomBarState extends State<AppBottomBar>
   Widget _buildBar(
     AppPalette palette,
     ColorScheme colors,
-    List<(IconData, String)> tabs,
+    List<(IconData, String, int)> tabs,
     double tabWidth,
     double pillLeft,
     double lift,
@@ -268,6 +269,7 @@ class _AppBottomBarState extends State<AppBottomBar>
                           child: _TabButton(
                             icon: tabs[i].$1,
                             label: tabs[i].$2,
+                            quarterTurns: tabs[i].$3,
                             isSelected: i == widget.selected.index,
                             onTap: () => _select(i),
                           ),
@@ -347,12 +349,16 @@ class _TabButton extends StatelessWidget {
   const _TabButton({
     required this.icon,
     required this.label,
+    this.quarterTurns = 0,
     required this.isSelected,
     required this.onTap,
   });
 
   final IconData icon;
   final String label;
+
+  /// Clockwise quarter turns of the icon.
+  final int quarterTurns;
   final bool isSelected;
   final VoidCallback onTap;
 
@@ -373,7 +379,10 @@ class _TabButton extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 27, color: color),
+          RotatedBox(
+            quarterTurns: quarterTurns,
+            child: Icon(icon, size: 27, color: color),
+          ),
           const SizedBox(height: 2),
           Text(
             label,
