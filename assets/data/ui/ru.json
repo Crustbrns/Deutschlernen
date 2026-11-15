@@ -70,5 +70,6 @@
   "reviewInMinutesOther": "повтор через {n} мин",
   "reviewInHoursOther": "повтор через {n} ч",
   "reviewInDaysOther": "повтор через {n} дн.",
-  "reviewInMonthsOther": "повтор через {n} мес."
+  "reviewInMonthsOther": "повтор через {n} мес.",
+  "resetProgress": "Сбросить прогресс по слову"
 }

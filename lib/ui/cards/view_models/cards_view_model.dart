@@ -94,6 +94,13 @@ class CardsViewModel extends ChangeNotifier {
   /// passes: a word learned 10 minutes ago may be due now.
   int get dueCount => _dueIds().length;
 
+  /// Forgets everything about the word: it becomes new again.
+  void resetProgress(String wordId) {
+    if (_progress.remove(wordId) == null) return;
+    notifyListeners();
+    _saveProgress();
+  }
+
   /// Learning status and next review of a word, for the word lists.
   WordState stateOf(String wordId) =>
       WordStatus.of(_progress[wordId], DateTime.now().toUtc());

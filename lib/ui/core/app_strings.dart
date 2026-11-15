@@ -42,6 +42,7 @@ class AppStrings {
   String get speedFast => _get('speedFast');
   String get goodWork => _get('goodWork');
   String get finish => _get('finish');
+  String get resetProgress => _get('resetProgress');
   String get forgot => _get('forgot');
   String get remembered => _get('remembered');
   String get tabMain => _get('tabMain');

@@ -20,6 +20,7 @@ class VocabularyScreen extends StatefulWidget {
     required this.onSearchResultSelected,
     required this.onSpeak,
     required this.stateOf,
+    required this.progressChanges,
   });
 
   final List<Word> words;
@@ -33,6 +34,10 @@ class VocabularyScreen extends StatefulWidget {
 
   /// Learning status of a word, for the strip and caption next to it.
   final WordState Function(String wordId) stateOf;
+
+  /// Fires when word progress changes (e.g. a reset from the word card),
+  /// so the pushed level list redraws its statuses.
+  final Listenable progressChanges;
 
   @override
   State<VocabularyScreen> createState() => _VocabularyScreenState();
@@ -115,12 +120,16 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
         // so the scope is provided again.
         builder: (_) => AppStringsScope(
           strings: strings,
-          child: LevelWordsScreen(
-            level: level,
-            words: words,
-            onWordSelected: widget.onWordSelected,
-            onSpeak: widget.onSpeak,
-            stateOf: widget.stateOf,
+          // A pushed route doesn't rebuild with the tab; listen directly.
+          child: ListenableBuilder(
+            listenable: widget.progressChanges,
+            builder: (_, _) => LevelWordsScreen(
+              level: level,
+              words: words,
+              onWordSelected: widget.onWordSelected,
+              onSpeak: widget.onSpeak,
+              stateOf: widget.stateOf,
+            ),
           ),
         ),
       ),

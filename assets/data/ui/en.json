@@ -66,5 +66,6 @@
   "reviewInDaysOne": "review in {n} day",
   "reviewInDaysOther": "review in {n} days",
   "reviewInMonthsOne": "review in {n} month",
-  "reviewInMonthsOther": "review in {n} months"
+  "reviewInMonthsOther": "review in {n} months",
+  "resetProgress": "Reset word progress"
 }
