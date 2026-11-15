@@ -74,5 +74,6 @@
   "resetAllConfirmTitle": "¿Reiniciar todo el progreso?",
   "resetAllConfirmBody": "Todas las palabras vuelven a ser nuevas. No se puede deshacer.",
   "resetConfirm": "Reiniciar",
-  "cancel": "Cancelar"
+  "cancel": "Cancelar",
+  "weekdaysShort": "Lu,Ma,Mi,Ju,Vi,Sá,Do"
 }
