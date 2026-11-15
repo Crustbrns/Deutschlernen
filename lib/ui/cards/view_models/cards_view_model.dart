@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:deutschlernen/data/repositories/language_repository.dart';
+import 'package:deutschlernen/data/repositories/lookup_repository.dart';
 import 'package:deutschlernen/data/repositories/settings_repository.dart';
 import 'package:deutschlernen/data/repositories/word_repository.dart';
 import 'package:deutschlernen/data/services/speech_service.dart';
@@ -14,6 +15,7 @@ class CardsViewModel extends ChangeNotifier {
     required this._wordRepository,
     required this._languageRepository,
     required this._settingsRepository,
+    required this._lookupRepository,
     required this._speechService,
     required this._settingsViewModel,
   }) {
@@ -24,11 +26,15 @@ class CardsViewModel extends ChangeNotifier {
   final WordRepository _wordRepository;
   final LanguageRepository _languageRepository;
   final SettingsRepository _settingsRepository;
+  final LookupRepository _lookupRepository;
   final SpeechService _speechService;
   final SettingsViewModel _settingsViewModel;
 
   List<Word> _words = [];
   List<AppLanguage> _languages = [];
+
+  /// Word id → times opened from the vocabulary search.
+  Map<String, int> _lookupCounts = {};
   static const _defaultLanguage = AppLanguage(
     code: 'en',
     label: 'English',
@@ -54,6 +60,18 @@ class CardsViewModel extends ChangeNotifier {
   bool get isLoading => _isLoading;
   bool get showTranscription => _settingsViewModel.showTranscription;
 
+  /// 0 for a word that was never searched.
+  int lookupCount(String wordId) => _lookupCounts[wordId] ?? 0;
+
+  /// Called when a word is opened from the search results: +1 and save.
+  Future<void> recordLookup(String wordId) async {
+    // Update in memory before the first await: the card reads the count
+    // right after this call, while saving is still in progress.
+    _lookupCounts.update(wordId, (count) => count + 1, ifAbsent: () => 1);
+    notifyListeners();
+    await _lookupRepository.saveCounts(_lookupCounts);
+  }
+
   /// Index of the current card = number of decisions made so far.
   int get index => _history.length;
   bool get isFinished => !_isLoading && index >= _words.length;
@@ -74,6 +92,7 @@ class CardsViewModel extends ChangeNotifier {
     );
 
     _words = await _wordRepository.getWords(_wordLanguage);
+    _lookupCounts = await _lookupRepository.loadCounts();
     _strings = AppStrings(
       await _languageRepository.getUiTexts(_uiLanguage),
       languageCode: _uiLanguage.code,

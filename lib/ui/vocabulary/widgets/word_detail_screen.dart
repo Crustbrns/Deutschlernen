@@ -14,12 +14,14 @@ class WordDetailScreen extends StatelessWidget {
     required this.word,
     required this.otherTranslations,
     required this.showTranscription,
+    required this.lookupCount,
     required this.onSpeak,
   });
 
   final Word word;
   final List<String> otherTranslations;
   final bool showTranscription;
+  final int lookupCount; // times opened from the search, shown in the header
   final ValueChanged<String> onSpeak;
 
   /// Route that keeps the previous screen under it. The card grows out of
@@ -68,6 +70,7 @@ class WordDetailScreen extends StatelessWidget {
                     otherTranslations: otherTranslations,
                     bottomBar: const SizedBox.shrink(),
                     lookup: true,
+                    lookupCount: lookupCount,
                     onClose: () => Navigator.of(context).pop(),
                   ),
                 ),

@@ -16,11 +16,17 @@ class VocabularyScreen extends StatefulWidget {
     super.key,
     required this.words,
     required this.onWordSelected,
+    required this.onSearchResultSelected,
     required this.onSpeak,
   });
 
   final List<Word> words;
+
+  /// Word opened from a level's list.
   final ValueChanged<Word> onWordSelected;
+
+  /// Word opened from the search results: counts as a lookup.
+  final ValueChanged<Word> onSearchResultSelected;
   final ValueChanged<String> onSpeak; // German text-to-speech
 
   @override
@@ -90,7 +96,7 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
 
     return WordList(
       words: results,
-      onWordSelected: widget.onWordSelected,
+      onWordSelected: widget.onSearchResultSelected,
       onSpeak: widget.onSpeak,
     );
   }
