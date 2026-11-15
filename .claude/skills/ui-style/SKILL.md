@@ -16,7 +16,13 @@ color is needed, add a named constant to `AppColors` with a short comment.
 | Screen background | `AppColors.background` | — |
 | Content block (lists, search results) | `AppColors.card`, **no outline** | radius 20 |
 | Word card (learning and lookup) | `AppColors.card` + outline `colors.outlineVariant` α 0.4 | radius 32 |
-| Text field | fill `AppColors.card`, outline `outlineVariant` α 0.4, focused `AppColors.accentBlue` | radius 20 |
+| Search field | fill `AppColors.card`, **no outline** when idle, gray `AppColors.divider(colors)` outline (same as list dividers, not blue) only while focused; vertical padding 10, dense | pill (fully round) |
+
+Search field behavior (`_SearchField` in `vocabulary_screen.dart`): while focused or holding text,
+the field shrinks (animated) and a `RoundIconButton` with `Icons.close` appears on its right;
+it clears the text, hides the keyboard and returns the field to full width.
+The hint text and that close icon are gray too: the outline color made 30% lighter
+(`AppColors.lighten(AppColors.divider(colors), 0.3)`) — quiet but readable.
 
 Screen side gutters are 16. Inside the word card content is inset by `AppSizes.cardInset` (24).
 
@@ -34,6 +40,10 @@ render them as separate cards with gaps between them.
 - Selection inside a block: shown in the row itself — trailing `Icons.check_circle`
   in `AppColors.accentBlue` for the chosen one, `Icons.circle_outlined` in
   `colors.onSurfaceVariant` for the others. Not by an outline.
+
+- Navigation rows (a row that opens a list, e.g. a level): no chevron. A count on the right is
+  written with its noun ("5 слов", via `AppStrings.wordCount`), font size 15, in the quiet gray
+  `AppColors.lighten(AppColors.divider(colors), 0.3)`.
 
 Separate blocks are only for different kinds of content (e.g. a title, then a list).
 
