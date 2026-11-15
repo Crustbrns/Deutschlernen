@@ -46,6 +46,10 @@ class AppStrings {
   String get tabStatistics => _get('tabStatistics');
   String get tabSettings => _get('tabSettings');
   String get startLearning => _get('startLearning');
+  String get learnNewWords => _get('learnNewWords');
+  String get repeatWords => _get('repeatWords');
+  String get soonLabel => _get('soonLabel'); // short, for a row's trailing
+  String get chooseLevels => _get('chooseLevels');
   String get comingSoon => _get('comingSoon');
   String get modeShow => _get('modeShow');
   String get modeWrite => _get('modeWrite');
@@ -66,6 +70,9 @@ class AppStrings {
 
   /// "Искали 3 раза" / "Looked up 3 times": shown on a searched word's card.
   String lookupCount(int n) => _plural('lookupCount', n);
+
+  /// "Выбрано 3 категории": the learn menu's categories row.
+  String levelsSelected(int n) => _plural('levelsSelected', n);
 
   /// Template `<base><Form>` for n with {n} replaced; falls back to Other.
   String _plural(String base, int n) {

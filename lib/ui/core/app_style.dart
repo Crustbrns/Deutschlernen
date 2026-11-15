@@ -94,6 +94,11 @@ abstract final class AppColors {
   static const accentBlue = Color(0xFF1AA7FF);
   static const accentTeal = Color(0xFF2EE6D6);
 
+  // Icons of the learn menu rows (categories / new words / repeat).
+  static const menuCategories = accentBlue;
+  static const menuNewWords = Color(0xFFFF5C8A); // pink
+  static const menuRepeat = Color(0xFFFFC83D); // yellow
+
   // Answer feedback.
   static const correct = Color(0xFF3DDC84);
   static const wrong = Color(0xFFFF6B6B);

@@ -46,5 +46,10 @@
   "speechRateHint": "单词朗读的快慢",
   "speedSlow": "慢",
   "speedFast": "快",
-  "lookupCountOther": "查过 {n} 次"
+  "lookupCountOther": "查过 {n} 次",
+  "learnNewWords": "学习新单词",
+  "repeatWords": "复习单词",
+  "chooseLevels": "分类",
+  "levelsSelectedOther": "已选 {n} 个分类",
+  "soonLabel": "即将推出"
 }

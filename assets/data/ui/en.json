@@ -48,5 +48,11 @@
   "speedSlow": "Slow",
   "speedFast": "Fast",
   "lookupCountOne": "Looked up {n} time",
-  "lookupCountOther": "Looked up {n} times"
+  "lookupCountOther": "Looked up {n} times",
+  "learnNewWords": "Learn new words",
+  "repeatWords": "Review words",
+  "chooseLevels": "Categories",
+  "levelsSelectedOne": "{n} category selected",
+  "levelsSelectedOther": "{n} categories selected",
+  "soonLabel": "Soon"
 }

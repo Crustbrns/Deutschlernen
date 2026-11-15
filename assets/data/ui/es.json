@@ -48,5 +48,11 @@
   "speedSlow": "Lenta",
   "speedFast": "Rápida",
   "lookupCountOne": "{n} búsqueda",
-  "lookupCountOther": "{n} búsquedas"
+  "lookupCountOther": "{n} búsquedas",
+  "learnNewWords": "Aprender palabras nuevas",
+  "repeatWords": "Repasar palabras",
+  "chooseLevels": "Categorías",
+  "levelsSelectedOne": "{n} categoría seleccionada",
+  "levelsSelectedOther": "{n} categorías seleccionadas",
+  "soonLabel": "Pronto"
 }

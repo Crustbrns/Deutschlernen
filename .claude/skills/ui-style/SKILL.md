@@ -101,6 +101,9 @@ under the bar.
 - Sizes: 20 in rows and small buttons, 24 default, 28 in large mode buttons.
 - Colors: `colors.onSurfaceVariant` when inactive, `AppColors.accentBlue` when active,
   `colors.onSurface` on filled neutral buttons.
+- Exception: the Learn tab menu (`main_menu_screen.dart`) has colored leading icons, size 26,
+  one color per action (`AppColors.menuCategories` blue, `menuNewWords` pink, `menuRepeat`
+  yellow); a disabled row fades its icon to α 0.4.
 
 ## Text
 
