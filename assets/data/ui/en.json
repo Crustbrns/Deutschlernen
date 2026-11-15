@@ -46,5 +46,7 @@
   "speechRate": "Voice speed",
   "speechRateHint": "How fast words are read to you",
   "speedSlow": "Slow",
-  "speedFast": "Fast"
+  "speedFast": "Fast",
+  "lookupCountOne": "Looked up {n} time",
+  "lookupCountOther": "Looked up {n} times"
 }

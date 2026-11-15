@@ -48,5 +48,9 @@
   "speechRate": "Скорость голоса",
   "speechRateHint": "Как быстро читаются слова",
   "speedSlow": "Медленно",
-  "speedFast": "Быстро"
+  "speedFast": "Быстро",
+  "lookupCountOne": "Искали {n} раз",
+  "lookupCountFew": "Искали {n} раза",
+  "lookupCountMany": "Искали {n} раз",
+  "lookupCountOther": "Искали {n} раза"
 }

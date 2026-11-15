@@ -45,5 +45,6 @@
   "speechRate": "语速",
   "speechRateHint": "单词朗读的快慢",
   "speedSlow": "慢",
-  "speedFast": "快"
+  "speedFast": "快",
+  "lookupCountOther": "查过 {n} 次"
 }

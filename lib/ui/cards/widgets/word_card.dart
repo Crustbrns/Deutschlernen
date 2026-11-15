@@ -16,8 +16,12 @@ class WordCard extends StatefulWidget {
     required this.otherTranslations,
     required this.bottomBar,
     this.lookup = false,
+    this.lookupCount = 0,
     this.onClose,
   });
+
+  /// Lookup mode only: "Искали 3 раза" next to the level; hidden when 0.
+  final int lookupCount;
 
   /// When set, a close button is pinned to the card's top right corner.
   final VoidCallback? onClose;
@@ -101,7 +105,16 @@ class _WordCardState extends State<WordCard> {
                       // Header is inside the scroll view, so it scrolls away.
                       Padding(
                         padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                        child: _Header(level: word.level, showStatus: !lookup),
+                        child: _Header(
+                          level: word.level,
+                          status: lookup
+                              ? (widget.lookupCount > 0
+                                    ? AppStrings.of(context)
+                                          .lookupCount(widget.lookupCount)
+                                    : null)
+                              : AppStrings.of(context).newWord,
+                          showSquare: !lookup,
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
@@ -356,15 +369,22 @@ class _TranscriptionButton extends StatelessWidget {
 }
 
 class _Header extends StatelessWidget {
-  const _Header({required this.level, required this.showStatus});
+  const _Header({
+    required this.level,
+    required this.status,
+    required this.showSquare,
+  });
 
   final String level;
-  final bool showStatus; // square + "New word" next to the level
+
+  /// Gray text next to the level ("New word", "Искали 3 раза"); null = none.
+  final String? status;
+  final bool showSquare; // status square before the text (learning mode)
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    final strings = AppStrings.of(context);
+    final status = this.status;
 
     return Row(
       children: [
@@ -378,20 +398,22 @@ class _Header extends StatelessWidget {
             child: Text(level, style: const TextStyle(fontSize: 13.5)),
           ),
         ),
-        if (showStatus) ...[
+        if (status != null) ...[
           const SizedBox(width: 16),
-          Container(
-            width: 12,
-            height: 12,
-            decoration: BoxDecoration(
-              color: colors.outline,
-              borderRadius: BorderRadius.circular(3),
+          if (showSquare) ...[
+            Container(
+              width: 12,
+              height: 12,
+              decoration: BoxDecoration(
+                color: colors.outline,
+                borderRadius: BorderRadius.circular(3),
+              ),
             ),
-          ),
-          const SizedBox(width: 10),
+            const SizedBox(width: 10),
+          ],
           Expanded(
             child: Text(
-              strings.newWord,
+              status,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(

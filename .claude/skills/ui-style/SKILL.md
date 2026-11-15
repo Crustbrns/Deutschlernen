@@ -75,10 +75,11 @@ Separate blocks are only for different kinds of content (e.g. a title, then a li
 `AppBottomBar` (`lib/ui/home/widgets/app_bottom_bar.dart`) is frosted glass: `BackdropFilter`
 blur 20 over `palette.card` at α 0.7, **no outline or top line**, no indicator pill, no ripple.
 It is a custom row of tabs, not Material's `NavigationBar` (that one forces a big gap under the
-icon): icon 26, then a 2px gap, then the 12px label. Selected tab = `AppColors.accentBlue`
+icon): icon 27, then a 1px gap, then the 11px label; row padding 12 horizontal, 5 vertical. Selected tab = `AppColors.accentBlue`
 icon and label, others `palette.mutedText`.
 
-Tabs and their icons (`AppIcons`):
+Tabs and their icons (`AppIcons`): Regular when not selected, the `*Fill` (solid) variant when
+selected — all-solid was tried and looked too heavy.
 Учить / Learn — `cards` (flashcard stack), Словарь — `bookOpen`, Прогресс / Progress —
 `chartLineUp`, Настройки — `slidersHorizontal`.
 
@@ -89,13 +90,14 @@ under the bar.
 
 ## Icons
 
-- All icons are **Phosphor Regular** (thin line icons with rounded ends) via `AppIcons`
+- All icons are **Phosphor Regular** (thin line icons with rounded ends) — except the selected
+  bottom bar tab, which uses Phosphor Fill (`*Fill` in `AppIcons`, font `assets/fonts/PhosphorFill.ttf`) — via `AppIcons`
   (`lib/ui/core/app_icons.dart`, font `assets/fonts/Phosphor.ttf`): `AppIcons.x`, `.arrowLeft`,
   `.speakerHigh`, … Never use Material `Icons.*` or `CupertinoIcons.*` — the app must look like
   one icon set. Do NOT add the `phosphor_flutter` package: it doesn't compile with current
   Flutter. To add an icon, follow the comment at the top of `app_icons.dart`.
-- A selected state is shown by **color only** (blue icon and label), not by switching to
-  another icon variant and not by a highlight behind the icon.
+- A selected state is shown by **color** (blue icon and label), not by a highlight behind the
+  icon. Only the bottom bar also switches the icon to its Fill variant.
 - Sizes: 20 in rows and small buttons, 24 default, 28 in large mode buttons.
 - Colors: `colors.onSurfaceVariant` when inactive, `AppColors.accentBlue` when active,
   `colors.onSurface` on filled neutral buttons.

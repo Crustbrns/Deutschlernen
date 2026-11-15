@@ -10,7 +10,7 @@ enum HomeTab { main, vocabulary, statistics, settings }
 
 /// Bottom navigation, iOS-style frosted glass: the screen content scrolls
 /// under it (Scaffold.extendBody) and shows through blurred. No outline.
-/// The selected tab is marked by color only: icon and label turn blue.
+/// The selected tab turns blue and its icon switches to the solid variant.
 ///
 /// Own layout instead of Material's NavigationBar: that one reserves room
 /// for its indicator pill, which leaves a fixed, large gap between the icon
@@ -30,14 +30,29 @@ class AppBottomBar extends StatelessWidget {
     final strings = AppStrings.of(context);
     final palette = AppPalette.of(context);
 
-    // Thin line icons (Phosphor Regular) for a light, minimal bar.
+    // iOS pattern: line icon (Regular) normally, solid (Fill) when selected.
     final tabs = [
       // Main tab starts a learning session: a stack of flashcards.
-      (HomeTab.main, AppIcons.cards, strings.tabMain),
-      (HomeTab.vocabulary, AppIcons.bookOpen, strings.tabVocabulary),
-      (HomeTab.statistics, AppIcons.chartLineUp, strings.tabStatistics),
+      (HomeTab.main, AppIcons.cards, AppIcons.cardsFill, strings.tabMain),
+      (
+        HomeTab.vocabulary,
+        AppIcons.bookOpen,
+        AppIcons.bookOpenFill,
+        strings.tabVocabulary,
+      ),
+      (
+        HomeTab.statistics,
+        AppIcons.chartLineUp,
+        AppIcons.chartLineUpFill,
+        strings.tabStatistics,
+      ),
       // Sliders instead of a gear: lighter and less "system settings".
-      (HomeTab.settings, AppIcons.slidersHorizontal, strings.tabSettings),
+      (
+        HomeTab.settings,
+        AppIcons.slidersHorizontal,
+        AppIcons.slidersHorizontalFill,
+        strings.tabSettings,
+      ),
     ];
 
     // ClipRect: without it the blur would spread over the whole screen,
@@ -53,13 +68,15 @@ class AppBottomBar extends StatelessWidget {
           child: SafeArea(
             top: false,
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
+              // Tight bar: little vertical air, side inset pulls the tabs
+              // closer together.
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
               child: Row(
                 children: [
-                  for (final (tab, icon, label) in tabs)
+                  for (final (tab, icon, selectedIcon, label) in tabs)
                     Expanded(
                       child: _TabButton(
-                        icon: icon,
+                        icon: tab == selected ? selectedIcon : icon,
                         label: label,
                         color: tab == selected
                             ? AppColors.accentBlue
@@ -108,14 +125,14 @@ class _TabButton extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 26, color: color),
-            const SizedBox(height: 2), // small gap between icon and label
+            Icon(icon, size: 27, color: color),
+            const SizedBox(height: 1), // icon and label read as one unit
             Text(
               label,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontSize: 12,
+                fontSize: 11,
                 fontWeight: FontWeight.w600,
                 color: color,
               ),

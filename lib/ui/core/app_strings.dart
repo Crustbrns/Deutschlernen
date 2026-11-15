@@ -62,9 +62,15 @@ class AppStrings {
   /// JSON keys: wordCountOne, wordCountFew, wordCountMany, wordCountOther,
   /// with {n} for the number. A language uses only the forms it has;
   /// a missing form falls back to wordCountOther.
-  String wordCount(int n) {
+  String wordCount(int n) => _plural('wordCount', n);
+
+  /// "Искали 3 раза" / "Looked up 3 times": shown on a searched word's card.
+  String lookupCount(int n) => _plural('lookupCount', n);
+
+  /// Template `<base><Form>` for n with {n} replaced; falls back to Other.
+  String _plural(String base, int n) {
     final form = _pluralForm(n);
-    final template = _values['wordCount$form'] ?? _get('wordCountOther');
+    final template = _values['$base$form'] ?? _get('${base}Other');
     return template.replaceAll('{n}', '$n');
   }
 

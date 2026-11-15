@@ -35,9 +35,7 @@ class _HomeShellState extends State<HomeShell> {
 
   void _openCards() {
     Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => CardsScreen(viewModel: _vm),
-      ),
+      MaterialPageRoute<void>(builder: (_) => CardsScreen(viewModel: _vm)),
     );
   }
 
@@ -53,6 +51,7 @@ class _HomeShellState extends State<HomeShell> {
               if (w.id != word.id) w.translation,
           ],
           showTranscription: widget.settingsViewModel.showTranscription,
+          lookupCount: _vm.lookupCount(word.id),
           onSpeak: _vm.speak,
         ),
       ),
@@ -88,6 +87,11 @@ class _HomeShellState extends State<HomeShell> {
                   VocabularyScreen(
                     words: _vm.words,
                     onWordSelected: _openWord,
+                    onSearchResultSelected: (word) {
+                      // Count first, so the card already shows this lookup.
+                      _vm.recordLookup(word.id);
+                      _openWord(word);
+                    },
                     onSpeak: _vm.speak,
                   ),
                   const StatisticsScreen(),
