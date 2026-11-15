@@ -1,8 +1,8 @@
-import 'package:cupertino_ui/cupertino_ui.dart' show CupertinoIcons;
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/domain/models/example_sentence.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/highlight.dart';
+import 'package:deutschlernen/ui/core/widgets/play_button.dart';
 
 /// Base text styles of the rows: grey text, white bold word.
 ({TextStyle base, TextStyle bold}) _tileStyles(BuildContext context) {
@@ -229,22 +229,15 @@ class ExampleTile extends StatelessWidget {
   final bool initiallyExpanded;
   final ValueChanged<String> onSpeak;
 
-  static const _playSize = 20.0;
-
   @override
   Widget build(BuildContext context) {
     final styles = _tileStyles(context);
 
     return ExpandableTile(
       initiallyExpanded: initiallyExpanded,
-      // Outlined triangle with rounded corners. Material has no such icon
-      // (its outlined play is sharp), Cupertino does.
-      trailingVisualSize: _playSize, // keeps the right edge aligned
-      trailing: IconButton(
+      trailingVisualSize: PlayButton.size, // keeps the right edge aligned
+      trailing: PlayButton(
         onPressed: () => onSpeak(stripMarkup(example.german)),
-        icon: const Icon(CupertinoIcons.play),
-        iconSize: _playSize,
-        color: AppColors.accentBlue,
       ),
       title: Text.rich(
         TextSpan(

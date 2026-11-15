@@ -15,7 +15,6 @@
   "tabStatistics": "Statistics",
   "tabSettings": "Settings",
   "startLearning": "Start learning",
-  "dictionaries": "Dictionaries",
   "comingSoon": "Coming soon",
   "modeShow": "Show",
   "modeWrite": "Write",
@@ -24,6 +23,8 @@
   "answerHint": "Type the translation or the German word",
   "correct": "Correct!",
   "wrongAnswer": "Not quite. Correct answer:",
+  "searchHint": "Search words",
+  "nothingFound": "Nothing found",
   "interfaceLanguage": "Interface language",
   "wordsLanguage": "Words language"
 }

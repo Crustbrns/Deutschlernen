@@ -15,7 +15,6 @@
   "tabStatistics": "Статистика",
   "tabSettings": "Настройки",
   "startLearning": "Начать учить",
-  "dictionaries": "Словари",
   "comingSoon": "Скоро появится",
   "modeShow": "Показать",
   "modeWrite": "Написать",
@@ -24,6 +23,8 @@
   "answerHint": "Введите перевод или немецкое слово",
   "correct": "Верно!",
   "wrongAnswer": "Неверно. Правильный ответ:",
+  "searchHint": "Поиск слова",
+  "nothingFound": "Ничего не найдено",
   "interfaceLanguage": "Язык интерфейса",
   "wordsLanguage": "Язык слов"
 }

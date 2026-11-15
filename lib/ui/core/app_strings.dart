@@ -26,7 +26,6 @@ class AppStrings {
   String get tabStatistics => _get('tabStatistics');
   String get tabSettings => _get('tabSettings');
   String get startLearning => _get('startLearning');
-  String get dictionaries => _get('dictionaries');
   String get comingSoon => _get('comingSoon');
   String get modeShow => _get('modeShow');
   String get modeWrite => _get('modeWrite');
@@ -35,6 +34,8 @@ class AppStrings {
   String get answerHint => _get('answerHint');
   String get correct => _get('correct');
   String get wrongAnswer => _get('wrongAnswer');
+  String get searchHint => _get('searchHint');
+  String get nothingFound => _get('nothingFound');
 
   /// Texts for the current language: `AppStrings.of(context).known`.
   static AppStrings of(BuildContext context) {

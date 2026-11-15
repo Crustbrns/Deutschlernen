@@ -15,7 +15,6 @@
   "tabStatistics": "统计",
   "tabSettings": "设置",
   "startLearning": "开始学习",
-  "dictionaries": "词典",
   "comingSoon": "敬请期待",
   "modeShow": "显示",
   "modeWrite": "输入",
@@ -24,6 +23,8 @@
   "answerHint": "输入翻译或德语单词",
   "correct": "正确！",
   "wrongAnswer": "不对。正确答案：",
+  "searchHint": "搜索单词",
+  "nothingFound": "未找到结果",
   "interfaceLanguage": "界面语言",
   "wordsLanguage": "词汇语言"
 }

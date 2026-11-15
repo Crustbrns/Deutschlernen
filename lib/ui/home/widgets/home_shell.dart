@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/ui/cards/view_models/cards_view_model.dart';
 import 'package:deutschlernen/ui/cards/widgets/cards_screen.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
@@ -7,6 +8,7 @@ import 'package:deutschlernen/ui/main_menu/widgets/main_menu_screen.dart';
 import 'package:deutschlernen/ui/settings/widgets/settings_screen.dart';
 import 'package:deutschlernen/ui/statistics/widgets/statistics_screen.dart';
 import 'package:deutschlernen/ui/vocabulary/widgets/vocabulary_screen.dart';
+import 'package:deutschlernen/ui/vocabulary/widgets/word_detail_screen.dart';
 
 /// The app's root screen: four tabs with the bottom bar.
 /// The cards screen is not a tab. It opens on top of the shell, full screen
@@ -33,6 +35,23 @@ class _HomeShellState extends State<HomeShell> {
     );
   }
 
+  void _openWord(Word word) {
+    Navigator.of(context).push(
+      WordDetailScreen.route(
+        strings: _vm.strings,
+        screen: WordDetailScreen(
+          word: word,
+          // Wrong options for the "choose" answer mode.
+          otherTranslations: [
+            for (final w in _vm.words)
+              if (w.id != word.id) w.translation,
+          ],
+          onSpeak: _vm.speak,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
@@ -55,7 +74,11 @@ class _HomeShellState extends State<HomeShell> {
                 index: _tab.index,
                 children: [
                   MainMenuScreen(onStartLearning: _openCards),
-                  const VocabularyScreen(),
+                  VocabularyScreen(
+                    words: _vm.words,
+                    onWordSelected: _openWord,
+                    onSpeak: _vm.speak,
+                  ),
                   const StatisticsScreen(),
                   SettingsScreen(
                     languages: _vm.languages,

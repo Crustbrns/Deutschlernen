@@ -15,7 +15,6 @@
   "tabStatistics": "Estadísticas",
   "tabSettings": "Ajustes",
   "startLearning": "Empezar a aprender",
-  "dictionaries": "Diccionarios",
   "comingSoon": "Próximamente",
   "modeShow": "Mostrar",
   "modeWrite": "Escribir",
@@ -24,6 +23,8 @@
   "answerHint": "Escribe la traducción o la palabra alemana",
   "correct": "¡Correcto!",
   "wrongAnswer": "No exactamente. Respuesta correcta:",
+  "searchHint": "Buscar palabras",
+  "nothingFound": "No se encontró nada",
   "interfaceLanguage": "Idioma de la interfaz",
   "wordsLanguage": "Idioma de las palabras"
 }
