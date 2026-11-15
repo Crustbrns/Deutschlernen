@@ -28,7 +28,7 @@ Layered, following Flutter's recommended app architecture: `lib/data` (services 
 - **Wiring** is manual in `lib/main.dart`: services and repositories are created there and passed into a single `CardsViewModel` (`ChangeNotifier`). There is no DI or state-management package; screens get the view model or plain callbacks through constructors.
 - **`HomeShell`** (`lib/ui/home/widgets/home_shell.dart`) is the root: an `IndexedStack` of tabs (main, vocabulary, statistics, settings) with a bottom bar. The learning cards screen and the word detail card are pushed as routes on top of it.
 - **Content assets** (`assets/data/`):
-  - `words.json` — German side only: `id`, `article`, `lemma`, `plural`, `level`, `transcription`, `definition`.
+  - `words.json` — German side only: `id`, `article`, `lemma`, `plural`, `level`, `transcription`, `definition`. `level` is the word's category and must be one of `Word.levels` (A1, A2, B1, B2); the vocabulary tab lists words by it.
   - `translations/<lang>.json` — keyed by word `id`: `word`, `definition`, `examples[{german, translation}]`. `WordRepository` merges these into `Word`. In examples, `**word**` marks the highlighted word (`lib/ui/core/highlight.dart`).
   - `ui/<lang>.json` — interface strings, read via `AppStrings` getters.
   - `languages.json` — supported languages (currently ru, en, es, zh).
@@ -38,6 +38,12 @@ Layered, following Flutter's recommended app architecture: `lib/data` (services 
 - **Vocabulary search → card** uses a Hero (`WordHero` in `lib/ui/vocabulary/widgets/word_hero.dart`) with a custom shuttle and a transparent `PageRouteBuilder` (`WordDetailScreen.route`), so the vocabulary tab stays visible under the card.
 - Styling constants (colors, fonts, sizes) live in `lib/ui/core/app_style.dart`. Fonts are the variable fonts Fraunces and Lora from `assets/fonts/`.
 - TTS: `SpeechService` wraps `flutter_tts` with `de-DE`.
+
+## Git workflow
+
+- Never work on `main`. Before changing any file, check the current branch (`git branch --show-current`). If it is `main`, first create a branch: `git switch -c feature/<short-name>` (uncommitted changes move with it).
+- If you notice changes were already made on `main`, move them to a new branch the same way before doing anything else.
+- Never commit directly to `main`; work reaches `main` only by merging a branch.
 
 ## Conventions
 
