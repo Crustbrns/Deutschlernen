@@ -1,5 +1,10 @@
 import 'package:material_ui/material_ui.dart';
 
+abstract final class AppSizes {
+  /// Horizontal inset of the card content from the card edge.
+  static const cardInset = 24.0;
+}
+
 abstract final class AppColors {
   static const background = Color(0xFF0B0B0D);
   static const card = Color(0xFF151517);

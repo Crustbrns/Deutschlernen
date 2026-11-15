@@ -17,18 +17,20 @@ import 'package:deutschlernen/ui/core/highlight.dart';
   );
 }
 
-/// A row with a chevron on the left that toggles between two states.
-/// The content is built by [builder], which knows whether it is expanded.
+/// A row with a chevron on the left. [title] is always visible,
+/// [details] appear under it when the row is expanded.
 class ExpandableTile extends StatefulWidget {
   const ExpandableTile({
     super.key,
     required this.initiallyExpanded,
-    required this.builder,
+    required this.title,
+    this.details,
     this.trailing,
   });
 
   final bool initiallyExpanded;
-  final Widget Function(BuildContext context, bool expanded) builder;
+  final Widget title;
+  final Widget? details; // null = nothing to expand
   final Widget? trailing;
 
   @override
@@ -36,45 +38,125 @@ class ExpandableTile extends StatefulWidget {
 }
 
 class _ExpandableTileState extends State<ExpandableTile> {
+  // Width of IconButton's default tap area; the info icon uses the same.
+  static const _trailingWidth = 48.0;
+
+  // Minimum time the highlight stays visible after a quick tap.
+  static const _minHighlight = Duration(milliseconds: 150);
+  static const _highlightFadeOut = Duration(milliseconds: 200);
+
   late bool _expanded = widget.initiallyExpanded;
+  bool _highlighted = false;
+  int _tapId = 0; // ignores stale timers when taps follow each other fast
+
+  void _setHighlighted(bool value) {
+    if (_highlighted != value) setState(() => _highlighted = value);
+  }
+
+  void _onTap() {
+    final id = ++_tapId;
+    setState(() {
+      _expanded = !_expanded;
+      _highlighted = true;
+    });
+    Future.delayed(_minHighlight, () {
+      if (mounted && id == _tapId) _setHighlighted(false);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    final details = widget.details;
 
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        border: Border(top: BorderSide(color: colors.outlineVariant)),
-      ),
-      child: InkWell(
-        onTap: () => setState(() => _expanded = !_expanded),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              // No left inset, small gap to the text: more room for words.
-              // Top 16 + 22px icon centers it on the first text line.
-              padding: const EdgeInsets.fromLTRB(0, 16, 8, 0),
-              child: Icon(
-                _expanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-                size: 22,
+    // InkWell is outermost, so the highlight covers the full card width.
+    // The padding inside keeps text and divider aligned with the card content.
+    return InkWell(
+      onTap: _onTap,
+      onTapDown: (_) => _setHighlighted(true), // finger held down
+      onTapCancel: () => _setHighlighted(false), // turned into a scroll/swipe
+      // Built-in ripple and highlight are off: on a quick tap inside
+      // a scroll view they flash for a single frame. Our own layer below
+      // is guaranteed to stay visible for _minHighlight.
+      splashFactory: NoSplash.splashFactory,
+      highlightColor: Colors.transparent,
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: AnimatedOpacity(
+              opacity: _highlighted ? 1 : 0,
+              // Appears instantly, fades out smoothly.
+              duration: _highlighted ? Duration.zero : _highlightFadeOut,
+              child: ColoredBox(
+                color: colors.onSurface.withValues(alpha: 0.08),
               ),
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                // AnimatedSize smooths the height change on toggle.
-                child: AnimatedSize(
-                  duration: const Duration(milliseconds: 200),
-                  curve: Curves.easeOut,
-                  alignment: Alignment.topLeft,
-                  child: widget.builder(context, _expanded),
-                ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppSizes.cardInset),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                border: Border(top: BorderSide(color: colors.outlineVariant)),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    // No left inset, small gap to the text: more room.
+                    // Top 16 + 22px icon centers it on the first text line.
+                    padding: const EdgeInsets.fromLTRB(0, 16, 8, 0),
+                    // One "down" icon rotated by half a turn instead of swapping
+                    // two icons: swapping can't be animated, rotation can.
+                    child: AnimatedRotation(
+                      turns: _expanded ? 0.5 : 0,
+                      duration: const Duration(milliseconds: 150),
+                      curve: Curves.easeOut,
+                      child: const Icon(Icons.keyboard_arrow_down, size: 22),
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // The trailing button is centered on the title only,
+                        // so it stays in place when the details open below.
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                ),
+                                child: widget.title,
+                              ),
+                            ),
+                            if (widget.trailing != null)
+                              SizedBox(
+                                width: _trailingWidth,
+                                child: Center(child: widget.trailing),
+                              ),
+                          ],
+                        ),
+                        // AnimatedSize smooths the height change on toggle.
+                        AnimatedSize(
+                          duration: const Duration(milliseconds: 200),
+                          curve: Curves.easeOut,
+                          alignment: Alignment.topLeft,
+                          child: _expanded && details != null
+                              ? Padding(
+                                  padding: const EdgeInsets.only(bottom: 16),
+                                  child: details,
+                                )
+                              : const SizedBox(width: double.infinity),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
-            if (widget.trailing != null) widget.trailing!,
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -105,24 +187,14 @@ class DefinitionTile extends StatelessWidget {
         child: Icon(
           Icons.info_outline,
           // Half transparent = ~50% darker on the dark card.
-          color: Theme.of(
-            context,
-          ).colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
+          color: Theme.of(context).colorScheme.onSurfaceVariant
+              .withValues(alpha: 0.5),
         ),
       ),
-      builder: (context, expanded) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(definition, style: styles.base),
-          if (expanded && translation != null)
-            Padding(
-              padding: const EdgeInsets.only(top: 16),
-              child: Text(translation, style: styles.base),
-            )
-          else
-            const SizedBox(width: double.infinity),
-        ],
-      ),
+      title: Text(definition, style: styles.base),
+      details: translation == null
+          ? null
+          : Text(translation, style: styles.base),
     );
   }
 }
@@ -151,28 +223,17 @@ class ExampleTile extends StatelessWidget {
         icon: const Icon(Icons.play_arrow_outlined),
         color: AppColors.accentBlue,
       ),
-      builder: (context, expanded) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text.rich(
-            TextSpan(
-              style: styles.base,
-              children: markedSpans(example.german, styles.bold),
-            ),
-          ),
-          if (expanded)
-            Padding(
-              padding: const EdgeInsets.only(top: 16),
-              child: Text.rich(
-                TextSpan(
-                  style: styles.base,
-                  children: markedSpans(example.translation, styles.bold),
-                ),
-              ),
-            )
-          else
-            const SizedBox(width: double.infinity),
-        ],
+      title: Text.rich(
+        TextSpan(
+          style: styles.base,
+          children: markedSpans(example.german, styles.bold),
+        ),
+      ),
+      details: Text.rich(
+        TextSpan(
+          style: styles.base,
+          children: markedSpans(example.translation, styles.bold),
+        ),
       ),
     );
   }

@@ -36,19 +36,26 @@ class _WordCardState extends State<WordCard> {
         side: BorderSide(color: colors.outlineVariant.withValues(alpha: 0.4)),
       ),
       clipBehavior: Clip.antiAlias,
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 16, 0),
-            child: _Header(level: word.level, onMenu: widget.onMenu),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+      // No horizontal padding here: example rows must span the full card
+      // width so their tap highlight does too. Each part insets itself.
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(0, 20, 0, 24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Header is inside the scroll view, so it scrolls away.
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 16, 0),
+              child: _Header(level: word.level, onMenu: widget.onMenu),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSizes.cardInset,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 40),
                   // FittedBox shrinks long German words instead of overflowing.
                   FittedBox(
                     fit: BoxFit.scaleDown,
@@ -97,7 +104,8 @@ class _WordCardState extends State<WordCard> {
                   ),
                   const SizedBox(height: 24),
                   SizedBox(
-                    height: 72,
+                    height: 80, // must fit the 76px eye button
+
                     child: AnimatedSwitcher(
                       duration: const Duration(milliseconds: 250),
                       child: _translationVisible
@@ -126,9 +134,10 @@ class _WordCardState extends State<WordCard> {
                                 // accent, so the button doesn't stand out.
                                 style: IconButton.styleFrom(
                                   backgroundColor: AppColors.subtleButton,
-                                  foregroundColor: colors.onSurfaceVariant,
+                                  foregroundColor: colors.onSurfaceVariant
+                                      .withValues(alpha: 0.6),
                                   // Same icon, bigger box = more padding.
-                                  fixedSize: const Size.square(68),
+                                  fixedSize: const Size.square(76),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(14),
                                   ),
@@ -138,23 +147,39 @@ class _WordCardState extends State<WordCard> {
                     ),
                   ),
                   const SizedBox(height: 40),
-                  // Definition is the first row of the examples block.
-                  DefinitionTile(
-                    definition: word.definition,
-                    translation: word.definitionTranslation,
-                  ),
-                  for (var i = 0; i < word.examples.length; i++)
-                    ExampleTile(
-                      key: ValueKey(word.examples[i].german),
-                      example: word.examples[i],
-                      initiallyExpanded: i == 0,
-                      onSpeak: widget.onSpeak,
-                    ),
                 ],
               ),
             ),
-          ),
-        ],
+            // Definition is the first row of the examples block.
+            DefinitionTile(
+              definition: word.definition,
+              translation: word.definitionTranslation,
+            ),
+            for (var i = 0; i < word.examples.length; i++)
+              ExampleTile(
+                key: ValueKey(word.examples[i].german),
+                example: word.examples[i],
+                // All collapsed: an open translation would spoil the
+                // hidden word translation above.
+                initiallyExpanded: false,
+                onSpeak: widget.onSpeak,
+              ),
+            // Closing line under the last row, same as the rows' top borders.
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSizes.cardInset,
+              ),
+              child: Divider(
+                height: 1,
+                thickness: 1,
+                color: colors.outlineVariant,
+              ),
+            ),
+            // Extra scroll room, so the last example can be lifted up
+            // away from the card's bottom edge.
+            const SizedBox(height: 100),
+          ],
+        ),
       ),
     );
   }
@@ -237,7 +262,7 @@ class _Header extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              fontSize: 17,
+              fontSize: 15,
               fontWeight: FontWeight.w600,
               color: colors.onSurfaceVariant,
             ),
