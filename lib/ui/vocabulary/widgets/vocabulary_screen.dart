@@ -37,7 +37,7 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
             Padding(
               padding: const EdgeInsets.only(bottom: 8),
               child: Material(
-                color: AppColors.card,
+                color: AppPalette.of(context).card,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                   side: BorderSide(

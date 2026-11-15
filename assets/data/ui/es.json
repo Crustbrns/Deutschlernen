@@ -25,5 +25,22 @@
   "correct": "¡Correcto!",
   "wrongAnswer": "No exactamente. Respuesta correcta:",
   "interfaceLanguage": "Idioma de la interfaz",
-  "wordsLanguage": "Idioma de las palabras"
+  "wordsLanguage": "Idioma de las palabras",
+  "settingsAppearance": "Apariencia",
+  "settingsLanguages": "Idiomas",
+  "settingsVoice": "Voz",
+  "settingsNotifications": "Notificaciones",
+  "theme": "Tema",
+  "themeDark": "Oscuro",
+  "themeLight": "Claro",
+  "showTranscription": "Mostrar transcripción",
+  "showTranscriptionHint": "Cómo se pronuncia, bajo la palabra",
+  "reminders": "Recordatorios",
+  "remindersHint": "Un aviso cuando toca practicar",
+  "autoSpeak": "Decir las palabras nuevas en voz alta",
+  "autoSpeakHint": "Oye cada palabra en cuanto aparece su tarjeta",
+  "speechRate": "Velocidad de la voz",
+  "speechRateHint": "Qué tan rápido se leen las palabras",
+  "speedSlow": "Lenta",
+  "speedFast": "Rápida"
 }

@@ -80,7 +80,7 @@ class _ModeButton extends StatelessWidget {
     return Material(
       color: isSelected
           ? AppColors.accentBlue.withValues(alpha: 0.14)
-          : AppColors.subtleButton,
+          : AppPalette.of(context).subtleButton,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(14),
         side: BorderSide(
@@ -182,7 +182,7 @@ class _WriteAnswerPanelState extends State<WriteAnswerPanel> {
           decoration: InputDecoration(
             hintText: strings.answerHint,
             filled: true,
-            fillColor: AppColors.subtleButton,
+            fillColor: AppPalette.of(context).subtleButton,
             border: border(Colors.transparent),
             enabledBorder: border(resultColor ?? Colors.transparent),
             focusedBorder: border(resultColor ?? AppColors.accentBlue),
@@ -336,7 +336,7 @@ class _ChoiceOption extends StatelessWidget {
       opacity: state == _OptionState.dimmed ? 0.45 : 1,
       duration: const Duration(milliseconds: 200),
       child: Material(
-        color: accent?.withValues(alpha: 0.14) ?? AppColors.subtleButton,
+        color: accent?.withValues(alpha: 0.14) ?? AppPalette.of(context).subtleButton,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(14),
           side: BorderSide(

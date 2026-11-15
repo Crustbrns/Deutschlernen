@@ -25,5 +25,22 @@
   "correct": "Correct!",
   "wrongAnswer": "Not quite. Correct answer:",
   "interfaceLanguage": "Interface language",
-  "wordsLanguage": "Words language"
+  "wordsLanguage": "Words language",
+  "settingsAppearance": "Appearance",
+  "settingsLanguages": "Languages",
+  "settingsVoice": "Voice",
+  "settingsNotifications": "Notifications",
+  "theme": "Theme",
+  "themeDark": "Dark",
+  "themeLight": "Light",
+  "showTranscription": "Show transcription",
+  "showTranscriptionHint": "Phonetic spelling under the word",
+  "reminders": "Reminders",
+  "remindersHint": "A nudge when it's time to practice",
+  "autoSpeak": "Say new words out loud",
+  "autoSpeakHint": "Hear each word as soon as its card appears",
+  "speechRate": "Voice speed",
+  "speechRateHint": "How fast words are read to you",
+  "speedSlow": "Slow",
+  "speedFast": "Fast"
 }
