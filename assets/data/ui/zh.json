@@ -9,7 +9,6 @@
   "menu": "菜单",
   "language": "语言",
   "goodWork": "做得好！",
-  "restart": "重新开始",
   "tabMain": "练习",
   "tabVocabulary": "分类",
   "tabStatistics": "进度",
@@ -51,5 +50,16 @@
   "repeatWords": "复习单词",
   "chooseLevels": "分类",
   "levelsSelectedOther": "已选 {n} 个分类",
-  "soonLabel": "即将推出"
+  "finish": "完成",
+  "forgot": "不\n记得",
+  "remembered": "记得",
+  "statusNew": "新单词",
+  "statusKnown": "已经认识",
+  "statusLearning": "学习中",
+  "statusLearned": "已掌握",
+  "reviewNow": "现在复习",
+  "reviewInMinutesOther": "{n} 分钟后复习",
+  "reviewInHoursOther": "{n} 小时后复习",
+  "reviewInDaysOther": "{n} 天后复习",
+  "reviewInMonthsOther": "{n} 个月后复习"
 }

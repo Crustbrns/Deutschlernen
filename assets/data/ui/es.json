@@ -9,7 +9,6 @@
   "menu": "Menú",
   "language": "Idioma",
   "goodWork": "¡Buen trabajo!",
-  "restart": "Reiniciar",
   "tabMain": "Práctica",
   "tabVocabulary": "Categorías",
   "tabStatistics": "Progreso",
@@ -54,5 +53,18 @@
   "chooseLevels": "Categorías",
   "levelsSelectedOne": "{n} categoría seleccionada",
   "levelsSelectedOther": "{n} categorías seleccionadas",
-  "soonLabel": "Pronto"
+  "finish": "Listo",
+  "forgot": "No la\nrecuerdo",
+  "remembered": "La\nrecuerdo",
+  "statusNew": "Palabra nueva",
+  "statusKnown": "Ya la sé",
+  "statusLearning": "Aprendiendo",
+  "statusLearned": "Aprendida",
+  "reviewNow": "repasar ahora",
+  "reviewInMinutesOther": "repaso en {n} min",
+  "reviewInHoursOther": "repaso en {n} h",
+  "reviewInDaysOne": "repaso en {n} día",
+  "reviewInDaysOther": "repaso en {n} días",
+  "reviewInMonthsOne": "repaso en {n} mes",
+  "reviewInMonthsOther": "repaso en {n} meses"
 }

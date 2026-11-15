@@ -48,6 +48,18 @@ render them as separate cards with gaps between them.
   in `AppColors.accentBlue` for the chosen one, `Icons.circle_outlined` in
   `colors.onSurfaceVariant` for the others. Not by an outline.
 
+- Word rows (`WordRow` in `word_list.dart`, category lists and search results) start with a
+  status strip: 4px wide, radius 2, full text height, 12px gap to the text. Color by
+  `WordStatus`: new — `colors.onSurface` (white in dark), learning — `AppColors.statusLearning`
+  pink, due for review — `statusReview` yellow, learned — `statusLearned` green,
+  "already know" — `colors.onSurfaceVariant` light gray (not the dark divider gray).
+  The caption above the German word (`palette.mutedText`, semibold) names the status and the
+  next review: "Новое слово", "Уже знаю", "Учится · повтор через 8 мин", "Повтор через 4 дн." /
+  "Повторить сейчас", "Выучено · повтор через 2 мес." (`AppStrings.wordState`); in search
+  results it is prefixed with the level ("A1 · …"). Green = interval ≥ 21 days
+  (`WordStatus.matureInterval`), a due word is always yellow.
+  Caption and translation 16px, German word 17px; line height 1.15, letter spacing -0.2, 2px
+  apart. Caption gray w600, German word `onSurface` bold, translation `onSurface` w600.
 - Navigation rows (a row that opens a list, e.g. a level): no chevron. A count on the right is
   written with its noun ("5 слов", via `AppStrings.wordCount`), font size 15, in the quiet gray
   `AppColors.quietText(colors)`.

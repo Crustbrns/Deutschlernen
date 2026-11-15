@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:deutschlernen/domain/models/word_status.dart';
 
 class AppStrings {
   const AppStrings(this._values, {this.languageCode = 'en'});
@@ -40,7 +41,9 @@ class AppStrings {
   String get speedSlow => _get('speedSlow');
   String get speedFast => _get('speedFast');
   String get goodWork => _get('goodWork');
-  String get restart => _get('restart');
+  String get finish => _get('finish');
+  String get forgot => _get('forgot');
+  String get remembered => _get('remembered');
   String get tabMain => _get('tabMain');
   String get tabVocabulary => _get('tabVocabulary');
   String get tabStatistics => _get('tabStatistics');
@@ -48,7 +51,6 @@ class AppStrings {
   String get startLearning => _get('startLearning');
   String get learnNewWords => _get('learnNewWords');
   String get repeatWords => _get('repeatWords');
-  String get soonLabel => _get('soonLabel'); // short, for a row's trailing
   String get chooseLevels => _get('chooseLevels');
   String get comingSoon => _get('comingSoon');
   String get modeShow => _get('modeShow');
@@ -73,6 +75,39 @@ class AppStrings {
 
   /// "Выбрано 3 категории": the learn menu's categories row.
   String levelsSelected(int n) => _plural('levelsSelected', n);
+
+  /// Caption of a word in the lists: "Новое слово", "Учится · повтор через
+  /// 8 мин", "Повтор через 4 дн.", "Повторить сейчас", …
+  String wordState(WordState state, DateTime now) {
+    final due = state.due;
+    // Due already, or no date (new / known words).
+    final wait = due?.difference(now);
+    final when = (wait == null || wait <= Duration.zero)
+        ? _get('reviewNow')
+        : reviewIn(wait);
+    return switch (state.status) {
+      WordStatus.newWord => _get('statusNew'),
+      WordStatus.known => _get('statusKnown'),
+      WordStatus.learning => '${_get('statusLearning')} · $when',
+      WordStatus.review => _capitalize(when),
+      WordStatus.learned => '${_get('statusLearned')} · $when',
+    };
+  }
+
+  /// "повтор через 5 мин / 3 ч / 4 дн. / 2 мес." Rounded up, so it never
+  /// says "0 min" for a word that isn't due yet.
+  String reviewIn(Duration wait) {
+    final minutes = (wait.inSeconds / 60).ceil();
+    if (minutes < 60) return _plural('reviewInMinutes', minutes);
+    final hours = (minutes / 60).ceil();
+    if (hours < 24) return _plural('reviewInHours', hours);
+    final days = (hours / 24).ceil();
+    if (days < 30) return _plural('reviewInDays', days);
+    return _plural('reviewInMonths', (days / 30).round());
+  }
+
+  static String _capitalize(String s) =>
+      s.isEmpty ? s : s[0].toUpperCase() + s.substring(1);
 
   /// Template `<base><Form>` for n with {n} replaced; falls back to Other.
   String _plural(String base, int n) {

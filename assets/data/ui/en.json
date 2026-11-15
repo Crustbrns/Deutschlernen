@@ -9,7 +9,6 @@
   "menu": "Menu",
   "language": "Language",
   "goodWork": "Good work!",
-  "restart": "Restart",
   "tabMain": "Practice",
   "tabVocabulary": "Categories",
   "tabStatistics": "Progress",
@@ -54,5 +53,18 @@
   "chooseLevels": "Categories",
   "levelsSelectedOne": "{n} category selected",
   "levelsSelectedOther": "{n} categories selected",
-  "soonLabel": "Soon"
+  "finish": "Done",
+  "forgot": "Don't\nremember",
+  "remembered": "Remember",
+  "statusNew": "New word",
+  "statusKnown": "Already know",
+  "statusLearning": "Learning",
+  "statusLearned": "Learned",
+  "reviewNow": "review now",
+  "reviewInMinutesOther": "review in {n} min",
+  "reviewInHoursOther": "review in {n} h",
+  "reviewInDaysOne": "review in {n} day",
+  "reviewInDaysOther": "review in {n} days",
+  "reviewInMonthsOne": "review in {n} month",
+  "reviewInMonthsOther": "review in {n} months"
 }

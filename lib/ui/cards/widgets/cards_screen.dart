@@ -21,15 +21,19 @@ class _CardsScreenState extends State<CardsScreen> {
 
   CardsViewModel get _vm => widget.viewModel;
 
-  CardDecision _decisionFor(SwipeDirection direction) =>
-      direction == SwipeDirection.left
-      ? CardDecision.known
-      : CardDecision.learn;
+  CardDecision _decisionFor(SwipeDirection direction) {
+    final left = direction == SwipeDirection.left;
+    return switch (_vm.mode) {
+      SessionMode.newWords => left ? CardDecision.known : CardDecision.learn,
+      SessionMode.review =>
+        left ? CardDecision.forgot : CardDecision.remembered,
+    };
+  }
 
+  /// An undone card flies back in from the side it left to.
   SwipeDirection? get _enterFrom => switch (_vm.lastUndone) {
-    CardDecision.known => SwipeDirection.left,
-    CardDecision.learn => SwipeDirection.right,
     null => null,
+    final d => d.isLeft ? SwipeDirection.left : SwipeDirection.right,
   };
 
   @override
@@ -58,8 +62,11 @@ class _CardsScreenState extends State<CardsScreen> {
               return const Center(child: CircularProgressIndicator());
             }
 
+            final strings = _vm.strings;
+            final review = _vm.mode == SessionMode.review;
+
             return AppStringsScope(
-              strings: _vm.strings,
+              strings: strings,
               child: Column(
                 children: [
                   Padding(
@@ -72,7 +79,9 @@ class _CardsScreenState extends State<CardsScreen> {
                   ),
                   Expanded(
                     child: _vm.isFinished
-                        ? _FinishedView(onRestart: _vm.restart)
+                        ? _FinishedView(
+                            onDone: () => Navigator.of(context).pop(),
+                          )
                         : Padding(
                             padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                             child: Center(
@@ -91,6 +100,12 @@ class _CardsScreenState extends State<CardsScreen> {
                                   onSpeak: _vm.speak,
                                   showTranscription: _vm.showTranscription,
                                   bottomBar: DecisionBar(
+                                    leftLabel: review
+                                        ? strings.forgot
+                                        : strings.known,
+                                    rightLabel: review
+                                        ? strings.remembered
+                                        : strings.learn,
                                     onKnown: () => _swipeController.swipe(
                                       SwipeDirection.left,
                                     ),
@@ -115,9 +130,9 @@ class _CardsScreenState extends State<CardsScreen> {
 }
 
 class _FinishedView extends StatelessWidget {
-  const _FinishedView({required this.onRestart});
+  const _FinishedView({required this.onDone});
 
-  final VoidCallback onRestart;
+  final VoidCallback onDone; // back to the menu
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +147,7 @@ class _FinishedView extends StatelessWidget {
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           const SizedBox(height: 24),
-          FilledButton(onPressed: onRestart, child: Text(strings.restart)),
+          FilledButton(onPressed: onDone, child: Text(strings.finish)),
         ],
       ),
     );

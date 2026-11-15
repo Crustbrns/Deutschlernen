@@ -86,6 +86,8 @@ class _HomeShellState extends State<HomeShell> {
                 children: [
                   MainMenuScreen(
                     selectedLevelCount: _vm.learnLevels.length,
+                    newWordsLeft: _vm.newWordsLeft,
+                    dueCount: _vm.dueCount,
                     onChooseLevels: () => showLevelSheet(
                       context: context,
                       strings: _vm.strings,
@@ -98,7 +100,14 @@ class _HomeShellState extends State<HomeShell> {
                       },
                       onChanged: _vm.setLearnLevels,
                     ),
-                    onLearnNewWords: _openCards,
+                    onLearnNewWords: () {
+                      _vm.startNewWords();
+                      _openCards();
+                    },
+                    onReview: () {
+                      _vm.startReview();
+                      _openCards();
+                    },
                   ),
                   VocabularyScreen(
                     words: _vm.words,
@@ -109,6 +118,7 @@ class _HomeShellState extends State<HomeShell> {
                       _openWord(word);
                     },
                     onSpeak: _vm.speak,
+                    stateOf: _vm.stateOf,
                   ),
                   const StatisticsScreen(),
                   SettingsScreen(
