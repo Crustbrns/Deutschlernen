@@ -41,6 +41,22 @@ class Word {
       .replaceAll(RegExp(r'\s+'), ' ')
       .replaceAll(RegExp(r'[.!?。！？]+$'), '');
 
+  /// Search: [query] is part of the German word (with article or plural)
+  /// or of the translation. Ignores case and umlauts, so "hauser" finds
+  /// "Häuser" for people without a German keyboard.
+  bool matches(String query) {
+    final q = _fold(query.trim());
+    if (q.isEmpty) return true;
+    return [withArticle, ?plural, translation].any((s) => _fold(s).contains(q));
+  }
+
+  static String _fold(String text) => text
+      .toLowerCase()
+      .replaceAll('ä', 'a')
+      .replaceAll('ö', 'o')
+      .replaceAll('ü', 'u')
+      .replaceAll('ß', 'ss');
+
   /// Grammatical gender by article: der → m., die → f., das → n.
   /// null when there is no known article, i.e. the word is not a noun.
   String? get genderMark => switch (article.toLowerCase()) {

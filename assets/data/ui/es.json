@@ -23,5 +23,7 @@
   "checkAnswer": "Comprobar",
   "answerHint": "Escribe la traducción o la palabra alemana",
   "correct": "¡Correcto!",
-  "wrongAnswer": "No exactamente. Respuesta correcta:"
+  "wrongAnswer": "No exactamente. Respuesta correcta:",
+  "searchHint": "Buscar palabras",
+  "nothingFound": "No se encontró nada"
 }

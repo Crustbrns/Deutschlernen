@@ -33,6 +33,8 @@ class AppStrings {
   String get answerHint => _get('answerHint');
   String get correct => _get('correct');
   String get wrongAnswer => _get('wrongAnswer');
+  String get searchHint => _get('searchHint');
+  String get nothingFound => _get('nothingFound');
 
   /// Texts for the current language: `AppStrings.of(context).known`.
   static AppStrings of(BuildContext context) {
