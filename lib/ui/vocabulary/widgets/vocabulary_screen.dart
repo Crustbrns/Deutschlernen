@@ -178,7 +178,7 @@ class _SearchField extends StatelessWidget {
                 },
               ),
         filled: true,
-        fillColor: AppColors.card,
+        fillColor: AppPalette.of(context).card,
         border: border(colors.outlineVariant.withValues(alpha: 0.4)),
         enabledBorder: border(colors.outlineVariant.withValues(alpha: 0.4)),
         focusedBorder: border(AppColors.accentBlue),
@@ -226,8 +226,8 @@ class _ResultRow extends StatelessWidget {
                     children: [
                       Text(
                         word.level,
-                        style: const TextStyle(
-                          color: AppColors.mutedText,
+                        style: TextStyle(
+                          color: AppPalette.of(context).mutedText,
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
                           height: 1.2, // tighter than the default line height

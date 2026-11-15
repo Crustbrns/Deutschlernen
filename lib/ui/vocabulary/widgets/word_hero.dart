@@ -44,6 +44,7 @@ Widget _shuttle(
       ? toHeroContext
       : fromHeroContext;
   final card = (cardContext.widget as Hero).child;
+  final cardColor = AppPalette.of(flightContext).card;
   final cardSize = (cardContext.findRenderObject()! as RenderBox).size;
 
   // animation is already curved: 0 = row, 1 = card, in both directions.
@@ -51,7 +52,7 @@ Widget _shuttle(
     animation: animation,
     builder: (context, child) => ClipRRect(
       borderRadius: BorderRadius.circular(20 + 12 * animation.value), // 20 → 32
-      child: ColoredBox(color: AppColors.card, child: child),
+      child: ColoredBox(color: cardColor, child: child),
     ),
     child: FadeTransition(
       // Content shows up early, together with the growing box, so nothing

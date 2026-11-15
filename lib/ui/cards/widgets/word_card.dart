@@ -387,17 +387,17 @@ class _Header extends StatelessWidget {
               borderRadius: BorderRadius.circular(3),
             ),
           ),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Text(
-            strings.newWord,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: 14.5,
-              fontWeight: FontWeight.w600,
-              color: AppPalette.of(context).mutedText,
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              strings.newWord,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 14.5,
+                fontWeight: FontWeight.w600,
+                color: AppPalette.of(context).mutedText,
+              ),
             ),
           ),
         ],

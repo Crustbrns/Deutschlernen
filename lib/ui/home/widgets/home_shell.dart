@@ -52,6 +52,7 @@ class _HomeShellState extends State<HomeShell> {
             for (final w in _vm.words)
               if (w.id != word.id) w.translation,
           ],
+          showTranscription: widget.settingsViewModel.showTranscription,
           onSpeak: _vm.speak,
         ),
       ),

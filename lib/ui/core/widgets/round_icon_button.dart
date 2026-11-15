@@ -17,15 +17,16 @@ class RoundIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    final subtle = AppPalette.of(context).subtleButton;
 
     return IconButton.filled(
       icon: Icon(icon, size: 20),
       tooltip: tooltip,
       style: IconButton.styleFrom(
-        backgroundColor: AppColors.subtleButton,
+        backgroundColor: subtle,
         foregroundColor: colors.onSurface,
         // Disabled: same fill, faded icon, so the button keeps its place.
-        disabledBackgroundColor: AppColors.subtleButton,
+        disabledBackgroundColor: subtle,
         disabledForegroundColor: colors.onSurface.withValues(alpha: 0.3),
         fixedSize: const Size.square(36),
         minimumSize: const Size.square(36),
