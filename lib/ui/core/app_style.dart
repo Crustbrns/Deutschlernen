@@ -12,6 +12,8 @@ abstract final class AppColors {
   static const mutedText = Color(0xFF8C8C8C); // rgb(140,140,140), secondary labels
   static const decisionText = mutedText;
   static const decisionDivider = Color(0xFF5A5A5A); // rgb(90,90,90)
+  static const decisionKnown = Color(0xFFFF4D4F); // left button highlight: red
+  static const decisionLearn = Color(0xFF34C759); // right button highlight: green
   static const accentBlue = Color(0xFF1AA7FF);
   static const accentTeal = Color(0xFF2EE6D6);
 

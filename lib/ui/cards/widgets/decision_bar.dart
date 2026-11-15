@@ -33,6 +33,7 @@ class DecisionBar extends StatelessWidget {
                 icon: Icons.arrow_back,
                 iconFirst: true,
                 highlight: (-progress).clamp(0.0, 1.0),
+                highlightColor: AppColors.decisionKnown,
                 onPressed: onKnown,
               ),
             ),
@@ -43,6 +44,7 @@ class DecisionBar extends StatelessWidget {
                 icon: Icons.arrow_forward,
                 iconFirst: false,
                 highlight: progress.clamp(0.0, 1.0),
+                highlightColor: AppColors.decisionLearn,
                 onPressed: onLearn,
               ),
             ),
@@ -59,6 +61,7 @@ class _DecisionButton extends StatelessWidget {
     required this.icon,
     required this.iconFirst,
     required this.highlight,
+    required this.highlightColor,
     required this.onPressed,
   });
 
@@ -66,15 +69,14 @@ class _DecisionButton extends StatelessWidget {
   final IconData icon;
   final bool iconFirst; // arrow sits on the outer edge of the screen
   final double highlight; // 0..1, how far the card is dragged this way
+  final Color highlightColor; // tint of the highlight (red / green)
   final VoidCallback onPressed;
 
-  static const _maxHighlightAlpha = 0.10;
+  static const _maxHighlightAlpha = 0.18;
   static const _maxHighlightScale = -0.02;
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
-
     final arrow = Icon(icon, size: 24);
     // Expanded lets the text take the free space and wrap into two lines.
     final text = Expanded(
@@ -97,7 +99,7 @@ class _DecisionButton extends StatelessWidget {
         onPressed: onPressed,
         style: TextButton.styleFrom(
           foregroundColor: AppColors.decisionText, // text and arrows
-          backgroundColor: colors.onSurface.withValues(
+          backgroundColor: highlightColor.withValues(
             alpha: _maxHighlightAlpha * highlight,
           ),
           shape: RoundedRectangleBorder(
