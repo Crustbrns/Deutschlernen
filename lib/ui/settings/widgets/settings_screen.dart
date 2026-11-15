@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/domain/models/app_language.dart';
 import 'package:deutschlernen/domain/models/app_settings.dart';
 import 'package:deutschlernen/ui/cards/widgets/language_sheet.dart';
@@ -34,7 +35,13 @@ class SettingsScreen extends StatelessWidget {
       child: ListenableBuilder(
         listenable: settings,
         builder: (context, _) => ListView(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+          // + bottom inset: the last item stays reachable above the blurred bar.
+          padding: EdgeInsets.fromLTRB(
+            16,
+            16,
+            16,
+            24 + MediaQuery.paddingOf(context).bottom,
+          ),
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
@@ -62,7 +69,7 @@ class SettingsScreen extends StatelessWidget {
               title: strings.settingsLanguages,
               children: [
                 _LanguageTile(
-                  icon: Icons.phone_android_outlined,
+                  icon: AppIcons.deviceMobile,
                   title: strings.interfaceLanguage,
                   current: uiLanguage,
                   onTap: () => showLanguageSheet(
@@ -74,7 +81,7 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 ),
                 _LanguageTile(
-                  icon: Icons.translate,
+                  icon: AppIcons.translate,
                   title: strings.wordsLanguage,
                   current: wordLanguage,
                   onTap: () => showLanguageSheet(
@@ -182,12 +189,12 @@ class _ThemeTile extends StatelessWidget {
         segments: [
           ButtonSegment(
             value: ThemeMode.dark,
-            icon: const Icon(Icons.dark_mode_outlined, size: 18),
+            icon: const Icon(AppIcons.moon, size: 18),
             label: Text(strings.themeDark),
           ),
           ButtonSegment(
             value: ThemeMode.light,
-            icon: const Icon(Icons.light_mode_outlined, size: 18),
+            icon: const Icon(AppIcons.sun, size: 18),
             label: Text(strings.themeLight),
           ),
         ],
@@ -262,7 +269,7 @@ class _LanguageTile extends StatelessWidget {
       leading: Icon(icon),
       title: Text(title),
       subtitle: Text('${current.flag}  ${current.label}'),
-      trailing: const Icon(Icons.chevron_right),
+      trailing: const Icon(AppIcons.caretRight),
       onTap: onTap,
     );
   }

@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/domain/models/app_language.dart';
 
 Future<void> showLanguageSheet({
@@ -37,7 +38,7 @@ Future<void> showLanguageSheet({
                     title: Text(language.label),
                     selected: language == current,
                     trailing: language == current
-                        ? const Icon(Icons.check)
+                        ? const Icon(AppIcons.check)
                         : null,
                     onTap: () {
                       onSelected(language);

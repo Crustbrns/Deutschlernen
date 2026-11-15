@@ -75,6 +75,10 @@ class _HomeShellState extends State<HomeShell> {
           // Builder: the bar below needs a context under the scope.
           child: Builder(
             builder: (context) => Scaffold(
+              // Content runs under the bar, which blurs it. Scaffold then
+              // reports the bar's height as bottom padding in MediaQuery,
+              // so screens keep their last items above the bar with it.
+              extendBody: true,
               // IndexedStack keeps every tab alive, so e.g. the selected
               // dictionary is not lost when switching tabs.
               body: IndexedStack(
