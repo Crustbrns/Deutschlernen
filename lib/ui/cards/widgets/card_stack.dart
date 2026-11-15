@@ -86,8 +86,8 @@ class _CardBackdrop extends StatelessWidget {
     return Material(
       color: AppColors.card,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(28), // same as WordCard
-        side: BorderSide(color: colors.outlineVariant),
+        borderRadius: BorderRadius.circular(32), // same as WordCard
+        side: BorderSide(color: colors.outlineVariant.withValues(alpha: 0.4)),
       ),
       child: const SizedBox.expand(),
     );

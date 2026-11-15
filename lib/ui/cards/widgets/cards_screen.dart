@@ -25,12 +25,12 @@ class _CardsScreenState extends State<CardsScreen> {
 
   CardDecision _decisionFor(SwipeDirection direction) =>
       direction == SwipeDirection.left
-          ? CardDecision.later
-          : CardDecision.remembered;
+          ? CardDecision.known
+          : CardDecision.learn;
 
   SwipeDirection? get _enterFrom => switch (_vm.lastUndone) {
-        CardDecision.later => SwipeDirection.left,
-        CardDecision.remembered => SwipeDirection.right,
+        CardDecision.known => SwipeDirection.left,
+        CardDecision.learn => SwipeDirection.right,
         null => null,
       };
 
@@ -103,9 +103,9 @@ class _CardsScreenState extends State<CardsScreen> {
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                         child: DecisionBar(
-                          onLater: () =>
+                          onKnown: () =>
                               _swipeController.swipe(SwipeDirection.left),
-                          onRemembered: () =>
+                          onLearn: () =>
                               _swipeController.swipe(SwipeDirection.right),
                           dragProgress: _swipeController.dragProgress,
                         ),

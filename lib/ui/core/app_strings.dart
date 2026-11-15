@@ -11,8 +11,8 @@ class AppStrings {
   String get newWord => _get('newWord');
   String get showTranslation => _get('showTranslation');
   String get plural => _get('plural');
-  String get later => _get('later');
-  String get remembered => _get('remembered');
+  String get known => _get('known');
+  String get learn => _get('learn');
   String get close => _get('close');
   String get back => _get('back');
   String get menu => _get('menu');
@@ -20,7 +20,7 @@ class AppStrings {
   String get goodWork => _get('goodWork');
   String get restart => _get('restart');
 
-  /// Texts for the current language: `AppStrings.of(context).later`.
+  /// Texts for the current language: `AppStrings.of(context).known`.
   static AppStrings of(BuildContext context) {
     final scope = context.dependOnInheritedWidgetOfExactType<AppStringsScope>();
     assert(scope != null, 'No AppStringsScope found above this widget');

@@ -20,8 +20,3 @@ abstract final class AppColors {
     };
   }
 }
-
-abstract final class AppFonts {
-  // Android maps 'serif' to Noto Serif, so no font files are needed.
-  static const serif = 'serif';
-}

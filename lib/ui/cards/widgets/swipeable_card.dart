@@ -15,8 +15,8 @@ Highlight strength: _highlightDistance (fraction of the screen width that fully 
 class SwipeController {
   SwipeableCardState? _state;
 
-  /// How far the top card is dragged sideways, from -1 (fully towards "later")
-  /// to 1 (fully towards "remembered"). 0 when the card is at rest.
+  /// How far the top card is dragged sideways, from -1 (fully towards "known")
+  /// to 1 (fully towards "learn"). 0 when the card is at rest.
   final ValueNotifier<double> dragProgress = ValueNotifier<double>(0);
 
   void swipe(SwipeDirection direction) => _state?.swipe(direction);

@@ -1,6 +1,7 @@
 {
   "tee": {
     "word": "чай",
+    "definition": "Горячий напиток, который готовят из высушенных листьев.",
     "examples": [
       { "german": "Ich trinke gerne **Tee**.", "translation": "Я люблю пить **чай**." },
       { "german": "Der **Tee** ist heiß.", "translation": "**Чай** горячий." }
@@ -8,6 +9,7 @@
   },
   "hund": {
     "word": "собака",
+    "definition": "Животное, которое лает и часто живёт дома как питомец.",
     "examples": [
       { "german": "Der **Hund** spielt im Garten.", "translation": "**Собака** играет в саду." },
       { "german": "Ich gehe mit dem **Hund** spazieren.", "translation": "Я гуляю с **собакой**." }
@@ -15,6 +17,7 @@
   },
   "haus": {
     "word": "дом",
+    "definition": "Здание, в котором живут люди.",
     "examples": [
       { "german": "Das **Haus** ist groß.", "translation": "**Дом** большой." },
       { "german": "Ich gehe nach **Hause**.", "translation": "Я иду **домой**." }
@@ -22,6 +25,7 @@
   },
   "katze": {
     "word": "кошка",
+    "definition": "Маленькое домашнее животное, которое мяукает и любит ловить мышей.",
     "examples": [
       { "german": "Die **Katze** schläft auf dem Sofa.", "translation": "**Кошка** спит на диване." },
       { "german": "Ich habe eine schwarze **Katze**.", "translation": "У меня чёрная **кошка**." }
@@ -29,6 +33,7 @@
   },
   "wasser": {
     "word": "вода",
+    "definition": "Прозрачная жидкость, которую можно пить.",
     "examples": [
       { "german": "Ich trinke ein Glas **Wasser**.", "translation": "Я пью стакан **воды**." },
       { "german": "Das **Wasser** ist kalt.", "translation": "**Вода** холодная." }

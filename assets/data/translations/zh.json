@@ -1,6 +1,7 @@
 {
   "tee": {
     "word": "茶",
+    "definition": "一种用干燥的叶子冲泡的热饮。",
     "examples": [
       { "german": "Ich trinke gerne **Tee**.", "translation": "我喜欢喝**茶**。" },
       { "german": "Der **Tee** ist heiß.", "translation": "**茶**很烫。" },
@@ -9,6 +10,7 @@
   },
   "hund": {
     "word": "狗",
+    "definition": "一种会叫、常被当作宠物饲养的动物。",
     "examples": [
       { "german": "Der **Hund** spielt im Garten.", "translation": "**狗**在花园里玩。" },
       { "german": "Ich gehe mit dem **Hund** spazieren.", "translation": "我带**狗**去散步。" }
@@ -16,6 +18,7 @@
   },
   "haus": {
     "word": "房子",
+    "definition": "人们居住的建筑物。",
     "examples": [
       { "german": "Das **Haus** ist groß.", "translation": "这个**房子**很大。" },
       { "german": "Wir kaufen ein **Haus**.", "translation": "我们要买一个**房子**。" },
@@ -24,6 +27,7 @@
   },
   "katze": {
     "word": "猫",
+    "definition": "一种会喵喵叫、喜欢抓老鼠的小宠物。",
     "examples": [
       { "german": "Die **Katze** schläft auf dem Sofa.", "translation": "**猫**在沙发上睡觉。" },
       { "german": "Ich habe eine schwarze **Katze**.", "translation": "我有一只黑**猫**。" },
@@ -32,6 +36,7 @@
   },
   "wasser": {
     "word": "水",
+    "definition": "一种可以喝的透明液体。",
     "examples": [
       { "german": "Ich trinke ein Glas **Wasser**.", "translation": "我喝一杯**水**。" },
       { "german": "Das **Wasser** ist kalt.", "translation": "**水**很凉。" }

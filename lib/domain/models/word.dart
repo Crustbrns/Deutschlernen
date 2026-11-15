@@ -10,6 +10,7 @@ class Word {
     required this.level,
     required this.transcription,
     required this.definition,
+    required this.definitionTranslation,
     required this.examples,
   });
 
@@ -20,7 +21,8 @@ class Word {
   final String translation; // in the selected language
   final String level; // A1, A2, B1 ...
   final String transcription;
-  final String definition;
+  final String definition; // German explanation
+  final String? definitionTranslation; // null if not translated yet
   final List<ExampleSentence> examples;
 
   String get withArticle => '$article $german';

@@ -1,6 +1,7 @@
 {
   "tee": {
     "word": "té",
+    "definition": "Una bebida caliente que se prepara con hojas secas.",
     "examples": [
       { "german": "Ich trinke gerne **Tee**.", "translation": "Me gusta beber **té**." },
       { "german": "Der **Tee** ist heiß.", "translation": "El **té** está caliente." }
@@ -8,6 +9,7 @@
   },
   "hund": {
     "word": "perro",
+    "definition": "Un animal que ladra y a menudo se tiene como mascota.",
     "examples": [
       { "german": "Der **Hund** spielt im Garten.", "translation": "El **perro** juega en el jardín." },
       { "german": "Ich gehe mit dem **Hund** spazieren.", "translation": "Paseo con el **perro**." },
@@ -16,6 +18,7 @@
   },
   "haus": {
     "word": "casa",
+    "definition": "Un edificio en el que vive la gente.",
     "examples": [
       { "german": "Das **Haus** ist groß.", "translation": "La **casa** es grande." },
       { "german": "Wir kaufen ein **Haus**.", "translation": "Vamos a comprar una **casa**." },
@@ -24,6 +27,7 @@
   },
   "katze": {
     "word": "gato",
+    "definition": "Una pequeña mascota que maúlla y le gusta cazar ratones.",
     "examples": [
       { "german": "Die **Katze** schläft auf dem Sofa.", "translation": "El **gato** duerme en el sofá." },
       { "german": "Ich habe eine schwarze **Katze**.", "translation": "Tengo un **gato** negro." }
@@ -31,6 +35,7 @@
   },
   "wasser": {
     "word": "agua",
+    "definition": "Un líquido transparente que se puede beber.",
     "examples": [
       { "german": "Ich trinke ein Glas **Wasser**.", "translation": "Bebo un vaso de **agua**." },
       { "german": "Das **Wasser** ist kalt.", "translation": "El **agua** está fría." },

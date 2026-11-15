@@ -1,6 +1,7 @@
 {
   "tee": {
     "word": "tea",
+    "definition": "A hot drink made from dried leaves.",
     "examples": [
       { "german": "Ich trinke gerne **Tee**.", "translation": "I like drinking **tea**." },
       { "german": "Der **Tee** ist heiß.", "translation": "The **tea** is hot." },
@@ -10,6 +11,7 @@
   },
   "hund": {
     "word": "dog",
+    "definition": "An animal that barks and is often kept as a pet.",
     "examples": [
       { "german": "Der **Hund** spielt im Garten.", "translation": "The **dog** is playing in the garden." },
       { "german": "Ich gehe mit dem **Hund** spazieren.", "translation": "I am walking the **dog**." },
@@ -18,6 +20,7 @@
   },
   "haus": {
     "word": "house",
+    "definition": "A building that people live in.",
     "examples": [
       { "german": "Das **Haus** ist groß.", "translation": "The **house** is big." },
       { "german": "Wir kaufen ein **Haus**.", "translation": "We are buying a **house**." },
@@ -27,6 +30,7 @@
   },
   "katze": {
     "word": "cat",
+    "definition": "A small pet that meows and likes to hunt mice.",
     "examples": [
       { "german": "Die **Katze** schläft auf dem Sofa.", "translation": "The **cat** is sleeping on the sofa." },
       { "german": "Ich habe eine schwarze **Katze**.", "translation": "I have a black **cat**." },
@@ -35,6 +39,7 @@
   },
   "wasser": {
     "word": "water",
+    "definition": "A clear liquid that you can drink.",
     "examples": [
       { "german": "Ich trinke ein Glas **Wasser**.", "translation": "I drink a glass of **water**." },
       { "german": "Das **Wasser** ist kalt.", "translation": "The **water** is cold." },

@@ -54,6 +54,7 @@ class WordRepository {
       level: json['level'] as String,
       transcription: json['transcription'] as String,
       definition: json['definition'] as String,
+      definitionTranslation: translation?['definition'] as String?,
       translation: word ?? '',
       examples: [
         for (final example in examples)
