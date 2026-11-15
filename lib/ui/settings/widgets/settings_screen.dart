@@ -2,6 +2,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/domain/models/app_language.dart';
 import 'package:deutschlernen/ui/cards/widgets/language_sheet.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
+import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
 
 /// Concept of the settings tab. For now it only holds two language choices:
 /// the interface language and the language of the word translations.
@@ -37,29 +38,33 @@ class SettingsScreen extends StatelessWidget {
               style: Theme.of(context).textTheme.headlineSmall,
             ),
           ),
-          _LanguageTile(
-            icon: Icons.phone_android_outlined,
-            title: strings.interfaceLanguage,
-            current: uiLanguage,
-            onTap: () => showLanguageSheet(
-              context: context,
-              title: strings.interfaceLanguage,
-              languages: languages,
-              current: uiLanguage,
-              onSelected: onUiLanguageSelected,
-            ),
-          ),
-          _LanguageTile(
-            icon: Icons.translate,
-            title: strings.wordsLanguage,
-            current: wordLanguage,
-            onTap: () => showLanguageSheet(
-              context: context,
-              title: strings.wordsLanguage,
-              languages: languages,
-              current: wordLanguage,
-              onSelected: onWordLanguageSelected,
-            ),
+          GroupedCard(
+            children: [
+              _LanguageTile(
+                icon: Icons.phone_android_outlined,
+                title: strings.interfaceLanguage,
+                current: uiLanguage,
+                onTap: () => showLanguageSheet(
+                  context: context,
+                  title: strings.interfaceLanguage,
+                  languages: languages,
+                  current: uiLanguage,
+                  onSelected: onUiLanguageSelected,
+                ),
+              ),
+              _LanguageTile(
+                icon: Icons.translate,
+                title: strings.wordsLanguage,
+                current: wordLanguage,
+                onTap: () => showLanguageSheet(
+                  context: context,
+                  title: strings.wordsLanguage,
+                  languages: languages,
+                  current: wordLanguage,
+                  onSelected: onWordLanguageSelected,
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -83,6 +88,8 @@ class _LanguageTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      // 16 = divider indent of the GroupedCard.
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
       leading: Icon(icon),
       title: Text(title),
       subtitle: Text('${current.flag}  ${current.label}'),

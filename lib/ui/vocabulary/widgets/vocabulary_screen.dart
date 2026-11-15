@@ -2,6 +2,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
+import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
 import 'package:deutschlernen/ui/core/widgets/play_button.dart';
 import 'package:deutschlernen/ui/vocabulary/widgets/word_hero.dart';
 
@@ -94,7 +95,7 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
       // Scrolling the results hides the keyboard, as in iOS search.
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-      child: _GroupedCard(
+      child: GroupedCard(
         children: [
           for (final word in results)
             _ResultRow(
@@ -115,7 +116,7 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
 
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-      child: _GroupedCard(
+      child: GroupedCard(
         children: [
           for (var i = 0; i < _dictionaries.length; i++)
             ListTile(
@@ -132,42 +133,6 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
               ),
               onTap: () => setState(() => _selected = i),
             ),
-        ],
-      ),
-    );
-  }
-}
-
-/// One rounded card with its rows split by thin lines, like the examples
-/// on the word card. Used for the dictionaries and the search results.
-class _GroupedCard extends StatelessWidget {
-  const _GroupedCard({required this.children});
-
-  final List<Widget> children;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
-
-    return Material(
-      color: AppColors.card,
-      // No outline: the card stands out by its fill only.
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      // Clips the ripple of the first/last row to the rounded corners.
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        children: [
-          for (var i = 0; i < children.length; i++) ...[
-            if (i > 0)
-              Divider(
-                height: 1,
-                thickness: 1,
-                indent: 16,
-                endIndent: 16,
-                color: AppColors.divider(colors),
-              ),
-            children[i],
-          ],
         ],
       ),
     );

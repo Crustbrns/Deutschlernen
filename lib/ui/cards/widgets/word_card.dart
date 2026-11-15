@@ -4,6 +4,7 @@ import 'package:deutschlernen/ui/cards/widgets/answer_modes.dart';
 import 'package:deutschlernen/ui/cards/widgets/example_tile.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
+import 'package:deutschlernen/ui/core/widgets/round_icon_button.dart';
 
 class WordCard extends StatefulWidget {
   const WordCard({
@@ -272,17 +273,9 @@ class _WordCardState extends State<WordCard> {
                   Positioned(
                     top: 14,
                     right: 14,
-                    child: IconButton.filled(
-                      icon: const Icon(Icons.close, size: 20),
+                    child: RoundIconButton(
+                      icon: Icons.close,
                       tooltip: AppStrings.of(context).close,
-                      style: IconButton.styleFrom(
-                        backgroundColor: AppColors.subtleButton,
-                        foregroundColor: colors.onSurface,
-                        fixedSize: const Size.square(36),
-                        minimumSize: const Size.square(36),
-                        padding: EdgeInsets.zero,
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
                       onPressed: onClose,
                     ),
                   ),
