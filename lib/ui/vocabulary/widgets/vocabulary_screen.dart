@@ -141,7 +141,7 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
         AppStrings.of(context).wordCount(words.length),
         style: TextStyle(
           fontSize: 15,
-          color: AppColors.lighten(AppColors.divider(colors), 0.3),
+          color: AppColors.quietText(colors),
         ),
       ),
       onTap: () => _openLevel(level, words),
@@ -202,10 +202,11 @@ class _SearchFieldState extends State<_SearchField> {
       borderSide: BorderSide.none,
     );
     // Quiet grays, so the search doesn't draw attention from the content:
-    // the outline is the divider color, hint and close icon are 30% lighter
-    // than it to stay readable.
-    final gray = AppColors.divider(Theme.of(context).colorScheme);
-    final lightGray = AppColors.lighten(gray, 0.3);
+    // the outline is the divider color, hint and close icon a bit more
+    // visible to stay readable.
+    final colors = Theme.of(context).colorScheme;
+    final gray = AppColors.divider(colors);
+    final lightGray = AppColors.quietText(colors);
 
     return Row(
       children: [
@@ -222,7 +223,7 @@ class _SearchFieldState extends State<_SearchField> {
               hintStyle: TextStyle(color: lightGray),
               prefixIcon: const Icon(Icons.search),
               filled: true,
-              fillColor: AppColors.card,
+              fillColor: AppPalette.of(context).card,
               isDense: true,
               contentPadding: const EdgeInsets.symmetric(vertical: 10),
               border: pill,

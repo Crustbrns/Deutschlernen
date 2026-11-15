@@ -28,5 +28,22 @@
   "interfaceLanguage": "界面语言",
   "wordsLanguage": "词汇语言",
   "noWordsYet": "这里还没有单词",
-  "wordCountOther": "{n} 个单词"
+  "wordCountOther": "{n} 个单词",
+  "settingsAppearance": "外观",
+  "settingsLanguages": "语言",
+  "settingsVoice": "语音",
+  "settingsNotifications": "通知",
+  "theme": "主题",
+  "themeDark": "深色",
+  "themeLight": "浅色",
+  "showTranscription": "显示音标",
+  "showTranscriptionHint": "在单词下方显示读音",
+  "reminders": "提醒",
+  "remindersHint": "该练习时提醒你",
+  "autoSpeak": "自动朗读新单词",
+  "autoSpeakHint": "卡片出现时立即听到单词",
+  "speechRate": "语速",
+  "speechRateHint": "单词朗读的快慢",
+  "speedSlow": "慢",
+  "speedFast": "快"
 }

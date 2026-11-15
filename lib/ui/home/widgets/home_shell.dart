@@ -5,6 +5,7 @@ import 'package:deutschlernen/ui/cards/widgets/cards_screen.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/home/widgets/app_bottom_bar.dart';
 import 'package:deutschlernen/ui/main_menu/widgets/main_menu_screen.dart';
+import 'package:deutschlernen/ui/settings/view_models/settings_view_model.dart';
 import 'package:deutschlernen/ui/settings/widgets/settings_screen.dart';
 import 'package:deutschlernen/ui/statistics/widgets/statistics_screen.dart';
 import 'package:deutschlernen/ui/vocabulary/widgets/vocabulary_screen.dart';
@@ -14,9 +15,14 @@ import 'package:deutschlernen/ui/vocabulary/widgets/word_detail_screen.dart';
 /// The cards screen is not a tab. It opens on top of the shell, full screen
 /// and without the bottom bar, and its close button comes back here.
 class HomeShell extends StatefulWidget {
-  const HomeShell({super.key, required this.viewModel});
+  const HomeShell({
+    super.key,
+    required this.viewModel,
+    required this.settingsViewModel,
+  });
 
   final CardsViewModel viewModel;
+  final SettingsViewModel settingsViewModel;
 
   @override
   State<HomeShell> createState() => _HomeShellState();
@@ -46,6 +52,7 @@ class _HomeShellState extends State<HomeShell> {
             for (final w in _vm.words)
               if (w.id != word.id) w.translation,
           ],
+          showTranscription: widget.settingsViewModel.showTranscription,
           onSpeak: _vm.speak,
         ),
       ),
@@ -81,6 +88,7 @@ class _HomeShellState extends State<HomeShell> {
                   ),
                   const StatisticsScreen(),
                   SettingsScreen(
+                    settings: widget.settingsViewModel,
                     languages: _vm.languages,
                     uiLanguage: _vm.uiLanguage,
                     wordLanguage: _vm.wordLanguage,

@@ -36,7 +36,7 @@ Layered, following Flutter's recommended app architecture: `lib/data` (services 
 - **Strings**: `AppStrings.of(context)` reads an `AppStringsScope` inherited widget provided by `HomeShell`. Pushed routes and Hero flight shuttles are outside that scope, so they wrap their content in `AppStringsScope` again. A missing key renders as the key name itself.
 - **`WordCard`** (`lib/ui/cards/widgets/word_card.dart`) is shared: the learning mode (answer modes Show/Write/Choose, swipes, decision bar) and `lookup: true` for the compact card opened from the vocabulary search (translation shown, close button via `onClose`). Change one mode without breaking the other.
 - **Vocabulary search → card** uses a Hero (`WordHero` in `lib/ui/vocabulary/widgets/word_hero.dart`) with a custom shuttle and a transparent `PageRouteBuilder` (`WordDetailScreen.route`), so the vocabulary tab stays visible under the card.
-- Styling constants (colors, fonts, sizes) live in `lib/ui/core/app_style.dart`. Fonts are the variable fonts Fraunces and Lora from `assets/fonts/`.
+- Styling constants (colors, fonts, sizes) live in `lib/ui/core/app_style.dart`. There is a dark and a light theme (`AppTheme`): theme-dependent colors come from `AppPalette.of(context)` (a `ThemeExtension`), fixed accents from `AppColors`. Fonts are the variable fonts Fraunces and Lora from `assets/fonts/`.
 - TTS: `SpeechService` wraps `flutter_tts` with `de-DE`.
 
 ## Git workflow

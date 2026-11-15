@@ -7,6 +7,7 @@ import 'package:deutschlernen/domain/models/app_language.dart';
 import 'package:deutschlernen/domain/models/card_decision.dart';
 import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
+import 'package:deutschlernen/ui/settings/view_models/settings_view_model.dart';
 
 class CardsViewModel extends ChangeNotifier {
   CardsViewModel({
@@ -14,12 +15,17 @@ class CardsViewModel extends ChangeNotifier {
     required this._languageRepository,
     required this._settingsRepository,
     required this._speechService,
-  });
+    required this._settingsViewModel,
+  }) {
+    // Settings that change the cards (e.g. transcription) redraw them.
+    _settingsViewModel.addListener(notifyListeners);
+  }
 
   final WordRepository _wordRepository;
   final LanguageRepository _languageRepository;
   final SettingsRepository _settingsRepository;
   final SpeechService _speechService;
+  final SettingsViewModel _settingsViewModel;
 
   List<Word> _words = [];
   List<AppLanguage> _languages = [];
@@ -46,6 +52,7 @@ class CardsViewModel extends ChangeNotifier {
   AppLanguage get wordLanguage => _wordLanguage;
   AppStrings get strings => _strings;
   bool get isLoading => _isLoading;
+  bool get showTranscription => _settingsViewModel.showTranscription;
 
   /// Index of the current card = number of decisions made so far.
   int get index => _history.length;
@@ -130,6 +137,7 @@ class CardsViewModel extends ChangeNotifier {
     _lastUndone = null;
     _isSwiping = false;
     notifyListeners();
+    _speakCurrentIfAuto();
   }
 
   void undo() {
@@ -142,7 +150,22 @@ class CardsViewModel extends ChangeNotifier {
     _history.clear();
     _lastUndone = null;
     notifyListeners();
+    _speakCurrentIfAuto();
+  }
+
+  /// The cards screen has opened: read the word on top, if the user wants that.
+  void onCardsOpened() => _speakCurrentIfAuto();
+
+  void _speakCurrentIfAuto() {
+    if (!_settingsViewModel.autoSpeak || _isLoading || isFinished) return;
+    _speechService.speak(_words[index].withArticle);
   }
 
   void speak(String text) => _speechService.speak(text);
+
+  @override
+  void dispose() {
+    _settingsViewModel.removeListener(notifyListeners);
+    super.dispose();
+  }
 }

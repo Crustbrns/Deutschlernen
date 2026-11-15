@@ -14,7 +14,7 @@ class GroupedCard extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
 
     return Material(
-      color: AppColors.card,
+      color: AppPalette.of(context).card,
       // No outline: the block stands out by its fill only.
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       // Clips the ripple of the first/last row to the rounded corners.

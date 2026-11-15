@@ -24,7 +24,7 @@ class AppBottomBar extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: AppPalette.of(context).card,
         border: Border(top: BorderSide(color: AppColors.divider(colors))),
       ),
       // NavigationBar adds the bottom safe-area padding by itself.

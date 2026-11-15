@@ -31,5 +31,22 @@
   "wordCountOne": "{n} слово",
   "wordCountFew": "{n} слова",
   "wordCountMany": "{n} слов",
-  "wordCountOther": "{n} слов"
+  "wordCountOther": "{n} слов",
+  "settingsAppearance": "Внешний вид",
+  "settingsLanguages": "Языки",
+  "settingsVoice": "Голос",
+  "settingsNotifications": "Уведомления",
+  "theme": "Тема",
+  "themeDark": "Тёмная",
+  "themeLight": "Светлая",
+  "showTranscription": "Показывать транскрипцию",
+  "showTranscriptionHint": "Как читается слово, под самим словом",
+  "reminders": "Напоминания",
+  "remindersHint": "Подсказка, когда пора заниматься",
+  "autoSpeak": "Произносить новые слова",
+  "autoSpeakHint": "Слышать каждое слово, как только появится карточка",
+  "speechRate": "Скорость голоса",
+  "speechRateHint": "Как быстро читаются слова",
+  "speedSlow": "Медленно",
+  "speedFast": "Быстро"
 }

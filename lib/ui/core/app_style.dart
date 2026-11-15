@@ -5,13 +5,90 @@ abstract final class AppSizes {
   static const cardInset = 24.0;
 }
 
+/// Colors that differ between the dark and the light theme.
+/// Read them with `AppPalette.of(context)`.
+@immutable
+class AppPalette extends ThemeExtension<AppPalette> {
+  const AppPalette({
+    required this.background,
+    required this.card,
+    required this.subtleButton,
+    required this.mutedText,
+    required this.decisionDivider,
+  });
+
+  final Color background; // behind the cards
+  final Color card;
+  final Color subtleButton; // barely different from the card
+  final Color mutedText; // secondary labels
+  final Color decisionDivider;
+
+  /// The decision buttons use the muted text color.
+  Color get decisionText => mutedText;
+
+  static const dark = AppPalette(
+    background: Color(0xFF0B0B0D),
+    card: Color(0xFF151517),
+    subtleButton: Color(0xFF222225),
+    mutedText: Color(0xFF8C8C8C), // rgb(140,140,140)
+    decisionDivider: Color(0xFF5A5A5A), // rgb(90,90,90)
+  );
+
+  static const light = AppPalette(
+    background: Color(0xFFF2F2F5),
+    card: Color(0xFFFFFFFF),
+    subtleButton: Color(0xFFEDEDF0),
+    mutedText: Color(0xFF6A6A70),
+    decisionDivider: Color(0xFFC4C4CA),
+  );
+
+  static AppPalette of(BuildContext context) =>
+      Theme.of(context).extension<AppPalette>() ?? dark;
+
+  @override
+  AppPalette copyWith({
+    Color? background,
+    Color? card,
+    Color? subtleButton,
+    Color? mutedText,
+    Color? decisionDivider,
+  }) => AppPalette(
+    background: background ?? this.background,
+    card: card ?? this.card,
+    subtleButton: subtleButton ?? this.subtleButton,
+    mutedText: mutedText ?? this.mutedText,
+    decisionDivider: decisionDivider ?? this.decisionDivider,
+  );
+
+  @override
+  AppPalette lerp(AppPalette? other, double t) {
+    if (other == null) return this;
+    return AppPalette(
+      background: Color.lerp(background, other.background, t)!,
+      card: Color.lerp(card, other.card, t)!,
+      subtleButton: Color.lerp(subtleButton, other.subtleButton, t)!,
+      mutedText: Color.lerp(mutedText, other.mutedText, t)!,
+      decisionDivider: Color.lerp(decisionDivider, other.decisionDivider, t)!,
+    );
+  }
+}
+
+abstract final class AppTheme {
+  static ThemeData dark() => _build(Brightness.dark, AppPalette.dark);
+
+  static ThemeData light() => _build(Brightness.light, AppPalette.light);
+
+  static ThemeData _build(Brightness brightness, AppPalette palette) {
+    return ThemeData(
+      brightness: brightness,
+      colorSchemeSeed: AppColors.accentBlue,
+      scaffoldBackgroundColor: palette.background,
+      extensions: [palette],
+    );
+  }
+}
+
 abstract final class AppColors {
-  static const background = Color(0xFF0B0B0D);
-  static const card = Color(0xFF151517);
-  static const subtleButton = Color(0xFF222225); // barely lighter than card
-  static const mutedText = Color(0xFF8C8C8C); // rgb(140,140,140), secondary labels
-  static const decisionText = mutedText;
-  static const decisionDivider = Color(0xFF5A5A5A); // rgb(90,90,90)
   static const decisionKnown = Color(0xFFFF4D4F); // left button highlight: red
   static const decisionLearn = Color(0xFF34C759); // right button highlight: green
   static const accentBlue = Color(0xFF1AA7FF);
@@ -30,13 +107,15 @@ abstract final class AppColors {
   static Color darken(Color color, double amount) =>
       Color.lerp(color, const Color(0xFF000000), amount)!;
 
-  /// Mixes [color] with white: amount 0.3 = 30% lighter.
-  static Color lighten(Color color, double amount) =>
-      Color.lerp(color, const Color(0xFFFFFFFF), amount)!;
-
   /// Lines between the example rows.
   static Color divider(ColorScheme colors) =>
       darken(colors.outlineVariant, 0.18);
+
+  /// Quiet gray for low-priority text and icons (search hint, word counts):
+  /// the divider color moved 30% toward the text color, so it is a bit
+  /// lighter in the dark theme and a bit darker in the light one.
+  static Color quietText(ColorScheme colors) =>
+      Color.lerp(divider(colors), colors.onSurface, 0.3)!;
 
   static Color forArticle(String article) {
     return switch (article.toLowerCase()) {

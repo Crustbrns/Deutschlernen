@@ -92,8 +92,8 @@ class WordRow extends StatelessWidget {
                       if (showLevel) ...[
                         Text(
                           word.level,
-                          style: const TextStyle(
-                            color: AppColors.mutedText,
+                          style: TextStyle(
+                            color: AppPalette.of(context).mutedText,
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
                             height: 1.2, // tighter than the default line height
@@ -103,8 +103,10 @@ class WordRow extends StatelessWidget {
                       ],
                       Text(
                         forms,
-                        style: const TextStyle(
-                          color: Colors.white,
+                        style: TextStyle(
+                          // onSurface: white in the dark theme, near-black
+                          // in the light one (plain white would vanish).
+                          color: colors.onSurface,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           height: 1.2,

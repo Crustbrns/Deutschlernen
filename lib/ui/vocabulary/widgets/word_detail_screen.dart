@@ -13,11 +13,13 @@ class WordDetailScreen extends StatelessWidget {
     super.key,
     required this.word,
     required this.otherTranslations,
+    required this.showTranscription,
     required this.onSpeak,
   });
 
   final Word word;
   final List<String> otherTranslations;
+  final bool showTranscription;
   final ValueChanged<String> onSpeak;
 
   /// Route that keeps the previous screen under it. The card grows out of
@@ -62,6 +64,7 @@ class WordDetailScreen extends StatelessWidget {
                   child: WordCard(
                     word: word,
                     onSpeak: onSpeak,
+                    showTranscription: showTranscription,
                     otherTranslations: otherTranslations,
                     bottomBar: const SizedBox.shrink(),
                     lookup: true,

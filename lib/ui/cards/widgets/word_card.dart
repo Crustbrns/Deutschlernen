@@ -11,6 +11,7 @@ class WordCard extends StatefulWidget {
     super.key,
     required this.word,
     required this.onSpeak,
+    required this.showTranscription,
     required this.otherTranslations,
     required this.bottomBar,
     this.lookup = false,
@@ -27,6 +28,9 @@ class WordCard extends StatefulWidget {
 
   final Word word;
   final ValueChanged<String> onSpeak;
+
+  /// When off, the speaker button stays but the phonetic text is hidden.
+  final bool showTranscription;
 
   /// Translations of the other words, used as wrong options in the choice mode.
   final List<String> otherTranslations;
@@ -67,11 +71,12 @@ class _WordCardState extends State<WordCard> {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    final palette = AppPalette.of(context);
     final word = widget.word;
     final lookup = widget.lookup;
 
     return Material(
-      color: AppColors.card,
+      color: palette.card,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(32),
         side: BorderSide(color: colors.outlineVariant.withValues(alpha: 0.4)),
@@ -154,7 +159,9 @@ class _WordCardState extends State<WordCard> {
                             SizedBox(height: lookup ? 6 : 16),
                             Center(
                               child: _TranscriptionButton(
-                                transcription: word.transcription,
+                                transcription: widget.showTranscription
+                                    ? word.transcription
+                                    : null,
                                 scale: _scale,
                                 onPressed: () =>
                                     widget.onSpeak(word.withArticle),
@@ -259,8 +266,8 @@ class _WordCardState extends State<WordCard> {
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                             colors: [
-                              AppColors.card.withValues(alpha: 0),
-                              AppColors.card,
+                              palette.card.withValues(alpha: 0),
+                              palette.card,
                             ],
                           ),
                         ),
@@ -300,7 +307,8 @@ class _TranscriptionButton extends StatelessWidget {
     this.scale = 1,
   });
 
-  final String transcription;
+  /// null = show only the speaker icon.
+  final String? transcription;
   final VoidCallback onPressed;
   final double scale; // shrinks text, icon and padding together
 
@@ -329,14 +337,16 @@ class _TranscriptionButton extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            transcription,
-            style: TextStyle(
-              fontSize: 16.5 * scale,
-              fontWeight: FontWeight.w500,
+          if (transcription != null) ...[
+            Text(
+              transcription!,
+              style: TextStyle(
+                fontSize: 16.5 * scale,
+                fontWeight: FontWeight.w500,
+              ),
             ),
-          ),
-          SizedBox(width: 12 * scale),
+            SizedBox(width: 12 * scale),
+          ],
           Icon(Icons.volume_up_outlined, size: 19.5 * scale),
         ],
       ),
@@ -386,7 +396,7 @@ class _Header extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14.5,
                 fontWeight: FontWeight.w600,
-                color: AppColors.mutedText,
+                color: AppPalette.of(context).mutedText,
               ),
             ),
           ),

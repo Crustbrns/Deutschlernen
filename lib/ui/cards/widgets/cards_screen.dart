@@ -33,6 +33,15 @@ class _CardsScreenState extends State<CardsScreen> {
   };
 
   @override
+  void initState() {
+    super.initState();
+    // After the first frame, so the card is already on screen when it is read.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _vm.onCardsOpened();
+    });
+  }
+
+  @override
   void dispose() {
     _swipeController.dispose();
     super.dispose();
@@ -80,6 +89,7 @@ class _CardsScreenState extends State<CardsScreen> {
                                   onSwiped: (direction) =>
                                       _vm.onCardSwiped(_decisionFor(direction)),
                                   onSpeak: _vm.speak,
+                                  showTranscription: _vm.showTranscription,
                                   bottomBar: DecisionBar(
                                     onKnown: () => _swipeController.swipe(
                                       SwipeDirection.left,
