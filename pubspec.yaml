@@ -75,6 +75,10 @@ flutter:
     - family: Phosphor
       fonts:
         - asset: assets/fonts/Phosphor.ttf
+    # Phosphor Fill (solid) icons, only for the bottom bar. Same license.
+    - family: PhosphorFill
+      fonts:
+        - asset: assets/fonts/PhosphorFill.ttf
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
