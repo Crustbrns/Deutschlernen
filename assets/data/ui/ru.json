@@ -60,7 +60,7 @@
   "levelsSelectedMany": "Выбрано {n} категорий",
   "levelsSelectedOther": "Выбрано {n} категории",
   "finish": "Готово",
-  "forgot": "Не\nпомню",
+  "forgot": "Забыл",
   "remembered": "Помню",
   "statusNew": "Новое слово",
   "statusKnown": "Уже знаю",
@@ -70,5 +70,13 @@
   "reviewInDaysOther": "повтор через {n} дн.",
   "reviewInMonthsOther": "повтор через {n} мес.",
   "resetProgress": "Сбросить прогресс по слову",
-  "statusLearning": "Учится"
+  "statusLearning": "Учится",
+  "learnedToday": "Выучено сегодня: {n} из {goal}",
+  "settingsProgress": "Прогресс",
+  "resetAllProgress": "Сбросить весь прогресс",
+  "resetAllProgressHint": "Все слова снова станут новыми",
+  "resetAllConfirmTitle": "Сбросить весь прогресс?",
+  "resetAllConfirmBody": "Все слова снова станут новыми. Это нельзя отменить.",
+  "resetConfirm": "Сбросить",
+  "cancel": "Отмена"
 }

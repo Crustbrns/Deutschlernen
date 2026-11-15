@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
+import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/round_icon_button.dart';
 
 class CardsTopBar extends StatelessWidget {
@@ -9,9 +10,13 @@ class CardsTopBar extends StatelessWidget {
     required this.progress,
     required this.onClose,
     required this.onUndo,
+    required this.learnedToday,
+    required this.dailyGoal,
   });
 
   final double progress;
+  final int learnedToday; // words learned today, for the goal ring
+  final int dailyGoal;
   final VoidCallback onClose;
   final VoidCallback? onUndo; // null = disabled
 
@@ -31,8 +36,11 @@ class CardsTopBar extends StatelessWidget {
             child: _ProgressBar(progress: progress),
           ),
         ),
+        _GoalRing(learned: learnedToday, goal: dailyGoal),
+        const SizedBox(width: 8),
+        // Curved "U-turn" arrow: undo, not "go back".
         RoundIconButton(
-          icon: AppIcons.arrowLeft,
+          icon: AppIcons.arrowUUpLeft,
           tooltip: strings.back,
           onPressed: onUndo,
         ),
@@ -66,6 +74,40 @@ class _ProgressBar extends StatelessWidget {
               child: ColoredBox(color: colors.onSurface),
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Today's goal, "3/10": learned words (first "remember" on a pink word)
+/// out of the daily goal. Looks like the round buttons next to it.
+class _GoalRing extends StatelessWidget {
+  const _GoalRing({required this.learned, required this.goal});
+
+  final int learned;
+  final int goal;
+
+  @override
+  Widget build(BuildContext context) {
+    // A circle as tall as RoundIconButton; grows into a pill when the
+    // text is wider ("10/10").
+    return Container(
+      height: 36,
+      constraints: const BoxConstraints(minWidth: 36),
+      padding: const EdgeInsets.symmetric(horizontal: 6),
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: AppPalette.of(context).subtleButton,
+        borderRadius: BorderRadius.circular(18),
+      ),
+      child: Text(
+        '$learned/$goal',
+        style: TextStyle(
+          fontSize: 14.5,
+          fontWeight: FontWeight.w400,
+          letterSpacing: 0.3, // a little air: the digits stuck together
+          color: Theme.of(context).colorScheme.onSurface,
         ),
       ),
     );

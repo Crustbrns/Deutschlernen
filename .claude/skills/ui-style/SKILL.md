@@ -8,7 +8,7 @@ description: Visual rules of the Deutschlernen app — colors, surfaces, buttons
 The app has a dark and a light theme. All colors, fonts and sizes come from
 `lib/ui/core/app_style.dart`:
 - `AppPalette.of(context)` — colors that differ per theme: `background`, `card`, `subtleButton`,
-  `mutedText`, `decisionDivider`. A new theme-dependent color goes here, with a value for both themes.
+  `mutedText`. A new theme-dependent color goes here, with a value for both themes.
 - `AppColors` — fixed accents (`accentBlue`, article colors, …) and helpers computed from the
   `ColorScheme` (`divider`, `quietText`).
 - `AppSizes`, `AppListText` (list row typography).
@@ -22,7 +22,7 @@ Main text uses `colors.onSurface`.
 |---|---|---|
 | Screen background | `palette.background` | — |
 | Content block (lists, search results) | `palette.card`, **no outline** | radius 20 |
-| Word card (learning and lookup) | `palette.card` + outline `colors.outlineVariant` α 0.4 | radius 32 |
+| Word card (learning and lookup) | `palette.card`, **no outline** (solid) | radius 32 |
 | Search field | fill `palette.card`, **no outline** when idle, gray `AppColors.divider(colors)` outline (same as list dividers, not blue) only while focused; vertical padding 10, dense | pill (fully round) |
 
 Search field behavior (`_SearchField` in `vocabulary_screen.dart`): while focused or holding text,
@@ -83,8 +83,32 @@ Separate blocks are only for different kinds of content (e.g. a title, then a li
 
 - **Neutral / secondary** (mode buttons, close, small actions): fill `palette.subtleButton`,
   icon `colors.onSurface`, label `colors.onSurfaceVariant`. Rectangular ones have radius 14.
+- Cards screen top bar: close · progress bar (words finished in this session) · daily goal
+  (`_GoalRing`: 36px tall, min 36 wide, radius 18 — a circle that grows into a pill for
+  "10/10"; `subtleButton` fill like `RoundIconButton`, no ring; "3/10" 14.5 regular, letter
+  spacing 0.3) · undo.
+- Undo on the cards screen uses `AppIcons.arrowUUpLeft` (curved U-turn), not `arrowLeft`
+  (that one means "go back").
 - **Round icon button** (close, undo, …): `RoundIconButton` (`lib/ui/core/widgets/round_icon_button.dart`) —
   `palette.subtleButton` fill, 36×36, icon 20; disabled = same fill, faded icon. Don't use `filledTonal`.
+- **Card stack motion**: the top card flies off in 560–1120 ms (button: `easeInOutCubic`,
+  drag: `easeOutCubic`). The next card is a real card under it (`IgnorePointer`) that grows
+  95% → 100% with `SwipeController.reveal` (how far the top card has moved) while its dimming
+  (`palette.background` α 0.75 on top) fades out, so it is full size and bright
+  the moment the top one is gone; deeper cards are empty shapes. Each card gets its own bottom
+  bar (`bottomBarFor`); only the top one reacts to the drag.
+- **Recall buttons** (`RecallBar` in `decision_bar.dart`) for pink words and reviews: two
+  separate buttons, 12px apart, 56 tall, radius 14, fill `palette.card` at rest; 1.5px outline
+  and face icon 24 (`smileySad` / `smiley`, Regular) in `onSurface` moved 40% toward the card;
+  label 17 w700 -0.4 on one line ("Забыл" / "Помню") in `onSurface` moved 25% toward the card. On drag the matching side is
+  tinted up to α 0.5 (red / green). New (gray) words keep the split `DecisionBar` below.
+- **Decision bar** buttons: text 17 w600, line height 1.05, letter spacing -0.4; text and arrows
+  `colors.onSurface` (white in dark), the "||" divider between them too.
+- **Decision bar highlight** (while dragging, up to α 0.45 at full drag; was 0.18 — too pale;
+  red `#FF3B30`, green `#30D158`):
+  `AppColors.decisionGreen` for the "good" side,
+  `decisionRed` for the other. New word: left "Уже знаю" green, right "Начать учить" red.
+  Pink word / review: left "Не помню" red, right "Помню" green.
 - **Answer controls on a learning card**: new-words session — only `RevealButton` (64×64,
   radius 16, no outline, fill `subtleButton` darkened 10%, eye icon, no label, centered); a tap
   replaces it with the translation (no way back); review session — the three-button
@@ -93,8 +117,10 @@ Separate blocks are only for different kinds of content (e.g. a title, then a li
   icon and text `AppColors.accentBlue` (see `_ModeButton` in `answer_modes.dart`).
 - **Primary action** (one per screen at most): `FilledButton`, radius 14.
 - **Audio**: `PlayButton` (`lib/ui/core/widgets/play_button.dart`) in rows — blue, outlined.
-  On the word card the German word and its plural are left-aligned with a round speaker button
-  (`_TranscriptionButton` without text) on the right of the word; the transcription pill below
+  On the word card the German word and its plural are left-aligned with a speaker button
+  (`_TranscriptionButton` without text: rounded square, radius 12) on the right of the word,
+  8px after it; the row reaches 12px into the card's right inset (`OverflowBox`), so long words
+  get more room before wrapping; the transcription pill below
   (text only, left, also speaks) appears when transcription is on.
 - A button that sits over a transparent or dimmed background (overlay routes) always
   gets a fill, otherwise it blends with what is under it.
@@ -107,7 +133,7 @@ Separate blocks are only for different kinds of content (e.g. a title, then a li
 - Word card opened from a list (`WordDetailScreen`) sits on a solid black backdrop (barrier
   `Colors.black`, fades in) — the list behind must not show. A word with progress gets a full-width
   "Сбросить прогресс по слову" button under the card, styled like the card itself (fill
-  `palette.card`, outline `outlineVariant` α 0.4, radius 32, text `onSurface` 16 w600, 12px above); the card shrinks just enough to fit it. Reset is instant, no dialog
+  `palette.card`, no outline, radius 32, text `onSurface` 16 w600, 12px above); the card shrinks just enough to fit it. Reset is instant, no dialog
   (user's choice); the button then collapses with `AnimatedSize`.
 - In compact layouts set `tapTargetSize: MaterialTapTargetSize.shrinkWrap`, otherwise
   Material adds invisible padding up to 48px and spacing looks wrong.
@@ -145,7 +171,8 @@ under the bar.
 
 ## Icons
 
-- All icons are **Phosphor Regular** (thin line icons with rounded ends) via `AppIcons`
+- All icons are **Phosphor Regular** (thin line icons with rounded ends) — except the example
+  rows' chevron, `caretDownBold` from Phosphor Bold — via `AppIcons`
   (`lib/ui/core/app_icons.dart`, font `assets/fonts/Phosphor.ttf`): `AppIcons.x`, `.arrowLeft`,
   `.speakerHigh`, … Never use Material `Icons.*` or `CupertinoIcons.*` — the app must look like
   one icon set. Do NOT add the `phosphor_flutter` package: it doesn't compile with current
@@ -169,7 +196,9 @@ under the bar.
   left-aligned text, 32 w600, letter spacing -0.6 — the plural continues the line in brackets,
   same style and color (only the article is colored); long ones wrap. Translation 32 w600,
   -0.6, left-aligned. Examples and the
-  definition (`example_tile.dart`): theme font 16, letter spacing -0.2.
+  definition (`example_tile.dart`): theme font 17, `onSurface` (white), regular; the highlighted
+  word is the same color, extra bold (w800) — weight alone sets it apart. Expand chevron: 11px
+  `AppIcons.caretDownBold` (Phosphor Bold, `assets/fonts/PhosphorBold.ttf`), 4px gap.
 - Articles are colored by gender with `AppColors.forArticle` on the word card. The plural
   article is always `die` (`Word.pluralWithArticle`).
 - Translations are shown as stored (lowercase); don't capitalize them.

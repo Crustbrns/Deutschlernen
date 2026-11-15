@@ -15,24 +15,18 @@ class AppPalette extends ThemeExtension<AppPalette> {
     required this.card,
     required this.subtleButton,
     required this.mutedText,
-    required this.decisionDivider,
   });
 
   final Color background; // behind the cards
   final Color card;
   final Color subtleButton; // barely different from the card
   final Color mutedText; // secondary labels
-  final Color decisionDivider;
-
-  /// The decision buttons use the muted text color.
-  Color get decisionText => mutedText;
 
   static const dark = AppPalette(
     background: Color(0xFF0B0B0D),
     card: Color(0xFF151517),
     subtleButton: Color(0xFF222225),
     mutedText: Color(0xFF8C8C8C), // rgb(140,140,140)
-    decisionDivider: Color(0xFF5A5A5A), // rgb(90,90,90)
   );
 
   static const light = AppPalette(
@@ -40,7 +34,6 @@ class AppPalette extends ThemeExtension<AppPalette> {
     card: Color(0xFFFFFFFF),
     subtleButton: Color(0xFFEDEDF0),
     mutedText: Color(0xFF6A6A70),
-    decisionDivider: Color(0xFFC4C4CA),
   );
 
   static AppPalette of(BuildContext context) =>
@@ -52,13 +45,11 @@ class AppPalette extends ThemeExtension<AppPalette> {
     Color? card,
     Color? subtleButton,
     Color? mutedText,
-    Color? decisionDivider,
   }) => AppPalette(
     background: background ?? this.background,
     card: card ?? this.card,
     subtleButton: subtleButton ?? this.subtleButton,
     mutedText: mutedText ?? this.mutedText,
-    decisionDivider: decisionDivider ?? this.decisionDivider,
   );
 
   @override
@@ -69,7 +60,6 @@ class AppPalette extends ThemeExtension<AppPalette> {
       card: Color.lerp(card, other.card, t)!,
       subtleButton: Color.lerp(subtleButton, other.subtleButton, t)!,
       mutedText: Color.lerp(mutedText, other.mutedText, t)!,
-      decisionDivider: Color.lerp(decisionDivider, other.decisionDivider, t)!,
     );
   }
 }
@@ -90,8 +80,10 @@ abstract final class AppTheme {
 }
 
 abstract final class AppColors {
-  static const decisionKnown = Color(0xFFFF4D4F); // left button highlight: red
-  static const decisionLearn = Color(0xFF34C759); // right button highlight: green
+  // Decision button highlights. Which side is which depends on the card:
+  // see CardsScreen (new word: left green / right red; recall: the reverse).
+  static const decisionRed = Color(0xFFFF3B30); // saturated red
+  static const decisionGreen = Color(0xFF30D158); // saturated green
   static const accentBlue = Color(0xFF1AA7FF);
   static const accentTeal = Color(0xFF2EE6D6);
 

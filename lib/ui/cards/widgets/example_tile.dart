@@ -5,19 +5,18 @@ import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/highlight.dart';
 import 'package:deutschlernen/ui/core/widgets/play_button.dart';
 
-/// Base text styles of the rows: grey text, white bold word.
+/// Base text styles of the rows: white regular text, white bold word.
 ({TextStyle base, TextStyle bold}) _tileStyles(BuildContext context) {
   final colors = Theme.of(context).colorScheme;
   final base = TextStyle(
-    fontSize: 16,
-    height: 1.35,
+    fontSize: 17,
+    fontWeight: FontWeight.w400,
+    height: 1.2, // lines close together
     letterSpacing: -0.2, // condensed like the rest of the card
-    color: colors.onSurfaceVariant,
+    // As white as the highlighted word; only weight sets that one apart.
+    color: colors.onSurface,
   );
-  return (
-    base: base,
-    bold: base.copyWith(fontWeight: FontWeight.w700, color: colors.onSurface),
-  );
+  return (base: base, bold: base.copyWith(fontWeight: FontWeight.w800));
 }
 
 /// A row with a chevron on the left. [title] is always visible,
@@ -48,8 +47,9 @@ class ExpandableTile extends StatefulWidget {
 class _ExpandableTileState extends State<ExpandableTile> {
   // Width of IconButton's default tap area; the info icon uses the same.
   static const _trailingWidth = 48.0;
-  static const _chevronSize = 22.0;
-  static const _chevronGap = 8.0;
+  // Small: the chevron is a hint, the text matters (halved from 22 / 8).
+  static const _chevronSize = 11.0;
+  static const _chevronGap = 4.0;
 
   // Minimum time the highlight stays visible after a quick tap.
   static const _minHighlight = Duration(milliseconds: 150);
@@ -127,7 +127,7 @@ class _ExpandableTileState extends State<ExpandableTile> {
                           duration: const Duration(milliseconds: 300),
                           curve: Curves.easeOut,
                           child: const Icon(
-                            AppIcons.caretDown,
+                            AppIcons.caretDownBold,
                             size: _chevronSize,
                           ),
                         ),

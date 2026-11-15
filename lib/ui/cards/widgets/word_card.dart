@@ -1,3 +1,5 @@
+// material_ui doesn't re-export OverflowBoxFit.
+import 'package:flutter/rendering.dart' show OverflowBoxFit;
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/domain/models/word.dart';
@@ -19,7 +21,7 @@ class WordCard extends StatefulWidget {
     this.lookup = false,
     this.answerModes = true,
     this.lookupCount = 0,
-    this.lookupState = (status: WordStatus.newWord, due: null),
+    this.state = (status: WordStatus.newWord, due: null),
     this.onClose,
   });
 
@@ -27,9 +29,9 @@ class WordCard extends StatefulWidget {
   /// when 0.
   final int lookupCount;
 
-  /// Lookup mode only: shown in the header as a colored square + caption
-  /// ("Повтор через 4 дн.").
-  final WordState lookupState;
+  /// Shown in the header as a colored square + caption ("Учится",
+  /// "Повтор через 4 дн.").
+  final WordState state;
 
   /// When set, a close button is pinned to the card's top right corner.
   final VoidCallback? onClose;
@@ -60,6 +62,9 @@ class WordCard extends StatefulWidget {
 }
 
 class _WordCardState extends State<WordCard> {
+  /// How far the word row reaches into the card's right inset.
+  static const _speakerOverhang = 12.0;
+
   static const _fadeHeight = 24.0;
 
   AnswerMode? _mode; // null = only the three buttons are visible
@@ -97,10 +102,8 @@ class _WordCardState extends State<WordCard> {
 
     return Material(
       color: palette.card,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(32),
-        side: BorderSide(color: colors.outlineVariant.withValues(alpha: 0.4)),
-      ),
+      // No outline: a solid card.
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
       clipBehavior: Clip.antiAlias,
       child: Column(
         children: [
@@ -122,20 +125,13 @@ class _WordCardState extends State<WordCard> {
                         padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                         child: _Header(
                           level: word.level,
-                          status: lookup
-                              ? AppStrings.of(context).wordState(
-                                  widget.lookupState,
-                                  DateTime.now().toUtc(),
-                                )
-                              : AppStrings.of(context).newWord,
-                          // Lookup: the same color as the word's strip in
-                          // the list. Learning: a neutral gray.
-                          squareColor: lookup
-                              ? AppColors.forWordStatus(
-                                  widget.lookupState.status,
-                                  colors,
-                                )
-                              : colors.outline,
+                          status: AppStrings.of(context)
+                              .wordState(widget.state, DateTime.now().toUtc()),
+                          // Same color as the word's strip in the lists.
+                          squareColor: AppColors.forWordStatus(
+                            widget.state.status,
+                            colors,
+                          ),
                         ),
                       ),
                       Padding(
@@ -147,50 +143,62 @@ class _WordCardState extends State<WordCard> {
                           children: [
                             SizedBox(height: lookup ? 12 : 30),
                             // Word and plural left-aligned, speaker on the
-                            // right of the word.
-                            Row(
-                              children: [
-                                // "der Hund (die Hunde)" in one text: the
-                                // plural continues the line in the same
-                                // style; long ones wrap to the next line.
-                                Expanded(
-                                  child: Text.rich(
-                                    TextSpan(
-                                      // Theme font, like the rest of the UI.
-                                      style: TextStyle(
-                                        fontSize: 32 * _scale,
-                                        fontWeight: FontWeight.w600,
-                                        // Condensed: big text looks loose.
-                                        letterSpacing: -0.6,
-                                        height: 1.15,
-                                      ),
-                                      children: [
+                            // right of the word. The row reaches into the
+                            // card's right inset (24 → 12): more room for
+                            // long words before they wrap.
+                            LayoutBuilder(
+                              builder: (context, constraints) => OverflowBox(
+                                alignment: Alignment.centerLeft,
+                                fit: OverflowBoxFit.deferToChild,
+                                minWidth:
+                                    constraints.maxWidth + _speakerOverhang,
+                                maxWidth:
+                                    constraints.maxWidth + _speakerOverhang,
+                                child: Row(
+                                  children: [
+                                    // "der Hund (die Hunde)" in one text: the
+                                    // plural continues the line in the same
+                                    // style; long ones wrap to the next line.
+                                    Expanded(
+                                      child: Text.rich(
                                         TextSpan(
-                                          text: '${word.article} ',
+                                          // Theme font, like the rest of the UI.
                                           style: TextStyle(
-                                            color: AppColors.forArticle(
-                                              word.article,
+                                            fontSize: 32 * _scale,
+                                            fontWeight: FontWeight.w600,
+                                            // Condensed: big text looks loose.
+                                            letterSpacing: -0.6,
+                                            height: 1.15,
+                                          ),
+                                          children: [
+                                            TextSpan(
+                                              text: '${word.article} ',
+                                              style: TextStyle(
+                                                color: AppColors.forArticle(
+                                                  word.article,
+                                                ),
+                                              ),
                                             ),
-                                          ),
+                                            TextSpan(text: word.german),
+                                            // Plural is always "die".
+                                            if (word.plural != null)
+                                              TextSpan(
+                                                text: ' (die ${word.plural})',
+                                              ),
+                                          ],
                                         ),
-                                        TextSpan(text: word.german),
-                                        // Plural is always "die".
-                                        if (word.plural != null)
-                                          TextSpan(
-                                            text: ' (die ${word.plural})',
-                                          ),
-                                      ],
+                                      ),
                                     ),
-                                  ),
+                                    SizedBox(width: 8 * _scale),
+                                    _TranscriptionButton(
+                                      transcription: null, // speaker icon only
+                                      scale: _scale,
+                                      onPressed: () =>
+                                          widget.onSpeak(word.withArticle),
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(width: 12 * _scale),
-                                _TranscriptionButton(
-                                  transcription: null, // speaker icon only
-                                  scale: _scale,
-                                  onPressed: () =>
-                                      widget.onSpeak(word.withArticle),
-                                ),
-                              ],
+                              ),
                             ),
                             if (widget.showTranscription) ...[
                               SizedBox(height: lookup ? 6 : 12),
@@ -386,13 +394,16 @@ class _TranscriptionButton extends StatelessWidget {
     return OutlinedButton(
       onPressed: onPressed,
       style: OutlinedButton.styleFrom(
-        shape: const StadiumBorder(),
+        // Icon only: a rounded square; with the transcription: a pill.
+        shape: transcription == null
+            ? RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))
+            : const StadiumBorder(),
         // 25% darker fill and border than the theme defaults.
         backgroundColor: AppColors.darken(colors.surfaceContainer, 0.25),
         side: BorderSide(color: AppColors.darken(colors.outlineVariant, 0.25)),
         foregroundColor: colors.onSurface,
         // All sizes are 75% of the previous ones.
-        // Icon only: equal padding, so the stadium becomes a circle.
+        // Icon only: equal padding, so the button is square.
         padding: transcription == null
             ? EdgeInsets.all(10 * scale)
             : EdgeInsets.symmetric(horizontal: 15 * scale, vertical: 6 * scale),

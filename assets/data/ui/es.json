@@ -54,7 +54,7 @@
   "levelsSelectedOne": "{n} categoría seleccionada",
   "levelsSelectedOther": "{n} categorías seleccionadas",
   "finish": "Listo",
-  "forgot": "No la\nrecuerdo",
+  "forgot": "Lo olvidé",
   "remembered": "La\nrecuerdo",
   "statusNew": "Palabra nueva",
   "statusKnown": "Ya la sé",
@@ -66,5 +66,13 @@
   "reviewInMonthsOne": "repaso en {n} mes",
   "reviewInMonthsOther": "repaso en {n} meses",
   "resetProgress": "Reiniciar el progreso de la palabra",
-  "statusLearning": "Aprendiendo"
+  "statusLearning": "Aprendiendo",
+  "learnedToday": "Aprendidas hoy: {n} de {goal}",
+  "settingsProgress": "Progreso",
+  "resetAllProgress": "Reiniciar todo el progreso",
+  "resetAllProgressHint": "Todas las palabras vuelven a ser nuevas",
+  "resetAllConfirmTitle": "¿Reiniciar todo el progreso?",
+  "resetAllConfirmBody": "Todas las palabras vuelven a ser nuevas. No se puede deshacer.",
+  "resetConfirm": "Reiniciar",
+  "cancel": "Cancelar"
 }

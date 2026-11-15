@@ -6,7 +6,7 @@ enum SwipeDirection { left, right }
 /*Tuning
 
 Springier or calmer snap-back: stiffness and ratio in _snapBackSpring. Lower ratio means more bounce.
-Flight speed limits: the 140 and 320 ms values in swipe.
+Flight speed limits: the 560 and 1120 ms values in swipe.
 Tilt: 0.3. Button swipe arc: _buttonArc.
 Highlight strength: _highlightDistance (fraction of the screen width that fully lights a button).*/
 
@@ -19,9 +19,17 @@ class SwipeController {
   /// to 1 (fully towards "learn"). 0 when the card is at rest.
   final ValueNotifier<double> dragProgress = ValueNotifier<double>(0);
 
+  /// How far the top card has moved away, 0 (in place) to 1 (a full screen
+  /// width or more), while dragged and while flying off. The card below
+  /// grows with it, so it is already full size when the top one is gone.
+  final ValueNotifier<double> reveal = ValueNotifier<double>(0);
+
   void swipe(SwipeDirection direction) => _state?.swipe(direction);
 
-  void dispose() => dragProgress.dispose();
+  void dispose() {
+    dragProgress.dispose();
+    reveal.dispose();
+  }
 }
 
 class SwipeableCard extends StatefulWidget {
@@ -135,6 +143,9 @@ class SwipeableCardState extends State<SwipeableCard>
   void _publishProgress() {
     if (!widget.enabled || _isEntering) return;
     final width = MediaQuery.sizeOf(context).width;
+    widget.controller.reveal.value = (_offset.value.dx.abs() / width)
+        .clamp(0.0, 1.0)
+        .toDouble();
     widget.controller.dragProgress.value =
         (_offset.value.dx / (width * _highlightDistance))
             .clamp(-1.0, 1.0)
@@ -228,17 +239,22 @@ class SwipeableCardState extends State<SwipeableCard>
     );
     final distance = (target - _offset.value).distance;
 
-    // The faster the flick, the shorter the flight.
+    // The faster the flick, the shorter the flight. Slow overall
+    // (560–1120 ms) so the card visibly glides away; the next one then
+    // appears quickly.
     final flightSpeed = speed.clamp(900, 4000);
-    final ms = (distance / flightSpeed * 1000).clamp(140, 320);
+    final ms = (distance / flightSpeed * 1000 * 2).clamp(560, 1120);
 
     _animateTo(
       target,
       duration: Duration(milliseconds: ms.round()),
-      curve: Curves.easeOutCubic,
+      // Button: starts gently and speeds up — a smooth glide from rest.
+      // Drag: the card is already moving, so it just keeps going and eases.
+      curve: heading == null ? Curves.easeInOutCubic : Curves.easeOutCubic,
     ).whenComplete(() {
       if (!mounted) return;
       widget.controller.dragProgress.value = 0;
+      widget.controller.reveal.value = 0; // the next card starts small again
       widget.onSwiped(direction);
     });
   }

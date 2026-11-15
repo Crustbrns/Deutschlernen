@@ -51,7 +51,7 @@
   "chooseLevels": "分类",
   "levelsSelectedOther": "已选 {n} 个分类",
   "finish": "完成",
-  "forgot": "不\n记得",
+  "forgot": "忘了",
   "remembered": "记得",
   "statusNew": "新单词",
   "statusKnown": "已经认识",
@@ -61,5 +61,13 @@
   "reviewInDaysOther": "{n} 天后复习",
   "reviewInMonthsOther": "{n} 个月后复习",
   "resetProgress": "重置该单词进度",
-  "statusLearning": "学习中"
+  "statusLearning": "学习中",
+  "learnedToday": "今天已学会：{n}/{goal}",
+  "settingsProgress": "进度",
+  "resetAllProgress": "重置全部进度",
+  "resetAllProgressHint": "所有单词都会变回新单词",
+  "resetAllConfirmTitle": "重置全部进度？",
+  "resetAllConfirmBody": "所有单词都会变回新单词。此操作无法撤销。",
+  "resetConfirm": "重置",
+  "cancel": "取消"
 }
