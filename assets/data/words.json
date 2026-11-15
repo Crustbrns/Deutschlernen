@@ -43,5 +43,275 @@
     "level": "A1",
     "transcription": "[ˈvasɐ]",
     "definition": "Eine klare Flüssigkeit, die man trinken kann."
+  },
+  {
+    "id": "brot",
+    "article": "das",
+    "lemma": "Brot",
+    "plural": "Brote",
+    "level": "A1",
+    "transcription": "[bʁoːt]",
+    "definition": "Ein Lebensmittel aus Mehl, Wasser und Hefe, das man backt."
+  },
+  {
+    "id": "apfel",
+    "article": "der",
+    "lemma": "Apfel",
+    "plural": "Äpfel",
+    "level": "A1",
+    "transcription": "[ˈapfl̩]",
+    "definition": "Eine runde Frucht, die rot, grün oder gelb sein kann."
+  },
+  {
+    "id": "milch",
+    "article": "die",
+    "lemma": "Milch",
+    "plural": null,
+    "level": "A1",
+    "transcription": "[mɪlç]",
+    "definition": "Ein weißes Getränk, das von Kühen kommt."
+  },
+  {
+    "id": "zug",
+    "article": "der",
+    "lemma": "Zug",
+    "plural": "Züge",
+    "level": "A1",
+    "transcription": "[tsuːk]",
+    "definition": "Ein langes Fahrzeug, das auf Schienen fährt."
+  },
+  {
+    "id": "buch",
+    "article": "das",
+    "lemma": "Buch",
+    "plural": "Bücher",
+    "level": "A1",
+    "transcription": "[buːx]",
+    "definition": "Viele Seiten mit Text, die zusammen gebunden sind."
+  },
+  {
+    "id": "stadt",
+    "article": "die",
+    "lemma": "Stadt",
+    "plural": "Städte",
+    "level": "A1",
+    "transcription": "[ʃtat]",
+    "definition": "Ein großer Ort, in dem viele Menschen wohnen und arbeiten."
+  },
+  {
+    "id": "freund",
+    "article": "der",
+    "lemma": "Freund",
+    "plural": "Freunde",
+    "level": "A1",
+    "transcription": "[fʁɔʏnt]",
+    "definition": "Ein Mensch, den man mag und dem man vertraut."
+  },
+  {
+    "id": "tisch",
+    "article": "der",
+    "lemma": "Tisch",
+    "plural": "Tische",
+    "level": "A1",
+    "transcription": "[tɪʃ]",
+    "definition": "Ein Möbelstück mit einer flachen Platte, an dem man isst oder arbeitet."
+  },
+  {
+    "id": "wohnung",
+    "article": "die",
+    "lemma": "Wohnung",
+    "plural": "Wohnungen",
+    "level": "A2",
+    "transcription": "[ˈvoːnʊŋ]",
+    "definition": "Mehrere Räume in einem Haus, in denen man lebt."
+  },
+  {
+    "id": "termin",
+    "article": "der",
+    "lemma": "Termin",
+    "plural": "Termine",
+    "level": "A2",
+    "transcription": "[tɛʁˈmiːn]",
+    "definition": "Eine feste Zeit, zu der man sich mit jemandem trifft, zum Beispiel beim Arzt."
+  },
+  {
+    "id": "rechnung",
+    "article": "die",
+    "lemma": "Rechnung",
+    "plural": "Rechnungen",
+    "level": "A2",
+    "transcription": "[ˈʁɛçnʊŋ]",
+    "definition": "Ein Papier, auf dem steht, wie viel man bezahlen muss."
+  },
+  {
+    "id": "arzt",
+    "article": "der",
+    "lemma": "Arzt",
+    "plural": "Ärzte",
+    "level": "A2",
+    "transcription": "[aːʁtst]",
+    "definition": "Ein Mensch, der kranke Menschen untersucht und behandelt."
+  },
+  {
+    "id": "fahrkarte",
+    "article": "die",
+    "lemma": "Fahrkarte",
+    "plural": "Fahrkarten",
+    "level": "A2",
+    "transcription": "[ˈfaːɐ̯kaʁtə]",
+    "definition": "Ein Ticket, mit dem man Bus, Straßenbahn oder Zug fahren darf."
+  },
+  {
+    "id": "geschenk",
+    "article": "das",
+    "lemma": "Geschenk",
+    "plural": "Geschenke",
+    "level": "A2",
+    "transcription": "[ɡəˈʃɛŋk]",
+    "definition": "Etwas, das man jemandem gibt, ohne Geld dafür zu wollen."
+  },
+  {
+    "id": "wetter",
+    "article": "das",
+    "lemma": "Wetter",
+    "plural": null,
+    "level": "A2",
+    "transcription": "[ˈvɛtɐ]",
+    "definition": "Wie es draußen ist: Sonne, Regen, Wind oder Schnee."
+  },
+  {
+    "id": "anmeldung",
+    "article": "die",
+    "lemma": "Anmeldung",
+    "plural": "Anmeldungen",
+    "level": "B1",
+    "transcription": "[ˈanmɛldʊŋ]",
+    "definition": "Wenn man sich offiziell irgendwo einträgt, zum Beispiel die Wohnadresse beim Bürgeramt."
+  },
+  {
+    "id": "vertrag",
+    "article": "der",
+    "lemma": "Vertrag",
+    "plural": "Verträge",
+    "level": "B1",
+    "transcription": "[fɛɐ̯ˈtʁaːk]",
+    "definition": "Ein Dokument, in dem zwei Seiten feste Regeln vereinbaren und es unterschreiben."
+  },
+  {
+    "id": "bewerbung",
+    "article": "die",
+    "lemma": "Bewerbung",
+    "plural": "Bewerbungen",
+    "level": "B1",
+    "transcription": "[bəˈvɛʁbʊŋ]",
+    "definition": "Unterlagen, mit denen man sich um eine Arbeitsstelle oder einen Platz bemüht."
+  },
+  {
+    "id": "erfahrung",
+    "article": "die",
+    "lemma": "Erfahrung",
+    "plural": "Erfahrungen",
+    "level": "B1",
+    "transcription": "[ɛɐ̯ˈfaːʁʊŋ]",
+    "definition": "Wissen und Können, das man durch Erleben und Üben bekommen hat."
+  },
+  {
+    "id": "miete",
+    "article": "die",
+    "lemma": "Miete",
+    "plural": "Mieten",
+    "level": "B1",
+    "transcription": "[ˈmiːtə]",
+    "definition": "Das Geld, das man jeden Monat für eine Wohnung bezahlt."
+  },
+  {
+    "id": "versicherung",
+    "article": "die",
+    "lemma": "Versicherung",
+    "plural": "Versicherungen",
+    "level": "B1",
+    "transcription": "[fɛɐ̯ˈzɪçəʁʊŋ]",
+    "definition": "Ein Vertrag, durch den man Geld bekommt, wenn etwas Schlimmes passiert."
+  },
+  {
+    "id": "umzug",
+    "article": "der",
+    "lemma": "Umzug",
+    "plural": "Umzüge",
+    "level": "B1",
+    "transcription": "[ˈʊmtsuːk]",
+    "definition": "Wenn man mit allen Sachen in eine andere Wohnung zieht."
+  },
+  {
+    "id": "gehalt",
+    "article": "das",
+    "lemma": "Gehalt",
+    "plural": "Gehälter",
+    "level": "B1",
+    "transcription": "[ɡəˈhalt]",
+    "definition": "Das Geld, das man jeden Monat für seine Arbeit bekommt."
+  },
+  {
+    "id": "behoerde",
+    "article": "die",
+    "lemma": "Behörde",
+    "plural": "Behörden",
+    "level": "B2",
+    "transcription": "[bəˈhøːɐ̯də]",
+    "definition": "Ein Amt des Staates oder der Stadt, das öffentliche Aufgaben erledigt."
+  },
+  {
+    "id": "aufenthaltstitel",
+    "article": "der",
+    "lemma": "Aufenthaltstitel",
+    "plural": "Aufenthaltstitel",
+    "level": "B2",
+    "transcription": "[ˈaʊ̯fʔɛnthaltsˌtiːtl̩]",
+    "definition": "Ein Dokument, das erlaubt, für eine bestimmte Zeit in Deutschland zu leben."
+  },
+  {
+    "id": "voraussetzung",
+    "article": "die",
+    "lemma": "Voraussetzung",
+    "plural": "Voraussetzungen",
+    "level": "B2",
+    "transcription": "[foˈʁaʊ̯szɛtsʊŋ]",
+    "definition": "Etwas, das vorhanden sein muss, damit etwas anderes möglich ist."
+  },
+  {
+    "id": "kuendigung",
+    "article": "die",
+    "lemma": "Kündigung",
+    "plural": "Kündigungen",
+    "level": "B2",
+    "transcription": "[ˈkʏndɪɡʊŋ]",
+    "definition": "Die Erklärung, dass man einen Vertrag, eine Wohnung oder eine Arbeit beendet."
+  },
+  {
+    "id": "verantwortung",
+    "article": "die",
+    "lemma": "Verantwortung",
+    "plural": null,
+    "level": "B2",
+    "transcription": "[fɛɐ̯ˈʔantvɔʁtʊŋ]",
+    "definition": "Die Pflicht, für etwas oder jemanden zu sorgen und dafür einzustehen."
+  },
+  {
+    "id": "nachweis",
+    "article": "der",
+    "lemma": "Nachweis",
+    "plural": "Nachweise",
+    "level": "B2",
+    "transcription": "[ˈnaːxvaɪ̯s]",
+    "definition": "Ein Dokument, das zeigt, dass etwas wahr ist."
+  },
+  {
+    "id": "zustaendigkeit",
+    "article": "die",
+    "lemma": "Zuständigkeit",
+    "plural": "Zuständigkeiten",
+    "level": "B2",
+    "transcription": "[ˈtsuːʃtɛndɪçkaɪ̯t]",
+    "definition": "Das Recht und die Pflicht, sich um eine bestimmte Aufgabe zu kümmern."
   }
 ]

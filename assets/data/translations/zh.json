@@ -48,5 +48,305 @@
       { "german": "Kann ich bitte **Wasser** haben?", "translation": "可以给我一点**水**吗？" },
       { "german": "Ein stilles **Wasser**, bitte.", "translation": "请给我一瓶不含气的**水**。" }
     ]
+  },
+  "brot": {
+    "word": "面包",
+    "definition": "用面粉、水和酵母烤制的食物。",
+    "examples": [
+      { "german": "Ich kaufe frisches **Brot** beim Bäcker.", "translation": "我在面包店买新鲜的**面包**。" },
+      { "german": "Das **Brot** ist noch warm.", "translation": "**面包**还是热的。" },
+      { "german": "Möchtest du Butter auf dein **Brot**?", "translation": "你的**面包**上要抹黄油吗？" },
+      { "german": "Wir essen zum Frühstück **Brot** mit Käse.", "translation": "我们早餐吃**面包**配奶酪。" }
+    ]
+  },
+  "apfel": {
+    "word": "苹果",
+    "definition": "一种圆形水果，可以是红色、绿色或黄色。",
+    "examples": [
+      { "german": "Ich esse jeden Tag einen **Apfel**.", "translation": "我每天吃一个**苹果**。" },
+      { "german": "Die **Äpfel** sind sehr süß.", "translation": "这些**苹果**很甜。" },
+      { "german": "Kannst du ein Kilo **Äpfel** kaufen?", "translation": "你能买一公斤**苹果**吗？" },
+      { "german": "Der **Apfel** liegt auf dem Tisch.", "translation": "**苹果**在桌子上。" }
+    ]
+  },
+  "milch": {
+    "word": "牛奶",
+    "definition": "一种来自奶牛的白色饮品。",
+    "examples": [
+      { "german": "Ich trinke Kaffee mit **Milch**.", "translation": "我喝加**牛奶**的咖啡。" },
+      { "german": "Die **Milch** ist im Kühlschrank.", "translation": "**牛奶**在冰箱里。" },
+      { "german": "Wir brauchen noch **Milch** und Eier.", "translation": "我们还需要**牛奶**和鸡蛋。" },
+      { "german": "Die **Milch** ist leider sauer.", "translation": "可惜**牛奶**酸了。" }
+    ]
+  },
+  "zug": {
+    "word": "火车",
+    "definition": "一种在轨道上行驶的长型交通工具。",
+    "examples": [
+      { "german": "Der **Zug** hat zehn Minuten Verspätung.", "translation": "**火车**晚点十分钟。" },
+      { "german": "Ich fahre mit dem **Zug** nach Berlin.", "translation": "我坐**火车**去柏林。" },
+      { "german": "Wann fährt der nächste **Zug**?", "translation": "下一班**火车**什么时候开？" },
+      { "german": "Die **Züge** sind heute sehr voll.", "translation": "今天的**火车**非常拥挤。" }
+    ]
+  },
+  "buch": {
+    "word": "书",
+    "definition": "许多印有文字、装订在一起的纸页。",
+    "examples": [
+      { "german": "Ich lese gerade ein spannendes **Buch**.", "translation": "我正在读一本精彩的**书**。" },
+      { "german": "Das **Buch** gehört meiner Schwester.", "translation": "这本**书**是我姐姐的。" },
+      { "german": "In der Bibliothek gibt es viele **Bücher**.", "translation": "图书馆里有很多**书**。" },
+      { "german": "Kannst du mir das **Buch** leihen?", "translation": "你能把这本**书**借给我吗？" }
+    ]
+  },
+  "stadt": {
+    "word": "城市",
+    "definition": "很多人居住和工作的大地方。",
+    "examples": [
+      { "german": "Dresden ist eine schöne **Stadt**.", "translation": "德累斯顿是一座美丽的**城市**。" },
+      { "german": "Ich wohne in der **Stadt**.", "translation": "我住在**城里**。" },
+      { "german": "Wir fahren am Samstag in die **Stadt**.", "translation": "周六我们进**城**。" },
+      { "german": "Große **Städte** sind oft laut.", "translation": "大**城市**常常很吵。" }
+    ]
+  },
+  "freund": {
+    "word": "朋友",
+    "definition": "你喜欢并信任的人。",
+    "examples": [
+      { "german": "Das ist mein bester **Freund**.", "translation": "这是我最好的**朋友**。" },
+      { "german": "Ich treffe heute meine **Freunde**.", "translation": "我今天和**朋友**们见面。" },
+      { "german": "Mein **Freund** hilft mir beim Umzug.", "translation": "我的**朋友**帮我搬家。" },
+      { "german": "Wir sind seit sieben Jahren **Freunde**.", "translation": "我们做**朋友**已经七年了。" }
+    ]
+  },
+  "tisch": {
+    "word": "桌子",
+    "definition": "一种有平面的家具，可以在上面吃饭或工作。",
+    "examples": [
+      { "german": "Das Essen steht auf dem **Tisch**.", "translation": "饭菜在**桌子**上。" },
+      { "german": "Wir brauchen einen neuen **Tisch**.", "translation": "我们需要一张新**桌子**。" },
+      { "german": "Kannst du bitte den **Tisch** decken?", "translation": "你能摆一下**餐桌**吗？" },
+      { "german": "Ich habe einen **Tisch** für zwei reserviert.", "translation": "我订了一张两人**桌**。" }
+    ]
+  },
+  "wohnung": {
+    "word": "公寓",
+    "definition": "楼房里供人居住的几个房间。",
+    "examples": [
+      { "german": "Wir suchen eine **Wohnung** in Dresden.", "translation": "我们在德累斯顿找**公寓**。" },
+      { "german": "Die **Wohnung** hat zwei Zimmer.", "translation": "这套**公寓**有两个房间。" },
+      { "german": "Die **Wohnungen** im Zentrum sind teuer.", "translation": "市中心的**公寓**很贵。" },
+      { "german": "Ich räume am Wochenende die **Wohnung** auf.", "translation": "周末我打扫**公寓**。" }
+    ]
+  },
+  "termin": {
+    "word": "预约",
+    "definition": "和别人约定见面的固定时间，比如看医生。",
+    "examples": [
+      { "german": "Ich habe morgen einen **Termin** beim Arzt.", "translation": "我明天有医生的**预约**。" },
+      { "german": "Können wir den **Termin** verschieben?", "translation": "我们能改一下**预约**时间吗？" },
+      { "german": "Ich möchte gern einen **Termin** vereinbaren.", "translation": "我想**预约**一下。" },
+      { "german": "Diese Woche habe ich viele **Termine**.", "translation": "这周我有很多**安排**。" }
+    ]
+  },
+  "rechnung": {
+    "word": "账单",
+    "definition": "写明需要付多少钱的单据。",
+    "examples": [
+      { "german": "Die **Rechnung**, bitte!", "translation": "请**结账**！" },
+      { "german": "Ich bezahle die **Rechnung** online.", "translation": "我在网上付**账单**。" },
+      { "german": "Die **Rechnung** für den Strom ist gekommen.", "translation": "电费**账单**来了。" },
+      { "german": "Bitte heben Sie alle **Rechnungen** auf.", "translation": "请保存好所有**账单**。" }
+    ]
+  },
+  "arzt": {
+    "word": "医生",
+    "definition": "为病人检查和治疗的人。",
+    "examples": [
+      { "german": "Ich muss heute zum **Arzt**.", "translation": "我今天得去看**医生**。" },
+      { "german": "Der **Arzt** hat mir Tabletten verschrieben.", "translation": "**医生**给我开了药片。" },
+      { "german": "In der Praxis arbeiten drei **Ärzte**.", "translation": "诊所里有三位**医生**。" },
+      { "german": "Rufen Sie bitte einen **Arzt**!", "translation": "请叫一位**医生**！" }
+    ]
+  },
+  "fahrkarte": {
+    "word": "车票",
+    "definition": "乘坐公交、电车或火车用的票。",
+    "examples": [
+      { "german": "Ich kaufe die **Fahrkarte** am Automaten.", "translation": "我在自动售票机买**车票**。" },
+      { "german": "Ihre **Fahrkarte**, bitte!", "translation": "请出示您的**车票**！" },
+      { "german": "Die **Fahrkarte** gilt nur heute.", "translation": "这张**车票**只限今天有效。" },
+      { "german": "Wir brauchen zwei **Fahrkarten** nach Leipzig.", "translation": "我们需要两张去莱比锡的**车票**。" }
+    ]
+  },
+  "geschenk": {
+    "word": "礼物",
+    "definition": "送给别人、不求回报的东西。",
+    "examples": [
+      { "german": "Das ist ein **Geschenk** für dich.", "translation": "这是给你的**礼物**。" },
+      { "german": "Ich packe die **Geschenke** ein.", "translation": "我在包**礼物**。" },
+      { "german": "Vielen Dank für das schöne **Geschenk**!", "translation": "非常感谢这份漂亮的**礼物**！" },
+      { "german": "Was für ein **Geschenk** kaufen wir für Mama?", "translation": "我们给妈妈买什么**礼物**？" }
+    ]
+  },
+  "wetter": {
+    "word": "天气",
+    "definition": "外面的情况：晴天、下雨、刮风或下雪。",
+    "examples": [
+      { "german": "Wie ist das **Wetter** heute?", "translation": "今天**天气**怎么样？" },
+      { "german": "Das **Wetter** ist schön, wir gehen spazieren.", "translation": "**天气**很好，我们去散步。" },
+      { "german": "Bei diesem **Wetter** bleibe ich zu Hause.", "translation": "这种**天气**我待在家里。" },
+      { "german": "Morgen soll das **Wetter** besser werden.", "translation": "明天**天气**应该会好转。" }
+    ]
+  },
+  "anmeldung": {
+    "word": "登记",
+    "definition": "在某处正式登记，比如在市民局登记住址。",
+    "examples": [
+      { "german": "Für die **Anmeldung** brauche ich einen Termin beim Bürgeramt.", "translation": "办理**登记**我需要在市民局预约。" },
+      { "german": "Nach dem Umzug muss man die **Anmeldung** innerhalb von zwei Wochen machen.", "translation": "搬家后必须在两周内完成**登记**。" },
+      { "german": "Die **Anmeldung** zum Sprachkurs ist online möglich.", "translation": "语言课可以在网上**报名**。" },
+      { "german": "Haben Sie die Bestätigung der **Anmeldung** dabei?", "translation": "您带了**登记**确认书吗？" }
+    ]
+  },
+  "vertrag": {
+    "word": "合同",
+    "definition": "双方约定固定条款并签字的文件。",
+    "examples": [
+      { "german": "Ich habe den **Vertrag** noch nicht unterschrieben.", "translation": "我还没签**合同**。" },
+      { "german": "Der **Vertrag** läuft zwei Jahre.", "translation": "**合同**期限是两年。" },
+      { "german": "Bitte lesen Sie den **Vertrag** genau durch.", "translation": "请仔细阅读**合同**。" },
+      { "german": "Die **Verträge** liegen im Ordner.", "translation": "**合同**在文件夹里。" }
+    ]
+  },
+  "bewerbung": {
+    "word": "求职申请",
+    "definition": "为争取工作或名额而提交的材料。",
+    "examples": [
+      { "german": "Ich schicke heute meine **Bewerbung** ab.", "translation": "我今天把**申请**寄出去。" },
+      { "german": "Zu einer **Bewerbung** gehören Lebenslauf und Anschreiben.", "translation": "一份**申请**包括简历和求职信。" },
+      { "german": "Vielen Dank für Ihre **Bewerbung**.", "translation": "感谢您的**申请**。" },
+      { "german": "Ich habe schon zwanzig **Bewerbungen** geschrieben.", "translation": "我已经写了二十份**申请**。" }
+    ]
+  },
+  "erfahrung": {
+    "word": "经验",
+    "definition": "通过亲身经历和练习获得的知识和能力。",
+    "examples": [
+      { "german": "Ich habe drei Jahre **Erfahrung** als Entwickler.", "translation": "我有三年开发工作**经验**。" },
+      { "german": "Das war eine wichtige **Erfahrung** für mich.", "translation": "这对我来说是一次重要的**经历**。" },
+      { "german": "Wir haben gute **Erfahrungen** mit dieser Firma gemacht.", "translation": "我们和这家公司合作的**经验**很好。" },
+      { "german": "Aus **Erfahrung** weiß ich, dass das dauert.", "translation": "凭**经验**我知道这需要时间。" }
+    ]
+  },
+  "miete": {
+    "word": "房租",
+    "definition": "每个月为住房支付的钱。",
+    "examples": [
+      { "german": "Die **Miete** beträgt 650 Euro warm.", "translation": "**房租**是650欧元，含杂费。" },
+      { "german": "Ich überweise die **Miete** am Monatsanfang.", "translation": "我在月初转**房租**。" },
+      { "german": "Die **Mieten** in München sind sehr hoch.", "translation": "慕尼黑的**房租**非常高。" },
+      { "german": "Ist die **Miete** inklusive Nebenkosten?", "translation": "**房租**包含杂费吗？" }
+    ]
+  },
+  "versicherung": {
+    "word": "保险",
+    "definition": "一种合同，发生不好的事情时可以获得赔偿。",
+    "examples": [
+      { "german": "Ohne **Versicherung** ist ein Arztbesuch teuer.", "translation": "没有**保险**，看医生很贵。" },
+      { "german": "Ich habe die Rechnung an die **Versicherung** geschickt.", "translation": "我把账单寄给了**保险公司**。" },
+      { "german": "Welche **Versicherungen** braucht man wirklich?", "translation": "真正需要哪些**保险**？" },
+      { "german": "Die **Versicherung** zahlt den Schaden.", "translation": "**保险**赔偿损失。" }
+    ]
+  },
+  "umzug": {
+    "word": "搬家",
+    "definition": "带着所有东西搬到另一个住处。",
+    "examples": [
+      { "german": "Der **Umzug** ist am nächsten Samstag.", "translation": "**搬家**定在下周六。" },
+      { "german": "Kannst du mir beim **Umzug** helfen?", "translation": "你能帮我**搬家**吗？" },
+      { "german": "Nach dem **Umzug** war ich total müde.", "translation": "**搬家**之后我累坏了。" },
+      { "german": "Zwei **Umzüge** in einem Jahr sind zu viel.", "translation": "一年两次**搬家**太多了。" }
+    ]
+  },
+  "gehalt": {
+    "word": "工资",
+    "definition": "每个月工作所得的钱。",
+    "examples": [
+      { "german": "Das **Gehalt** kommt am Ende des Monats.", "translation": "**工资**在月底发。" },
+      { "german": "Im Vorstellungsgespräch haben wir über das **Gehalt** gesprochen.", "translation": "面试时我们谈了**工资**。" },
+      { "german": "Die **Gehälter** in der IT sind gut.", "translation": "IT行业的**工资**很不错。" },
+      { "german": "Ich bekomme ab Januar mehr **Gehalt**.", "translation": "从一月起我的**工资**会涨。" }
+    ]
+  },
+  "behoerde": {
+    "word": "政府机关",
+    "definition": "负责公共事务的国家或城市部门。",
+    "examples": [
+      { "german": "Für den Antrag muss ich zur **Behörde**.", "translation": "为了申请我得去**政府部门**。" },
+      { "german": "Die **Behörde** hat meinen Antrag noch nicht bearbeitet.", "translation": "**机关**还没有处理我的申请。" },
+      { "german": "Der Kontakt mit deutschen **Behörden** ist oft kompliziert.", "translation": "和德国**政府部门**打交道常常很复杂。" },
+      { "german": "Diese Frage klärt die zuständige **Behörde**.", "translation": "这个问题由主管**机关**解释。" }
+    ]
+  },
+  "aufenthaltstitel": {
+    "word": "居留许可",
+    "definition": "允许在德国居住一段时间的证件。",
+    "examples": [
+      { "german": "Mein **Aufenthaltstitel** ist bis März gültig.", "translation": "我的**居留许可**有效期到三月。" },
+      { "german": "Ich muss meinen **Aufenthaltstitel** rechtzeitig verlängern.", "translation": "我必须及时延长**居留许可**。" },
+      { "german": "Für den neuen Job brauche ich einen anderen **Aufenthaltstitel**.", "translation": "新工作需要另一种**居留许可**。" },
+      { "german": "Die Ausländerbehörde stellt **Aufenthaltstitel** aus.", "translation": "外管局签发**居留许可**。" }
+    ]
+  },
+  "voraussetzung": {
+    "word": "前提条件",
+    "definition": "使另一件事成为可能所必须具备的东西。",
+    "examples": [
+      { "german": "Deutschkenntnisse sind eine wichtige **Voraussetzung** für den Job.", "translation": "德语能力是这份工作的重要**前提条件**。" },
+      { "german": "Welche **Voraussetzungen** muss ich für die Einbürgerung erfüllen?", "translation": "入籍我需要满足哪些**条件**？" },
+      { "german": "Unter dieser **Voraussetzung** bin ich einverstanden.", "translation": "在这个**前提**下我同意。" },
+      { "german": "Eine abgeschlossene Ausbildung ist keine **Voraussetzung**.", "translation": "完成职业培训不是**必要条件**。" }
+    ]
+  },
+  "kuendigung": {
+    "word": "解约；解雇",
+    "definition": "宣布终止合同、租房或工作的声明。",
+    "examples": [
+      { "german": "Ich habe die **Kündigung** schriftlich eingereicht.", "translation": "我以书面形式递交了**辞职信**。" },
+      { "german": "Die **Kündigung** der Wohnung muss drei Monate vorher erfolgen.", "translation": "退租必须提前三个月**通知**。" },
+      { "german": "Nach der **Kündigung** habe ich sofort einen neuen Job gesucht.", "translation": "被**解雇**后我马上开始找新工作。" },
+      { "german": "Der Vermieter hat mir die **Kündigung** geschickt.", "translation": "房东给我寄来了**解约通知**。" }
+    ]
+  },
+  "verantwortung": {
+    "word": "责任",
+    "definition": "照顾某事或某人并为此负责的义务。",
+    "examples": [
+      { "german": "Als Teamleiter trägt er viel **Verantwortung**.", "translation": "作为团队负责人，他承担很多**责任**。" },
+      { "german": "Ich übernehme die **Verantwortung** für den Fehler.", "translation": "我对这个错误负**责任**。" },
+      { "german": "Kinder zu haben ist eine große **Verantwortung**.", "translation": "养孩子是很大的**责任**。" },
+      { "german": "In meinem neuen Job habe ich mehr **Verantwortung**.", "translation": "在新工作中我的**责任**更大了。" }
+    ]
+  },
+  "nachweis": {
+    "word": "证明",
+    "definition": "证明某事属实的文件。",
+    "examples": [
+      { "german": "Bitte bringen Sie einen **Nachweis** über Ihr Einkommen mit.", "translation": "请带上您的收入**证明**。" },
+      { "german": "Als **Nachweis** reicht eine Kopie des Zeugnisses.", "translation": "作为**证明**，一份证书复印件就够了。" },
+      { "german": "Für den Kurs brauche ich einen **Nachweis** über mein Sprachniveau.", "translation": "参加这门课我需要语言水平**证明**。" },
+      { "german": "Alle **Nachweise** müssen auf Deutsch sein.", "translation": "所有**证明材料**都必须是德语的。" }
+    ]
+  },
+  "zustaendigkeit": {
+    "word": "职责范围",
+    "definition": "负责某项特定任务的权利和义务。",
+    "examples": [
+      { "german": "Das liegt nicht in meiner **Zuständigkeit**.", "translation": "这不在我的**职责范围**内。" },
+      { "german": "Die **Zuständigkeit** für Visa liegt bei der Ausländerbehörde.", "translation": "签证事务由外管局**负责**。" },
+      { "german": "Im Team sind die **Zuständigkeiten** klar verteilt.", "translation": "团队里的**分工**很明确。" },
+      { "german": "Wer hat hier die **Zuständigkeit**?", "translation": "这里谁**负责**？" }
+    ]
   }
 }

@@ -48,5 +48,305 @@
       { "german": "Kann ich bitte **Wasser** haben?", "translation": "¿Me das **agua**, por favor?" },
       { "german": "Ein stilles **Wasser**, bitte.", "translation": "Un **agua** sin gas, por favor." }
     ]
+  },
+  "brot": {
+    "word": "pan",
+    "definition": "Un alimento hecho de harina, agua y levadura que se hornea.",
+    "examples": [
+      { "german": "Ich kaufe frisches **Brot** beim Bäcker.", "translation": "Compro **pan** fresco en la panadería." },
+      { "german": "Das **Brot** ist noch warm.", "translation": "El **pan** todavía está caliente." },
+      { "german": "Möchtest du Butter auf dein **Brot**?", "translation": "¿Quieres mantequilla en tu **pan**?" },
+      { "german": "Wir essen zum Frühstück **Brot** mit Käse.", "translation": "Desayunamos **pan** con queso." }
+    ]
+  },
+  "apfel": {
+    "word": "manzana",
+    "definition": "Una fruta redonda que puede ser roja, verde o amarilla.",
+    "examples": [
+      { "german": "Ich esse jeden Tag einen **Apfel**.", "translation": "Como una **manzana** cada día." },
+      { "german": "Die **Äpfel** sind sehr süß.", "translation": "Las **manzanas** son muy dulces." },
+      { "german": "Kannst du ein Kilo **Äpfel** kaufen?", "translation": "¿Puedes comprar un kilo de **manzanas**?" },
+      { "german": "Der **Apfel** liegt auf dem Tisch.", "translation": "La **manzana** está en la mesa." }
+    ]
+  },
+  "milch": {
+    "word": "leche",
+    "definition": "Una bebida blanca que viene de las vacas.",
+    "examples": [
+      { "german": "Ich trinke Kaffee mit **Milch**.", "translation": "Tomo café con **leche**." },
+      { "german": "Die **Milch** ist im Kühlschrank.", "translation": "La **leche** está en la nevera." },
+      { "german": "Wir brauchen noch **Milch** und Eier.", "translation": "Todavía necesitamos **leche** y huevos." },
+      { "german": "Die **Milch** ist leider sauer.", "translation": "Por desgracia, la **leche** está agria." }
+    ]
+  },
+  "zug": {
+    "word": "tren",
+    "definition": "Un vehículo largo que circula sobre vías.",
+    "examples": [
+      { "german": "Der **Zug** hat zehn Minuten Verspätung.", "translation": "El **tren** tiene diez minutos de retraso." },
+      { "german": "Ich fahre mit dem **Zug** nach Berlin.", "translation": "Voy a Berlín en **tren**." },
+      { "german": "Wann fährt der nächste **Zug**?", "translation": "¿Cuándo sale el próximo **tren**?" },
+      { "german": "Die **Züge** sind heute sehr voll.", "translation": "Los **trenes** van muy llenos hoy." }
+    ]
+  },
+  "buch": {
+    "word": "libro",
+    "definition": "Muchas páginas con texto encuadernadas juntas.",
+    "examples": [
+      { "german": "Ich lese gerade ein spannendes **Buch**.", "translation": "Estoy leyendo un **libro** emocionante." },
+      { "german": "Das **Buch** gehört meiner Schwester.", "translation": "El **libro** es de mi hermana." },
+      { "german": "In der Bibliothek gibt es viele **Bücher**.", "translation": "En la biblioteca hay muchos **libros**." },
+      { "german": "Kannst du mir das **Buch** leihen?", "translation": "¿Me puedes prestar el **libro**?" }
+    ]
+  },
+  "stadt": {
+    "word": "ciudad",
+    "definition": "Un lugar grande donde vive y trabaja mucha gente.",
+    "examples": [
+      { "german": "Dresden ist eine schöne **Stadt**.", "translation": "Dresde es una **ciudad** bonita." },
+      { "german": "Ich wohne in der **Stadt**.", "translation": "Vivo en la **ciudad**." },
+      { "german": "Wir fahren am Samstag in die **Stadt**.", "translation": "El sábado vamos a la **ciudad**." },
+      { "german": "Große **Städte** sind oft laut.", "translation": "Las **ciudades** grandes suelen ser ruidosas." }
+    ]
+  },
+  "freund": {
+    "word": "amigo",
+    "definition": "Una persona que te gusta y en la que confías.",
+    "examples": [
+      { "german": "Das ist mein bester **Freund**.", "translation": "Este es mi mejor **amigo**." },
+      { "german": "Ich treffe heute meine **Freunde**.", "translation": "Hoy quedo con mis **amigos**." },
+      { "german": "Mein **Freund** hilft mir beim Umzug.", "translation": "Mi **amigo** me ayuda con la mudanza." },
+      { "german": "Wir sind seit sieben Jahren **Freunde**.", "translation": "Somos **amigos** desde hace siete años." }
+    ]
+  },
+  "tisch": {
+    "word": "mesa",
+    "definition": "Un mueble con una superficie plana donde se come o se trabaja.",
+    "examples": [
+      { "german": "Das Essen steht auf dem **Tisch**.", "translation": "La comida está en la **mesa**." },
+      { "german": "Wir brauchen einen neuen **Tisch**.", "translation": "Necesitamos una **mesa** nueva." },
+      { "german": "Kannst du bitte den **Tisch** decken?", "translation": "¿Puedes poner la **mesa**, por favor?" },
+      { "german": "Ich habe einen **Tisch** für zwei reserviert.", "translation": "He reservado una **mesa** para dos." }
+    ]
+  },
+  "wohnung": {
+    "word": "piso",
+    "definition": "Varias habitaciones dentro de un edificio donde se vive.",
+    "examples": [
+      { "german": "Wir suchen eine **Wohnung** in Dresden.", "translation": "Buscamos un **piso** en Dresde." },
+      { "german": "Die **Wohnung** hat zwei Zimmer.", "translation": "El **piso** tiene dos habitaciones." },
+      { "german": "Die **Wohnungen** im Zentrum sind teuer.", "translation": "Los **pisos** del centro son caros." },
+      { "german": "Ich räume am Wochenende die **Wohnung** auf.", "translation": "El fin de semana ordeno el **piso**." }
+    ]
+  },
+  "termin": {
+    "word": "cita",
+    "definition": "Una hora fija para reunirse con alguien, por ejemplo en el médico.",
+    "examples": [
+      { "german": "Ich habe morgen einen **Termin** beim Arzt.", "translation": "Mañana tengo **cita** con el médico." },
+      { "german": "Können wir den **Termin** verschieben?", "translation": "¿Podemos cambiar la **cita**?" },
+      { "german": "Ich möchte gern einen **Termin** vereinbaren.", "translation": "Me gustaría pedir una **cita**." },
+      { "german": "Diese Woche habe ich viele **Termine**.", "translation": "Esta semana tengo muchas **citas**." }
+    ]
+  },
+  "rechnung": {
+    "word": "factura",
+    "definition": "Un papel que indica cuánto hay que pagar.",
+    "examples": [
+      { "german": "Die **Rechnung**, bitte!", "translation": "¡La **cuenta**, por favor!" },
+      { "german": "Ich bezahle die **Rechnung** online.", "translation": "Pago la **factura** por internet." },
+      { "german": "Die **Rechnung** für den Strom ist gekommen.", "translation": "Ha llegado la **factura** de la luz." },
+      { "german": "Bitte heben Sie alle **Rechnungen** auf.", "translation": "Por favor, guarde todas las **facturas**." }
+    ]
+  },
+  "arzt": {
+    "word": "médico",
+    "definition": "Una persona que examina y trata a los enfermos.",
+    "examples": [
+      { "german": "Ich muss heute zum **Arzt**.", "translation": "Hoy tengo que ir al **médico**." },
+      { "german": "Der **Arzt** hat mir Tabletten verschrieben.", "translation": "El **médico** me ha recetado pastillas." },
+      { "german": "In der Praxis arbeiten drei **Ärzte**.", "translation": "En la consulta trabajan tres **médicos**." },
+      { "german": "Rufen Sie bitte einen **Arzt**!", "translation": "¡Llame a un **médico**, por favor!" }
+    ]
+  },
+  "fahrkarte": {
+    "word": "billete",
+    "definition": "Un billete que permite viajar en autobús, tranvía o tren.",
+    "examples": [
+      { "german": "Ich kaufe die **Fahrkarte** am Automaten.", "translation": "Compro el **billete** en la máquina." },
+      { "german": "Ihre **Fahrkarte**, bitte!", "translation": "¡Su **billete**, por favor!" },
+      { "german": "Die **Fahrkarte** gilt nur heute.", "translation": "El **billete** solo vale para hoy." },
+      { "german": "Wir brauchen zwei **Fahrkarten** nach Leipzig.", "translation": "Necesitamos dos **billetes** a Leipzig." }
+    ]
+  },
+  "geschenk": {
+    "word": "regalo",
+    "definition": "Algo que se da a alguien sin pedir dinero a cambio.",
+    "examples": [
+      { "german": "Das ist ein **Geschenk** für dich.", "translation": "Este es un **regalo** para ti." },
+      { "german": "Ich packe die **Geschenke** ein.", "translation": "Estoy envolviendo los **regalos**." },
+      { "german": "Vielen Dank für das schöne **Geschenk**!", "translation": "¡Muchas gracias por el bonito **regalo**!" },
+      { "german": "Was für ein **Geschenk** kaufen wir für Mama?", "translation": "¿Qué **regalo** le compramos a mamá?" }
+    ]
+  },
+  "wetter": {
+    "word": "tiempo",
+    "definition": "Cómo está el día fuera: sol, lluvia, viento o nieve.",
+    "examples": [
+      { "german": "Wie ist das **Wetter** heute?", "translation": "¿Qué **tiempo** hace hoy?" },
+      { "german": "Das **Wetter** ist schön, wir gehen spazieren.", "translation": "Hace buen **tiempo**, vamos a dar un paseo." },
+      { "german": "Bei diesem **Wetter** bleibe ich zu Hause.", "translation": "Con este **tiempo** me quedo en casa." },
+      { "german": "Morgen soll das **Wetter** besser werden.", "translation": "Mañana el **tiempo** va a mejorar." }
+    ]
+  },
+  "anmeldung": {
+    "word": "registro, inscripción",
+    "definition": "Inscribirse oficialmente en algún sitio, por ejemplo registrar el domicilio en la oficina municipal.",
+    "examples": [
+      { "german": "Für die **Anmeldung** brauche ich einen Termin beim Bürgeramt.", "translation": "Para el **registro** necesito una cita en la oficina municipal." },
+      { "german": "Nach dem Umzug muss man die **Anmeldung** innerhalb von zwei Wochen machen.", "translation": "Después de mudarse hay que hacer el **registro** en dos semanas." },
+      { "german": "Die **Anmeldung** zum Sprachkurs ist online möglich.", "translation": "La **inscripción** al curso de idiomas se puede hacer en línea." },
+      { "german": "Haben Sie die Bestätigung der **Anmeldung** dabei?", "translation": "¿Tiene la confirmación del **registro**?" }
+    ]
+  },
+  "vertrag": {
+    "word": "contrato",
+    "definition": "Un documento en el que dos partes acuerdan reglas fijas y lo firman.",
+    "examples": [
+      { "german": "Ich habe den **Vertrag** noch nicht unterschrieben.", "translation": "Todavía no he firmado el **contrato**." },
+      { "german": "Der **Vertrag** läuft zwei Jahre.", "translation": "El **contrato** dura dos años." },
+      { "german": "Bitte lesen Sie den **Vertrag** genau durch.", "translation": "Por favor, lea el **contrato** con atención." },
+      { "german": "Die **Verträge** liegen im Ordner.", "translation": "Los **contratos** están en la carpeta." }
+    ]
+  },
+  "bewerbung": {
+    "word": "solicitud",
+    "definition": "Documentos con los que se aspira a un puesto de trabajo o una plaza.",
+    "examples": [
+      { "german": "Ich schicke heute meine **Bewerbung** ab.", "translation": "Hoy envío mi **solicitud**." },
+      { "german": "Zu einer **Bewerbung** gehören Lebenslauf und Anschreiben.", "translation": "Una **solicitud** incluye el currículum y la carta de presentación." },
+      { "german": "Vielen Dank für Ihre **Bewerbung**.", "translation": "Muchas gracias por su **solicitud**." },
+      { "german": "Ich habe schon zwanzig **Bewerbungen** geschrieben.", "translation": "Ya he escrito veinte **solicitudes**." }
+    ]
+  },
+  "erfahrung": {
+    "word": "experiencia",
+    "definition": "Conocimientos y habilidades que se obtienen viviendo y practicando.",
+    "examples": [
+      { "german": "Ich habe drei Jahre **Erfahrung** als Entwickler.", "translation": "Tengo tres años de **experiencia** como desarrollador." },
+      { "german": "Das war eine wichtige **Erfahrung** für mich.", "translation": "Fue una **experiencia** importante para mí." },
+      { "german": "Wir haben gute **Erfahrungen** mit dieser Firma gemacht.", "translation": "Hemos tenido buenas **experiencias** con esta empresa." },
+      { "german": "Aus **Erfahrung** weiß ich, dass das dauert.", "translation": "Por **experiencia** sé que eso tarda." }
+    ]
+  },
+  "miete": {
+    "word": "alquiler",
+    "definition": "El dinero que se paga cada mes por un piso.",
+    "examples": [
+      { "german": "Die **Miete** beträgt 650 Euro warm.", "translation": "El **alquiler** es de 650 euros con gastos." },
+      { "german": "Ich überweise die **Miete** am Monatsanfang.", "translation": "Transfiero el **alquiler** a principios de mes." },
+      { "german": "Die **Mieten** in München sind sehr hoch.", "translation": "Los **alquileres** en Múnich son muy altos." },
+      { "german": "Ist die **Miete** inklusive Nebenkosten?", "translation": "¿El **alquiler** incluye los gastos?" }
+    ]
+  },
+  "versicherung": {
+    "word": "seguro",
+    "definition": "Un contrato por el que recibes dinero si pasa algo malo.",
+    "examples": [
+      { "german": "Ohne **Versicherung** ist ein Arztbesuch teuer.", "translation": "Sin **seguro**, ir al médico es caro." },
+      { "german": "Ich habe die Rechnung an die **Versicherung** geschickt.", "translation": "He enviado la factura al **seguro**." },
+      { "german": "Welche **Versicherungen** braucht man wirklich?", "translation": "¿Qué **seguros** se necesitan de verdad?" },
+      { "german": "Die **Versicherung** zahlt den Schaden.", "translation": "El **seguro** paga los daños." }
+    ]
+  },
+  "umzug": {
+    "word": "mudanza",
+    "definition": "Cuando te llevas todas tus cosas a otro piso.",
+    "examples": [
+      { "german": "Der **Umzug** ist am nächsten Samstag.", "translation": "La **mudanza** es el próximo sábado." },
+      { "german": "Kannst du mir beim **Umzug** helfen?", "translation": "¿Me puedes ayudar con la **mudanza**?" },
+      { "german": "Nach dem **Umzug** war ich total müde.", "translation": "Después de la **mudanza** estaba agotado." },
+      { "german": "Zwei **Umzüge** in einem Jahr sind zu viel.", "translation": "Dos **mudanzas** en un año son demasiadas." }
+    ]
+  },
+  "gehalt": {
+    "word": "sueldo",
+    "definition": "El dinero que se recibe cada mes por el trabajo.",
+    "examples": [
+      { "german": "Das **Gehalt** kommt am Ende des Monats.", "translation": "El **sueldo** llega a final de mes." },
+      { "german": "Im Vorstellungsgespräch haben wir über das **Gehalt** gesprochen.", "translation": "En la entrevista hablamos del **sueldo**." },
+      { "german": "Die **Gehälter** in der IT sind gut.", "translation": "Los **sueldos** en informática son buenos." },
+      { "german": "Ich bekomme ab Januar mehr **Gehalt**.", "translation": "A partir de enero cobro más **sueldo**." }
+    ]
+  },
+  "behoerde": {
+    "word": "autoridad, administración",
+    "definition": "Una oficina del Estado o de la ciudad que realiza tareas públicas.",
+    "examples": [
+      { "german": "Für den Antrag muss ich zur **Behörde**.", "translation": "Para la solicitud tengo que ir a la **administración**." },
+      { "german": "Die **Behörde** hat meinen Antrag noch nicht bearbeitet.", "translation": "La **autoridad** todavía no ha tramitado mi solicitud." },
+      { "german": "Der Kontakt mit deutschen **Behörden** ist oft kompliziert.", "translation": "El trato con las **autoridades** alemanas suele ser complicado." },
+      { "german": "Diese Frage klärt die zuständige **Behörde**.", "translation": "Esta cuestión la aclara la **autoridad** competente." }
+    ]
+  },
+  "aufenthaltstitel": {
+    "word": "permiso de residencia",
+    "definition": "Un documento que permite vivir en Alemania durante un tiempo determinado.",
+    "examples": [
+      { "german": "Mein **Aufenthaltstitel** ist bis März gültig.", "translation": "Mi **permiso de residencia** es válido hasta marzo." },
+      { "german": "Ich muss meinen **Aufenthaltstitel** rechtzeitig verlängern.", "translation": "Tengo que renovar mi **permiso de residencia** a tiempo." },
+      { "german": "Für den neuen Job brauche ich einen anderen **Aufenthaltstitel**.", "translation": "Para el nuevo trabajo necesito otro **permiso de residencia**." },
+      { "german": "Die Ausländerbehörde stellt **Aufenthaltstitel** aus.", "translation": "La oficina de extranjería expide **permisos de residencia**." }
+    ]
+  },
+  "voraussetzung": {
+    "word": "requisito",
+    "definition": "Algo que tiene que existir para que otra cosa sea posible.",
+    "examples": [
+      { "german": "Deutschkenntnisse sind eine wichtige **Voraussetzung** für den Job.", "translation": "Saber alemán es un **requisito** importante para el trabajo." },
+      { "german": "Welche **Voraussetzungen** muss ich für die Einbürgerung erfüllen?", "translation": "¿Qué **requisitos** tengo que cumplir para la nacionalidad?" },
+      { "german": "Unter dieser **Voraussetzung** bin ich einverstanden.", "translation": "Con esta **condición**, estoy de acuerdo." },
+      { "german": "Eine abgeschlossene Ausbildung ist keine **Voraussetzung**.", "translation": "Una formación profesional terminada no es un **requisito**." }
+    ]
+  },
+  "kuendigung": {
+    "word": "rescisión, despido",
+    "definition": "La declaración de que terminas un contrato, un piso o un trabajo.",
+    "examples": [
+      { "german": "Ich habe die **Kündigung** schriftlich eingereicht.", "translation": "He presentado mi **dimisión** por escrito." },
+      { "german": "Die **Kündigung** der Wohnung muss drei Monate vorher erfolgen.", "translation": "La **rescisión** del contrato del piso debe hacerse con tres meses de antelación." },
+      { "german": "Nach der **Kündigung** habe ich sofort einen neuen Job gesucht.", "translation": "Después del **despido** busqué trabajo enseguida." },
+      { "german": "Der Vermieter hat mir die **Kündigung** geschickt.", "translation": "El casero me ha enviado la **rescisión** del contrato." }
+    ]
+  },
+  "verantwortung": {
+    "word": "responsabilidad",
+    "definition": "El deber de ocuparse de algo o de alguien y responder por ello.",
+    "examples": [
+      { "german": "Als Teamleiter trägt er viel **Verantwortung**.", "translation": "Como jefe de equipo tiene mucha **responsabilidad**." },
+      { "german": "Ich übernehme die **Verantwortung** für den Fehler.", "translation": "Asumo la **responsabilidad** del error." },
+      { "german": "Kinder zu haben ist eine große **Verantwortung**.", "translation": "Tener hijos es una gran **responsabilidad**." },
+      { "german": "In meinem neuen Job habe ich mehr **Verantwortung**.", "translation": "En mi nuevo trabajo tengo más **responsabilidad**." }
+    ]
+  },
+  "nachweis": {
+    "word": "justificante, prueba",
+    "definition": "Un documento que demuestra que algo es cierto.",
+    "examples": [
+      { "german": "Bitte bringen Sie einen **Nachweis** über Ihr Einkommen mit.", "translation": "Por favor, traiga un **justificante** de sus ingresos." },
+      { "german": "Als **Nachweis** reicht eine Kopie des Zeugnisses.", "translation": "Como **prueba** basta una copia del certificado." },
+      { "german": "Für den Kurs brauche ich einen **Nachweis** über mein Sprachniveau.", "translation": "Para el curso necesito un **justificante** de mi nivel de idioma." },
+      { "german": "Alle **Nachweise** müssen auf Deutsch sein.", "translation": "Todos los **justificantes** deben estar en alemán." }
+    ]
+  },
+  "zustaendigkeit": {
+    "word": "competencia",
+    "definition": "El derecho y el deber de ocuparse de una tarea concreta.",
+    "examples": [
+      { "german": "Das liegt nicht in meiner **Zuständigkeit**.", "translation": "Eso no es de mi **competencia**." },
+      { "german": "Die **Zuständigkeit** für Visa liegt bei der Ausländerbehörde.", "translation": "La **competencia** en visados es de la oficina de extranjería." },
+      { "german": "Im Team sind die **Zuständigkeiten** klar verteilt.", "translation": "En el equipo las **responsabilidades** están claramente repartidas." },
+      { "german": "Wer hat hier die **Zuständigkeit**?", "translation": "¿Quién es el **responsable** aquí?" }
+    ]
   }
 }
