@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
@@ -117,7 +118,13 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
     final colors = Theme.of(context).colorScheme;
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+      // + bottom inset: the last row stays reachable above the blurred bar.
+      padding: EdgeInsets.fromLTRB(
+        16,
+        0,
+        16,
+        24 + MediaQuery.paddingOf(context).bottom,
+      ),
       child: GroupedCard(
         children: [
           for (final level in Word.levels)
@@ -139,10 +146,7 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
       // "5 слов": same quiet gray as the search hint.
       trailing: Text(
         AppStrings.of(context).wordCount(words.length),
-        style: TextStyle(
-          fontSize: 15,
-          color: AppColors.quietText(colors),
-        ),
+        style: TextStyle(fontSize: 15, color: AppColors.quietText(colors)),
       ),
       onTap: () => _openLevel(level, words),
     );
@@ -221,7 +225,7 @@ class _SearchFieldState extends State<_SearchField> {
             decoration: InputDecoration(
               hintText: widget.hint,
               hintStyle: TextStyle(color: lightGray),
-              prefixIcon: const Icon(Icons.search),
+              prefixIcon: const Icon(AppIcons.magnifyingGlass),
               filled: true,
               fillColor: AppPalette.of(context).card,
               isDense: true,
@@ -241,7 +245,7 @@ class _SearchFieldState extends State<_SearchField> {
               ? Padding(
                   padding: const EdgeInsets.only(left: 8),
                   child: RoundIconButton(
-                    icon: Icons.close,
+                    icon: AppIcons.x,
                     tooltip: AppStrings.of(context).close,
                     iconColor: lightGray,
                     onPressed: _close,

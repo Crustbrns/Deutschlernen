@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/widgets/round_icon_button.dart';
 
@@ -20,7 +21,7 @@ class CardsTopBar extends StatelessWidget {
     return Row(
       children: [
         RoundIconButton(
-          icon: Icons.close,
+          icon: AppIcons.x,
           tooltip: strings.close,
           onPressed: onClose,
         ),
@@ -31,7 +32,7 @@ class CardsTopBar extends StatelessWidget {
           ),
         ),
         RoundIconButton(
-          icon: Icons.arrow_back,
+          icon: AppIcons.arrowLeft,
           tooltip: strings.back,
           onPressed: onUndo,
         ),

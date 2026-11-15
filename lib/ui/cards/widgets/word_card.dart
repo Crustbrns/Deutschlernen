@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/ui/cards/widgets/answer_modes.dart';
 import 'package:deutschlernen/ui/cards/widgets/example_tile.dart';
@@ -281,7 +282,7 @@ class _WordCardState extends State<WordCard> {
                     top: 14,
                     right: 14,
                     child: RoundIconButton(
-                      icon: Icons.close,
+                      icon: AppIcons.x,
                       tooltip: AppStrings.of(context).close,
                       onPressed: onClose,
                     ),
@@ -347,7 +348,7 @@ class _TranscriptionButton extends StatelessWidget {
             ),
             SizedBox(width: 12 * scale),
           ],
-          Icon(Icons.volume_up_outlined, size: 19.5 * scale),
+          Icon(AppIcons.speakerHigh, size: 19.5 * scale),
         ],
       ),
     );

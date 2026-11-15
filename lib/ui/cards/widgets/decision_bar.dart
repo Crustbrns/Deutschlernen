@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 
@@ -30,7 +31,7 @@ class DecisionBar extends StatelessWidget {
             Expanded(
               child: _DecisionButton(
                 label: strings.known,
-                icon: Icons.arrow_back,
+                icon: AppIcons.arrowLeft,
                 iconFirst: true,
                 highlight: (-progress).clamp(0.0, 1.0),
                 highlightColor: AppColors.decisionKnown,
@@ -41,7 +42,7 @@ class DecisionBar extends StatelessWidget {
             Expanded(
               child: _DecisionButton(
                 label: strings.learn,
-                icon: Icons.arrow_forward,
+                icon: AppIcons.arrowRight,
                 iconFirst: false,
                 highlight: progress.clamp(0.0, 1.0),
                 highlightColor: AppColors.decisionLearn,
