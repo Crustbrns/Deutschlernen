@@ -3,6 +3,7 @@ import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
+import 'package:deutschlernen/ui/core/widgets/round_icon_button.dart';
 import 'package:deutschlernen/ui/vocabulary/widgets/level_words_screen.dart';
 import 'package:deutschlernen/ui/vocabulary/widgets/word_list.dart';
 
@@ -135,23 +136,24 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
       // 16 = divider indent, so text and lines start at one edge.
       contentPadding: const EdgeInsets.symmetric(horizontal: 16),
       title: Text(level),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            '${words.length}',
-            style: const TextStyle(color: AppColors.mutedText),
-          ),
-          const SizedBox(width: 4),
-          Icon(Icons.chevron_right, color: colors.onSurfaceVariant),
-        ],
+      // "5 слов": same quiet gray as the search hint.
+      trailing: Text(
+        AppStrings.of(context).wordCount(words.length),
+        style: TextStyle(
+          fontSize: 15,
+          color: AppColors.lighten(AppColors.divider(colors), 0.3),
+        ),
       ),
       onTap: () => _openLevel(level, words),
     );
   }
 }
 
-class _SearchField extends StatelessWidget {
+/// Pill-shaped search field, iOS-style. Idle: no outline, full width.
+/// Active (focused or holding text): blue outline while focused, and the
+/// field shrinks to make room for a round close button on its right.
+/// The button clears the text, hides the keyboard and returns the idle look.
+class _SearchField extends StatefulWidget {
   const _SearchField({
     required this.controller,
     required this.hint,
@@ -163,38 +165,90 @@ class _SearchField extends StatelessWidget {
   final VoidCallback onChanged;
 
   @override
-  Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
-    OutlineInputBorder border(Color color) => OutlineInputBorder(
-      borderRadius: BorderRadius.circular(20),
-      borderSide: BorderSide(color: color),
-    );
+  State<_SearchField> createState() => _SearchFieldState();
+}
 
-    return TextField(
-      controller: controller,
-      onChanged: (_) => onChanged(),
-      autocorrect: false,
-      enableSuggestions: false,
-      textInputAction: TextInputAction.search,
-      decoration: InputDecoration(
-        hintText: hint,
-        prefixIcon: const Icon(Icons.search),
-        // Clear button only when there is something to clear.
-        suffixIcon: controller.text.isEmpty
-            ? null
-            : IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: () {
-                  controller.clear();
-                  onChanged();
-                },
-              ),
-        filled: true,
-        fillColor: AppColors.card,
-        border: border(colors.outlineVariant.withValues(alpha: 0.4)),
-        enabledBorder: border(colors.outlineVariant.withValues(alpha: 0.4)),
-        focusedBorder: border(AppColors.accentBlue),
-      ),
+class _SearchFieldState extends State<_SearchField> {
+  final _focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    // Rebuild on focus changes: the outline and the button depend on it.
+    _focusNode.addListener(() => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  // Also active with text but no focus (e.g. after scrolling the results
+  // hid the keyboard), so the text can still be cleared.
+  bool get _isActive =>
+      _focusNode.hasFocus || widget.controller.text.isNotEmpty;
+
+  void _close() {
+    widget.controller.clear();
+    _focusNode.unfocus();
+    widget.onChanged();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final pill = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(100), // fully round ends
+      borderSide: BorderSide.none,
+    );
+    // Quiet grays, so the search doesn't draw attention from the content:
+    // the outline is the divider color, hint and close icon are 30% lighter
+    // than it to stay readable.
+    final gray = AppColors.divider(Theme.of(context).colorScheme);
+    final lightGray = AppColors.lighten(gray, 0.3);
+
+    return Row(
+      children: [
+        Expanded(
+          child: TextField(
+            controller: widget.controller,
+            focusNode: _focusNode,
+            onChanged: (_) => widget.onChanged(),
+            autocorrect: false,
+            enableSuggestions: false,
+            textInputAction: TextInputAction.search,
+            decoration: InputDecoration(
+              hintText: widget.hint,
+              hintStyle: TextStyle(color: lightGray),
+              prefixIcon: const Icon(Icons.search),
+              filled: true,
+              fillColor: AppColors.card,
+              isDense: true,
+              contentPadding: const EdgeInsets.symmetric(vertical: 10),
+              border: pill,
+              enabledBorder: pill,
+              focusedBorder: pill.copyWith(borderSide: BorderSide(color: gray)),
+            ),
+          ),
+        ),
+        // AnimatedSize: the field shrinks/grows smoothly as the button
+        // appears/disappears instead of jumping.
+        AnimatedSize(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOutCubic,
+          child: _isActive
+              ? Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: RoundIconButton(
+                    icon: Icons.close,
+                    tooltip: AppStrings.of(context).close,
+                    iconColor: lightGray,
+                    onPressed: _close,
+                  ),
+                )
+              : const SizedBox.shrink(),
+        ),
+      ],
     );
   }
 }

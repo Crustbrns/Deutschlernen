@@ -1,9 +1,12 @@
 import 'package:material_ui/material_ui.dart';
 
 class AppStrings {
-  const AppStrings(this._values);
+  const AppStrings(this._values, {this.languageCode = 'en'});
 
   final Map<String, String> _values;
+
+  /// Interface language; picks the plural forms in [wordCount].
+  final String languageCode;
 
   // A missing key shows its own name, so gaps are easy to spot.
   String _get(String key) => _values[key] ?? key;
@@ -37,6 +40,35 @@ class AppStrings {
   String get searchHint => _get('searchHint');
   String get nothingFound => _get('nothingFound');
   String get noWordsYet => _get('noWordsYet');
+
+  /// "1 слово", "2 слова", "5 слов" / "1 word", "5 words".
+  /// JSON keys: wordCountOne, wordCountFew, wordCountMany, wordCountOther,
+  /// with {n} for the number. A language uses only the forms it has;
+  /// a missing form falls back to wordCountOther.
+  String wordCount(int n) {
+    final form = _pluralForm(n);
+    final template = _values['wordCount$form'] ?? _get('wordCountOther');
+    return template.replaceAll('{n}', '$n');
+  }
+
+  /// Simplified CLDR plural rules for integers.
+  String _pluralForm(int n) {
+    switch (languageCode) {
+      case 'ru' || 'uk':
+        // 1, 21, 31 → One; 2–4, 22–24 → Few; 0, 5–20, 25–30 → Many.
+        // 11–14 are Many: they end in 1–4 but are "teens".
+        final mod10 = n % 10, mod100 = n % 100;
+        if (mod10 == 1 && mod100 != 11) return 'One';
+        if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) {
+          return 'Few';
+        }
+        return 'Many';
+      case 'zh':
+        return 'Other'; // no plural forms
+      default: // en, es: 1 → One, everything else → Other
+        return n == 1 ? 'One' : 'Other';
+    }
+  }
 
   /// Texts for the current language: `AppStrings.of(context).known`.
   static AppStrings of(BuildContext context) {

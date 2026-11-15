@@ -67,7 +67,10 @@ class CardsViewModel extends ChangeNotifier {
     );
 
     _words = await _wordRepository.getWords(_wordLanguage);
-    _strings = AppStrings(await _languageRepository.getUiTexts(_uiLanguage));
+    _strings = AppStrings(
+      await _languageRepository.getUiTexts(_uiLanguage),
+      languageCode: _uiLanguage.code,
+    );
     _history.clear();
     _lastUndone = null;
 
@@ -97,7 +100,7 @@ class CardsViewModel extends ChangeNotifier {
     final texts = await _languageRepository.getUiTexts(language);
 
     _uiLanguage = language;
-    _strings = AppStrings(texts);
+    _strings = AppStrings(texts, languageCode: language.code);
     notifyListeners();
 
     await _settingsRepository.saveUiLanguageCode(language.code);

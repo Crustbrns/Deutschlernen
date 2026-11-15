@@ -27,5 +27,7 @@
   "nothingFound": "Nothing found",
   "interfaceLanguage": "Interface language",
   "wordsLanguage": "Words language",
-  "noWordsYet": "No words here yet"
+  "noWordsYet": "No words here yet",
+  "wordCountOne": "{n} word",
+  "wordCountOther": "{n} words"
 }

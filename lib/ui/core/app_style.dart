@@ -30,6 +30,10 @@ abstract final class AppColors {
   static Color darken(Color color, double amount) =>
       Color.lerp(color, const Color(0xFF000000), amount)!;
 
+  /// Mixes [color] with white: amount 0.3 = 30% lighter.
+  static Color lighten(Color color, double amount) =>
+      Color.lerp(color, const Color(0xFFFFFFFF), amount)!;
+
   /// Lines between the example rows.
   static Color divider(ColorScheme colors) =>
       darken(colors.outlineVariant, 0.18);
