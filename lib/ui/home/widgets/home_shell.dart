@@ -59,8 +59,10 @@ class _HomeShellState extends State<HomeShell> {
                   const StatisticsScreen(),
                   SettingsScreen(
                     languages: _vm.languages,
-                    current: _vm.language,
-                    onLanguageSelected: _vm.setLanguage,
+                    uiLanguage: _vm.uiLanguage,
+                    wordLanguage: _vm.wordLanguage,
+                    onUiLanguageSelected: _vm.setUiLanguage,
+                    onWordLanguageSelected: _vm.setWordLanguage,
                   ),
                 ],
               ),
