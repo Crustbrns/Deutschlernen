@@ -88,41 +88,24 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
       );
     }
 
-    // One shared card with rows split by lines, like the examples on the card.
     // A Column builds every row at once; fine for now, switch to a lazy list
     // if the dictionary grows to thousands of words.
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
       // Scrolling the results hides the keyboard, as in iOS search.
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-      child: Material(
-        color: AppColors.card,
-        // No outline: the card stands out by its fill only.
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        // Clips the ripple of the first/last row to the rounded corners.
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          children: [
-            for (var i = 0; i < results.length; i++) ...[
-              if (i > 0)
-                Divider(
-                  height: 1,
-                  thickness: 1,
-                  indent: 16,
-                  endIndent: 16,
-                  color: AppColors.divider(colors),
-                ),
-              _ResultRow(
-                word: results[i],
-                onTap: () {
-                  FocusScope.of(context).unfocus();
-                  widget.onWordSelected(results[i]);
-                },
-                onSpeak: () => widget.onSpeak(results[i].withArticle),
-              ),
-            ],
-          ],
-        ),
+      child: _GroupedCard(
+        children: [
+          for (final word in results)
+            _ResultRow(
+              word: word,
+              onTap: () {
+                FocusScope.of(context).unfocus();
+                widget.onWordSelected(word);
+              },
+              onSpeak: () => widget.onSpeak(word.withArticle),
+            ),
+        ],
       ),
     );
   }
@@ -130,25 +113,63 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
   Widget _buildDictionaries(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
 
-    return ListView(
+    return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-      children: [
-        for (var i = 0; i < _dictionaries.length; i++)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: _Tile(
-              selected: i == _selected,
-              onTap: () => setState(() => _selected = i),
+      child: _GroupedCard(
+        children: [
+          for (var i = 0; i < _dictionaries.length; i++)
+            ListTile(
+              // 16 = divider indent, so text and lines start at one edge.
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16),
               title: Text(_dictionaries[i]),
+              // In a shared card a row can't have its own outline, so the
+              // selection is shown by the check only.
               trailing: Icon(
                 i == _selected ? Icons.check_circle : Icons.circle_outlined,
                 color: i == _selected
                     ? AppColors.accentBlue
                     : colors.onSurfaceVariant,
               ),
+              onTap: () => setState(() => _selected = i),
             ),
-          ),
-      ],
+        ],
+      ),
+    );
+  }
+}
+
+/// One rounded card with its rows split by thin lines, like the examples
+/// on the word card. Used for the dictionaries and the search results.
+class _GroupedCard extends StatelessWidget {
+  const _GroupedCard({required this.children});
+
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
+    return Material(
+      color: AppColors.card,
+      // No outline: the card stands out by its fill only.
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      // Clips the ripple of the first/last row to the rounded corners.
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        children: [
+          for (var i = 0; i < children.length; i++) ...[
+            if (i > 0)
+              Divider(
+                height: 1,
+                thickness: 1,
+                indent: 16,
+                endIndent: 16,
+                color: AppColors.divider(colors),
+              ),
+            children[i],
+          ],
+        ],
+      ),
     );
   }
 }
@@ -275,45 +296,6 @@ class _ResultRow extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-/// Rounded card row for the dictionaries list.
-class _Tile extends StatelessWidget {
-  const _Tile({
-    required this.selected,
-    required this.onTap,
-    required this.title,
-    this.trailing,
-  });
-
-  final bool selected;
-  final VoidCallback onTap;
-  final Widget title;
-  final Widget? trailing;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
-
-    return Material(
-      color: AppColors.card,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-        side: BorderSide(
-          color: selected
-              ? AppColors.accentBlue
-              : colors.outlineVariant.withValues(alpha: 0.4),
-        ),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-        title: title,
-        trailing: trailing,
-        onTap: onTap,
       ),
     );
   }
