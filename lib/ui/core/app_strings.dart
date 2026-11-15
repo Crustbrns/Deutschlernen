@@ -24,7 +24,6 @@ class AppStrings {
   String get tabStatistics => _get('tabStatistics');
   String get tabSettings => _get('tabSettings');
   String get startLearning => _get('startLearning');
-  String get dictionaries => _get('dictionaries');
   String get comingSoon => _get('comingSoon');
   String get modeShow => _get('modeShow');
   String get modeWrite => _get('modeWrite');

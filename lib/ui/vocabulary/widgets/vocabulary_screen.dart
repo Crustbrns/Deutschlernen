@@ -3,7 +3,7 @@ import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 
-/// Vocabulary tab: word search on top, below it the dictionaries.
+/// Vocabulary tab: title, word search under it, below them the dictionaries.
 /// While the search has text, the matching words replace the dictionaries.
 /// The dictionary list is a placeholder; real ones will come from a repository.
 class VocabularyScreen extends StatefulWidget {
@@ -11,10 +11,12 @@ class VocabularyScreen extends StatefulWidget {
     super.key,
     required this.words,
     required this.onWordSelected,
+    required this.onSpeak,
   });
 
   final List<Word> words;
   final ValueChanged<Word> onWordSelected;
+  final ValueChanged<String> onSpeak; // German text-to-speech
 
   @override
   State<VocabularyScreen> createState() => _VocabularyScreenState();
@@ -40,9 +42,18 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
     return SafeArea(
       bottom: false,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Title stays above the search, visible in both states.
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
+            padding: const EdgeInsets.fromLTRB(24, 16, 24, 12),
+            child: Text(
+              strings.tabVocabulary,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
             child: _SearchField(
               controller: _searchController,
               hint: strings.searchHint,
@@ -75,60 +86,53 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
       );
     }
 
-    return ListView.builder(
+    // One shared card with rows split by lines, like the examples on the card.
+    // A Column builds every row at once; fine for now, switch to a lazy list
+    // if the dictionary grows to thousands of words.
+    return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
       // Scrolling the results hides the keyboard, as in iOS search.
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-      itemCount: results.length,
-      itemBuilder: (context, i) {
-        final word = results[i];
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 8),
-          child: _Tile(
-            selected: false,
-            onTap: () {
-              FocusScope.of(context).unfocus();
-              widget.onWordSelected(word);
-            },
-            title: Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(
-                    text: '${word.article} ',
-                    style: TextStyle(color: AppColors.forArticle(word.article)),
-                  ),
-                  TextSpan(text: word.german),
-                ],
+      child: Material(
+        color: AppColors.card,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(color: colors.outlineVariant.withValues(alpha: 0.4)),
+        ),
+        // Clips the ripple of the first/last row to the rounded corners.
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          children: [
+            for (var i = 0; i < results.length; i++) ...[
+              if (i > 0)
+                Divider(
+                  height: 1,
+                  thickness: 1,
+                  indent: 16,
+                  endIndent: 16,
+                  color: AppColors.divider(colors),
+                ),
+              _ResultRow(
+                word: results[i],
+                onTap: () {
+                  FocusScope.of(context).unfocus();
+                  widget.onWordSelected(results[i]);
+                },
+                onSpeak: () => widget.onSpeak(results[i].withArticle),
               ),
-            ),
-            subtitle: Text(
-              word.translation,
-              style: TextStyle(color: colors.onSurfaceVariant),
-            ),
-            trailing: Text(
-              word.level,
-              style: const TextStyle(color: AppColors.mutedText),
-            ),
-          ),
-        );
-      },
+            ],
+          ],
+        ),
+      ),
     );
   }
 
   Widget _buildDictionaries(BuildContext context) {
-    final strings = AppStrings.of(context);
     final colors = Theme.of(context).colorScheme;
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
       children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(8, 4, 8, 12),
-          child: Text(
-            strings.dictionaries,
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-        ),
         for (var i = 0; i < _dictionaries.length; i++)
           Padding(
             padding: const EdgeInsets.only(bottom: 8),
@@ -197,20 +201,88 @@ class _SearchField extends StatelessWidget {
   }
 }
 
-/// Rounded card row shared by dictionaries and search results.
+/// Search result: level on top, "der Hund · die Hunde" in the middle,
+/// translation below, left-aligned; play button on the right.
+class _ResultRow extends StatelessWidget {
+  const _ResultRow({
+    required this.word,
+    required this.onTap,
+    required this.onSpeak,
+  });
+
+  final Word word;
+  final VoidCallback onTap;
+  final VoidCallback onSpeak;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    final forms = [word.withArticle, ?word.pluralWithArticle].join(' · ');
+
+    // No own background: the row sits inside the shared results card.
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 8, 4, 8),
+        child: Row(
+          children: [
+            // Expanded: long words wrap instead of pushing the button out.
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    word.level,
+                    style: const TextStyle(
+                      color: AppColors.mutedText,
+                      fontSize: 12,
+                      height: 1.2, // tighter than the default line height
+                    ),
+                  ),
+                  Text(
+                    forms,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      height: 1.2,
+                    ),
+                  ),
+                  Text(
+                    word.translation,
+                    style: TextStyle(
+                      color: colors.onSurfaceVariant,
+                      height: 1.2,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Own tap target: plays the word without opening the card.
+            IconButton(
+              icon: const Icon(Icons.volume_up_outlined),
+              color: colors.onSurface,
+              onPressed: onSpeak,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Rounded card row for the dictionaries list.
 class _Tile extends StatelessWidget {
   const _Tile({
     required this.selected,
     required this.onTap,
     required this.title,
-    this.subtitle,
     this.trailing,
   });
 
   final bool selected;
   final VoidCallback onTap;
   final Widget title;
-  final Widget? subtitle;
   final Widget? trailing;
 
   @override
@@ -231,7 +303,6 @@ class _Tile extends StatelessWidget {
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
         title: title,
-        subtitle: subtitle,
         trailing: trailing,
         onTap: onTap,
       ),

@@ -81,6 +81,7 @@ class _HomeShellState extends State<HomeShell> {
                   VocabularyScreen(
                     words: _vm.words,
                     onWordSelected: _openWord,
+                    onSpeak: _vm.speak,
                   ),
                   const StatisticsScreen(),
                   SettingsScreen(

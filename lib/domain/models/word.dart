@@ -27,6 +27,9 @@ class Word {
 
   String get withArticle => '$article $german';
 
+  /// German plural always takes "die", whatever the singular article is.
+  String? get pluralWithArticle => plural == null ? null : 'die $plural';
+
   /// True when [input] is the translation or the German word (with or without
   /// the article). Ignores case, extra spaces and trailing punctuation.
   bool accepts(String input) {
