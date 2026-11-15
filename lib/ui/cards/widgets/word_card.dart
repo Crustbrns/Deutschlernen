@@ -17,6 +17,7 @@ class WordCard extends StatefulWidget {
     required this.otherTranslations,
     required this.bottomBar,
     this.lookup = false,
+    this.answerModes = true,
     this.lookupCount = 0,
     this.lookupState = (status: WordStatus.newWord, due: null),
     this.onClose,
@@ -37,6 +38,10 @@ class WordCard extends StatefulWidget {
   /// translation shown right away instead of the answer modes, no
   /// "new word" status, no extra space under the examples.
   final bool lookup;
+
+  /// Learning mode: true = the Show / Write / Choose buttons (review);
+  /// false = only an eye that reveals the translation (new words).
+  final bool answerModes;
 
   final Word word;
   final ValueChanged<String> onSpeak;
@@ -63,17 +68,20 @@ class _WordCardState extends State<WordCard> {
   double get _scale => widget.lookup ? 0.8 : 1.0;
 
   /// Big translation: revealed by the eye button, or always shown in lookup.
+  /// Left-aligned, like the German word above it.
   Widget _buildTranslation(Word word) {
-    return Center(
+    return Align(
+      alignment: Alignment.centerLeft,
       child: FittedBox(
         fit: BoxFit.scaleDown,
+        alignment: Alignment.centerLeft,
         child: Text(
           word.translation,
+          // Theme font, like the rest of the UI.
           style: TextStyle(
-            fontFamily: AppFonts.translation,
-            fontSize: 42 * _scale,
-            fontWeight: FontWeight.w600, // = wght
-            fontVariations: AppFonts.translationVariations,
+            fontSize: 32 * _scale,
+            fontWeight: FontWeight.w600,
+            letterSpacing: -0.6,
           ),
         ),
       ),
@@ -138,63 +146,66 @@ class _WordCardState extends State<WordCard> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             SizedBox(height: lookup ? 12 : 30),
-                            // FittedBox shrinks long German words instead of overflowing.
-                            FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: Text.rich(
-                                TextSpan(
-                                  style: TextStyle(
-                                    fontFamily: AppFonts.display,
-                                    fontSize: 44 * _scale,
-                                    fontWeight: FontWeight
-                                        .w600, // keep in sync with wght
-                                    fontVariations: AppFonts.word,
-                                  ),
-                                  children: [
+                            // Word and plural left-aligned, speaker on the
+                            // right of the word.
+                            Row(
+                              children: [
+                                // "der Hund (die Hunde)" in one text: the
+                                // plural continues the line in the same
+                                // style; long ones wrap to the next line.
+                                Expanded(
+                                  child: Text.rich(
                                     TextSpan(
-                                      text: '${word.article} ',
+                                      // Theme font, like the rest of the UI.
                                       style: TextStyle(
-                                        color: AppColors.forArticle(
-                                          word.article,
-                                        ),
+                                        fontSize: 32 * _scale,
+                                        fontWeight: FontWeight.w600,
+                                        // Condensed: big text looks loose.
+                                        letterSpacing: -0.6,
+                                        height: 1.15,
                                       ),
-                                    ),
-                                    TextSpan(text: word.german),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            if (word.plural != null) ...[
-                              // Negative gap: the line boxes of big fonts leave extra
-                              // space, so the plural is pulled up a bit.
-                              Transform.translate(
-                                offset: Offset(0, -6 * _scale),
-                                child: FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  child: Text(
-                                    '(die ${word.plural})', // plural is always "die"
-                                    style: TextStyle(
-                                      fontFamily: AppFonts.display,
-                                      fontSize: 21 * _scale,
-                                      fontWeight: FontWeight.w400, // regular
-                                      fontVariations: AppFonts.plural,
-                                      color: colors.onSurfaceVariant,
+                                      children: [
+                                        TextSpan(
+                                          text: '${word.article} ',
+                                          style: TextStyle(
+                                            color: AppColors.forArticle(
+                                              word.article,
+                                            ),
+                                          ),
+                                        ),
+                                        TextSpan(text: word.german),
+                                        // Plural is always "die".
+                                        if (word.plural != null)
+                                          TextSpan(
+                                            text: ' (die ${word.plural})',
+                                          ),
+                                      ],
                                     ),
                                   ),
+                                ),
+                                SizedBox(width: 12 * _scale),
+                                _TranscriptionButton(
+                                  transcription: null, // speaker icon only
+                                  scale: _scale,
+                                  onPressed: () =>
+                                      widget.onSpeak(word.withArticle),
+                                ),
+                              ],
+                            ),
+                            if (widget.showTranscription) ...[
+                              SizedBox(height: lookup ? 6 : 12),
+                              // Also speaks the word on tap.
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: _TranscriptionButton(
+                                  transcription: word.transcription,
+                                  showIcon: false,
+                                  scale: _scale,
+                                  onPressed: () =>
+                                      widget.onSpeak(word.withArticle),
                                 ),
                               ),
                             ],
-                            SizedBox(height: lookup ? 6 : 16),
-                            Center(
-                              child: _TranscriptionButton(
-                                transcription: widget.showTranscription
-                                    ? word.transcription
-                                    : null,
-                                scale: _scale,
-                                onPressed: () =>
-                                    widget.onSpeak(word.withArticle),
-                              ),
-                            ),
                             SizedBox(height: lookup ? 6 : 20),
                             if (lookup) ...[
                               // Nothing to guess here: just the translation.
@@ -210,6 +221,21 @@ class _WordCardState extends State<WordCard> {
                                   ),
                                 ),
                               ],
+                            ] else if (!widget.answerModes) ...[
+                              // The eye turns into the translation; there is
+                              // no way back, nothing to hide it for.
+                              AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 200),
+                                child: _mode == AnswerMode.show
+                                    ? _buildTranslation(word)
+                                    : Center(
+                                        child: RevealButton(
+                                          onPressed: () => setState(
+                                            () => _mode = AnswerMode.show,
+                                          ),
+                                        ),
+                                      ),
+                              ),
                             ] else ...[
                               AnswerModeBar(
                                 selected: _mode,
@@ -343,11 +369,13 @@ class _TranscriptionButton extends StatelessWidget {
   const _TranscriptionButton({
     required this.transcription,
     required this.onPressed,
+    this.showIcon = true,
     this.scale = 1,
   });
 
   /// null = show only the speaker icon.
   final String? transcription;
+  final bool showIcon; // false = transcription text only
   final VoidCallback onPressed;
   final double scale; // shrinks text, icon and padding together
 
@@ -364,10 +392,10 @@ class _TranscriptionButton extends StatelessWidget {
         side: BorderSide(color: AppColors.darken(colors.outlineVariant, 0.25)),
         foregroundColor: colors.onSurface,
         // All sizes are 75% of the previous ones.
-        padding: EdgeInsets.symmetric(
-          horizontal: 15 * scale,
-          vertical: 6 * scale,
-        ),
+        // Icon only: equal padding, so the stadium becomes a circle.
+        padding: transcription == null
+            ? EdgeInsets.all(10 * scale)
+            : EdgeInsets.symmetric(horizontal: 15 * scale, vertical: 6 * scale),
         minimumSize: Size(0, 36 * scale),
         // Otherwise Material pads the button to 48px tall, eating the
         // compact spacing around it.
@@ -376,7 +404,7 @@ class _TranscriptionButton extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (transcription != null) ...[
+          if (transcription != null)
             Text(
               transcription!,
               style: TextStyle(
@@ -384,9 +412,8 @@ class _TranscriptionButton extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            SizedBox(width: 12 * scale),
-          ],
-          Icon(AppIcons.speakerHigh, size: 19.5 * scale),
+          if (transcription != null && showIcon) SizedBox(width: 12 * scale),
+          if (showIcon) Icon(AppIcons.speakerHigh, size: 19.5 * scale),
         ],
       ),
     );

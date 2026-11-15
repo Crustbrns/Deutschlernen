@@ -45,7 +45,9 @@ class MainMenuScreen extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
             child: Text(
               strings.tabMain,
-              style: Theme.of(context).textTheme.headlineSmall,
+              // Condensed: at the default spacing the letters drift apart.
+              style: Theme.of(context).textTheme.headlineSmall
+                  ?.copyWith(letterSpacing: -0.5),
             ),
           ),
           GroupedCard(
@@ -73,6 +75,8 @@ class MainMenuScreen extends StatelessWidget {
                         strings.wordCount(dueCount),
                         style: TextStyle(
                           fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: -0.3,
                           color: AppColors.quietText(colors),
                         ),
                       )
@@ -120,7 +124,14 @@ class _MenuRow extends StatelessWidget {
         // Disabled ListTile grays only its text; fade the colored icon too.
         color: enabled ? iconColor : iconColor.withValues(alpha: 0.4),
       ),
-      title: Text(title, style: const TextStyle(fontSize: 17)),
+      title: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 17,
+          fontWeight: FontWeight.w600,
+          letterSpacing: -0.4,
+        ),
+      ),
       trailing: trailing,
       onTap: onTap,
     );

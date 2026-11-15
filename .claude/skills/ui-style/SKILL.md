@@ -85,11 +85,17 @@ Separate blocks are only for different kinds of content (e.g. a title, then a li
   icon `colors.onSurface`, label `colors.onSurfaceVariant`. Rectangular ones have radius 14.
 - **Round icon button** (close, undo, …): `RoundIconButton` (`lib/ui/core/widgets/round_icon_button.dart`) —
   `palette.subtleButton` fill, 36×36, icon 20; disabled = same fill, faded icon. Don't use `filledTonal`.
+- **Answer controls on a learning card**: new-words session — only `RevealButton` (64×64,
+  radius 16, no outline, fill `subtleButton` darkened 10%, eye icon, no label, centered); a tap
+  replaces it with the translation (no way back); review session — the three-button
+  `AnswerModeBar` (Show / Write / Choose). `WordCard.answerModes` switches them.
 - **Selected / active state**: fill `AppColors.accentBlue` α 0.14, border `AppColors.accentBlue`,
   icon and text `AppColors.accentBlue` (see `_ModeButton` in `answer_modes.dart`).
 - **Primary action** (one per screen at most): `FilledButton`, radius 14.
 - **Audio**: `PlayButton` (`lib/ui/core/widgets/play_button.dart`) in rows — blue, outlined.
-  The word itself is played from the transcription pill on the word card.
+  On the word card the German word and its plural are left-aligned with a round speaker button
+  (`_TranscriptionButton` without text) on the right of the word; the transcription pill below
+  (text only, left, also speaks) appears when transcription is on.
 - A button that sits over a transparent or dimmed background (overlay routes) always
   gets a fill, otherwise it blends with what is under it.
 - Card header: level chip, 10px, 12px square, 6px, status text (14.5 w600 muted, letter
@@ -149,6 +155,8 @@ under the bar.
 - Sizes: 20 in rows and small buttons, 24 default, 28 in large mode buttons.
 - Colors: `colors.onSurfaceVariant` when inactive, `AppColors.accentBlue` when active,
   `colors.onSurface` on filled neutral buttons.
+- Practice tab menu text is condensed: title `headlineSmall` letter spacing -0.5, row titles
+  17 w600 / -0.4, trailing count 15 w600 / -0.3 (default spacing looked too loose to the user).
 - Exception: the Learn tab menu (`main_menu_screen.dart`) has colored leading icons, size 26,
   one color per action (`AppColors.menuCategories` blue, `menuNewWords` pink, `menuRepeat`
   yellow); a disabled row fades its icon to α 0.4.
@@ -156,8 +164,12 @@ under the bar.
 ## Text
 
 - Secondary labels (level, hints, captions): `palette.mutedText`.
-- German word: `AppFonts.display` (Fraunces) with `AppFonts.word` variations; translation:
-  `AppFonts.translation` (Lora). Plain UI text uses the theme font.
+- All text uses the theme font — the word card too (no decorative fonts; Fraunces/Lora were
+  dropped: the user found the hooked letters too fancy). Word card: "der Hund (die Hunde)" as one
+  left-aligned text, 32 w600, letter spacing -0.6 — the plural continues the line in brackets,
+  same style and color (only the article is colored); long ones wrap. Translation 32 w600,
+  -0.6, left-aligned. Examples and the
+  definition (`example_tile.dart`): theme font 16, letter spacing -0.2.
 - Articles are colored by gender with `AppColors.forArticle` on the word card. The plural
   article is always `die` (`Word.pluralWithArticle`).
 - Translations are shown as stored (lowercase); don't capitalize them.
