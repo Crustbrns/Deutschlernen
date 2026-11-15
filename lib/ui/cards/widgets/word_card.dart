@@ -30,53 +30,25 @@ class WordCard extends StatefulWidget {
 class _WordCardState extends State<WordCard> {
   static const _fadeHeight = 24.0;
 
-  bool _translationVisible = false;
-  AnswerMode _mode = AnswerMode.show;
+  AnswerMode? _mode; // null = only the three buttons are visible
 
-  /// Mode 1: the translation is hidden behind the eye button.
-  Widget _buildShowPanel(Word word, AppStrings strings, ColorScheme colors) {
-    return SizedBox(
-      height: 80, // must fit the 76px eye button
-      child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 250),
-        child: _translationVisible
-            ? Center(
-                key: const ValueKey('shown'),
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    word.translation,
-                    style: const TextStyle(
-                      fontFamily: AppFonts.translation,
-                      fontSize: 42,
-                      fontWeight: FontWeight.w600, // = wght
-                      fontVariations: AppFonts.translationVariations,
-                    ),
-                  ),
-                ),
-              )
-            : Center(
-                key: const ValueKey('hidden'),
-                child: IconButton.filledTonal(
-                  onPressed: () => setState(() => _translationVisible = true),
-                  // Text is kept as tooltip and for screen readers.
-                  tooltip: strings.showTranslation,
-                  icon: const Icon(Icons.visibility, size: 28),
-                  // Neutral dark grey instead of the tonal accent, so the
-                  // button doesn't stand out.
-                  style: IconButton.styleFrom(
-                    backgroundColor: AppColors.subtleButton,
-                    foregroundColor: colors.onSurfaceVariant.withValues(
-                      alpha: 0.6,
-                    ),
-                    // Same icon, bigger box = more padding.
-                    fixedSize: const Size.square(76),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                  ),
-                ),
-              ),
+  /// Mode 1: the translation, revealed by the eye button above.
+  Widget _buildShownTranslation(Word word) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: Center(
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            word.translation,
+            style: const TextStyle(
+              fontFamily: AppFonts.translation,
+              fontSize: 42,
+              fontWeight: FontWeight.w600, // = wght
+              fontVariations: AppFonts.translationVariations,
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -84,7 +56,6 @@ class _WordCardState extends State<WordCard> {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    final strings = AppStrings.of(context);
     final word = widget.word;
 
     return Material(
@@ -179,21 +150,18 @@ class _WordCardState extends State<WordCard> {
                             const SizedBox(height: 20),
                             AnswerModeBar(
                               selected: _mode,
-                              onChanged: (mode) =>
+                              // The eye shows the translation right away.
+                              onPressed: (mode) =>
                                   setState(() => _mode = mode),
                             ),
-                            const SizedBox(height: 16),
                             // Panel of the selected mode, right above the examples.
                             AnimatedSize(
                               duration: const Duration(milliseconds: 200),
                               curve: Curves.easeOut,
                               alignment: Alignment.topCenter,
                               child: switch (_mode) {
-                                AnswerMode.show => _buildShowPanel(
-                                  word,
-                                  strings,
-                                  colors,
-                                ),
+                                null => const SizedBox(width: double.infinity),
+                                AnswerMode.show => _buildShownTranslation(word),
                                 AnswerMode.write => WriteAnswerPanel(
                                   word: word,
                                 ),

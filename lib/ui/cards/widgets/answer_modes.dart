@@ -9,45 +9,106 @@ import 'package:deutschlernen/ui/core/app_style.dart';
 enum AnswerMode { show, write, choice }
 
 /// The three mode buttons, shown right above the examples.
+/// The first one is the eye: it is both the mode and the action (it reveals
+/// the translation), so there is no separate "show" switch.
 class AnswerModeBar extends StatelessWidget {
   const AnswerModeBar({
     super.key,
     required this.selected,
-    required this.onChanged,
+    required this.onPressed,
   });
 
-  final AnswerMode selected;
-  final ValueChanged<AnswerMode> onChanged;
+  /// null = nothing is open yet.
+  final AnswerMode? selected;
+  final ValueChanged<AnswerMode> onPressed;
 
   @override
   Widget build(BuildContext context) {
     final strings = AppStrings.of(context);
 
-    return SegmentedButton<AnswerMode>(
-      showSelectedIcon: false,
-      selected: {selected},
-      onSelectionChanged: (modes) => onChanged(modes.first),
-      style: SegmentedButton.styleFrom(
-        visualDensity: VisualDensity.compact,
-        textStyle: const TextStyle(fontSize: 13.5),
-      ),
-      segments: [
-        ButtonSegment(
-          value: AnswerMode.show,
-          icon: const Icon(Icons.visibility_outlined, size: 18),
-          label: Text(strings.modeShow, maxLines: 1),
+    return Row(
+      children: [
+        Expanded(
+          child: _ModeButton(
+            icon: Icons.visibility_outlined,
+            label: strings.modeShow,
+            isSelected: selected == AnswerMode.show,
+            onPressed: () => onPressed(AnswerMode.show),
+          ),
         ),
-        ButtonSegment(
-          value: AnswerMode.write,
-          icon: const Icon(Icons.edit_outlined, size: 18),
-          label: Text(strings.modeWrite, maxLines: 1),
+        const SizedBox(width: 10),
+        Expanded(
+          child: _ModeButton(
+            icon: Icons.edit_outlined,
+            label: strings.modeWrite,
+            isSelected: selected == AnswerMode.write,
+            onPressed: () => onPressed(AnswerMode.write),
+          ),
         ),
-        ButtonSegment(
-          value: AnswerMode.choice,
-          icon: const Icon(Icons.checklist, size: 18),
-          label: Text(strings.modeChoice, maxLines: 1),
+        const SizedBox(width: 10),
+        Expanded(
+          child: _ModeButton(
+            icon: Icons.checklist,
+            label: strings.modeChoice,
+            isSelected: selected == AnswerMode.choice,
+            onPressed: () => onPressed(AnswerMode.choice),
+          ),
         ),
       ],
+    );
+  }
+}
+
+class _ModeButton extends StatelessWidget {
+  const _ModeButton({
+    required this.icon,
+    required this.label,
+    required this.isSelected,
+    required this.onPressed,
+  });
+
+  final IconData icon;
+  final String label;
+  final bool isSelected;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    final color = isSelected ? AppColors.accentBlue : colors.onSurfaceVariant;
+
+    return Material(
+      color: isSelected
+          ? AppColors.accentBlue.withValues(alpha: 0.14)
+          : AppColors.subtleButton,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14),
+        side: BorderSide(
+          color: isSelected
+              ? AppColors.accentBlue
+              : colors.outlineVariant.withValues(alpha: 0.4),
+        ),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: onPressed,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, size: 28, color: color),
+              const SizedBox(height: 6),
+              Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 13, color: color),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
