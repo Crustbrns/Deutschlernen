@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
+import 'package:deutschlernen/ui/core/app_style.dart';
 
 class DecisionBar extends StatelessWidget {
   const DecisionBar({
@@ -74,7 +75,7 @@ class _DecisionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
 
-    final arrow = Icon(icon, size: 32);
+    final arrow = Icon(icon, size: 24);
     // Expanded lets the text take the free space and wrap into two lines.
     final text = Expanded(
       child: Text(
@@ -84,7 +85,7 @@ class _DecisionButton extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
         style: const TextStyle(
           fontSize: 17,
-          fontWeight: FontWeight.w700,
+          fontWeight: FontWeight.w400, // regular
           height: 1.2,
         ),
       ),
@@ -95,7 +96,7 @@ class _DecisionButton extends StatelessWidget {
       child: TextButton(
         onPressed: onPressed,
         style: TextButton.styleFrom(
-          foregroundColor: colors.onSurface,
+          foregroundColor: AppColors.decisionText, // text and arrows
           backgroundColor: colors.onSurface.withValues(
             alpha: _maxHighlightAlpha * highlight,
           ),
@@ -121,14 +122,18 @@ class _DoubleDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = Theme.of(context).colorScheme.onSurfaceVariant;
-    final line = Container(width: 2, height: 36, color: color);
+    const color = AppColors.decisionDivider;
+    final line = Container(
+      width: 1.4,
+      height: 27.5,
+      color: color,
+    ); // 36 -15% -10%
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        children: [line, const SizedBox(width: 5), line],
+        children: [line, const SizedBox(width: 3), line],
       ),
     );
   }

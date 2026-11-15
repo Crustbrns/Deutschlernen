@@ -15,7 +15,8 @@
     "examples": [
       { "german": "Der **Hund** spielt im Garten.", "translation": "The **dog** is playing in the garden." },
       { "german": "Ich gehe mit dem **Hund** spazieren.", "translation": "I am walking the **dog**." },
-      { "german": "Mein **Hund** ist sehr klein.", "translation": "My **dog** is very small." }
+      { "german": "Mein **Hund** ist sehr klein.", "translation": "My **dog** is very small." },
+      { "german": "Darf ich Ihren **Hund** streicheln?", "translation": "May I pet your **dog**?" }
     ]
   },
   "haus": {
@@ -34,7 +35,8 @@
     "examples": [
       { "german": "Die **Katze** schläft auf dem Sofa.", "translation": "The **cat** is sleeping on the sofa." },
       { "german": "Ich habe eine schwarze **Katze**.", "translation": "I have a black **cat**." },
-      { "german": "Die **Katze** trinkt Milch.", "translation": "The **cat** is drinking milk." }
+      { "german": "Die **Katze** trinkt Milch.", "translation": "The **cat** is drinking milk." },
+      { "german": "Unsere **Katze** heißt Mia.", "translation": "Our **cat** is called Mia." }
     ]
   },
   "wasser": {
@@ -43,7 +45,8 @@
     "examples": [
       { "german": "Ich trinke ein Glas **Wasser**.", "translation": "I drink a glass of **water**." },
       { "german": "Das **Wasser** ist kalt.", "translation": "The **water** is cold." },
-      { "german": "Kann ich bitte **Wasser** haben?", "translation": "Can I have some **water**, please?" }
+      { "german": "Kann ich bitte **Wasser** haben?", "translation": "Can I have some **water**, please?" },
+      { "german": "Ein stilles **Wasser**, bitte.", "translation": "A still **water**, please." }
     ]
   }
 }

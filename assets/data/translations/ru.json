@@ -4,7 +4,9 @@
     "definition": "Горячий напиток, который готовят из высушенных листьев.",
     "examples": [
       { "german": "Ich trinke gerne **Tee**.", "translation": "Я люблю пить **чай**." },
-      { "german": "Der **Tee** ist heiß.", "translation": "**Чай** горячий." }
+      { "german": "Der **Tee** ist heiß.", "translation": "**Чай** горячий." },
+      { "german": "Möchtest du einen **Tee**?", "translation": "Хочешь **чаю**?" },
+      { "german": "Ich bereite einen **Tee** zu.", "translation": "Я завариваю **чай**." }
     ]
   },
   "hund": {
@@ -12,7 +14,9 @@
     "definition": "Животное, которое лает и часто живёт дома как питомец.",
     "examples": [
       { "german": "Der **Hund** spielt im Garten.", "translation": "**Собака** играет в саду." },
-      { "german": "Ich gehe mit dem **Hund** spazieren.", "translation": "Я гуляю с **собакой**." }
+      { "german": "Ich gehe mit dem **Hund** spazieren.", "translation": "Я гуляю с **собакой**." },
+      { "german": "Mein **Hund** ist sehr klein.", "translation": "Моя **собака** очень маленькая." },
+      { "german": "Darf ich Ihren **Hund** streicheln?", "translation": "Можно погладить вашу **собаку**?" }
     ]
   },
   "haus": {
@@ -20,7 +24,9 @@
     "definition": "Здание, в котором живут люди.",
     "examples": [
       { "german": "Das **Haus** ist groß.", "translation": "**Дом** большой." },
-      { "german": "Ich gehe nach **Hause**.", "translation": "Я иду **домой**." }
+      { "german": "Wir kaufen ein **Haus**.", "translation": "Мы покупаем **дом**." },
+      { "german": "Ich gehe nach **Hause**.", "translation": "Я иду **домой**." },
+      { "german": "Mein **Haus** hat einen Garten.", "translation": "У моего **дома** есть сад." }
     ]
   },
   "katze": {
@@ -28,7 +34,9 @@
     "definition": "Маленькое домашнее животное, которое мяукает и любит ловить мышей.",
     "examples": [
       { "german": "Die **Katze** schläft auf dem Sofa.", "translation": "**Кошка** спит на диване." },
-      { "german": "Ich habe eine schwarze **Katze**.", "translation": "У меня чёрная **кошка**." }
+      { "german": "Ich habe eine schwarze **Katze**.", "translation": "У меня чёрная **кошка**." },
+      { "german": "Die **Katze** trinkt Milch.", "translation": "**Кошка** пьёт молоко." },
+      { "german": "Unsere **Katze** heißt Mia.", "translation": "Нашу **кошку** зовут Мия." }
     ]
   },
   "wasser": {
@@ -36,7 +44,9 @@
     "definition": "Прозрачная жидкость, которую можно пить.",
     "examples": [
       { "german": "Ich trinke ein Glas **Wasser**.", "translation": "Я пью стакан **воды**." },
-      { "german": "Das **Wasser** ist kalt.", "translation": "**Вода** холодная." }
+      { "german": "Das **Wasser** ist kalt.", "translation": "**Вода** холодная." },
+      { "german": "Kann ich bitte **Wasser** haben?", "translation": "Можно мне **воды**, пожалуйста?" },
+      { "german": "Ein stilles **Wasser**, bitte.", "translation": "Негазированную **воду**, пожалуйста." }
     ]
   }
 }

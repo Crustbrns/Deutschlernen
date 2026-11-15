@@ -4,7 +4,9 @@
     "definition": "Una bebida caliente que se prepara con hojas secas.",
     "examples": [
       { "german": "Ich trinke gerne **Tee**.", "translation": "Me gusta beber **té**." },
-      { "german": "Der **Tee** ist heiß.", "translation": "El **té** está caliente." }
+      { "german": "Der **Tee** ist heiß.", "translation": "El **té** está caliente." },
+      { "german": "Möchtest du einen **Tee**?", "translation": "¿Quieres un **té**?" },
+      { "german": "Ich bereite einen **Tee** zu.", "translation": "Preparo un **té**." }
     ]
   },
   "hund": {
@@ -13,7 +15,8 @@
     "examples": [
       { "german": "Der **Hund** spielt im Garten.", "translation": "El **perro** juega en el jardín." },
       { "german": "Ich gehe mit dem **Hund** spazieren.", "translation": "Paseo con el **perro**." },
-      { "german": "Mein **Hund** ist sehr klein.", "translation": "Mi **perro** es muy pequeño." }
+      { "german": "Mein **Hund** ist sehr klein.", "translation": "Mi **perro** es muy pequeño." },
+      { "german": "Darf ich Ihren **Hund** streicheln?", "translation": "¿Puedo acariciar a su **perro**?" }
     ]
   },
   "haus": {
@@ -22,7 +25,8 @@
     "examples": [
       { "german": "Das **Haus** ist groß.", "translation": "La **casa** es grande." },
       { "german": "Wir kaufen ein **Haus**.", "translation": "Vamos a comprar una **casa**." },
-      { "german": "Ich gehe nach **Hause**.", "translation": "Voy a **casa**." }
+      { "german": "Ich gehe nach **Hause**.", "translation": "Voy a **casa**." },
+      { "german": "Mein **Haus** hat einen Garten.", "translation": "Mi **casa** tiene jardín." }
     ]
   },
   "katze": {
@@ -30,7 +34,9 @@
     "definition": "Una pequeña mascota que maúlla y le gusta cazar ratones.",
     "examples": [
       { "german": "Die **Katze** schläft auf dem Sofa.", "translation": "El **gato** duerme en el sofá." },
-      { "german": "Ich habe eine schwarze **Katze**.", "translation": "Tengo un **gato** negro." }
+      { "german": "Ich habe eine schwarze **Katze**.", "translation": "Tengo un **gato** negro." },
+      { "german": "Die **Katze** trinkt Milch.", "translation": "El **gato** bebe leche." },
+      { "german": "Unsere **Katze** heißt Mia.", "translation": "Nuestra **gata** se llama Mia." }
     ]
   },
   "wasser": {
@@ -39,7 +45,8 @@
     "examples": [
       { "german": "Ich trinke ein Glas **Wasser**.", "translation": "Bebo un vaso de **agua**." },
       { "german": "Das **Wasser** ist kalt.", "translation": "El **agua** está fría." },
-      { "german": "Kann ich bitte **Wasser** haben?", "translation": "¿Me das **agua**, por favor?" }
+      { "german": "Kann ich bitte **Wasser** haben?", "translation": "¿Me das **agua**, por favor?" },
+      { "german": "Ein stilles **Wasser**, bitte.", "translation": "Un **agua** sin gas, por favor." }
     ]
   }
 }

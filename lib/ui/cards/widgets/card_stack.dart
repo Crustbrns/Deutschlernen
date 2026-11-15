@@ -17,6 +17,7 @@ class CardStack extends StatelessWidget {
     required this.onSwiped,
     required this.onSpeak,
     required this.onMenu,
+    required this.bottomBar,
   });
 
   final List<Word> words;
@@ -27,6 +28,7 @@ class CardStack extends StatelessWidget {
   final ValueChanged<SwipeDirection> onSwiped;
   final ValueChanged<String> onSpeak;
   final VoidCallback onMenu;
+  final Widget bottomBar; // goes into the top card
 
   static const _visibleCards = 3;
   static const _animation = Duration(milliseconds: 300);
@@ -43,7 +45,7 @@ class CardStack extends StatelessWidget {
       children.add(
         AnimatedSlide(
           key: ValueKey(i),
-          offset: Offset(0, depth * 0.06),
+          offset: Offset.zero, // no room below the card to peek out
           duration: _animation,
           curve: Curves.easeOut,
           child: AnimatedScale(
@@ -63,6 +65,7 @@ class CardStack extends StatelessWidget {
                       word: words[i],
                       onSpeak: onSpeak,
                       onMenu: onMenu,
+                      bottomBar: bottomBar,
                     ),
                   )
                 : const _CardBackdrop(),

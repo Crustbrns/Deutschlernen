@@ -7,7 +7,6 @@ import 'package:deutschlernen/ui/cards/widgets/decision_bar.dart';
 import 'package:deutschlernen/ui/cards/widgets/language_sheet.dart';
 import 'package:deutschlernen/ui/cards/widgets/swipeable_card.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
-import 'package:deutschlernen/ui/core/app_style.dart';
 
 class CardsScreen extends StatefulWidget {
   const CardsScreen({super.key, required this.viewModel});
@@ -77,7 +76,7 @@ class _CardsScreenState extends State<CardsScreen> {
                     child: _vm.isFinished
                         ? _FinishedView(onRestart: _vm.restart)
                         : Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 40),
+                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                             child: Center(
                               child: ConstrainedBox(
                                 constraints: const BoxConstraints(
@@ -93,25 +92,20 @@ class _CardsScreenState extends State<CardsScreen> {
                                       _vm.onCardSwiped(_decisionFor(direction)),
                                   onSpeak: _vm.speak,
                                   onMenu: _openLanguageSheet,
+                                  bottomBar: DecisionBar(
+                                    onKnown: () => _swipeController.swipe(
+                                      SwipeDirection.left,
+                                    ),
+                                    onLearn: () => _swipeController.swipe(
+                                      SwipeDirection.right,
+                                    ),
+                                    dragProgress: _swipeController.dragProgress,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                   ),
-                  if (!_vm.isFinished)
-                    Material(
-                      color: AppColors.background,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                        child: DecisionBar(
-                          onKnown: () =>
-                              _swipeController.swipe(SwipeDirection.left),
-                          onLearn: () =>
-                              _swipeController.swipe(SwipeDirection.right),
-                          dragProgress: _swipeController.dragProgress,
-                        ),
-                      ),
-                    ),
                 ],
               ),
             );
