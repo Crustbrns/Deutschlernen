@@ -61,5 +61,6 @@
   "reviewInMinutesOther": "{n} 分钟后复习",
   "reviewInHoursOther": "{n} 小时后复习",
   "reviewInDaysOther": "{n} 天后复习",
-  "reviewInMonthsOther": "{n} 个月后复习"
+  "reviewInMonthsOther": "{n} 个月后复习",
+  "resetProgress": "重置该单词进度"
 }

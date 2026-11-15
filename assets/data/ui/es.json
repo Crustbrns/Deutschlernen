@@ -66,5 +66,6 @@
   "reviewInDaysOne": "repaso en {n} día",
   "reviewInDaysOther": "repaso en {n} días",
   "reviewInMonthsOne": "repaso en {n} mes",
-  "reviewInMonthsOther": "repaso en {n} meses"
+  "reviewInMonthsOther": "repaso en {n} meses",
+  "resetProgress": "Reiniciar el progreso de la palabra"
 }

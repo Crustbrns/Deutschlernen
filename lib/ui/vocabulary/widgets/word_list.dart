@@ -75,9 +75,9 @@ class WordRow extends StatelessWidget {
 
   static const _fontSize = 16.0;
   static const _wordFontSize = 17.0; // German word: a touch bigger
-  static const _lineHeight = 1.15; // tighter than the default
+  static const _lineHeight = 1.27; // a bit tighter than the default
   static const _letterSpacing = -0.2; // slightly condensed
-  static const _gap = 2.0; // between the three lines
+  static const _gap = 2.2; // between the three lines
 
   final Word word;
   final WordState state;
@@ -105,7 +105,8 @@ class WordRow extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 4, 8),
+            // Tight sides: the strip sits close to the block's edge.
+            padding: const EdgeInsets.fromLTRB(8, 8, 2, 8),
             // IntrinsicHeight: the strip stretches to the text's height.
             child: IntrinsicHeight(
               child: Row(
@@ -184,8 +185,12 @@ class _StatusStrip extends StatelessWidget {
       WordStatus.learning => AppColors.statusLearning,
       WordStatus.review => AppColors.statusReview,
       WordStatus.learned => AppColors.statusLearned,
-      // Light gray: quieter than a new word, but not the dark divider gray.
-      WordStatus.known => colors.onSurfaceVariant,
+      // Gray between the light secondary text and the dark divider.
+      WordStatus.known => Color.lerp(
+        colors.onSurfaceVariant,
+        AppColors.divider(colors),
+        0.35,
+      )!,
     };
 
     return Container(

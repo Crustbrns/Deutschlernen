@@ -13,6 +13,7 @@ import 'package:material_ui/material_ui.dart';
 abstract final class AppIcons {
   static const _font = 'Phosphor';
 
+  static const arrowCounterClockwise = IconData(0xe038, fontFamily: _font);
   static const arrowLeft = IconData(0xe058, fontFamily: _font);
   static const arrowRight = IconData(0xe06c, fontFamily: _font);
   static const bookOpen = IconData(0xe0e6, fontFamily: _font);

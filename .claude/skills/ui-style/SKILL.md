@@ -49,16 +49,18 @@ render them as separate cards with gaps between them.
   `colors.onSurfaceVariant` for the others. Not by an outline.
 
 - Word rows (`WordRow` in `word_list.dart`, category lists and search results) start with a
-  status strip: 4px wide, radius 2, full text height, 12px gap to the text. Color by
+  status strip: 4px wide, radius 2, full text height, 12px gap to the text. Row padding is
+  8 left / 2 right (tighter than other rows). Color by
   `WordStatus`: new — `colors.onSurface` (white in dark), learning — `AppColors.statusLearning`
   pink, due for review — `statusReview` yellow, learned — `statusLearned` green,
-  "already know" — `colors.onSurfaceVariant` light gray (not the dark divider gray).
+  "already know" — gray: `onSurfaceVariant` moved 35% toward `AppColors.divider` (user wanted
+  it a bit darker than onSurfaceVariant, but not as dark as the divider).
   The caption above the German word (`palette.mutedText`, semibold) names the status and the
   next review: "Новое слово", "Уже знаю", "Учится · повтор через 8 мин", "Повтор через 4 дн." /
   "Повторить сейчас", "Выучено · повтор через 2 мес." (`AppStrings.wordState`); in search
   results it is prefixed with the level ("A1 · …"). Green = interval ≥ 21 days
   (`WordStatus.matureInterval`), a due word is always yellow.
-  Caption and translation 16px, German word 17px; line height 1.15, letter spacing -0.2, 2px
+  Caption and translation 16px, German word 17px; line height 1.27, letter spacing -0.2, 2.2px
   apart. Caption gray w600, German word `onSurface` bold, translation `onSurface` w600.
 - Navigation rows (a row that opens a list, e.g. a level): no chevron. A count on the right is
   written with its noun ("5 слов", via `AppStrings.wordCount`), font size 15, in the quiet gray
@@ -79,6 +81,10 @@ Separate blocks are only for different kinds of content (e.g. a title, then a li
   The word itself is played from the transcription pill on the word card.
 - A button that sits over a transparent or dimmed background (overlay routes) always
   gets a fill, otherwise it blends with what is under it.
+- Word card opened from a list (`WordDetailScreen`): a word with progress gets a full-width
+  "Сбросить прогресс по слову" button under the card, styled like the card itself (fill
+  `palette.card`, outline `outlineVariant` α 0.4, radius 32, text `onSurface` 16 w600, 12px above); the card shrinks just enough to fit it. Reset is instant, no dialog
+  (user's choice); the button then collapses with `AnimatedSize`.
 - In compact layouts set `tapTargetSize: MaterialTapTargetSize.shrinkWrap`, otherwise
   Material adds invisible padding up to 48px and spacing looks wrong.
 
