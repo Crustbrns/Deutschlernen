@@ -40,13 +40,4 @@ abstract final class AppIcons {
   static const translate = IconData(0xe4a2, fontFamily: _font);
   static const x = IconData(0xe4f6, fontFamily: _font);
   static const xCircle = IconData(0xe4f8, fontFamily: _font);
-
-  // Phosphor Fill (solid), only for the bottom bar tabs. Code points are the
-  // same as in Regular (phosphor_icons_fill.dart in the same repo).
-  static const _fillFont = 'PhosphorFill';
-
-  static const bookOpenFill = IconData(0xe0e6, fontFamily: _fillFont);
-  static const cardsFill = IconData(0xe0f8, fontFamily: _fillFont);
-  static const chartLineUpFill = IconData(0xe156, fontFamily: _fillFont);
-  static const slidersHorizontalFill = IconData(0xe434, fontFamily: _fillFont);
 }
