@@ -37,20 +37,16 @@ class _HomeShellState extends State<HomeShell> {
 
   void _openWord(Word word) {
     Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        // A pushed route is not under the shell's AppStringsScope,
-        // so the scope is provided again.
-        builder: (_) => AppStringsScope(
-          strings: _vm.strings,
-          child: WordDetailScreen(
-            word: word,
-            // Wrong options for the "choose" answer mode.
-            otherTranslations: [
-              for (final w in _vm.words)
-                if (w.id != word.id) w.translation,
-            ],
-            onSpeak: _vm.speak,
-          ),
+      WordDetailScreen.route(
+        strings: _vm.strings,
+        screen: WordDetailScreen(
+          word: word,
+          // Wrong options for the "choose" answer mode.
+          otherTranslations: [
+            for (final w in _vm.words)
+              if (w.id != word.id) w.translation,
+          ],
+          onSpeak: _vm.speak,
         ),
       ),
     );

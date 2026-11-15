@@ -2,6 +2,8 @@ import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
+import 'package:deutschlernen/ui/core/widgets/play_button.dart';
+import 'package:deutschlernen/ui/vocabulary/widgets/word_hero.dart';
 
 /// Vocabulary tab: title, word search under it, below them the dictionaries.
 /// While the search has text, the matching words replace the dictionaries.
@@ -95,10 +97,8 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       child: Material(
         color: AppColors.card,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-          side: BorderSide(color: colors.outlineVariant.withValues(alpha: 0.4)),
-        ),
+        // No outline: the card stands out by its fill only.
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         // Clips the ripple of the first/last row to the rounded corners.
         clipBehavior: Clip.antiAlias,
         child: Column(
@@ -220,51 +220,60 @@ class _ResultRow extends StatelessWidget {
     final forms = [word.withArticle, ?word.pluralWithArticle].join(' · ');
 
     // No own background: the row sits inside the shared results card.
-    return InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 8, 4, 8),
-        child: Row(
-          children: [
-            // Expanded: long words wrap instead of pushing the button out.
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    word.level,
-                    style: const TextStyle(
-                      color: AppColors.mutedText,
-                      fontSize: 12,
-                      height: 1.2, // tighter than the default line height
-                    ),
+    // Hero: the opened card grows out of this row and shrinks back into it.
+    return WordHero(
+      wordId: word.id,
+      // Transparent Material: InkWell needs one, and the row is moved out
+      // of the results card while the hero flies.
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 4, 8),
+            child: Row(
+              children: [
+                // Expanded: long words wrap instead of pushing the button out.
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        word.level,
+                        style: const TextStyle(
+                          color: AppColors.mutedText,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          height: 1.2, // tighter than the default line height
+                        ),
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        forms,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          height: 1.2,
+                        ),
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        word.translation,
+                        style: TextStyle(
+                          color: colors.onSurfaceVariant,
+                          fontWeight: FontWeight.w600,
+                          height: 1.2,
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    forms,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      height: 1.2,
-                    ),
-                  ),
-                  Text(
-                    word.translation,
-                    style: TextStyle(
-                      color: colors.onSurfaceVariant,
-                      height: 1.2,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+                // Own tap target: plays the word without opening the card.
+                PlayButton(onPressed: onSpeak),
+              ],
             ),
-            // Own tap target: plays the word without opening the card.
-            IconButton(
-              icon: const Icon(Icons.volume_up_outlined),
-              color: colors.onSurface,
-              onPressed: onSpeak,
-            ),
-          ],
+          ),
         ),
       ),
     );
