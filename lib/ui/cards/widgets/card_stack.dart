@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/domain/models/word.dart';
+import 'package:deutschlernen/domain/models/word_status.dart';
 import 'package:deutschlernen/ui/cards/widgets/swipeable_card.dart';
 import 'package:deutschlernen/ui/cards/widgets/word_card.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
@@ -17,8 +18,9 @@ class CardStack extends StatelessWidget {
     required this.onSwiped,
     required this.onSpeak,
     required this.showTranscription,
-    required this.bottomBar,
+    required this.bottomBarFor,
     required this.answerModes,
+    required this.stateOf,
   });
 
   final List<Word> words;
@@ -29,11 +31,23 @@ class CardStack extends StatelessWidget {
   final ValueChanged<SwipeDirection> onSwiped;
   final ValueChanged<String> onSpeak;
   final bool showTranscription;
-  final Widget bottomBar; // goes into the top card
+
+  /// Buttons at the bottom of a word's card (they differ per word: new vs
+  /// pink).
+  /// [isTop]: only the top card's buttons react to the drag.
+  final Widget Function(Word word, {required bool isTop}) bottomBarFor;
   final bool answerModes; // see WordCard.answerModes
 
+  /// Learning status of a word, for the card header.
+  final WordState Function(String wordId) stateOf;
+
   static const _visibleCards = 3;
-  static const _animation = Duration(milliseconds: 300);
+
+  /// Dimming of the card under the top one while the top card is at rest.
+  static const _maxDim = 0.75;
+  // How fast the cards deeper in the stack move up one place after a swipe.
+  // (The next card itself grows along with the swipe, see controller.reveal.)
+  static const _animation = Duration(milliseconds: 150);
 
   @override
   Widget build(BuildContext context) {
@@ -51,31 +65,45 @@ class CardStack extends StatelessWidget {
           duration: _animation,
           curve: Curves.easeOut,
           child: AnimatedScale(
-            scale: 1 - depth * 0.05,
+            // The next card (depth 1) scales itself with the swipe below.
+            scale: depth == 1 ? 1 : 1 - depth * 0.05,
             duration: _animation,
             curve: Curves.easeOut,
-            // Only the top card is a real card. The ones behind are plain
-            // shapes, so their content is not built or painted in advance.
-            child: depth == 0
-                ? SwipeableCard(
-                    enabled: true,
-                    controller: controller,
-                    enterFrom: enterFrom,
-                    onSwipeStarted: onSwipeStarted,
-                    onSwiped: onSwiped,
-                    child: WordCard(
-                      word: words[i],
-                      onSpeak: onSpeak,
-                      showTranscription: showTranscription,
-                      otherTranslations: [
-                        for (final other in words)
-                          if (other.id != words[i].id) other.translation,
-                      ],
-                      bottomBar: bottomBar,
-                      answerModes: answerModes,
+            child: switch (depth) {
+              0 => SwipeableCard(
+                enabled: true,
+                controller: controller,
+                enterFrom: enterFrom,
+                onSwipeStarted: onSwipeStarted,
+                onSwiped: onSwiped,
+                child: _card(words[i], isTop: true),
+              ),
+              // A real card under the top one: its content is already
+              // there, and as the top card moves away it grows 95% → 100%
+              // and its dimming fades out.
+              1 => IgnorePointer(
+                child: ValueListenableBuilder<double>(
+                  valueListenable: controller.reveal,
+                  builder: (context, reveal, child) => Transform.scale(
+                    scale: 0.95 + 0.05 * reveal,
+                    child: DecoratedBox(
+                      // Dimmed toward the screen background (dark theme:
+                      // darker), so it reads as "behind".
+                      position: DecorationPosition.foreground,
+                      decoration: BoxDecoration(
+                        color: AppPalette.of(context).background
+                            .withValues(alpha: _maxDim * (1 - reveal)),
+                        borderRadius: BorderRadius.circular(32), // = WordCard
+                      ),
+                      child: child,
                     ),
-                  )
-                : const _CardBackdrop(),
+                  ),
+                  child: _card(words[i], isTop: false),
+                ),
+              ),
+              // Deeper ones are plain shapes: nothing built in advance.
+              _ => const _CardBackdrop(),
+            },
           ),
         ),
       );
@@ -87,6 +115,19 @@ class CardStack extends StatelessWidget {
       children: children,
     );
   }
+
+  Widget _card(Word word, {required bool isTop}) => WordCard(
+    word: word,
+    onSpeak: onSpeak,
+    showTranscription: showTranscription,
+    otherTranslations: [
+      for (final other in words)
+        if (other.id != word.id) other.translation,
+    ],
+    bottomBar: bottomBarFor(word, isTop: isTop),
+    answerModes: answerModes,
+    state: stateOf(word.id),
+  );
 }
 
 /// Empty card shape shown behind the top card.
@@ -95,14 +136,10 @@ class _CardBackdrop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
-
     return Material(
       color: AppPalette.of(context).card,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(32), // same as WordCard
-        side: BorderSide(color: colors.outlineVariant.withValues(alpha: 0.4)),
-      ),
+      // Same shape as WordCard: rounded, no outline.
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
       child: const SizedBox.expand(),
     );
   }

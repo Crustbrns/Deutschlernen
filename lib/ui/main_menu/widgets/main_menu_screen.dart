@@ -12,6 +12,8 @@ class MainMenuScreen extends StatelessWidget {
     required this.selectedLevelCount,
     required this.newWordsLeft,
     required this.dueCount,
+    required this.learnedToday,
+    required this.dailyGoal,
     required this.onChooseLevels,
     required this.onLearnNewWords,
     required this.onReview,
@@ -20,6 +22,8 @@ class MainMenuScreen extends StatelessWidget {
   final int selectedLevelCount;
   final int newWordsLeft; // 0 = all words of the chosen levels are seen
   final int dueCount; // words waiting for review right now
+  final int learnedToday;
+  final int dailyGoal;
   final VoidCallback onChooseLevels;
   final VoidCallback onLearnNewWords;
   final VoidCallback onReview;
@@ -62,6 +66,7 @@ class MainMenuScreen extends StatelessWidget {
                 icon: AppIcons.plusCircle,
                 iconColor: AppColors.menuNewWords,
                 title: strings.learnNewWords,
+                subtitle: strings.learnedToday(learnedToday, dailyGoal),
                 // Disabled when the chosen levels have no unseen words.
                 onTap: newWordsLeft > 0 ? onLearnNewWords : null,
               ),
@@ -98,6 +103,7 @@ class _MenuRow extends StatelessWidget {
     required this.icon,
     required this.iconColor,
     required this.title,
+    this.subtitle,
     this.trailing,
     this.onTap,
   });
@@ -105,6 +111,7 @@ class _MenuRow extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
   final String title;
+  final String? subtitle; // gray line under the title
   final Widget? trailing;
   final VoidCallback? onTap;
 
@@ -132,6 +139,17 @@ class _MenuRow extends StatelessWidget {
           letterSpacing: -0.4,
         ),
       ),
+      subtitle: subtitle == null
+          ? null
+          : Text(
+              subtitle!,
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+                letterSpacing: -0.3,
+                color: AppColors.quietText(Theme.of(context).colorScheme),
+              ),
+            ),
       trailing: trailing,
       onTap: onTap,
     );

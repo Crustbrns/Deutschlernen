@@ -17,6 +17,7 @@ class SettingsScreen extends StatelessWidget {
     required this.wordLanguage,
     required this.onUiLanguageSelected,
     required this.onWordLanguageSelected,
+    required this.onResetAllProgress,
   });
 
   final SettingsViewModel settings;
@@ -25,6 +26,9 @@ class SettingsScreen extends StatelessWidget {
   final AppLanguage wordLanguage;
   final ValueChanged<AppLanguage> onUiLanguageSelected;
   final ValueChanged<AppLanguage> onWordLanguageSelected;
+
+  /// Makes every word new again (after the user confirms).
+  final VoidCallback onResetAllProgress;
 
   @override
   Widget build(BuildContext context) {
@@ -117,10 +121,55 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ],
             ),
+            _Category(
+              title: strings.settingsProgress,
+              children: [
+                ListTile(
+                  // 16 = divider indent of the GroupedCard.
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                  // Red: it wipes data and can't be undone.
+                  leading: const Icon(
+                    AppIcons.arrowCounterClockwise,
+                    color: AppColors.decisionRed,
+                  ),
+                  title: Text(
+                    strings.resetAllProgress,
+                    style: const TextStyle(color: AppColors.decisionRed),
+                  ),
+                  subtitle: Text(strings.resetAllProgressHint),
+                  onTap: () => _confirmReset(context, strings),
+                ),
+              ],
+            ),
           ],
         ),
       ),
     );
+  }
+
+  /// Asks before wiping: one stray tap would lose all FSRS intervals.
+  Future<void> _confirmReset(BuildContext context, AppStrings strings) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(strings.resetAllConfirmTitle),
+        content: Text(strings.resetAllConfirmBody),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(strings.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            style: TextButton.styleFrom(
+              foregroundColor: AppColors.decisionRed,
+            ),
+            child: Text(strings.resetConfirm),
+          ),
+        ],
+      ),
+    );
+    if (confirmed ?? false) onResetAllProgress();
   }
 }
 

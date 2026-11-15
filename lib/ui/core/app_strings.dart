@@ -42,6 +42,13 @@ class AppStrings {
   String get speedFast => _get('speedFast');
   String get goodWork => _get('goodWork');
   String get finish => _get('finish');
+  String get settingsProgress => _get('settingsProgress');
+  String get resetAllProgress => _get('resetAllProgress');
+  String get resetAllProgressHint => _get('resetAllProgressHint');
+  String get resetAllConfirmTitle => _get('resetAllConfirmTitle');
+  String get resetAllConfirmBody => _get('resetAllConfirmBody');
+  String get resetConfirm => _get('resetConfirm');
+  String get cancel => _get('cancel');
   String get resetProgress => _get('resetProgress');
   String get forgot => _get('forgot');
   String get remembered => _get('remembered');
@@ -73,6 +80,12 @@ class AppStrings {
 
   /// "Искали 3 раза" / "Looked up 3 times": shown on a searched word's card.
   String lookupCount(int n) => _plural('lookupCount', n);
+
+  /// "Выучено сегодня: 3 из 10".
+  String learnedToday(int n, int goal) =>
+      _get('learnedToday')
+          .replaceAll('{n}', '$n')
+          .replaceAll('{goal}', '$goal');
 
   /// "Выбрано 3 категории": the learn menu's categories row.
   String levelsSelected(int n) => _plural('levelsSelected', n);

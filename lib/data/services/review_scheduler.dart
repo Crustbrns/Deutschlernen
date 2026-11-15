@@ -22,6 +22,12 @@ class ReviewScheduler {
       current,
       remembered ? fsrs.Rating.good : fsrs.Rating.again,
     );
-    return WordProgress.learning(card);
+    return WordProgress.learning(
+      card,
+      // Kept once set; set on the first "remember" of a pink word.
+      firstRecalledAt:
+          progress.firstRecalledAt ??
+          (remembered && progress.isUnrecalled ? DateTime.now() : null),
+    );
   }
 }

@@ -104,7 +104,7 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
                           bottomBar: const SizedBox.shrink(),
                           lookup: true,
                           lookupCount: widget.lookupCount,
-                          lookupState: _state,
+                          state: _state,
                           onClose: () => Navigator.of(context).pop(),
                         ),
                       ),
@@ -160,9 +160,6 @@ class _ResetButton extends StatelessWidget {
           textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(32),
-            side: BorderSide(
-              color: colors.outlineVariant.withValues(alpha: 0.4),
-            ),
           ),
         ),
       ),

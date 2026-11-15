@@ -90,6 +90,8 @@ class _HomeShellState extends State<HomeShell> {
                     selectedLevelCount: _vm.learnLevels.length,
                     newWordsLeft: _vm.newWordsLeft,
                     dueCount: _vm.dueCount,
+                    learnedToday: _vm.learnedToday,
+                    dailyGoal: CardsViewModel.dailyGoal,
                     onChooseLevels: () => showLevelSheet(
                       context: context,
                       strings: _vm.strings,
@@ -131,6 +133,7 @@ class _HomeShellState extends State<HomeShell> {
                     wordLanguage: _vm.wordLanguage,
                     onUiLanguageSelected: _vm.setUiLanguage,
                     onWordLanguageSelected: _vm.setWordLanguage,
+                    onResetAllProgress: _vm.resetAllProgress,
                   ),
                 ],
               ),
