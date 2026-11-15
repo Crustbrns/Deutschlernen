@@ -162,12 +162,16 @@ class _WordCardState extends State<WordCard> {
                               child: switch (_mode) {
                                 null => const SizedBox(width: double.infinity),
                                 AnswerMode.show => _buildShownTranslation(word),
-                                AnswerMode.write => WriteAnswerPanel(
-                                  word: word,
+                                AnswerMode.write => Padding(
+                                  padding: const EdgeInsets.only(top: 16),
+                                  child: WriteAnswerPanel(word: word),
                                 ),
-                                AnswerMode.choice => ChoiceAnswerPanel(
-                                  word: word,
-                                  otherTranslations: widget.otherTranslations,
+                                AnswerMode.choice => Padding(
+                                  padding: const EdgeInsets.only(top: 16),
+                                  child: ChoiceAnswerPanel(
+                                    word: word,
+                                    otherTranslations: widget.otherTranslations,
+                                  ),
                                 ),
                               },
                             ),
