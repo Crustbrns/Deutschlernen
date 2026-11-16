@@ -53,18 +53,13 @@ class SettingsViewModel extends ChangeNotifier {
     await _settingsRepository.saveAutoSpeak(value);
   }
 
-  /// Called while the slider moves: the voice changes at once and the screen
-  /// follows, but nothing is written to disk yet.
-  void previewSpeechRate(double value) {
+  /// Called when the slider is released (the drag itself stays in the
+  /// widget): applies and saves the speed and says a sample word so the user
+  /// hears what they picked.
+  Future<void> commitSpeechRate(double value) async {
     _settings = _settings.copyWith(speechRate: value);
     _speechService.setRate(value);
     notifyListeners();
-  }
-
-  /// Called when the slider is released: saves the speed and says a sample
-  /// word so the user hears what they picked.
-  Future<void> commitSpeechRate(double value) async {
-    previewSpeechRate(value);
     await _settingsRepository.saveSpeechRate(value);
     await _speechService.speak('Guten Tag');
   }

@@ -54,7 +54,7 @@ class MenuRow extends StatelessWidget {
       subtitle: subtitle == null
           ? null
           : Padding(
-              padding: EdgeInsets.only(top: compact ? 2 : 0),
+              padding: EdgeInsets.only(top: compact ? 4 : 0),
               child: Text(
                 subtitle!,
                 style: MenuRow.hintStyle(
@@ -70,7 +70,7 @@ class MenuRow extends StatelessWidget {
   }
 
   /// Line height of compact rows (the font's default is looser).
-  static const compactHeight = 1.2;
+  static const compactHeight = 1.12;
 
   static TextStyle titleStyle({Color? color, double? height}) => TextStyle(
     color: color,

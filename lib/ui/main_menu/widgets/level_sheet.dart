@@ -4,7 +4,7 @@ import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
-import 'package:deutschlernen/ui/core/widgets/level_icon.dart';
+import 'package:deutschlernen/ui/core/widgets/level_row.dart';
 
 /// Bottom sheet to pick the levels (A1–B2) to learn, several at once.
 /// Every tap is applied right away, so there is no "Done" button.
@@ -64,19 +64,11 @@ Future<void> showLevelSheet({
                       GroupedCard(
                         children: [
                           for (final level in Word.levels)
-                            ListTile(
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                              ),
-                              // Same icons as on the Categories tab.
-                              leading: LevelIcon(level),
-                              title: Text(level),
-                              subtitle: Text(
-                                strings.wordCount(wordCounts[level] ?? 0),
-                                style: TextStyle(
-                                  color: AppColors.quietText(colors),
-                                ),
-                              ),
+                            // Same row as on the Categories tab; the
+                            // check like in the other pickers.
+                            LevelRow(
+                              level: level,
+                              wordCount: wordCounts[level] ?? 0,
                               trailing: current.contains(level)
                                   ? const Icon(
                                       AppIcons.checkCircle,
