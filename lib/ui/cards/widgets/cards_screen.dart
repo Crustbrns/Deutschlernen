@@ -5,6 +5,7 @@ import 'package:deutschlernen/ui/core/view_models/learning_view_model.dart';
 import 'package:deutschlernen/ui/cards/widgets/card_stack.dart';
 import 'package:deutschlernen/ui/cards/widgets/cards_top_bar.dart';
 import 'package:deutschlernen/ui/cards/widgets/decision_bar.dart';
+import 'package:deutschlernen/ui/cards/widgets/recall_bar.dart';
 import 'package:deutschlernen/ui/cards/widgets/swipeable_card.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';

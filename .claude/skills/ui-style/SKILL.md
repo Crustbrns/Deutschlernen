@@ -114,7 +114,7 @@ Separate blocks are only for different kinds of content (e.g. a title, then a li
   (`palette.background` α 0.75 on top) fades out, so it is full size and bright
   the moment the top one is gone; deeper cards are empty shapes. Each card gets its own bottom
   bar (`bottomBarFor`); only the top one reacts to the drag.
-- **Recall buttons** (`RecallBar` in `decision_bar.dart`) for pink words and reviews: two
+- **Recall buttons** (`RecallBar` in `recall_bar.dart`) for pink words and reviews: two
   separate buttons, 12px apart, 56 tall, radius 14, fill `palette.card` at rest; 1.5px outline
   and face icon 24 (`smileySad` / `smiley`, Regular) in `onSurface` moved 40% toward the card;
   label 17 w700 -0.4 on one line ("Забыл" / "Помню") in `onSurface` moved 25% toward the card. On drag the matching side is
