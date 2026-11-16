@@ -9,7 +9,7 @@ import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 
 /// Order of the tabs in the bottom bar and in the shell's page stack.
-enum HomeTab { main, vocabulary, statistics, settings }
+enum HomeTab { learn, categories, progress, settings }
 
 /// Floating bottom navigation: a frosted-glass pill inset from the screen
 /// edges; the content scrolls under it (Scaffold.extendBody) and shows
@@ -157,10 +157,10 @@ class _AppBottomBarState extends State<AppBottomBar>
 
     // Solid (Fill) icons, the user's choice.
     final tabs = [
-      (AppIcons.houseFill, strings.tabMain),
+      (AppIcons.houseFill, strings.tabLearn),
       // Categories: the word levels and the search.
-      (AppIcons.squaresFourFill, strings.tabVocabulary),
-      (AppIcons.fileTextFill, strings.tabStatistics),
+      (AppIcons.squaresFourFill, strings.tabCategories),
+      (AppIcons.fileTextFill, strings.tabProgress),
       (AppIcons.gearFill, strings.tabSettings),
     ];
 

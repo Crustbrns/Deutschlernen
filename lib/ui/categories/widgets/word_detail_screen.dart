@@ -5,9 +5,9 @@ import 'package:deutschlernen/ui/cards/widgets/word_card.dart';
 import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
-import 'package:deutschlernen/ui/vocabulary/widgets/word_hero.dart';
+import 'package:deutschlernen/ui/categories/widgets/word_hero.dart';
 
-/// One word's card opened from the vocabulary.
+/// One word's card opened from the Categories tab.
 /// Same card as in learning, in its compact lookup mode. A word with
 /// progress gets a "reset progress" button under the card.
 /// Shown over a solid black backdrop that hides the list behind it

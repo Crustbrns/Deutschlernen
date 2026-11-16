@@ -7,14 +7,14 @@ import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
 import 'package:deutschlernen/ui/core/widgets/level_row.dart';
 import 'package:deutschlernen/ui/core/widgets/round_icon_button.dart';
-import 'package:deutschlernen/ui/vocabulary/widgets/level_words_screen.dart';
-import 'package:deutschlernen/ui/vocabulary/widgets/word_list.dart';
+import 'package:deutschlernen/ui/categories/widgets/level_words_screen.dart';
+import 'package:deutschlernen/ui/categories/widgets/word_list.dart';
 
-/// Vocabulary tab: title, word search under it, below them the levels
+/// Categories tab: title, word search under it, below them the levels
 /// (A1, A2, …) with their word counts; a level opens its words.
 /// While the search has text, the matching words replace the levels.
-class VocabularyScreen extends StatefulWidget {
-  const VocabularyScreen({
+class CategoriesScreen extends StatefulWidget {
+  const CategoriesScreen({
     super.key,
     required this.words,
     required this.onWordSelected,
@@ -41,10 +41,10 @@ class VocabularyScreen extends StatefulWidget {
   final Listenable progressChanges;
 
   @override
-  State<VocabularyScreen> createState() => _VocabularyScreenState();
+  State<CategoriesScreen> createState() => _CategoriesScreenState();
 }
 
-class _VocabularyScreenState extends State<VocabularyScreen> {
+class _CategoriesScreenState extends State<CategoriesScreen> {
   final _searchController = TextEditingController();
 
   @override
@@ -67,7 +67,7 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
           Padding(
             padding: const EdgeInsets.fromLTRB(24, 16, 24, 12),
             child: Text(
-              strings.tabVocabulary,
+              strings.tabCategories,
               style: Theme.of(context).textTheme.headlineSmall,
             ),
           ),

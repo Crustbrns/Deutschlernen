@@ -26,16 +26,16 @@ Run `dart format` only on files you changed — formatting whole folders rewrite
 Layered, following Flutter's recommended app architecture: `lib/data` (services + repositories) → `lib/domain/models` → `lib/ui/<feature>/{view_models,widgets}`.
 
 - **Wiring** is manual in `lib/main.dart`: services and repositories are created there and passed into a single `CardsViewModel` (`ChangeNotifier`). There is no DI or state-management package; screens get the view model or plain callbacks through constructors.
-- **`HomeShell`** (`lib/ui/home/widgets/home_shell.dart`) is the root: an `IndexedStack` of tabs (main, vocabulary, statistics, settings) with a bottom bar. The learning cards screen and the word detail card are pushed as routes on top of it.
+- **`HomeShell`** (`lib/ui/home/widgets/home_shell.dart`) is the root: an `IndexedStack` of tabs (learn, categories, progress, settings) with a bottom bar. The learning cards screen and the word detail card are pushed as routes on top of it.
 - **Content assets** (`assets/data/`):
-  - `words.json` — German side only: `id`, `article`, `lemma`, `plural`, `level`, `transcription`, `definition`. `level` is the word's category and must be one of `Word.levels` (A1, A2, B1, B2); the vocabulary tab lists words by it.
+  - `words.json` — German side only: `id`, `article`, `lemma`, `plural`, `level`, `transcription`, `definition`. `level` is the word's category and must be one of `Word.levels` (A1, A2, B1, B2); the Categories tab lists words by it.
   - `translations/<lang>.json` — keyed by word `id`: `word`, `definition`, `examples[{german, translation}]`. `WordRepository` merges these into `Word`. In examples, `**word**` marks the highlighted word (`lib/ui/core/highlight.dart`).
   - `ui/<lang>.json` — interface strings, read via `AppStrings` getters.
   - `languages.json` — supported languages (currently uk, ru, en, es, zh).
 - **Two languages**: the interface language and the word-translation language are chosen and saved separately (`SettingsRepository`, shared_preferences).
 - **Strings**: `AppStrings.of(context)` reads an `AppStringsScope` inherited widget provided by `HomeShell`. Pushed routes and Hero flight shuttles are outside that scope, so they wrap their content in `AppStringsScope` again. A missing key renders as the key name itself.
-- **`WordCard`** (`lib/ui/cards/widgets/word_card.dart`) is shared: the learning mode (answer modes Show/Write/Choose, swipes, decision bar) and `lookup: true` for the compact card opened from the vocabulary search (translation shown, close button via `onClose`). Change one mode without breaking the other.
-- **Vocabulary search → card** uses a Hero (`WordHero` in `lib/ui/vocabulary/widgets/word_hero.dart`) with a custom shuttle and a non-opaque `PageRouteBuilder` (`WordDetailScreen.route`) with a solid black barrier: the list is hidden behind the open card but stays painted for the hero flight back.
+- **`WordCard`** (`lib/ui/cards/widgets/word_card.dart`) is shared: the learning mode (answer modes Show/Write/Choose, swipes, decision bar) and `lookup: true` for the compact card opened from the Categories search (translation shown, close button via `onClose`). Change one mode without breaking the other.
+- **Categories search → card** uses a Hero (`WordHero` in `lib/ui/categories/widgets/word_hero.dart`) with a custom shuttle and a non-opaque `PageRouteBuilder` (`WordDetailScreen.route`) with a solid black barrier: the list is hidden behind the open card but stays painted for the hero flight back.
 - Styling constants (colors, fonts, sizes) live in `lib/ui/core/app_style.dart`. There is a dark and a light theme (`AppTheme`): theme-dependent colors come from `AppPalette.of(context)` (a `ThemeExtension`), fixed accents from `AppColors`. All text uses the theme font; `assets/fonts/` holds only the Phosphor icon font.
 - TTS: `SpeechService` wraps `flutter_tts` with `de-DE`.
 

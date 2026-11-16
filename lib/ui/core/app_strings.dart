@@ -54,9 +54,9 @@ class AppStrings {
   String get resetProgress => _get('resetProgress');
   String get forgot => _get('forgot');
   String get remembered => _get('remembered');
-  String get tabMain => _get('tabMain');
-  String get tabVocabulary => _get('tabVocabulary');
-  String get tabStatistics => _get('tabStatistics');
+  String get tabLearn => _get('tabLearn');
+  String get tabCategories => _get('tabCategories');
+  String get tabProgress => _get('tabProgress');
   String get tabSettings => _get('tabSettings');
   String get startLearning => _get('startLearning');
   String get learnNewWords => _get('learnNewWords');

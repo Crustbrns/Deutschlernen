@@ -4,23 +4,23 @@ import 'package:deutschlernen/domain/models/word_status.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
-import 'package:deutschlernen/ui/statistics/view_models/progress_chart_data.dart';
-import 'package:deutschlernen/ui/statistics/widgets/progress_chart.dart';
+import 'package:deutschlernen/ui/progress/view_models/progress_chart_data.dart';
+import 'package:deutschlernen/ui/progress/widgets/progress_chart.dart';
 
 /// Progress tab: title, period switch (7 / 30 / 90 days / all time), then
 /// one block with the stacked chart of word statuses, and under it the
 /// current count per status (also the chart's legend).
-class StatisticsScreen extends StatefulWidget {
-  const StatisticsScreen({super.key, required this.history});
+class ProgressScreen extends StatefulWidget {
+  const ProgressScreen({super.key, required this.history});
 
   /// Daily status counts, keyed by local midnight.
   final Map<DateTime, StatusCounts> history;
 
   @override
-  State<StatisticsScreen> createState() => _StatisticsScreenState();
+  State<ProgressScreen> createState() => _ProgressScreenState();
 }
 
-class _StatisticsScreenState extends State<StatisticsScreen> {
+class _ProgressScreenState extends State<ProgressScreen> {
   var _period = ChartPeriod.week;
 
   @override
@@ -57,7 +57,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
             child: Text(
-              strings.tabStatistics,
+              strings.tabProgress,
               style: Theme.of(context).textTheme.headlineSmall
                   ?.copyWith(letterSpacing: -0.5),
             ),

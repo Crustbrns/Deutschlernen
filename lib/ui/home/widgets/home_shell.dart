@@ -4,13 +4,13 @@ import 'package:deutschlernen/ui/cards/view_models/cards_view_model.dart';
 import 'package:deutschlernen/ui/cards/widgets/cards_screen.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/home/widgets/app_bottom_bar.dart';
-import 'package:deutschlernen/ui/main_menu/widgets/level_sheet.dart';
-import 'package:deutschlernen/ui/main_menu/widgets/main_menu_screen.dart';
+import 'package:deutschlernen/ui/learn/widgets/level_sheet.dart';
+import 'package:deutschlernen/ui/learn/widgets/learn_screen.dart';
 import 'package:deutschlernen/ui/settings/view_models/settings_view_model.dart';
 import 'package:deutschlernen/ui/settings/widgets/settings_screen.dart';
-import 'package:deutschlernen/ui/statistics/widgets/statistics_screen.dart';
-import 'package:deutschlernen/ui/vocabulary/widgets/vocabulary_screen.dart';
-import 'package:deutschlernen/ui/vocabulary/widgets/word_detail_screen.dart';
+import 'package:deutschlernen/ui/progress/widgets/progress_screen.dart';
+import 'package:deutschlernen/ui/categories/widgets/categories_screen.dart';
+import 'package:deutschlernen/ui/categories/widgets/word_detail_screen.dart';
 
 /// The app's root screen: four tabs with the bottom bar.
 /// The cards screen is not a tab. It opens on top of the shell, full screen
@@ -30,7 +30,7 @@ class HomeShell extends StatefulWidget {
 }
 
 class _HomeShellState extends State<HomeShell> {
-  HomeTab _tab = HomeTab.main;
+  HomeTab _tab = HomeTab.learn;
 
   CardsViewModel get _vm => widget.viewModel;
 
@@ -86,7 +86,7 @@ class _HomeShellState extends State<HomeShell> {
               body: IndexedStack(
                 index: _tab.index,
                 children: [
-                  MainMenuScreen(
+                  LearnScreen(
                     selectedLevelCount: _vm.learnLevels.length,
                     newWordsLeft: _vm.newWordsLeft,
                     dueCount: _vm.dueCount,
@@ -113,7 +113,7 @@ class _HomeShellState extends State<HomeShell> {
                       _openCards();
                     },
                   ),
-                  VocabularyScreen(
+                  CategoriesScreen(
                     words: _vm.words,
                     onWordSelected: _openWord,
                     onSearchResultSelected: (word) {
@@ -125,7 +125,7 @@ class _HomeShellState extends State<HomeShell> {
                     stateOf: _vm.stateOf,
                     progressChanges: _vm,
                   ),
-                  StatisticsScreen(history: _vm.statusHistory),
+                  ProgressScreen(history: _vm.statusHistory),
                   SettingsScreen(
                     settings: widget.settingsViewModel,
                     languages: _vm.languages,

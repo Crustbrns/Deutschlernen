@@ -36,7 +36,7 @@ class WordCard extends StatefulWidget {
   /// When set, a close button is pinned to the card's top right corner.
   final VoidCallback? onClose;
 
-  /// Opened from the vocabulary to look a word up, not to learn it:
+  /// Opened from the Categories tab to look a word up, not to learn it:
   /// translation shown right away instead of the answer modes, no
   /// "new word" status, no extra space under the examples.
   final bool lookup;

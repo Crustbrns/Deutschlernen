@@ -4,13 +4,13 @@ import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
 import 'package:deutschlernen/ui/core/widgets/menu_row.dart';
-import 'package:deutschlernen/ui/main_menu/widgets/week_strip.dart';
+import 'package:deutschlernen/ui/learn/widgets/week_strip.dart';
 
 /// Learn tab (was "Practice"): title, then one block with the entry
 /// points: categories (which levels new words come from), new words, and
 /// review; under it the current week.
-class MainMenuScreen extends StatelessWidget {
-  const MainMenuScreen({
+class LearnScreen extends StatelessWidget {
+  const LearnScreen({
     super.key,
     required this.selectedLevelCount,
     required this.newWordsLeft,
@@ -46,11 +46,11 @@ class MainMenuScreen extends StatelessWidget {
           24 + MediaQuery.paddingOf(context).bottom,
         ),
         children: [
-          // Same title placement as the vocabulary and settings tabs.
+          // Same title placement as the Categories and Settings tabs.
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
             child: Text(
-              strings.tabMain,
+              strings.tabLearn,
               // Condensed: at the default spacing the letters drift apart.
               style: Theme.of(context).textTheme.headlineSmall
                   ?.copyWith(letterSpacing: -0.5),

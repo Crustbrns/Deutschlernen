@@ -5,7 +5,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/domain/models/word_status.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
-import 'package:deutschlernen/ui/statistics/view_models/progress_chart_data.dart';
+import 'package:deutschlernen/ui/progress/view_models/progress_chart_data.dart';
 
 /// Stacked bars (known, started, reviewed, learned from the bottom — overlapping
 /// layers, see [StatusCounts.stack]) joined by

@@ -28,7 +28,7 @@ divider any more (it would be too pale), it keeps the old gray base.
 | Word card (learning and lookup) | `palette.card`, **no outline** (solid) | radius 32 |
 | Search field | fill `palette.card`, **no outline** when idle, gray `AppColors.divider(colors)` outline (same as list dividers, not blue) only while focused; vertical padding 10, dense | pill (fully round) |
 
-Search field behavior (`_SearchField` in `vocabulary_screen.dart`): while focused or holding text,
+Search field behavior (`_SearchField` in `categories_screen.dart`): while focused or holding text,
 the field shrinks (animated) and a `RoundIconButton` with `Icons.close` appears on its right;
 it clears the text, hides the keyboard and returns the field to full width.
 The hint text and that close icon are gray too: the outline color made 30% lighter
@@ -200,10 +200,10 @@ under the bar.
   `colors.onSurface` on filled neutral buttons.
 - Practice tab menu text is condensed: title `headlineSmall` letter spacing -0.5, row titles
   17 w600 / -0.4, trailing count 15 w600 / -0.3 (default spacing looked too loose to the user).
-- Exception: the Learn tab menu (`main_menu_screen.dart`) has colored leading icons, size 26,
+- Exception: the Learn tab menu (`learn_screen.dart`) has colored leading icons, size 26,
   one color per action (`AppColors.menuCategories` blue, `menuNewWords` pink, `menuRepeat`
   yellow); a disabled row fades its icon to α 0.4.
-- Week strip (`WeekStrip` in `main_menu/widgets/week_strip.dart`), 16px under the Practice
+- Week strip (`WeekStrip` in `learn/widgets/week_strip.dart`), 16px under the Practice
   menu block: 7 tiles Mon–Sun (`AppStrings.weekdaysShort`, day names only, no dates), 6px
   apart, 52 tall, radius 14, fill `palette.card`, text 15 w600 -0.3 `onSurface`; today is
   filled `AppColors.menuNewWords` pink with `AppColors.onAccent` (white) text.
@@ -267,7 +267,7 @@ body) is `AppColors.softSecondary` — the same as the level word count (mutedTe
 
 ## Progress chart
 
-`StatisticsScreen` (Progress tab): title like the other tabs, then a period switch, then one
+`ProgressScreen` (Progress tab): title like the other tabs, then a period switch, then one
 `palette.card` block (radius 20) with `ProgressChart`, then a `GroupedCard` with the current count
 per status (`_TotalRow`: 12px status dot, 12 gap, name in `AppListText.subtitle`, count right in
 `AppListText.title`; padding 16/14), top of the stack first: learned, review, learning, known.

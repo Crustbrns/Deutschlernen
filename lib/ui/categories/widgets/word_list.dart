@@ -5,7 +5,7 @@ import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
 import 'package:deutschlernen/ui/core/widgets/play_button.dart';
-import 'package:deutschlernen/ui/vocabulary/widgets/word_hero.dart';
+import 'package:deutschlernen/ui/categories/widgets/word_hero.dart';
 
 /// Words in one grouped block: search results and a level's word list.
 /// Tapping a row opens the word's card; the play button speaks it.

@@ -73,7 +73,7 @@ class CardsViewModel extends ChangeNotifier {
   List<String> _deckIds = [];
   List<Word> _deck = [];
 
-  /// Word id → times opened from the vocabulary search.
+  /// Word id → times opened from the Categories search.
   Map<String, int> _lookupCounts = {};
   static const _defaultLanguage = AppLanguage(
     code: 'en',
@@ -97,7 +97,7 @@ class CardsViewModel extends ChangeNotifier {
   bool _isLoading = true;
   bool _isSwiping = false;
 
-  /// All words, for the vocabulary.
+  /// All words, for the Categories tab.
   List<Word> get words => _words;
 
   /// Words of the current cards session.
