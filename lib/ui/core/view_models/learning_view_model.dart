@@ -64,7 +64,7 @@ class LearningViewModel extends ChangeNotifier {
 
   ProgressBook _progress = ProgressBook();
 
-  /// Levels new words are taken from; all by default.
+  /// Levels new words and reviews are taken from; all by default.
   Set<String> _learnLevels = {...Word.levels};
 
   /// Daily status counts for the progress chart, keyed by local midnight.
@@ -102,8 +102,7 @@ class LearningViewModel extends ChangeNotifier {
   WordState stateOf(String wordId) =>
       _progress.stateOf(wordId, DateTime.now().toUtc());
 
-  /// Words for "learn new words": unrecalled (pink) ones plus new ones in
-  /// the selected levels.
+  /// Words for "learn new words": pink and new words of the selected levels.
   int get newWordsLeft => _unrecalledIds().length + _newWordIds().length;
 
   /// Words whose review time has come. Computed on each call, since time
@@ -190,7 +189,8 @@ class LearningViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Changes the levels new words come from. Applies to the next session.
+  /// Changes the levels new words and reviews come from. Applies to the
+  /// next session.
   Future<void> setLearnLevels(Set<String> levels) async {
     if (levels.isEmpty) return; // a session needs words
     _learnLevels = levels;
@@ -229,7 +229,7 @@ class LearningViewModel extends ChangeNotifier {
     [..._unrecalledIds(), ..._newWordIds()].take(newWordsPerSession),
   );
 
-  /// All words that are due for review.
+  /// All due words of the selected levels.
   void startReview() => _startSession(SessionMode.review, _dueIds());
 
   void _startSession(SessionMode mode, Iterable<String> ids) {
@@ -279,17 +279,21 @@ class LearningViewModel extends ChangeNotifier {
     _speechService.speak(_deck[index].withArticle);
   }
 
-  bool _exists(String wordId) => _wordsById.containsKey(wordId);
-
   Iterable<String> _newWordIds() => _words
       .where((w) => _learnLevels.contains(w.level) && !_progress.contains(w.id))
       .map((w) => w.id);
 
-  /// All levels: pink words were started already, so a level filter
-  /// shouldn't hide them.
-  List<String> _unrecalledIds() => _progress.unrecalledIds(_exists);
+  /// Pink and due words come only from the selected levels too (user's
+  /// choice): the level choice means the same everywhere. Words of other
+  /// levels wait until their level is selected again.
+  List<String> _unrecalledIds() => _progress.unrecalledIds(_inLearnLevels);
 
-  List<String> _dueIds() => _progress.dueIds(DateTime.now().toUtc(), _exists);
+  List<String> _dueIds() =>
+      _progress.dueIds(DateTime.now().toUtc(), _inLearnLevels);
+
+  /// The word is in the app and its level is selected.
+  bool _inLearnLevels(String wordId) =>
+      _learnLevels.contains(_wordsById[wordId]?.level);
 
   void _syncDeck() => _deck = [
     for (final id in _session?.wordIds ?? const <String>[]) _wordsById[id]!,
