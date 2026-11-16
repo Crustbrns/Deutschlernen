@@ -155,15 +155,13 @@ class _AppBottomBarState extends State<AppBottomBar>
     final palette = AppPalette.of(context);
     final colors = Theme.of(context).colorScheme;
 
+    // Solid (Fill) icons, the user's choice.
     final tabs = [
-      // Practice: learning sessions, a stack of flashcards.
-      (AppIcons.cards, strings.tabMain, 0),
+      (AppIcons.houseFill, strings.tabMain),
       // Categories: the word levels and the search.
-      (AppIcons.squaresFour, strings.tabVocabulary, 0),
-      (AppIcons.chartLineUp, strings.tabStatistics, 0),
-      // Faders instead of a gear: lighter and less "system settings".
-      // Phosphor has them only vertical, so turned a quarter to lie flat.
-      (AppIcons.faders, strings.tabSettings, 1),
+      (AppIcons.squaresFourFill, strings.tabVocabulary),
+      (AppIcons.fileTextFill, strings.tabStatistics),
+      (AppIcons.gearFill, strings.tabSettings),
     ];
 
     // Floats above the home indicator; on phones without one, a fixed gap.
@@ -218,7 +216,7 @@ class _AppBottomBarState extends State<AppBottomBar>
   Widget _buildBar(
     AppPalette palette,
     ColorScheme colors,
-    List<(IconData, String, int)> tabs,
+    List<(IconData, String)> tabs,
     double tabWidth,
     double pillLeft,
     double lift,
@@ -269,7 +267,6 @@ class _AppBottomBarState extends State<AppBottomBar>
                           child: _TabButton(
                             icon: tabs[i].$1,
                             label: tabs[i].$2,
-                            quarterTurns: tabs[i].$3,
                             isSelected: i == widget.selected.index,
                             onTap: () => _select(i),
                           ),
@@ -349,16 +346,12 @@ class _TabButton extends StatelessWidget {
   const _TabButton({
     required this.icon,
     required this.label,
-    this.quarterTurns = 0,
     required this.isSelected,
     required this.onTap,
   });
 
   final IconData icon;
   final String label;
-
-  /// Clockwise quarter turns of the icon.
-  final int quarterTurns;
   final bool isSelected;
   final VoidCallback onTap;
 
@@ -379,10 +372,7 @@ class _TabButton extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          RotatedBox(
-            quarterTurns: quarterTurns,
-            child: Icon(icon, size: 27, color: color),
-          ),
+          Icon(icon, size: 22, color: color),
           const SizedBox(height: 2),
           Text(
             label,
@@ -391,6 +381,7 @@ class _TabButton extends StatelessWidget {
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
+              letterSpacing: -0.3,
               color: color,
             ),
           ),
