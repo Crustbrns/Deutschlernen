@@ -1,7 +1,21 @@
+import 'package:deutschlernen/domain/models/card_decision.dart';
 import 'package:deutschlernen/domain/models/reminder_settings.dart';
 
 /// What a reminder asks for: due words first, else new words.
 enum ReminderKind { review, learn }
+
+/// Session a tapped reminder opens. Things may have changed since it was
+/// planned (e.g. reviewed after another reminder): with nothing due a
+/// review reminder falls back to new words; null = nothing to do.
+SessionMode? sessionForReminder(
+  ReminderKind kind, {
+  required int dueCount,
+  required int newWordsLeft,
+}) => switch (kind) {
+  ReminderKind.review when dueCount > 0 => SessionMode.review,
+  _ when newWordsLeft > 0 => SessionMode.newWords,
+  _ => null,
+};
 
 /// One reminder to schedule. [count] = due words (review only).
 typedef PlannedReminder = ({DateTime at, ReminderKind kind, int count});

@@ -1,17 +1,29 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 
-/// One notification to schedule.
-typedef ScheduledNotification = ({DateTime at, String title, String body});
+/// One notification to schedule. [payload] comes back when it is tapped.
+typedef ScheduledNotification = ({
+  DateTime at,
+  String title,
+  String body,
+  String payload,
+});
 
 /// Local notifications (flutter_local_notifications): asks for permission
 /// and replaces the whole schedule at once. No-op on the web.
 class NotificationService {
   final _plugin = FlutterLocalNotificationsPlugin();
   Future<void>? _init;
+  final _taps = StreamController<String>.broadcast();
+
+  /// Payloads of notifications tapped while the app is running (also in
+  /// the background).
+  Stream<String> get taps => _taps.stream;
 
   static const _details = NotificationDetails(
     android: AndroidNotificationDetails(
@@ -21,6 +33,9 @@ class NotificationService {
     ),
     iOS: DarwinNotificationDetails(),
   );
+
+  /// Call at start-up, so taps are received from the beginning.
+  Future<void> init() => _ready();
 
   /// Started once, on first use.
   Future<void> _ready() => _init ??= _initialize();
@@ -43,7 +58,21 @@ class NotificationService {
           requestBadgePermission: false,
         ),
       ),
+      onDidReceiveNotificationResponse: (response) {
+        if (response.payload case final payload?) _taps.add(payload);
+      },
     );
+  }
+
+  /// Payload of the notification that started the app; null when it was
+  /// opened another way. Taps after the start come through [taps].
+  Future<String?> launchPayload() async {
+    if (kIsWeb) return null;
+    await _ready();
+    final details = await _plugin.getNotificationAppLaunchDetails();
+    return (details?.didNotificationLaunchApp ?? false)
+        ? details?.notificationResponse?.payload
+        : null;
   }
 
   /// Shows the system dialog (only the first time); true = allowed.
@@ -86,6 +115,7 @@ class NotificationService {
         androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
         title: n.title,
         body: n.body,
+        payload: n.payload,
       );
     }
   }

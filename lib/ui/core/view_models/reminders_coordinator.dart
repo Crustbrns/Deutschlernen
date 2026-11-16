@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:deutschlernen/data/services/notification_service.dart';
 import 'package:deutschlernen/domain/models/reminder_plan.dart';
 import 'package:deutschlernen/domain/models/reminder_settings.dart';
@@ -27,6 +30,27 @@ class RemindersCoordinator {
   /// speech, …) notify too and must not reschedule.
   ReminderSettings? _scheduledFor;
 
+  StreamSubscription<String>? _taps;
+  final _opened = ValueNotifier<ReminderKind?>(null);
+
+  /// A tapped reminder: the shell opens its session and calls [handled].
+  ValueListenable<ReminderKind?> get opened => _opened;
+
+  void handled() => _opened.value = null;
+
+  /// After the words are loaded: listens for taps, and if the app was
+  /// started from a reminder, reports it right away.
+  Future<void> start() async {
+    await _notifications.init();
+    _taps = _notifications.taps.listen(_onTap);
+    if (await _notifications.launchPayload() case final payload?) {
+      _onTap(payload);
+    }
+  }
+
+  void _onTap(String payload) =>
+      _opened.value = ReminderKind.values.asNameMap()[payload];
+
   void _onSettingsChanged() {
     if (!identical(_settings.reminders, _scheduledFor)) reschedule();
   }
@@ -49,15 +73,21 @@ class RemindersCoordinator {
             at: r.at,
             title: strings.reminderReviewTitle,
             body: strings.reminderReviewBody(r.count),
+            payload: r.kind.name,
           ),
           ReminderKind.learn => (
             at: r.at,
             title: strings.reminderLearnTitle,
             body: strings.reminderLearnBody,
+            payload: r.kind.name,
           ),
         },
     ]);
   }
 
-  void dispose() => _settings.removeListener(_onSettingsChanged);
+  void dispose() {
+    _settings.removeListener(_onSettingsChanged);
+    _taps?.cancel();
+    _opened.dispose();
+  }
 }

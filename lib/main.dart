@@ -74,6 +74,7 @@ class _MyAppState extends State<MyApp> {
   Future<void> _load() async {
     await Future.wait([_settingsViewModel.load(), _languageViewModel.load()]);
     await _learningViewModel.load();
+    await _reminders.start();
     await _reminders.reschedule();
   }
 
@@ -101,6 +102,8 @@ class _MyAppState extends State<MyApp> {
           viewModel: _learningViewModel,
           languageViewModel: _languageViewModel,
           settingsViewModel: _settingsViewModel,
+          reminderOpened: _reminders.opened,
+          onReminderHandled: _reminders.handled,
         ),
       ),
     );

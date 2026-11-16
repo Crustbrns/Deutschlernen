@@ -12,6 +12,7 @@ import 'package:deutschlernen/domain/models/app_language.dart';
 import 'package:deutschlernen/domain/models/card_decision.dart';
 import 'package:deutschlernen/domain/models/card_session.dart';
 import 'package:deutschlernen/domain/models/progress_book.dart';
+import 'package:deutschlernen/domain/models/reminder_plan.dart';
 import 'package:deutschlernen/domain/models/status_counts.dart';
 import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/domain/models/word_status.dart';
@@ -231,6 +232,16 @@ class LearningViewModel extends ChangeNotifier {
     SessionMode.newWords,
     [..._unrecalledIds(), ..._newWordIds()].take(newWordsPerSession),
   );
+
+  /// Session a tapped reminder opens now; null = nothing to do.
+  SessionMode? sessionFor(ReminderKind kind) =>
+      sessionForReminder(kind, dueCount: dueCount, newWordsLeft: newWordsLeft);
+
+  /// Starts a session of [mode].
+  void startSession(SessionMode mode) => switch (mode) {
+    SessionMode.newWords => startNewWords(),
+    SessionMode.review => startReview(),
+  };
 
   /// All due words of the selected levels.
   void startReview() => _startSession(SessionMode.review, _dueIds());

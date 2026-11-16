@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:deutschlernen/domain/models/card_decision.dart';
 import 'package:deutschlernen/domain/models/reminder_plan.dart';
 import 'package:deutschlernen/domain/models/reminder_settings.dart';
 
@@ -74,6 +75,17 @@ void main() {
     test('the same time twice gives one reminder', () {
       expect(plan(times: const [evening, evening]), hasLength(7));
     });
+  });
+
+  test('a tapped reminder opens what there is to do now', () {
+    SessionMode? open(ReminderKind k, int due, int fresh) =>
+        sessionForReminder(k, dueCount: due, newWordsLeft: fresh);
+
+    expect(open(ReminderKind.review, 3, 5), SessionMode.review);
+    expect(open(ReminderKind.review, 0, 5), SessionMode.newWords);
+    expect(open(ReminderKind.learn, 3, 5), SessionMode.newWords);
+    expect(open(ReminderKind.learn, 3, 0), isNull);
+    expect(open(ReminderKind.review, 0, 0), isNull);
   });
 
   group('ReminderSettings', () {
