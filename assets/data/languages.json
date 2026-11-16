@@ -1,4 +1,5 @@
 [
+  { "code": "uk", "label": "Українська", "country": "UA" },
   { "code": "ru", "label": "Русский", "country": "RU" },
   { "code": "en", "label": "English", "country": "GB" },
   { "code": "es", "label": "Español", "country": "ES" },

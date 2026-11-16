@@ -1,0 +1,352 @@
+{
+  "tee": {
+    "word": "чай",
+    "definition": "Гарячий напій, який готують із висушеного листя.",
+    "examples": [
+      { "german": "Ich trinke gerne **Tee**.", "translation": "Я люблю пити **чай**." },
+      { "german": "Der **Tee** ist heiß.", "translation": "**Чай** гарячий." },
+      { "german": "Möchtest du einen **Tee**?", "translation": "Хочеш **чаю**?" },
+      { "german": "Ich bereite einen **Tee** zu.", "translation": "Я заварюю **чай**." }
+    ]
+  },
+  "hund": {
+    "word": "собака",
+    "definition": "Тварина, яка гавкає і часто живе вдома як улюбленець.",
+    "examples": [
+      { "german": "Der **Hund** spielt im Garten.", "translation": "**Собака** грається в саду." },
+      { "german": "Ich gehe mit dem **Hund** spazieren.", "translation": "Я гуляю із **собакою**." },
+      { "german": "Mein **Hund** ist sehr klein.", "translation": "Мій **собака** дуже маленький." },
+      { "german": "Darf ich Ihren **Hund** streicheln?", "translation": "Можна погладити вашого **собаку**?" }
+    ]
+  },
+  "haus": {
+    "word": "будинок",
+    "definition": "Будівля, у якій живуть люди.",
+    "examples": [
+      { "german": "Das **Haus** ist groß.", "translation": "**Будинок** великий." },
+      { "german": "Wir kaufen ein **Haus**.", "translation": "Ми купуємо **будинок**." },
+      { "german": "Ich gehe nach **Hause**.", "translation": "Я йду **додому**." },
+      { "german": "Mein **Haus** hat einen Garten.", "translation": "Біля мого **будинку** є сад." }
+    ]
+  },
+  "katze": {
+    "word": "кішка",
+    "definition": "Маленька домашня тварина, яка нявкає і любить ловити мишей.",
+    "examples": [
+      { "german": "Die **Katze** schläft auf dem Sofa.", "translation": "**Кішка** спить на дивані." },
+      { "german": "Ich habe eine schwarze **Katze**.", "translation": "У мене чорна **кішка**." },
+      { "german": "Die **Katze** trinkt Milch.", "translation": "**Кішка** п'є молоко." },
+      { "german": "Unsere **Katze** heißt Mia.", "translation": "Нашу **кішку** звати Мія." }
+    ]
+  },
+  "wasser": {
+    "word": "вода",
+    "definition": "Прозора рідина, яку можна пити.",
+    "examples": [
+      { "german": "Ich trinke ein Glas **Wasser**.", "translation": "Я п'ю склянку **води**." },
+      { "german": "Das **Wasser** ist kalt.", "translation": "**Вода** холодна." },
+      { "german": "Kann ich bitte **Wasser** haben?", "translation": "Можна мені **води**, будь ласка?" },
+      { "german": "Ein stilles **Wasser**, bitte.", "translation": "Негазовану **воду**, будь ласка." }
+    ]
+  },
+  "brot": {
+    "word": "хліб",
+    "definition": "Продукт із борошна, води та дріжджів, який випікають.",
+    "examples": [
+      { "german": "Ich kaufe frisches **Brot** beim Bäcker.", "translation": "Я купую свіжий **хліб** у пекарні." },
+      { "german": "Das **Brot** ist noch warm.", "translation": "**Хліб** ще теплий." },
+      { "german": "Möchtest du Butter auf dein **Brot**?", "translation": "Хочеш масла на свій **хліб**?" },
+      { "german": "Wir essen zum Frühstück **Brot** mit Käse.", "translation": "На сніданок ми їмо **хліб** із сиром." }
+    ]
+  },
+  "apfel": {
+    "word": "яблуко",
+    "definition": "Круглий фрукт, який буває червоним, зеленим або жовтим.",
+    "examples": [
+      { "german": "Ich esse jeden Tag einen **Apfel**.", "translation": "Я щодня їм **яблуко**." },
+      { "german": "Die **Äpfel** sind sehr süß.", "translation": "**Яблука** дуже солодкі." },
+      { "german": "Kannst du ein Kilo **Äpfel** kaufen?", "translation": "Можеш купити кілограм **яблук**?" },
+      { "german": "Der **Apfel** liegt auf dem Tisch.", "translation": "**Яблуко** лежить на столі." }
+    ]
+  },
+  "milch": {
+    "word": "молоко",
+    "definition": "Білий напій, який дає корова.",
+    "examples": [
+      { "german": "Ich trinke Kaffee mit **Milch**.", "translation": "Я п'ю каву з **молоком**." },
+      { "german": "Die **Milch** ist im Kühlschrank.", "translation": "**Молоко** в холодильнику." },
+      { "german": "Wir brauchen noch **Milch** und Eier.", "translation": "Нам ще потрібні **молоко** та яйця." },
+      { "german": "Die **Milch** ist leider sauer.", "translation": "**Молоко**, на жаль, скисло." }
+    ]
+  },
+  "zug": {
+    "word": "потяг",
+    "definition": "Довгий транспортний засіб, який їздить рейками.",
+    "examples": [
+      { "german": "Der **Zug** hat zehn Minuten Verspätung.", "translation": "**Потяг** запізнюється на десять хвилин." },
+      { "german": "Ich fahre mit dem **Zug** nach Berlin.", "translation": "Я їду до Берліна **потягом**." },
+      { "german": "Wann fährt der nächste **Zug**?", "translation": "Коли відправляється наступний **потяг**?" },
+      { "german": "Die **Züge** sind heute sehr voll.", "translation": "**Потяги** сьогодні переповнені." }
+    ]
+  },
+  "buch": {
+    "word": "книга",
+    "definition": "Багато сторінок із текстом, скріплених разом.",
+    "examples": [
+      { "german": "Ich lese gerade ein spannendes **Buch**.", "translation": "Я зараз читаю цікаву **книгу**." },
+      { "german": "Das **Buch** gehört meiner Schwester.", "translation": "Ця **книга** належить моїй сестрі." },
+      { "german": "In der Bibliothek gibt es viele **Bücher**.", "translation": "У бібліотеці багато **книг**." },
+      { "german": "Kannst du mir das **Buch** leihen?", "translation": "Можеш позичити мені цю **книгу**?" }
+    ]
+  },
+  "stadt": {
+    "word": "місто",
+    "definition": "Велике місце, де живе й працює багато людей.",
+    "examples": [
+      { "german": "Dresden ist eine schöne **Stadt**.", "translation": "Дрезден — гарне **місто**." },
+      { "german": "Ich wohne in der **Stadt**.", "translation": "Я живу в **місті**." },
+      { "german": "Wir fahren am Samstag in die **Stadt**.", "translation": "У суботу ми їдемо в **місто**." },
+      { "german": "Große **Städte** sind oft laut.", "translation": "Великі **міста** часто галасливі." }
+    ]
+  },
+  "freund": {
+    "word": "друг",
+    "definition": "Людина, яку любиш і якій довіряєш.",
+    "examples": [
+      { "german": "Das ist mein bester **Freund**.", "translation": "Це мій найкращий **друг**." },
+      { "german": "Ich treffe heute meine **Freunde**.", "translation": "Сьогодні я зустрічаюся з **друзями**." },
+      { "german": "Mein **Freund** hilft mir beim Umzug.", "translation": "Мій **друг** допомагає мені з переїздом." },
+      { "german": "Wir sind seit sieben Jahren **Freunde**.", "translation": "Ми **друзі** вже сім років." }
+    ]
+  },
+  "tisch": {
+    "word": "стіл",
+    "definition": "Предмет меблів із пласкою поверхнею, за яким їдять або працюють.",
+    "examples": [
+      { "german": "Das Essen steht auf dem **Tisch**.", "translation": "Їжа стоїть на **столі**." },
+      { "german": "Wir brauchen einen neuen **Tisch**.", "translation": "Нам потрібен новий **стіл**." },
+      { "german": "Kannst du bitte den **Tisch** decken?", "translation": "Можеш, будь ласка, накрити на **стіл**?" },
+      { "german": "Ich habe einen **Tisch** für zwei reserviert.", "translation": "Я забронював **столик** на двох." }
+    ]
+  },
+  "wohnung": {
+    "word": "квартира",
+    "definition": "Кілька кімнат у будинку, де живуть люди.",
+    "examples": [
+      { "german": "Wir suchen eine **Wohnung** in Dresden.", "translation": "Ми шукаємо **квартиру** в Дрездені." },
+      { "german": "Die **Wohnung** hat zwei Zimmer.", "translation": "У **квартирі** дві кімнати." },
+      { "german": "Die **Wohnungen** im Zentrum sind teuer.", "translation": "**Квартири** в центрі дорогі." },
+      { "german": "Ich räume am Wochenende die **Wohnung** auf.", "translation": "На вихідних я прибираю **квартиру**." }
+    ]
+  },
+  "termin": {
+    "word": "запис, зустріч",
+    "definition": "Призначений час зустрічі з кимось, наприклад у лікаря.",
+    "examples": [
+      { "german": "Ich habe morgen einen **Termin** beim Arzt.", "translation": "Завтра в мене **запис** до лікаря." },
+      { "german": "Können wir den **Termin** verschieben?", "translation": "Можемо перенести **зустріч**?" },
+      { "german": "Ich möchte gern einen **Termin** vereinbaren.", "translation": "Я хотів би домовитися про **зустріч**." },
+      { "german": "Diese Woche habe ich viele **Termine**.", "translation": "Цього тижня в мене багато **зустрічей**." }
+    ]
+  },
+  "rechnung": {
+    "word": "рахунок",
+    "definition": "Документ, де написано, скільки потрібно заплатити.",
+    "examples": [
+      { "german": "Die **Rechnung**, bitte!", "translation": "**Рахунок**, будь ласка!" },
+      { "german": "Ich bezahle die **Rechnung** online.", "translation": "Я оплачую **рахунок** онлайн." },
+      { "german": "Die **Rechnung** für den Strom ist gekommen.", "translation": "Прийшов **рахунок** за електрику." },
+      { "german": "Bitte heben Sie alle **Rechnungen** auf.", "translation": "Будь ласка, зберігайте всі **рахунки**." }
+    ]
+  },
+  "arzt": {
+    "word": "лікар",
+    "definition": "Людина, яка оглядає і лікує хворих.",
+    "examples": [
+      { "german": "Ich muss heute zum **Arzt**.", "translation": "Мені сьогодні треба до **лікаря**." },
+      { "german": "Der **Arzt** hat mir Tabletten verschrieben.", "translation": "**Лікар** виписав мені таблетки." },
+      { "german": "In der Praxis arbeiten drei **Ärzte**.", "translation": "У практиці працюють три **лікарі**." },
+      { "german": "Rufen Sie bitte einen **Arzt**!", "translation": "Викличте, будь ласка, **лікаря**!" }
+    ]
+  },
+  "fahrkarte": {
+    "word": "квиток (на транспорт)",
+    "definition": "Квиток, за яким можна їздити автобусом, трамваєм або потягом.",
+    "examples": [
+      { "german": "Ich kaufe die **Fahrkarte** am Automaten.", "translation": "Я купую **квиток** в автоматі." },
+      { "german": "Ihre **Fahrkarte**, bitte!", "translation": "Ваш **квиток**, будь ласка!" },
+      { "german": "Die **Fahrkarte** gilt nur heute.", "translation": "**Квиток** дійсний лише сьогодні." },
+      { "german": "Wir brauchen zwei **Fahrkarten** nach Leipzig.", "translation": "Нам потрібні два **квитки** до Лейпцига." }
+    ]
+  },
+  "geschenk": {
+    "word": "подарунок",
+    "definition": "Те, що дають комусь, не чекаючи грошей натомість.",
+    "examples": [
+      { "german": "Das ist ein **Geschenk** für dich.", "translation": "Це **подарунок** для тебе." },
+      { "german": "Ich packe die **Geschenke** ein.", "translation": "Я пакую **подарунки**." },
+      { "german": "Vielen Dank für das schöne **Geschenk**!", "translation": "Щиро дякую за гарний **подарунок**!" },
+      { "german": "Was für ein **Geschenk** kaufen wir für Mama?", "translation": "Який **подарунок** ми купимо мамі?" }
+    ]
+  },
+  "wetter": {
+    "word": "погода",
+    "definition": "Те, що відбувається надворі: сонце, дощ, вітер чи сніг.",
+    "examples": [
+      { "german": "Wie ist das **Wetter** heute?", "translation": "Яка сьогодні **погода**?" },
+      { "german": "Das **Wetter** ist schön, wir gehen spazieren.", "translation": "**Погода** гарна, ми йдемо гуляти." },
+      { "german": "Bei diesem **Wetter** bleibe ich zu Hause.", "translation": "У таку **погоду** я залишуся вдома." },
+      { "german": "Morgen soll das **Wetter** besser werden.", "translation": "Завтра **погода** має покращитися." }
+    ]
+  },
+  "anmeldung": {
+    "word": "реєстрація, запис",
+    "definition": "Офіційний запис кудись, наприклад реєстрація місця проживання в бюргерамті.",
+    "examples": [
+      { "german": "Für die **Anmeldung** brauche ich einen Termin beim Bürgeramt.", "translation": "Для **реєстрації** мені потрібен запис до бюргерамту." },
+      { "german": "Nach dem Umzug muss man die **Anmeldung** innerhalb von zwei Wochen machen.", "translation": "Після переїзду **реєстрацію** треба зробити протягом двох тижнів." },
+      { "german": "Die **Anmeldung** zum Sprachkurs ist online möglich.", "translation": "**Запис** на мовний курс можливий онлайн." },
+      { "german": "Haben Sie die Bestätigung der **Anmeldung** dabei?", "translation": "У вас із собою підтвердження **реєстрації**?" }
+    ]
+  },
+  "vertrag": {
+    "word": "договір",
+    "definition": "Документ, у якому дві сторони домовляються про правила й підписують його.",
+    "examples": [
+      { "german": "Ich habe den **Vertrag** noch nicht unterschrieben.", "translation": "Я ще не підписав **договір**." },
+      { "german": "Der **Vertrag** läuft zwei Jahre.", "translation": "**Договір** діє два роки." },
+      { "german": "Bitte lesen Sie den **Vertrag** genau durch.", "translation": "Будь ласка, уважно прочитайте **договір**." },
+      { "german": "Die **Verträge** liegen im Ordner.", "translation": "**Договори** лежать у папці." }
+    ]
+  },
+  "bewerbung": {
+    "word": "заявка на роботу",
+    "definition": "Документи, з якими претендують на робоче місце або місце навчання.",
+    "examples": [
+      { "german": "Ich schicke heute meine **Bewerbung** ab.", "translation": "Сьогодні я надсилаю свою **заявку**." },
+      { "german": "Zu einer **Bewerbung** gehören Lebenslauf und Anschreiben.", "translation": "До **заявки** входять резюме та супровідний лист." },
+      { "german": "Vielen Dank für Ihre **Bewerbung**.", "translation": "Дякуємо за вашу **заявку**." },
+      { "german": "Ich habe schon zwanzig **Bewerbungen** geschrieben.", "translation": "Я вже написав двадцять **заявок**." }
+    ]
+  },
+  "erfahrung": {
+    "word": "досвід",
+    "definition": "Знання та вміння, здобуті через пережите й практику.",
+    "examples": [
+      { "german": "Ich habe drei Jahre **Erfahrung** als Entwickler.", "translation": "У мене три роки **досвіду** роботи розробником." },
+      { "german": "Das war eine wichtige **Erfahrung** für mich.", "translation": "Це був важливий **досвід** для мене." },
+      { "german": "Wir haben gute **Erfahrungen** mit dieser Firma gemacht.", "translation": "У нас добрий **досвід** роботи з цією фірмою." },
+      { "german": "Aus **Erfahrung** weiß ich, dass das dauert.", "translation": "З **досвіду** я знаю, що це довго." }
+    ]
+  },
+  "miete": {
+    "word": "оренда, квартплата",
+    "definition": "Гроші, які щомісяця платять за квартиру.",
+    "examples": [
+      { "german": "Die **Miete** beträgt 650 Euro warm.", "translation": "**Оренда** становить 650 євро з комунальними." },
+      { "german": "Ich überweise die **Miete** am Monatsanfang.", "translation": "Я переказую **оренду** на початку місяця." },
+      { "german": "Die **Mieten** in München sind sehr hoch.", "translation": "Ціни на **оренду** в Мюнхені дуже високі." },
+      { "german": "Ist die **Miete** inklusive Nebenkosten?", "translation": "**Оренда** включає комунальні послуги?" }
+    ]
+  },
+  "versicherung": {
+    "word": "страховка",
+    "definition": "Договір, за яким отримуєш гроші, якщо сталося щось погане.",
+    "examples": [
+      { "german": "Ohne **Versicherung** ist ein Arztbesuch teuer.", "translation": "Без **страховки** візит до лікаря дорогий." },
+      { "german": "Ich habe die Rechnung an die **Versicherung** geschickt.", "translation": "Я надіслав рахунок до **страхової**." },
+      { "german": "Welche **Versicherungen** braucht man wirklich?", "translation": "Які **страховки** справді потрібні?" },
+      { "german": "Die **Versicherung** zahlt den Schaden.", "translation": "**Страховка** оплачує збиток." }
+    ]
+  },
+  "umzug": {
+    "word": "переїзд",
+    "definition": "Коли з усіма речами переїжджаєш до іншої квартири.",
+    "examples": [
+      { "german": "Der **Umzug** ist am nächsten Samstag.", "translation": "**Переїзд** наступної суботи." },
+      { "german": "Kannst du mir beim **Umzug** helfen?", "translation": "Можеш допомогти мені з **переїздом**?" },
+      { "german": "Nach dem **Umzug** war ich total müde.", "translation": "Після **переїзду** я був зовсім без сил." },
+      { "german": "Zwei **Umzüge** in einem Jahr sind zu viel.", "translation": "Два **переїзди** за рік — це забагато." }
+    ]
+  },
+  "gehalt": {
+    "word": "зарплата",
+    "definition": "Гроші, які щомісяця отримують за роботу.",
+    "examples": [
+      { "german": "Das **Gehalt** kommt am Ende des Monats.", "translation": "**Зарплата** приходить наприкінці місяця." },
+      { "german": "Im Vorstellungsgespräch haben wir über das **Gehalt** gesprochen.", "translation": "На співбесіді ми говорили про **зарплату**." },
+      { "german": "Die **Gehälter** in der IT sind gut.", "translation": "**Зарплати** в IT хороші." },
+      { "german": "Ich bekomme ab Januar mehr **Gehalt**.", "translation": "З січня я отримую більшу **зарплату**." }
+    ]
+  },
+  "behoerde": {
+    "word": "відомство, установа",
+    "definition": "Державний або міський орган, який виконує громадські завдання.",
+    "examples": [
+      { "german": "Für den Antrag muss ich zur **Behörde**.", "translation": "Для заяви мені треба до **відомства**." },
+      { "german": "Die **Behörde** hat meinen Antrag noch nicht bearbeitet.", "translation": "**Відомство** ще не розглянуло мою заяву." },
+      { "german": "Der Kontakt mit deutschen **Behörden** ist oft kompliziert.", "translation": "Спілкування з німецькими **відомствами** часто складне." },
+      { "german": "Diese Frage klärt die zuständige **Behörde**.", "translation": "Це питання вирішує відповідне **відомство**." }
+    ]
+  },
+  "aufenthaltstitel": {
+    "word": "посвідка на проживання",
+    "definition": "Документ, який дозволяє жити в Німеччині протягом певного часу.",
+    "examples": [
+      { "german": "Mein **Aufenthaltstitel** ist bis März gültig.", "translation": "Моя **посвідка на проживання** дійсна до березня." },
+      { "german": "Ich muss meinen **Aufenthaltstitel** rechtzeitig verlängern.", "translation": "Мені треба вчасно продовжити **посвідку на проживання**." },
+      { "german": "Für den neuen Job brauche ich einen anderen **Aufenthaltstitel**.", "translation": "Для нової роботи мені потрібна інша **посвідка на проживання**." },
+      { "german": "Die Ausländerbehörde stellt **Aufenthaltstitel** aus.", "translation": "Відомство у справах іноземців видає **посвідки на проживання**." }
+    ]
+  },
+  "voraussetzung": {
+    "word": "умова, вимога",
+    "definition": "Те, що має бути, щоб стало можливим щось інше.",
+    "examples": [
+      { "german": "Deutschkenntnisse sind eine wichtige **Voraussetzung** für den Job.", "translation": "Знання німецької — важлива **умова** для цієї роботи." },
+      { "german": "Welche **Voraussetzungen** muss ich für die Einbürgerung erfüllen?", "translation": "Яким **вимогам** треба відповідати, щоб отримати громадянство?" },
+      { "german": "Unter dieser **Voraussetzung** bin ich einverstanden.", "translation": "За цієї **умови** я згоден." },
+      { "german": "Eine abgeschlossene Ausbildung ist keine **Voraussetzung**.", "translation": "Завершена профосвіта не є обов'язковою **умовою**." }
+    ]
+  },
+  "kuendigung": {
+    "word": "розірвання, звільнення",
+    "definition": "Заява про те, що припиняєш договір, оренду квартири або роботу.",
+    "examples": [
+      { "german": "Ich habe die **Kündigung** schriftlich eingereicht.", "translation": "Я подав **заяву про звільнення** письмово." },
+      { "german": "Die **Kündigung** der Wohnung muss drei Monate vorher erfolgen.", "translation": "Про **розірвання** договору оренди треба повідомити за три місяці." },
+      { "german": "Nach der **Kündigung** habe ich sofort einen neuen Job gesucht.", "translation": "Після **звільнення** я одразу почав шукати нову роботу." },
+      { "german": "Der Vermieter hat mir die **Kündigung** geschickt.", "translation": "Орендодавець надіслав мені **повідомлення про розірвання**." }
+    ]
+  },
+  "verantwortung": {
+    "word": "відповідальність",
+    "definition": "Обов'язок дбати про щось чи когось і відповідати за це.",
+    "examples": [
+      { "german": "Als Teamleiter trägt er viel **Verantwortung**.", "translation": "Як керівник команди він несе велику **відповідальність**." },
+      { "german": "Ich übernehme die **Verantwortung** für den Fehler.", "translation": "Я беру на себе **відповідальність** за помилку." },
+      { "german": "Kinder zu haben ist eine große **Verantwortung**.", "translation": "Мати дітей — велика **відповідальність**." },
+      { "german": "In meinem neuen Job habe ich mehr **Verantwortung**.", "translation": "На новій роботі в мене більше **відповідальності**." }
+    ]
+  },
+  "nachweis": {
+    "word": "підтвердження, довідка",
+    "definition": "Документ, який доводить, що щось є правдою.",
+    "examples": [
+      { "german": "Bitte bringen Sie einen **Nachweis** über Ihr Einkommen mit.", "translation": "Будь ласка, принесіть **підтвердження** вашого доходу." },
+      { "german": "Als **Nachweis** reicht eine Kopie des Zeugnisses.", "translation": "Як **підтвердження** достатньо копії атестата." },
+      { "german": "Für den Kurs brauche ich einen **Nachweis** über mein Sprachniveau.", "translation": "Для курсу мені потрібна **довідка** про мій рівень мови." },
+      { "german": "Alle **Nachweise** müssen auf Deutsch sein.", "translation": "Усі **підтвердження** мають бути німецькою." }
+    ]
+  },
+  "zustaendigkeit": {
+    "word": "компетенція, сфера відповідальності",
+    "definition": "Право й обов'язок займатися певним завданням.",
+    "examples": [
+      { "german": "Das liegt nicht in meiner **Zuständigkeit**.", "translation": "Це не входить до моєї **компетенції**." },
+      { "german": "Die **Zuständigkeit** für Visa liegt bei der Ausländerbehörde.", "translation": "**Компетенція** щодо віз — у відомства у справах іноземців." },
+      { "german": "Im Team sind die **Zuständigkeiten** klar verteilt.", "translation": "У команді **обов'язки** чітко розподілені." },
+      { "german": "Wer hat hier die **Zuständigkeit**?", "translation": "Хто тут **відповідальний**?" }
+    ]
+  }
+}
