@@ -28,7 +28,7 @@ divider any more (it would be too pale), it keeps the old gray base.
 | Word card (learning and lookup) | `palette.card`, **no outline** (solid) | radius 32 |
 | Search field | fill `palette.card`, **no outline** when idle, gray `AppColors.divider(colors)` outline (same as list dividers, not blue) only while focused; vertical padding 10, dense | pill (fully round) |
 
-Search field behavior (`_SearchField` in `categories_screen.dart`): while focused or holding text,
+Search field behavior (`SearchField` in `search_field.dart`): while focused or holding text,
 the field shrinks (animated) and a `RoundIconButton` with `Icons.close` appears on its right;
 it clears the text, hides the keyboard and returns the field to full width.
 The hint text and that close icon are gray too: the outline color made 30% lighter
