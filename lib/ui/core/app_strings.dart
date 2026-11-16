@@ -77,9 +77,23 @@ class AppStrings {
   String get statsPeriodAll => _get('statsPeriodAll');
   String get statusKnown => _get('statusKnown');
   String get statusLearning => _get('statusLearning');
+  String get statsLearning => _get('statsLearning');
   String get statsReview => _get('statsReview');
   String get statsLearned => _get('statsLearned');
   String get statsEmpty => _get('statsEmpty');
+
+  /// Short date, "16 ноя" / "16 Nov" / "11月 16日": the order comes from
+  /// `dateShort` ({d}, {m}), the month from `monthsShort` (12, comma-separated).
+  /// The space lets a narrow label break into day and month.
+  String dateShort(DateTime date) {
+    final months = _get('monthsShort').split(',');
+    return _get('dateShort')
+        .replaceAll('{d}', '${date.day}')
+        .replaceAll(
+          '{m}',
+          months.length == 12 ? months[date.month - 1] : '${date.month}',
+        );
+  }
 
   /// Monday first; stored comma-separated in one key ("Пн,Вт,…").
   List<String> get weekdaysShort => _get('weekdaysShort').split(',');

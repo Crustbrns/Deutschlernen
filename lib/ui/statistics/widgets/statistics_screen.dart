@@ -37,7 +37,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
           )]!;
     final labels = {
       WordStatus.known: strings.statusKnown,
-      WordStatus.learning: strings.statusLearning,
+      WordStatus.learning: strings.statsLearning,
       WordStatus.review: strings.statsReview,
       WordStatus.learned: strings.statsLearned,
     };
@@ -195,7 +195,7 @@ class _TotalRow extends StatelessWidget {
             width: 12,
             height: 12,
             decoration: BoxDecoration(
-              color: AppColors.forWordStatus(status, colors),
+              color: ProgressChart.colorFor(status, context),
               shape: BoxShape.circle,
             ),
           ),

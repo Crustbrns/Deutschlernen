@@ -102,10 +102,11 @@ abstract final class AppColors {
   static const levelB1 = Color(0xFF34C759); // green tree
   static const levelB2 = accentBlue; // mountains
 
-  // Word counts on the progress chart's colored segments; the fills don't
-  // change with the theme, so neither do these.
-  static const chartCountDark = Color(0xFF000000);
-  static const chartCountLight = Color(0xFFFFFFFF);
+  // Progress chart. "Already know" is a soft light gray there (white in the
+  // lists); all segment fills are light, so the counts on them are black in
+  // both themes.
+  static const chartKnown = Color(0xFFC7C7CC);
+  static const chartCount = Color(0xFF000000);
 
   // Word status strips in the word lists (new words use a theme gray).
   static const statusLearning = Color(0xFFFF5C8A); // pink
