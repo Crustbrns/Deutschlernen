@@ -253,7 +253,7 @@ the level word count (mutedText 50% lighter). Reset all progress: title in `deci
   thumb, `HapticFeedback.lightImpact` on change.
 - Theme: a value row like the language rows ("Тема" … blue current value) opening a choice
   sheet: same as system / dark / light (user replaced the segmented switch).
-- Language and theme rows (`_ValueRow`): current choice as `AppColors.softBlue` trailing text,
+- Language and theme rows (`SettingsValueRow` in `settings_rows.dart`): current choice as `AppColors.softBlue` trailing text,
   no chevron; "Как в системе" when following the device. Pick-one sheets use `showChoiceSheet` (`lib/ui/core/widgets/choice_sheet.dart`). Language
   sheet (`language_sheet.dart`): first row "Как в системе" with the language it gives now as a
   gray subtitle; built like the level sheet — screen background,
@@ -264,7 +264,7 @@ the level word count (mutedText 50% lighter). Reset all progress: title in `deci
   sheet background — light: background 10% darker, dark: background 20% lighter.
 - Speech rate: a `MenuRow` header, then a slider (track 6, filled `softBlue`, unfilled
   `palette.sliderTrack` soft pastel gray, white pill thumb 30×20 with the switch's shadow
-  (`_PillThumbShape`), no ripple, no value indicator; `SliderThemeData.padding` 16 horizontal, so
+  (`_PillThumbShape` in `speed_row.dart`), no ripple, no value indicator; `SliderThemeData.padding` 16 horizontal, so
   the track is level with the row text; slow / fast labels at the same 16 edges) and slow / fast 13 gray under it.
 - Reset dialog: `palette.card`, radius 20, title `AppListText.title`, body gray hint, buttons
   17 w600 (cancel `onSurface`, reset red).
