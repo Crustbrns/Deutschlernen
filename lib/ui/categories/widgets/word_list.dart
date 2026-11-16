@@ -29,33 +29,39 @@ class WordList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // A Column builds every row at once; fine for now, switch to a lazy list
-    // if the dictionary grows to thousands of words.
-    return SingleChildScrollView(
-      // + bottom inset: the last row stays above the bottom bar / home indicator.
-      padding: EdgeInsets.fromLTRB(
-        16,
-        0,
-        16,
-        24 + MediaQuery.paddingOf(context).bottom,
-      ),
+    // Lazy: only the rows on screen are built (project rule), the
+    // dictionary and its search results can be long.
+    return CustomScrollView(
       // Scrolling hides the keyboard, as in iOS search.
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-      child: GroupedCard(
-        children: [
-          for (final word in words)
-            WordRow(
-              word: word,
-              state: stateOf(word.id),
-              showLevel: showLevel,
-              onTap: () {
-                FocusScope.of(context).unfocus();
-                onWordSelected(word);
-              },
-              onSpeak: () => onSpeak(word.withArticle),
-            ),
-        ],
-      ),
+      slivers: [
+        SliverPadding(
+          // + bottom inset: the last row stays above the bottom bar / home
+          // indicator.
+          padding: EdgeInsets.fromLTRB(
+            16,
+            0,
+            16,
+            24 + MediaQuery.paddingOf(context).bottom,
+          ),
+          sliver: GroupedSliverList(
+            itemCount: words.length,
+            itemBuilder: (context, i) {
+              final word = words[i];
+              return WordRow(
+                word: word,
+                state: stateOf(word.id),
+                showLevel: showLevel,
+                onTap: () {
+                  FocusScope.of(context).unfocus();
+                  onWordSelected(word);
+                },
+                onSpeak: () => onSpeak(word.withArticle),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

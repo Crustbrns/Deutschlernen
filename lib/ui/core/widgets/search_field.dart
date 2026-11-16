@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
@@ -8,24 +10,33 @@ import 'package:deutschlernen/ui/core/widgets/round_icon_button.dart';
 /// Active (focused or holding text): blue outline while focused, and the
 /// field shrinks to make room for a round close button on its right.
 /// The button clears the text, hides the keyboard and returns the idle look.
+///
+/// Every search in the app uses this field: [onSearch] fires only once the
+/// user stops typing ([pause]), not on every key (project rule). The search
+/// key and the close button fire it right away.
 class SearchField extends StatefulWidget {
-  const SearchField({
-    super.key,
-    required this.controller,
-    required this.hint,
-    required this.onChanged,
-  });
+  const SearchField({super.key, required this.hint, required this.onSearch});
 
-  final TextEditingController controller;
   final String hint;
-  final VoidCallback onChanged;
+
+  /// The trimmed query; empty when the search was cleared.
+  final ValueChanged<String> onSearch;
+
+  /// How long after the last key the search runs.
+  static const pause = Duration(milliseconds: 350);
 
   @override
-  State<SearchField> createState() => SearchFieldStateX();
+  State<SearchField> createState() => _SearchFieldState();
 }
 
-class SearchFieldStateX extends State<SearchField> {
+class _SearchFieldState extends State<SearchField> {
+  final _controller = TextEditingController();
   final _focusNode = FocusNode();
+  Timer? _debounce;
+
+  /// Last query sent, so the same one isn't sent twice (e.g. submit right
+  /// after the pause).
+  String _sent = '';
 
   @override
   void initState() {
@@ -36,19 +47,34 @@ class SearchFieldStateX extends State<SearchField> {
 
   @override
   void dispose() {
+    _debounce?.cancel();
+    _controller.dispose();
     _focusNode.dispose();
     super.dispose();
   }
 
   // Also active with text but no focus (e.g. after scrolling the results
   // hid the keyboard), so the text can still be cleared.
-  bool get _isActive =>
-      _focusNode.hasFocus || widget.controller.text.isNotEmpty;
+  bool get _isActive => _focusNode.hasFocus || _controller.text.isNotEmpty;
+
+  void _onChanged(String _) {
+    setState(() {}); // the close button depends on the text
+    _debounce?.cancel();
+    _debounce = Timer(SearchField.pause, _send);
+  }
+
+  void _send() {
+    _debounce?.cancel();
+    final query = _controller.text.trim();
+    if (query == _sent) return;
+    _sent = query;
+    widget.onSearch(query);
+  }
 
   void _close() {
-    widget.controller.clear();
+    _controller.clear();
     _focusNode.unfocus();
-    widget.onChanged();
+    _send();
   }
 
   @override
@@ -68,9 +94,10 @@ class SearchFieldStateX extends State<SearchField> {
       children: [
         Expanded(
           child: TextField(
-            controller: widget.controller,
+            controller: _controller,
             focusNode: _focusNode,
-            onChanged: (_) => widget.onChanged(),
+            onChanged: _onChanged,
+            onSubmitted: (_) => _send(),
             autocorrect: false,
             enableSuggestions: false,
             textInputAction: TextInputAction.search,
