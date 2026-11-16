@@ -5,7 +5,7 @@ import 'package:deutschlernen/domain/models/word_status.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
-import 'package:deutschlernen/ui/core/widgets/level_icon.dart';
+import 'package:deutschlernen/ui/core/widgets/level_row.dart';
 import 'package:deutschlernen/ui/core/widgets/round_icon_button.dart';
 import 'package:deutschlernen/ui/vocabulary/widgets/level_words_screen.dart';
 import 'package:deutschlernen/ui/vocabulary/widgets/word_list.dart';
@@ -168,59 +168,23 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
         .length;
     final percent = words.isEmpty ? 0 : (seen * 100 / words.length).round();
     final muted = AppPalette.of(context).mutedText;
-    // Light theme: count and percent 50% lighter (user's choice), on white
-    // they looked too heavy.
+    // Light theme: 50% lighter, like the count (user's choice).
     Color soft(Color c) =>
         colors.brightness == Brightness.light ? AppColors.lighten(c, 0.5) : c;
-    // Count a size smaller than a word row's translation; the percent
-    // bigger, it is the row's progress at a glance (user's choice).
-    const secondarySize = 15.0;
-    const percentSize = 17.0;
 
-    // Same typography as a word row: level like the German word, count like
-    // the translation. Own row instead of ListTile, which adds its own
-    // spacing between title and subtitle.
-    return InkWell(
+    return LevelRow(
+      level: level,
+      wordCount: words.length,
       onTap: () => _openLevel(level, words),
-      child: Padding(
-        // 16 = divider indent, so text and lines start at one edge.
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: Row(
-          children: [
-            LevelIcon(level),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(level, style: AppListText.title(colors)),
-                  // More air than a word row (AppListText.gap): the count
-                  // is smaller and lighter, it shouldn't stick to the name.
-                  const SizedBox(height: 4),
-                  // Gray: secondary to the level name.
-                  Text(
-                    AppStrings.of(context).wordCount(words.length),
-                    style: AppListText.subtitle(colors).copyWith(
-                      color: colors.brightness == Brightness.light
-                          ? AppColors.softSecondary(context)
-                          : muted,
-                      fontSize: secondarySize,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // Share of the level's words already seen. Non-breaking space:
-            // "40 %" never splits across lines.
-            Text(
-              '$percent\u00A0%',
-              style: AppListText.subtitle(colors).copyWith(
-                fontSize: percentSize,
-                // Light gray: between the main text and the muted count.
-                color: soft(Color.lerp(colors.onSurface, muted, 0.5)!),
-              ),
-            ),
-          ],
+      // Share of the level's words already seen, a bit bigger than the
+      // count: the row's progress at a glance (user's choice).
+      // Non-breaking space: "40 %" never splits across lines.
+      trailing: Text(
+        '$percent\u00A0%',
+        style: AppListText.subtitle(colors).copyWith(
+          fontSize: 17,
+          // Light gray: between the main text and the muted count.
+          color: soft(Color.lerp(colors.onSurface, muted, 0.5)!),
         ),
       ),
     );

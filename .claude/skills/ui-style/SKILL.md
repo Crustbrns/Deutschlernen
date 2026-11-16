@@ -84,7 +84,8 @@ render them as separate cards with gaps between them.
   Each level row starts with a colored icon (26, 14px gap), a growth metaphor: A1 `plant`
   (sprout, `AppColors.levelA1` teal), A2 `flowerTulip` (pink), B1 `tree` (green), B2
   `mountains` (blue) — `LevelIcon` (`lib/ui/core/widgets/level_icon.dart`); the level picker sheet
-  (`level_sheet.dart`) shows the same icons as `ListTile.leading`.
+  (`level_sheet.dart`) uses the same `LevelRow` (`lib/ui/core/widgets/level_row.dart`) as the
+  Categories tab, with the picker check (`softBlue` `checkCircle` / `circle`) as trailing.
 
 Separate blocks are only for different kinds of content (e.g. a title, then a list).
 
@@ -230,10 +231,11 @@ Prefer `Curves.easeOutCubic` for things that open or grow.
 (`MenuRow.hintStyle`, not uppercase, 8 from the left like the title, 20 above) and a
 `GroupedCard` of `MenuRow`s (`lib/ui/core/widgets/menu_row.dart`, shared with the Learn menu:
 title 17 w600 -0.4, gray hint 15 w600 -0.3). **No icons in settings rows** (user removed them;
-the Learn menu keeps its colored icons). Rows use `compact: true`: line height 1.2, 2px above
+the Learn menu keeps its colored icons). Rows use `compact: true`: line height 1.12, 4px above
 the hint. Light theme: all gray settings text (hints, category names, slow/fast, reset dialog
 body) is `AppColors.softSecondary` — the same as the level word count (mutedText 50% lighter);
-`MenuRow.hintStyle(context, soft: true)`. Reset all progress: title in `decisionRed`.
+`MenuRow.hintStyle(context, soft: true)`. Reset all progress: title in `decisionRed`, no hint line, trailing
+`AppIcons.arrowCounterClockwise` 22 in `decisionRed`.
 
 - Switches: `AppSwitch` (`lib/ui/core/widgets/app_switch.dart`), same on both platforms: track
   60×31, oval white thumb 37×25 (wider than tall, user's choice), on = `AppColors.softBlue`
@@ -252,8 +254,10 @@ body) is `AppColors.softSecondary` — the same as the level word count (mutedTe
   and closes.
 - Bottom sheets' drag handle (`AppTheme` → `bottomSheetTheme.dragHandleColor`): quiet, just off the
   sheet background — light: background 10% darker, dark: background 20% lighter.
-- Speech rate: a `MenuRow` header, then a slider (track 4, `softBlue`, thumb radius 10, no value
-  indicator) and slow / fast 13 gray under it.
+- Speech rate: a `MenuRow` header, then a slider (track 6, filled `softBlue`, unfilled
+  `palette.sliderTrack` soft pastel gray, white pill thumb 30×20 with the switch's shadow
+  (`_PillThumbShape`), no ripple, no value indicator; `SliderThemeData.padding` 16 horizontal, so
+  the track is level with the row text; slow / fast labels at the same 16 edges) and slow / fast 13 gray under it.
 - Reset dialog: `palette.card`, radius 20, title `AppListText.title`, body gray hint, buttons
   17 w600 (cancel `onSurface`, reset red).
 

@@ -15,18 +15,21 @@ class AppPalette extends ThemeExtension<AppPalette> {
     required this.card,
     required this.subtleButton,
     required this.mutedText,
+    required this.sliderTrack,
   });
 
   final Color background; // behind the cards
   final Color card;
   final Color subtleButton; // barely different from the card
   final Color mutedText; // secondary labels
+  final Color sliderTrack; // unfilled part of a slider: soft pastel gray
 
   static const dark = AppPalette(
     background: Color(0xFF0B0B0D),
     card: Color(0xFF151517),
     subtleButton: Color(0xFF222225),
     mutedText: Color(0xFF8C8C8C), // rgb(140,140,140)
+    sliderTrack: Color(0xFF3A3A3E),
   );
 
   static const light = AppPalette(
@@ -34,6 +37,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
     card: Color(0xFFFFFFFF),
     subtleButton: Color(0xFFEDEDF0),
     mutedText: Color(0xFF6A6A70),
+    sliderTrack: Color(0xFFE1E1E6),
   );
 
   static AppPalette of(BuildContext context) =>
@@ -45,11 +49,13 @@ class AppPalette extends ThemeExtension<AppPalette> {
     Color? card,
     Color? subtleButton,
     Color? mutedText,
+    Color? sliderTrack,
   }) => AppPalette(
     background: background ?? this.background,
     card: card ?? this.card,
     subtleButton: subtleButton ?? this.subtleButton,
     mutedText: mutedText ?? this.mutedText,
+    sliderTrack: sliderTrack ?? this.sliderTrack,
   );
 
   @override
@@ -60,14 +66,20 @@ class AppPalette extends ThemeExtension<AppPalette> {
       card: Color.lerp(card, other.card, t)!,
       subtleButton: Color.lerp(subtleButton, other.subtleButton, t)!,
       mutedText: Color.lerp(mutedText, other.mutedText, t)!,
+      sliderTrack: Color.lerp(sliderTrack, other.sliderTrack, t)!,
     );
   }
 }
 
 abstract final class AppTheme {
-  static ThemeData dark() => _build(Brightness.dark, AppPalette.dark);
+  // Built once: ColorScheme.fromSeed is costly, and MaterialApp asks for the
+  // themes on every settings change.
+  static final _dark = _build(Brightness.dark, AppPalette.dark);
+  static final _light = _build(Brightness.light, AppPalette.light);
 
-  static ThemeData light() => _build(Brightness.light, AppPalette.light);
+  static ThemeData dark() => _dark;
+
+  static ThemeData light() => _light;
 
   static ThemeData _build(Brightness brightness, AppPalette palette) {
     return ThemeData(
