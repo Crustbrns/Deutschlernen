@@ -105,5 +105,11 @@
   "reminderLearnBody": "Un par de minutos y unas cuantas palabras más son tuyas",
   "notificationsDeniedTitle": "Notificaciones desactivadas",
   "notificationsDeniedBody": "Para recibir recordatorios, permite las notificaciones de la app en los ajustes del teléfono.",
-  "openSettings": "Abrir ajustes"
+  "openSettings": "Abrir ajustes",
+  "reminderKinds": "Recordarme",
+  "reminderSchedule": "Horario",
+  "reminderKindReview": "Repasos",
+  "reminderKindReviewHint": "Cuando hay palabras para repasar",
+  "reminderKindLearn": "Palabras nuevas",
+  "reminderKindLearnHint": "Cuando toca aprender nuevas"
 }

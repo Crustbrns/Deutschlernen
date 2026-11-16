@@ -102,6 +102,12 @@ class AppStrings {
 
   // Reminders (settings and the notifications themselves).
   String get done => _get('done');
+  String get reminderKinds => _get('reminderKinds');
+  String get reminderSchedule => _get('reminderSchedule');
+  String get reminderKindReview => _get('reminderKindReview');
+  String get reminderKindReviewHint => _get('reminderKindReviewHint');
+  String get reminderKindLearn => _get('reminderKindLearn');
+  String get reminderKindLearnHint => _get('reminderKindLearnHint');
   String get reminderDays => _get('reminderDays');
   String get reminderEveryDay => _get('reminderEveryDay');
   String get reminderWeekdays => _get('reminderWeekdays');

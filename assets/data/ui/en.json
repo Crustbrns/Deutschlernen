@@ -105,5 +105,11 @@
   "reminderLearnBody": "A couple of minutes, and a few more words are yours",
   "notificationsDeniedTitle": "Notifications are off",
   "notificationsDeniedBody": "To get reminders, allow notifications for the app in your phone's settings.",
-  "openSettings": "Open settings"
+  "openSettings": "Open settings",
+  "reminderKinds": "Remind me about",
+  "reminderSchedule": "Schedule",
+  "reminderKindReview": "Reviews",
+  "reminderKindReviewHint": "When words are waiting for a review",
+  "reminderKindLearn": "New words",
+  "reminderKindLearnHint": "When it's time to learn new ones"
 }

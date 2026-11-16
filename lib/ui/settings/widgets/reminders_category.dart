@@ -8,7 +8,8 @@ import 'package:deutschlernen/ui/core/widgets/time_sheet.dart';
 import 'package:deutschlernen/ui/settings/view_models/settings_view_model.dart';
 import 'package:deutschlernen/ui/settings/widgets/settings_rows.dart';
 
-/// "Notifications" block: the reminders switch and, while it is on, the
+/// Reminder settings: the main switch; while it is on, a block with the
+/// kinds of reminders (reviews, new words) and a schedule block with the
 /// days, how many times a day and the time of each reminder.
 class RemindersCategory extends StatelessWidget {
   const RemindersCategory({super.key, required this.settings});
@@ -21,59 +22,86 @@ class RemindersCategory extends StatelessWidget {
     final reminders = settings.reminders;
     final times = reminders.times;
 
-    return SettingsCategory(
-      title: strings.settingsNotifications,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        SettingsSwitchRow(
-          title: strings.reminders,
-          hint: strings.remindersHint,
-          value: reminders.enabled,
-          onChanged: (on) => _setEnabled(context, on),
+        SettingsCategory(
+          title: strings.settingsNotifications,
+          children: [
+            SettingsSwitchRow(
+              title: strings.reminders,
+              hint: strings.remindersHint,
+              value: reminders.enabled,
+              onChanged: (on) => _setEnabled(context, on),
+            ),
+          ],
         ),
         if (reminders.enabled) ...[
-          SettingsValueRow(
-            title: strings.reminderDays,
-            value: _daysLabel(strings, reminders),
-            onTap: () => showMultiChoiceSheet<int>(
-              context: context,
-              title: strings.reminderDays,
-              selected: reminders.days,
-              onChanged: settings.setReminderDays,
-              choices: [
-                for (final (i, name) in strings.weekdaysLong.indexed)
-                  Choice(i + 1, name), // DateTime.weekday: Monday = 1
-              ],
-            ),
-          ),
-          SettingsValueRow(
-            title: strings.reminderFrequency,
-            value: strings.reminderTimesPerDay(times.length),
-            onTap: () => showChoiceSheet<int>(
-              context: context,
-              title: strings.reminderFrequency,
-              current: times.length,
-              onSelected: settings.setReminderCount,
-              choices: [
-                for (var n = 1; n <= ReminderSettings.maxPerDay; n++)
-                  Choice(n, strings.reminderTimesPerDay(n)),
-              ],
-            ),
-          ),
-          for (final (i, time) in times.indexed)
-            SettingsValueRow(
-              // One time: just "Time"; several: "Time 1", "Time 2", …
-              title: times.length == 1
-                  ? strings.reminderTime
-                  : strings.reminderTimeN(i + 1),
-              value: _format(time),
-              onTap: () => showTimeSheet(
-                context: context,
-                title: strings.reminderTime,
-                doneLabel: strings.done,
-                initial: time,
-                onSelected: (t) => settings.setReminderTime(i, t),
+          SettingsCategory(
+            title: strings.reminderKinds,
+            children: [
+              SettingsSwitchRow(
+                title: strings.reminderKindReview,
+                hint: strings.reminderKindReviewHint,
+                value: reminders.review,
+                onChanged: settings.setReviewReminders,
               ),
-            ),
+              SettingsSwitchRow(
+                title: strings.reminderKindLearn,
+                hint: strings.reminderKindLearnHint,
+                value: reminders.learn,
+                onChanged: settings.setLearnReminders,
+              ),
+            ],
+          ),
+          SettingsCategory(
+            title: strings.reminderSchedule,
+            children: [
+              SettingsValueRow(
+                title: strings.reminderDays,
+                value: _daysLabel(strings, reminders),
+                onTap: () => showMultiChoiceSheet<int>(
+                  context: context,
+                  title: strings.reminderDays,
+                  selected: reminders.days,
+                  onChanged: settings.setReminderDays,
+                  choices: [
+                    for (final (i, name) in strings.weekdaysLong.indexed)
+                      Choice(i + 1, name), // DateTime.weekday: Monday = 1
+                  ],
+                ),
+              ),
+              SettingsValueRow(
+                title: strings.reminderFrequency,
+                value: strings.reminderTimesPerDay(times.length),
+                onTap: () => showChoiceSheet<int>(
+                  context: context,
+                  title: strings.reminderFrequency,
+                  current: times.length,
+                  onSelected: settings.setReminderCount,
+                  choices: [
+                    for (var n = 1; n <= ReminderSettings.maxPerDay; n++)
+                      Choice(n, strings.reminderTimesPerDay(n)),
+                  ],
+                ),
+              ),
+              for (final (i, time) in times.indexed)
+                SettingsValueRow(
+                  // One time: just "Time"; several: "Time 1", "Time 2", …
+                  title: times.length == 1
+                      ? strings.reminderTime
+                      : strings.reminderTimeN(i + 1),
+                  value: _format(time),
+                  onTap: () => showTimeSheet(
+                    context: context,
+                    title: strings.reminderTime,
+                    doneLabel: strings.done,
+                    initial: time,
+                    onSelected: (t) => settings.setReminderTime(i, t),
+                  ),
+                ),
+            ],
+          ),
         ],
       ],
     );

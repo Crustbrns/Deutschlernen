@@ -98,5 +98,11 @@
   "reminderLearnBody": "花几分钟，再记住几个单词",
   "notificationsDeniedTitle": "通知已关闭",
   "notificationsDeniedBody": "要接收提醒，请在手机设置中允许本应用发送通知。",
-  "openSettings": "打开设置"
+  "openSettings": "打开设置",
+  "reminderKinds": "提醒内容",
+  "reminderSchedule": "时间安排",
+  "reminderKindReview": "复习单词",
+  "reminderKindReviewHint": "有单词等待复习时",
+  "reminderKindLearn": "新单词",
+  "reminderKindLearnHint": "该学新单词时"
 }

@@ -113,5 +113,11 @@
   "reminderLearnBody": "Кілька хвилин — і ще кілька слів твої",
   "notificationsDeniedTitle": "Сповіщення заборонені",
   "notificationsDeniedBody": "Щоб отримувати нагадування, дозволь сповіщення для застосунку в налаштуваннях телефону.",
-  "openSettings": "Відкрити налаштування"
+  "openSettings": "Відкрити налаштування",
+  "reminderKinds": "Про що нагадувати",
+  "reminderSchedule": "Розклад",
+  "reminderKindReview": "Повторення слів",
+  "reminderKindReviewHint": "Коли слова чекають на повторення",
+  "reminderKindLearn": "Нові слова",
+  "reminderKindLearnHint": "Коли час вчити нові"
 }
