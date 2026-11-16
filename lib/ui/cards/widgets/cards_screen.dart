@@ -1,7 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/domain/models/card_decision.dart';
 import 'package:deutschlernen/domain/models/word.dart';
-import 'package:deutschlernen/ui/cards/view_models/cards_view_model.dart';
+import 'package:deutschlernen/ui/core/view_models/learning_view_model.dart';
 import 'package:deutschlernen/ui/cards/widgets/card_stack.dart';
 import 'package:deutschlernen/ui/cards/widgets/cards_top_bar.dart';
 import 'package:deutschlernen/ui/cards/widgets/decision_bar.dart';
@@ -10,9 +10,17 @@ import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 
 class CardsScreen extends StatefulWidget {
-  const CardsScreen({super.key, required this.viewModel});
+  const CardsScreen({
+    super.key,
+    required this.viewModel,
+    required this.strings,
+  });
 
-  final CardsViewModel viewModel;
+  final LearningViewModel viewModel;
+
+  /// Captured on opening: the language can only change in Settings, which
+  /// is under this screen.
+  final AppStrings strings;
 
   @override
   State<CardsScreen> createState() => _CardsScreenState();
@@ -21,7 +29,7 @@ class CardsScreen extends StatefulWidget {
 class _CardsScreenState extends State<CardsScreen> {
   final _swipeController = SwipeController();
 
-  CardsViewModel get _vm => widget.viewModel;
+  LearningViewModel get _vm => widget.viewModel;
 
   /// A new (gray) word is answered with "already know" / "learn"; a pink
   /// word and any review word with "don't remember" / "remember".
@@ -56,7 +64,7 @@ class _CardsScreenState extends State<CardsScreen> {
   /// the split bar, where knowing it is the good side (green) and still to
   /// learn is red.
   Widget _bottomBar(Word word, {required bool isTop}) {
-    final strings = _vm.strings;
+    final strings = widget.strings;
     final drag = isTop ? _swipeController.dragProgress : _still;
     void left() => _swipeController.swipe(SwipeDirection.left);
     void right() => _swipeController.swipe(SwipeDirection.right);
@@ -98,7 +106,7 @@ class _CardsScreenState extends State<CardsScreen> {
               return const Center(child: CircularProgressIndicator());
             }
 
-            final strings = _vm.strings;
+            final strings = widget.strings;
             final review = _vm.mode == SessionMode.review;
 
             return AppStringsScope(
@@ -112,7 +120,7 @@ class _CardsScreenState extends State<CardsScreen> {
                       onClose: () => Navigator.of(context).pop(),
                       onUndo: _vm.canUndo ? _vm.undo : null,
                       learnedToday: _vm.learnedToday,
-                      dailyGoal: CardsViewModel.dailyGoal,
+                      dailyGoal: LearningViewModel.dailyGoal,
                     ),
                   ),
                   Expanded(

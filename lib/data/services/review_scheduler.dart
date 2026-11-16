@@ -1,4 +1,5 @@
 import 'package:fsrs/fsrs.dart' as fsrs;
+import 'package:deutschlernen/domain/models/card_decision.dart';
 import 'package:deutschlernen/domain/models/word_progress.dart';
 
 /// Decides when a word comes back, using FSRS (the algorithm Anki uses).
@@ -13,6 +14,18 @@ class ReviewScheduler {
   WordProgress startLearning() => WordProgress.learning(
     fsrs.Card(cardId: DateTime.now().microsecondsSinceEpoch),
   );
+
+  /// The word's progress after the user's answer on its card.
+  /// [before] is null only for a new word ("already know" / "learn").
+  WordProgress answer(WordProgress? before, CardDecision decision) =>
+      switch (decision) {
+        CardDecision.known => const WordProgress.known(),
+        CardDecision.learn => startLearning(),
+        // A pink word stays pink: FSRS starts only with the first "remember".
+        CardDecision.forgot when before!.isUnrecalled => before,
+        CardDecision.forgot => review(before!, remembered: false),
+        CardDecision.remembered => review(before!, remembered: true),
+      };
 
   /// The user answered a review card.
   WordProgress review(WordProgress progress, {required bool remembered}) {

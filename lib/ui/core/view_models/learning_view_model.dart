@@ -1,0 +1,304 @@
+import 'dart:async' show unawaited;
+
+import 'package:flutter/foundation.dart';
+import 'package:deutschlernen/data/repositories/history_repository.dart';
+import 'package:deutschlernen/data/repositories/lookup_repository.dart';
+import 'package:deutschlernen/data/repositories/progress_repository.dart';
+import 'package:deutschlernen/data/repositories/settings_repository.dart';
+import 'package:deutschlernen/data/repositories/word_repository.dart';
+import 'package:deutschlernen/data/services/review_scheduler.dart';
+import 'package:deutschlernen/data/services/speech_service.dart';
+import 'package:deutschlernen/domain/models/app_language.dart';
+import 'package:deutschlernen/domain/models/card_decision.dart';
+import 'package:deutschlernen/domain/models/card_session.dart';
+import 'package:deutschlernen/domain/models/progress_book.dart';
+import 'package:deutschlernen/domain/models/status_counts.dart';
+import 'package:deutschlernen/domain/models/word.dart';
+import 'package:deutschlernen/domain/models/word_status.dart';
+import 'package:deutschlernen/ui/core/view_models/language_view_model.dart';
+import 'package:deutschlernen/ui/settings/view_models/settings_view_model.dart';
+
+/// Words, the user's progress on them and the current cards session; shared
+/// by all tabs and the cards screen. The rules live in ProgressBook and
+/// CardSession; this class loads, saves and notifies the UI.
+class LearningViewModel extends ChangeNotifier {
+  LearningViewModel({
+    required this._wordRepository,
+    required this._settingsRepository,
+    required this._lookupRepository,
+    required this._progressRepository,
+    required this._historyRepository,
+    required this._reviewScheduler,
+    required this._speechService,
+    required this._settingsViewModel,
+    required this._languageViewModel,
+  }) {
+    // Settings that change the cards (e.g. transcription) redraw them.
+    _settingsViewModel.addListener(notifyListeners);
+    _languageViewModel.addListener(_onLanguageChanged);
+  }
+
+  final WordRepository _wordRepository;
+  final SettingsRepository _settingsRepository;
+  final LookupRepository _lookupRepository;
+  final ProgressRepository _progressRepository;
+  final HistoryRepository _historyRepository;
+  final ReviewScheduler _reviewScheduler;
+  final SpeechService _speechService;
+  final SettingsViewModel _settingsViewModel;
+  final LanguageViewModel _languageViewModel;
+
+  /// Size of one "learn new words" session.
+  static const newWordsPerSession = 10;
+
+  /// How many words a day the user aims to learn.
+  static const dailyGoal = 10;
+
+  List<Word> _words = [];
+  Map<String, Word> _wordsById = {};
+
+  /// Translation language [_words] were loaded in.
+  AppLanguage? _wordsLanguage;
+
+  ProgressBook _progress = ProgressBook();
+
+  /// Levels new words are taken from; all by default.
+  Set<String> _learnLevels = {...Word.levels};
+
+  /// Daily status counts for the progress chart, keyed by local midnight.
+  Map<DateTime, StatusCounts> _statusHistory = {};
+
+  /// Word id → times opened from the Categories search.
+  Map<String, int> _lookupCounts = {};
+
+  /// Null until the first session starts.
+  CardSession? _session;
+
+  /// Words of [_session], kept as a list so the cards get the same one on
+  /// every rebuild.
+  List<Word> _deck = [];
+  CardDecision? _lastUndone;
+  bool _isLoading = true;
+  bool _isSwiping = false;
+
+  bool get isLoading => _isLoading;
+
+  /// All words, for the Categories tab.
+  List<Word> get words => _words;
+  Set<String> get learnLevels => _learnLevels;
+  Map<DateTime, StatusCounts> get statusHistory =>
+      Map.unmodifiable(_statusHistory);
+  bool get showTranscription => _settingsViewModel.showTranscription;
+
+  /// Learning status and next review of a word, for the word lists.
+  WordState stateOf(String wordId) =>
+      _progress.stateOf(wordId, DateTime.now().toUtc());
+
+  /// Words for "learn new words": unrecalled (pink) ones plus new ones in
+  /// the selected levels.
+  int get newWordsLeft => _unrecalledIds().length + _newWordIds().length;
+
+  /// Words whose review time has come. Computed on each call, since time
+  /// passes: a word learned 10 minutes ago may be due now.
+  int get dueCount => _dueIds().length;
+
+  /// Words learned today: first "remember" on a pink word since midnight.
+  int get learnedToday {
+    final now = DateTime.now();
+    return _progress.recalledSince(DateTime(now.year, now.month, now.day));
+  }
+
+  /// 0 for a word that was never searched.
+  int lookupCount(String wordId) => _lookupCounts[wordId] ?? 0;
+
+  // --- Session, for the cards screen ---
+
+  /// Words of the current cards session.
+  List<Word> get deck => _deck;
+  SessionMode get mode => _session?.mode ?? SessionMode.newWords;
+  int get index => _session?.index ?? 0;
+  bool get isFinished => !_isLoading && (_session?.isFinished ?? true);
+  bool get canUndo => _session?.canUndo ?? false;
+
+  /// Set after an undo, so the UI can fly the card back in from the right side.
+  CardDecision? get lastUndone => _lastUndone;
+
+  bool needsRecall(String wordId) => _session?.needsRecall(wordId) ?? false;
+
+  /// The top card is a pink word in a new-words session: it is answered with
+  /// "don't remember" / "remember" instead of "already know" / "learn".
+  bool get currentIsUnrecalled =>
+      !isFinished && (_progress[_session!.currentId]?.isUnrecalled ?? false);
+
+  /// Top bar progress. New-words session: today's goal, so the bar opens
+  /// at e.g. 60% when 6 of 10 words were learned earlier today. Review
+  /// session: share of the session's words that are done.
+  double get progress => mode == SessionMode.newWords
+      ? (learnedToday / dailyGoal).clamp(0.0, 1.0)
+      : _session?.answeredShare ?? 0;
+
+  Future<void> load() async {
+    _isLoading = true;
+    notifyListeners();
+
+    await _loadWords(_languageViewModel.wordLanguage);
+    _progress = ProgressBook(await _progressRepository.load());
+    _statusHistory = await _historyRepository.load();
+    // Today gets a snapshot even without answers, so the chart has it.
+    _recordSnapshot();
+    _lookupCounts = await _lookupRepository.loadCounts();
+    // Unknown saved levels are dropped; nothing valid left = all levels.
+    final savedLevels = (await _settingsRepository.loadLearnLevels())
+        ?.where(Word.levels.contains)
+        .toSet();
+    _learnLevels = (savedLevels == null || savedLevels.isEmpty)
+        ? {...Word.levels}
+        : savedLevels;
+
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> _loadWords(AppLanguage language) async {
+    _wordsLanguage = language;
+    _words = await _wordRepository.getWords(language);
+    _wordsById = {for (final w in _words) w.id: w};
+    // Same ids in every language, so the session and its position stay valid.
+    _syncDeck();
+  }
+
+  /// Reloads the words when the translation language changes.
+  Future<void> _onLanguageChanged() async {
+    final language = _languageViewModel.wordLanguage;
+    if (_isLoading || language == _wordsLanguage) return;
+    await _loadWords(language);
+    notifyListeners();
+  }
+
+  /// Changes the levels new words come from. Applies to the next session.
+  Future<void> setLearnLevels(Set<String> levels) async {
+    if (levels.isEmpty) return; // a session needs words
+    _learnLevels = levels;
+    notifyListeners();
+    await _settingsRepository.saveLearnLevels(levels);
+  }
+
+  /// Forgets everything about the word: it becomes new again.
+  void resetProgress(String wordId) {
+    if (!_progress.remove(wordId)) return;
+    notifyListeners();
+    _saveProgress();
+  }
+
+  /// Forgets the progress of every word: all become new again.
+  void resetAllProgress() {
+    if (_progress.isEmpty) return;
+    _progress.clear();
+    notifyListeners();
+    _saveProgress();
+  }
+
+  /// Called when a word is opened from the search results: +1 and save.
+  Future<void> recordLookup(String wordId) async {
+    // Update in memory before the first await: the card reads the count
+    // right after this call, while saving is still in progress.
+    _lookupCounts.update(wordId, (count) => count + 1, ifAbsent: () => 1);
+    notifyListeners();
+    await _lookupRepository.saveCounts(_lookupCounts);
+  }
+
+  /// Up to [newWordsPerSession] unseen words from the selected levels.
+  /// Pink words left from earlier sessions go first.
+  void startNewWords() => _startSession(
+    SessionMode.newWords,
+    [..._unrecalledIds(), ..._newWordIds()].take(newWordsPerSession),
+  );
+
+  /// All words that are due for review.
+  void startReview() => _startSession(SessionMode.review, _dueIds());
+
+  void _startSession(SessionMode mode, Iterable<String> ids) {
+    _session = CardSession(
+      mode: mode,
+      wordIds: ids,
+      progress: _progress,
+      schedule: _reviewScheduler.answer,
+      nextNewWord: (inDeck) =>
+          _newWordIds().where((id) => !inDeck.contains(id)).firstOrNull,
+    );
+    _syncDeck();
+    _lastUndone = null;
+    notifyListeners();
+  }
+
+  /// The cards screen has opened: read the word on top, if the user wants that.
+  void onCardsOpened() => _speakCurrentIfAuto();
+
+  /// The card has been released and starts flying off screen.
+  void onSwipeStarted() => _isSwiping = true;
+
+  /// The card has left the screen.
+  void onCardSwiped(CardDecision decision) {
+    _session!.answer(decision);
+    _syncDeck();
+    _lastUndone = null;
+    _isSwiping = false;
+    notifyListeners();
+    _speakCurrentIfAuto();
+    _saveProgress();
+  }
+
+  /// Takes back the last answer, including its effect on the progress.
+  void undo() {
+    if (!canUndo || _isSwiping) return;
+    _lastUndone = _session!.undo();
+    _syncDeck();
+    notifyListeners();
+    _saveProgress();
+  }
+
+  void speak(String text) => _speechService.speak(text);
+
+  void _speakCurrentIfAuto() {
+    if (!_settingsViewModel.autoSpeak || _isLoading || isFinished) return;
+    _speechService.speak(_deck[index].withArticle);
+  }
+
+  bool _exists(String wordId) => _wordsById.containsKey(wordId);
+
+  Iterable<String> _newWordIds() => _words
+      .where((w) => _learnLevels.contains(w.level) && !_progress.contains(w.id))
+      .map((w) => w.id);
+
+  /// All levels: pink words were started already, so a level filter
+  /// shouldn't hide them.
+  List<String> _unrecalledIds() => _progress.unrecalledIds(_exists);
+
+  List<String> _dueIds() => _progress.dueIds(DateTime.now().toUtc(), _exists);
+
+  void _syncDeck() => _deck = [
+    for (final id in _session?.wordIds ?? const <String>[]) _wordsById[id]!,
+  ];
+
+  // Not awaited: the UI already shows the new state; the write runs after.
+  void _saveProgress() {
+    unawaited(_progressRepository.save(_progress.entries));
+    _recordSnapshot();
+  }
+
+  /// Overwrites today's entry in the history with the current counts.
+  void _recordSnapshot() {
+    final now = DateTime.now();
+    _statusHistory[DateTime(now.year, now.month, now.day)] = _progress.counts(
+      now.toUtc(),
+    );
+    unawaited(_historyRepository.save(_statusHistory));
+  }
+
+  @override
+  void dispose() {
+    _settingsViewModel.removeListener(notifyListeners);
+    _languageViewModel.removeListener(_onLanguageChanged);
+    super.dispose();
+  }
+}

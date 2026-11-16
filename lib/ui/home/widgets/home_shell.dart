@@ -1,8 +1,9 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/domain/models/word.dart';
-import 'package:deutschlernen/ui/cards/view_models/cards_view_model.dart';
 import 'package:deutschlernen/ui/cards/widgets/cards_screen.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
+import 'package:deutschlernen/ui/core/view_models/language_view_model.dart';
+import 'package:deutschlernen/ui/core/view_models/learning_view_model.dart';
 import 'package:deutschlernen/ui/home/widgets/app_bottom_bar.dart';
 import 'package:deutschlernen/ui/learn/widgets/level_sheet.dart';
 import 'package:deutschlernen/ui/learn/widgets/learn_screen.dart';
@@ -19,10 +20,12 @@ class HomeShell extends StatefulWidget {
   const HomeShell({
     super.key,
     required this.viewModel,
+    required this.languageViewModel,
     required this.settingsViewModel,
   });
 
-  final CardsViewModel viewModel;
+  final LearningViewModel viewModel;
+  final LanguageViewModel languageViewModel;
   final SettingsViewModel settingsViewModel;
 
   @override
@@ -32,18 +35,21 @@ class HomeShell extends StatefulWidget {
 class _HomeShellState extends State<HomeShell> {
   HomeTab _tab = HomeTab.learn;
 
-  CardsViewModel get _vm => widget.viewModel;
+  LearningViewModel get _vm => widget.viewModel;
+  LanguageViewModel get _lang => widget.languageViewModel;
 
   void _openCards() {
     Navigator.of(context).push(
-      MaterialPageRoute<void>(builder: (_) => CardsScreen(viewModel: _vm)),
+      MaterialPageRoute<void>(
+        builder: (_) => CardsScreen(viewModel: _vm, strings: _lang.strings),
+      ),
     );
   }
 
   void _openWord(Word word) {
     Navigator.of(context).push(
       WordDetailScreen.route(
-        strings: _vm.strings,
+        strings: _lang.strings,
         screen: WordDetailScreen(
           word: word,
           // Wrong options for the "choose" answer mode.
@@ -64,16 +70,16 @@ class _HomeShellState extends State<HomeShell> {
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
-      listenable: _vm,
+      listenable: Listenable.merge([_vm, _lang]),
       builder: (context, _) {
-        if (_vm.isLoading) {
+        if (_vm.isLoading || _lang.isLoading) {
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );
         }
 
         return AppStringsScope(
-          strings: _vm.strings,
+          strings: _lang.strings,
           // Builder: the bar below needs a context under the scope.
           child: Builder(
             builder: (context) => Scaffold(
@@ -91,10 +97,10 @@ class _HomeShellState extends State<HomeShell> {
                     newWordsLeft: _vm.newWordsLeft,
                     dueCount: _vm.dueCount,
                     learnedToday: _vm.learnedToday,
-                    dailyGoal: CardsViewModel.dailyGoal,
+                    dailyGoal: LearningViewModel.dailyGoal,
                     onChooseLevels: () => showLevelSheet(
                       context: context,
-                      strings: _vm.strings,
+                      strings: _lang.strings,
                       selected: _vm.learnLevels,
                       wordCounts: {
                         for (final level in Word.levels)
@@ -128,14 +134,14 @@ class _HomeShellState extends State<HomeShell> {
                   ProgressScreen(history: _vm.statusHistory),
                   SettingsScreen(
                     settings: widget.settingsViewModel,
-                    languages: _vm.languages,
-                    uiLanguage: _vm.uiLanguage,
-                    wordLanguage: _vm.wordLanguage,
-                    uiFollowsSystem: _vm.uiFollowsSystem,
-                    wordFollowsSystem: _vm.wordFollowsSystem,
-                    systemLanguage: _vm.systemLanguage,
-                    onUiLanguageSelected: _vm.setUiLanguage,
-                    onWordLanguageSelected: _vm.setWordLanguage,
+                    languages: _lang.languages,
+                    uiLanguage: _lang.uiLanguage,
+                    wordLanguage: _lang.wordLanguage,
+                    uiFollowsSystem: _lang.uiFollowsSystem,
+                    wordFollowsSystem: _lang.wordFollowsSystem,
+                    systemLanguage: _lang.systemLanguage,
+                    onUiLanguageSelected: _lang.setUiLanguage,
+                    onWordLanguageSelected: _lang.setWordLanguage,
                     onResetAllProgress: _vm.resetAllProgress,
                   ),
                 ],
