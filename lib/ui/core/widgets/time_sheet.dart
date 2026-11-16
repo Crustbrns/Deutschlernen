@@ -19,21 +19,12 @@ Future<void> showTimeSheet({
   await showSheet(
     context: context,
     title: title,
-    builder: (sheetContext) => Column(
+    builder: (_) => Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _TimeWheels(initial: initial, onChanged: (v) => value = v),
         const SizedBox(height: 16),
-        FilledButton(
-          onPressed: () => Navigator.of(sheetContext).pop(),
-          style: FilledButton.styleFrom(
-            minimumSize: const Size.fromHeight(52),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(14),
-            ),
-          ),
-          child: Text(doneLabel),
-        ),
+        SheetDoneButton(doneLabel),
       ],
     ),
   );

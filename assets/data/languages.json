@@ -1,7 +1,7 @@
 [
-  { "code": "uk", "label": "Українська" },
-  { "code": "ru", "label": "Русский" },
-  { "code": "en", "label": "English" },
-  { "code": "es", "label": "Español" },
-  { "code": "zh", "label": "中文（简体）" }
+  { "code": "uk", "label": "Українська", "hello": "Привіт", "uiNote": "Меню й тексти українською", "wordsNote": "Переклади слів українською" },
+  { "code": "ru", "label": "Русский", "hello": "Привет", "uiNote": "Меню и тексты на русском", "wordsNote": "Переводы слов на русском" },
+  { "code": "en", "label": "English", "hello": "Hello", "uiNote": "Menus and texts in English", "wordsNote": "Word translations in English" },
+  { "code": "es", "label": "Español", "hello": "Hola", "uiNote": "Menús y textos en español", "wordsNote": "Traducciones de palabras en español" },
+  { "code": "zh", "label": "中文（简体）", "hello": "你好", "uiNote": "菜单和文字使用中文", "wordsNote": "单词翻译使用中文" }
 ]

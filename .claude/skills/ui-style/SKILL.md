@@ -255,11 +255,14 @@ the level word count (mutedText 50% lighter). Reset all progress: title in `deci
   sheet: same as system / dark / light (user replaced the segmented switch).
 - Language and theme rows (`SettingsValueRow` in `settings_rows.dart`): current choice as `AppColors.softBlue` trailing text,
   no chevron; "Как в системе" when following the device. Pick-one sheets use `showChoiceSheet` (`lib/ui/core/widgets/choice_sheet.dart`). Language
-  sheet (`language_sheet.dart`): first row "Как в системе" with the language it gives now as a
-  gray subtitle; built like the level sheet — screen background,
-  title `titleLarge` (8 from the left), one `GroupedCard` of compact `MenuRow`s; no flags; chosen
-  language title + `checkCircle` in `softBlue`, others `circle` `onSurfaceVariant`; tap picks
-  and closes.
+  sheet (`language_sheet.dart`, the same for the interface and the word language): title, then a
+  preview card (`palette.card`, radius 20, padding 20/28, centered) with the greeting of the
+  chosen language ("Привет", 40 w700 -0.8 `softBlue`) and a gray line under it in that language
+  ("Меню и тексты на русском" / "Переводы слов на русском", 15 w500 `mutedText`), crossfading
+  on change; then the `GroupedCard` — first row "Как в системе" with the language it gives now as
+  a gray subtitle, then the languages; no flags; chosen one `softBlue` + `checkCircle`. A tap
+  applies right away and the sheet stays open (the interface language redraws the sheet too);
+  "Готово" (`SheetDoneButton`) or a swipe closes it.
 - Bottom sheets' drag handle (`AppTheme` → `bottomSheetTheme.dragHandleColor`): quiet, just off the
   sheet background — light: background 10% darker, dark: background 20% lighter.
 - Speech rate: a `MenuRow` header, then a slider (track 6, filled `softBlue`, unfilled
