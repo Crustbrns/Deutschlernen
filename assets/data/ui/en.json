@@ -75,5 +75,12 @@
   "resetAllConfirmBody": "All words become new again. This can’t be undone.",
   "resetConfirm": "Reset",
   "cancel": "Cancel",
-  "weekdaysShort": "Mo,Tu,We,Th,Fr,Sa,Su"
+  "weekdaysShort": "Mo,Tu,We,Th,Fr,Sa,Su",
+  "statsPeriodWeek": "7 days",
+  "statsPeriodMonth": "30 days",
+  "statsPeriodQuarter": "90 days",
+  "statsPeriodAll": "All time",
+  "statsReview": "Reviewing",
+  "statsLearned": "Learned",
+  "statsEmpty": "Your progress will show up here: mark your first words in Learn"
 }

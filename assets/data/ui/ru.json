@@ -79,5 +79,12 @@
   "resetAllConfirmBody": "Все слова снова станут новыми. Это нельзя отменить.",
   "resetConfirm": "Сбросить",
   "cancel": "Отмена",
-  "weekdaysShort": "Пн,Вт,Ср,Чт,Пт,Сб,Вс"
+  "weekdaysShort": "Пн,Вт,Ср,Чт,Пт,Сб,Вс",
+  "statsPeriodWeek": "7 дней",
+  "statsPeriodMonth": "30 дней",
+  "statsPeriodQuarter": "90 дней",
+  "statsPeriodAll": "Всё время",
+  "statsReview": "Повторяю",
+  "statsLearned": "Выучено",
+  "statsEmpty": "Здесь появится твой прогресс: отметь первые слова в разделе «Учить»"
 }

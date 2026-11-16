@@ -125,7 +125,7 @@ class _HomeShellState extends State<HomeShell> {
                     stateOf: _vm.stateOf,
                     progressChanges: _vm,
                   ),
-                  const StatisticsScreen(),
+                  StatisticsScreen(history: _vm.statusHistory),
                   SettingsScreen(
                     settings: widget.settingsViewModel,
                     languages: _vm.languages,

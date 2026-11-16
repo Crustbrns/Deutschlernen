@@ -71,6 +71,15 @@ class AppStrings {
   String get searchHint => _get('searchHint');
   String get nothingFound => _get('nothingFound');
   String get noWordsYet => _get('noWordsYet');
+  String get statsPeriodWeek => _get('statsPeriodWeek');
+  String get statsPeriodMonth => _get('statsPeriodMonth');
+  String get statsPeriodQuarter => _get('statsPeriodQuarter');
+  String get statsPeriodAll => _get('statsPeriodAll');
+  String get statusKnown => _get('statusKnown');
+  String get statusLearning => _get('statusLearning');
+  String get statsReview => _get('statsReview');
+  String get statsLearned => _get('statsLearned');
+  String get statsEmpty => _get('statsEmpty');
 
   /// Monday first; stored comma-separated in one key ("Пн,Вт,…").
   List<String> get weekdaysShort => _get('weekdaysShort').split(',');

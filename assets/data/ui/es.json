@@ -75,5 +75,12 @@
   "resetAllConfirmBody": "Todas las palabras vuelven a ser nuevas. No se puede deshacer.",
   "resetConfirm": "Reiniciar",
   "cancel": "Cancelar",
-  "weekdaysShort": "Lu,Ma,Mi,Ju,Vi,Sá,Do"
+  "weekdaysShort": "Lu,Ma,Mi,Ju,Vi,Sá,Do",
+  "statsPeriodWeek": "7 días",
+  "statsPeriodMonth": "30 días",
+  "statsPeriodQuarter": "90 días",
+  "statsPeriodAll": "Siempre",
+  "statsReview": "Repasando",
+  "statsLearned": "Aprendidas",
+  "statsEmpty": "Aquí aparecerá tu progreso: marca tus primeras palabras en Aprender"
 }
