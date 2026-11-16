@@ -29,7 +29,7 @@ Future<void> showChoiceSheet<T>({
     builder: (sheetContext) => GroupedCard(
       children: [
         for (final choice in choices)
-          _ChoiceRow(
+          ChoiceRow(
             choice: choice,
             isSelected: choice.value == current,
             onTap: () {
@@ -61,7 +61,7 @@ Future<void> showMultiChoiceSheet<T>({
       builder: (context, setSheetState) => GroupedCard(
         children: [
           for (final choice in choices)
-            _ChoiceRow(
+            ChoiceRow(
               choice: choice,
               isSelected: current.contains(choice.value),
               onTap: () {
@@ -80,9 +80,11 @@ Future<void> showMultiChoiceSheet<T>({
 
 /// The frame of every picker sheet: drag handle, title, then [builder]'s
 /// content on the screen background (so card-colored blocks stand out).
+/// [title] null: the content shows its own [SheetTitle] (e.g. one that
+/// changes while the sheet is open).
 Future<void> showSheet({
   required BuildContext context,
-  required String title,
+  String? title,
   required WidgetBuilder builder,
 }) {
   return showModalBottomSheet<void>(
@@ -101,13 +103,7 @@ Future<void> showSheet({
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
-                child: Text(
-                  title,
-                  style: Theme.of(sheetContext).textTheme.titleLarge,
-                ),
-              ),
+              if (title != null) SheetTitle(title),
               builder(sheetContext),
             ],
           ),
@@ -117,9 +113,44 @@ Future<void> showSheet({
   );
 }
 
+/// Title of a sheet, 8 from the left like the tab titles.
+class SheetTitle extends StatelessWidget {
+  const SheetTitle(this.text, {super.key});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
+      child: Text(text, style: Theme.of(context).textTheme.titleLarge),
+    );
+  }
+}
+
+/// Full-width primary button that closes the sheet.
+class SheetDoneButton extends StatelessWidget {
+  const SheetDoneButton(this.label, {super.key});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return FilledButton(
+      onPressed: () => Navigator.of(context).pop(),
+      style: FilledButton.styleFrom(
+        minimumSize: const Size.fromHeight(52),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      ),
+      child: Text(label),
+    );
+  }
+}
+
 /// The chosen one is blue with a check, the others have an empty circle.
-class _ChoiceRow<T> extends StatelessWidget {
-  const _ChoiceRow({
+class ChoiceRow<T> extends StatelessWidget {
+  const ChoiceRow({
+    super.key,
     required this.choice,
     required this.isSelected,
     required this.onTap,

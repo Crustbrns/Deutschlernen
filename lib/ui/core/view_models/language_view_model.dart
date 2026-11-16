@@ -16,7 +16,13 @@ class LanguageViewModel extends ChangeNotifier {
   final LanguageRepository _languageRepository;
   final SettingsRepository _settingsRepository;
 
-  static const _defaultLanguage = AppLanguage(code: 'en', label: 'English');
+  static const _defaultLanguage = AppLanguage(
+    code: 'en',
+    label: 'English',
+    hello: 'Hello',
+    uiNote: 'Menus and texts in English',
+    wordsNote: 'Word translations in English',
+  );
 
   List<AppLanguage> _languages = [];
   AppLanguage _uiLanguage = _defaultLanguage;

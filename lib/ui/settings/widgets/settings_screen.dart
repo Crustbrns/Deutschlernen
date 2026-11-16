@@ -1,9 +1,10 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/domain/models/app_language.dart';
+import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/ui/core/widgets/language_sheet.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
+import 'package:deutschlernen/ui/core/view_models/language_view_model.dart';
 import 'package:deutschlernen/ui/core/widgets/choice_sheet.dart';
 import 'package:deutschlernen/ui/core/widgets/menu_row.dart';
 import 'package:deutschlernen/ui/settings/view_models/settings_view_model.dart';
@@ -19,29 +20,13 @@ class SettingsScreen extends StatelessWidget {
     super.key,
     required this.settings,
     required this.languages,
-    required this.uiLanguage,
-    required this.wordLanguage,
-    required this.uiFollowsSystem,
-    required this.wordFollowsSystem,
-    required this.systemLanguage,
-    required this.onUiLanguageSelected,
-    required this.onWordLanguageSelected,
     required this.onResetAllProgress,
   });
 
   final SettingsViewModel settings;
-  final List<AppLanguage> languages;
-  final AppLanguage uiLanguage;
-  final AppLanguage wordLanguage;
-  final bool uiFollowsSystem;
-  final bool wordFollowsSystem;
 
-  /// What "same as system" resolves to on this device.
-  final AppLanguage systemLanguage;
-
-  /// null = same as the system.
-  final ValueChanged<AppLanguage?> onUiLanguageSelected;
-  final ValueChanged<AppLanguage?> onWordLanguageSelected;
+  /// Interface and word languages; the language sheets change them.
+  final LanguageViewModel languages;
 
   /// Makes every word new again (after the user confirms).
   final VoidCallback onResetAllProgress;
@@ -109,14 +94,18 @@ class SettingsScreen extends StatelessWidget {
                 _languageRow(
                   context,
                   title: strings.interfaceLanguage,
-                  current: uiFollowsSystem ? null : uiLanguage,
-                  onSelected: onUiLanguageSelected,
+                  current: languages.uiFollowsSystem
+                      ? null
+                      : languages.uiLanguage,
+                  choice: LanguageChoice.interface,
                 ),
                 _languageRow(
                   context,
                   title: strings.wordsLanguage,
-                  current: wordFollowsSystem ? null : wordLanguage,
-                  onSelected: onWordLanguageSelected,
+                  current: languages.wordFollowsSystem
+                      ? null
+                      : languages.wordLanguage,
+                  choice: LanguageChoice.words,
                 ),
               ],
             ),
@@ -162,20 +151,15 @@ class SettingsScreen extends StatelessWidget {
     BuildContext context, {
     required String title,
     required AppLanguage? current,
-    required ValueChanged<AppLanguage?> onSelected,
+    required LanguageChoice choice,
   }) {
-    final strings = AppStrings.of(context);
     return SettingsValueRow(
       title: title,
-      value: current?.label ?? strings.systemLanguage,
+      value: current?.label ?? AppStrings.of(context).systemLanguage,
       onTap: () => showLanguageSheet(
         context: context,
-        title: title,
-        systemLabel: strings.systemLanguage,
-        systemLanguage: systemLanguage,
         languages: languages,
-        current: current,
-        onSelected: onSelected,
+        choice: choice,
       ),
     );
   }
