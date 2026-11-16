@@ -187,6 +187,10 @@ under the bar.
 - Exception: the Learn tab menu (`main_menu_screen.dart`) has colored leading icons, size 26,
   one color per action (`AppColors.menuCategories` blue, `menuNewWords` pink, `menuRepeat`
   yellow); a disabled row fades its icon to α 0.4.
+- Week strip (`WeekStrip` in `main_menu/widgets/week_strip.dart`), 16px under the Practice
+  menu block: 7 tiles Mon–Sun (`AppStrings.weekdaysShort`, day names only, no dates), 6px
+  apart, 52 tall, radius 14, fill `palette.card`, text 15 w600 -0.3 `onSurface`; today is
+  filled `AppColors.menuNewWords` pink with `AppColors.onAccent` (white) text.
 
 ## Text
 

@@ -72,6 +72,9 @@ class AppStrings {
   String get nothingFound => _get('nothingFound');
   String get noWordsYet => _get('noWordsYet');
 
+  /// Monday first; stored comma-separated in one key ("Пн,Вт,…").
+  List<String> get weekdaysShort => _get('weekdaysShort').split(',');
+
   /// "1 слово", "2 слова", "5 слов" / "1 word", "5 words".
   /// JSON keys: wordCountOne, wordCountFew, wordCountMany, wordCountOther,
   /// with {n} for the number. A language uses only the forms it has;

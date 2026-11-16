@@ -3,9 +3,11 @@ import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
+import 'package:deutschlernen/ui/main_menu/widgets/week_strip.dart';
 
 /// Practice tab: title, then one block with the entry points: categories
-/// (which levels new words come from), new words, and review.
+/// (which levels new words come from), new words, and review; under it
+/// the current week.
 class MainMenuScreen extends StatelessWidget {
   const MainMenuScreen({
     super.key,
@@ -90,6 +92,8 @@ class MainMenuScreen extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: 16),
+          const WeekStrip(),
         ],
       ),
     );

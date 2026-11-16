@@ -78,5 +78,6 @@
   "resetAllConfirmTitle": "Сбросить весь прогресс?",
   "resetAllConfirmBody": "Все слова снова станут новыми. Это нельзя отменить.",
   "resetConfirm": "Сбросить",
-  "cancel": "Отмена"
+  "cancel": "Отмена",
+  "weekdaysShort": "Пн,Вт,Ср,Чт,Пт,Сб,Вс"
 }

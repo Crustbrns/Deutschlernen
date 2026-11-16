@@ -92,6 +92,10 @@ abstract final class AppColors {
   static const menuNewWords = Color(0xFFFF5C8A); // pink
   static const menuRepeat = Color(0xFFFFC83D); // yellow
 
+  // Text on a saturated accent fill (e.g. today in the week strip): white
+  // in both themes, since the fill doesn't change with the theme.
+  static const onAccent = Color(0xFFFFFFFF);
+
   // Word status strips in the word lists (new words use a theme gray).
   static const statusLearning = Color(0xFFFF5C8A); // pink
   static const statusReview = Color(0xFFFFA530); // orange-yellow
@@ -184,4 +188,3 @@ abstract final class AppListText {
     letterSpacing: _spacing,
   );
 }
-
