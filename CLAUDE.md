@@ -31,7 +31,7 @@ Layered, following Flutter's recommended app architecture: `lib/data` (services 
   - `words.json` — German side only: `id`, `article`, `lemma`, `plural`, `level`, `transcription`, `definition`. `level` is the word's category and must be one of `Word.levels` (A1, A2, B1, B2); the vocabulary tab lists words by it.
   - `translations/<lang>.json` — keyed by word `id`: `word`, `definition`, `examples[{german, translation}]`. `WordRepository` merges these into `Word`. In examples, `**word**` marks the highlighted word (`lib/ui/core/highlight.dart`).
   - `ui/<lang>.json` — interface strings, read via `AppStrings` getters.
-  - `languages.json` — supported languages (currently ru, en, es, zh).
+  - `languages.json` — supported languages (currently uk, ru, en, es, zh).
 - **Two languages**: the interface language and the word-translation language are chosen and saved separately (`SettingsRepository`, shared_preferences).
 - **Strings**: `AppStrings.of(context)` reads an `AppStringsScope` inherited widget provided by `HomeShell`. Pushed routes and Hero flight shuttles are outside that scope, so they wrap their content in `AppStringsScope` again. A missing key renders as the key name itself.
 - **`WordCard`** (`lib/ui/cards/widgets/word_card.dart`) is shared: the learning mode (answer modes Show/Write/Choose, swipes, decision bar) and `lookup: true` for the compact card opened from the vocabulary search (translation shown, close button via `onClose`). Change one mode without breaking the other.
@@ -51,6 +51,6 @@ Layered, following Flutter's recommended app architecture: `lib/data` (services 
 - Visual rules (colors, buttons, icons, grouped lists) are in the `ui-style` skill (`.claude/skills/ui-style/SKILL.md`); follow it for any UI change.
 
 - Import `package:material_ui/material_ui.dart` instead of `package:flutter/material.dart`. Icons come only from `AppIcons` (`lib/ui/core/app_icons.dart`, Phosphor Regular font in `assets/fonts/`), see the `ui-style` skill. Don't add the `phosphor_flutter` package — it fails to compile with current Flutter (`IconData` is final).
-- Adding a UI string means adding the key to all four `assets/data/ui/*.json` files and a getter in `AppStrings`. Text with a number ("5 слов") uses plural forms: keys `<name>One/Few/Many/Other` with `{n}`, chosen by the language's rule in `AppStrings` (see `wordCount`); ru needs One/Few/Many, en/es One/Other, zh Other. A new word needs an entry in `words.json` and the same `id` in every `translations/*.json`.
+- Adding a UI string means adding the key to every `assets/data/ui/*.json` file and a getter in `AppStrings`. Text with a number ("5 слов") uses plural forms: keys `<name>One/Few/Many/Other` with `{n}`, chosen by the language's rule in `AppStrings` (see `wordCount`); ru and uk need One/Few/Many, en/es One/Other, zh Other. A new word needs an entry in `words.json` and the same `id` in every `translations/*.json`.
 - Code comments are short, in English, and only on non-obvious places.
 - `lib/ui/screens/home_screen.dart` and `greeting_card.dart` are unused template leftovers.
