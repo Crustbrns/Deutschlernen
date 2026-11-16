@@ -98,6 +98,31 @@ class AppStrings {
 
   /// Monday first; stored comma-separated in one key ("Пн,Вт,…").
   List<String> get weekdaysShort => _get('weekdaysShort').split(',');
+  List<String> get weekdaysLong => _get('weekdaysLong').split(',');
+
+  // Reminders (settings and the notifications themselves).
+  String get done => _get('done');
+  String get reminderDays => _get('reminderDays');
+  String get reminderEveryDay => _get('reminderEveryDay');
+  String get reminderWeekdays => _get('reminderWeekdays');
+  String get reminderWeekend => _get('reminderWeekend');
+  String get reminderFrequency => _get('reminderFrequency');
+  String get reminderTime => _get('reminderTime');
+
+  /// "Время 2": one of several reminder times.
+  String reminderTimeN(int n) => _get('reminderTimeN').replaceAll('{n}', '$n');
+
+  /// "2 раза" / "Twice": how many reminders a day.
+  String reminderTimesPerDay(int n) => _plural('reminderTimesPerDay', n);
+  String get reminderReviewTitle => _get('reminderReviewTitle');
+
+  /// "12 слов ждут повторения".
+  String reminderReviewBody(int n) => _plural('reminderReviewBody', n);
+  String get reminderLearnTitle => _get('reminderLearnTitle');
+  String get reminderLearnBody => _get('reminderLearnBody');
+  String get notificationsDeniedTitle => _get('notificationsDeniedTitle');
+  String get notificationsDeniedBody => _get('notificationsDeniedBody');
+  String get openSettings => _get('openSettings');
 
   /// "1 слово", "2 слова", "5 слов" / "1 word", "5 words".
   /// JSON keys: wordCountOne, wordCountFew, wordCountMany, wordCountOther,

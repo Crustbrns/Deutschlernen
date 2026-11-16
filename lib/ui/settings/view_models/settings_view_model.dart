@@ -1,24 +1,28 @@
 import 'package:material_ui/material_ui.dart' show ThemeMode;
 import 'package:flutter/foundation.dart';
 import 'package:deutschlernen/data/repositories/settings_repository.dart';
+import 'package:deutschlernen/data/services/notification_service.dart';
 import 'package:deutschlernen/data/services/speech_service.dart';
 import 'package:deutschlernen/domain/models/app_settings.dart';
+import 'package:deutschlernen/domain/models/reminder_settings.dart';
 
 class SettingsViewModel extends ChangeNotifier {
   SettingsViewModel({
     required this._settingsRepository,
     required this._speechService,
+    required this._notificationService,
   });
 
   final SettingsRepository _settingsRepository;
   final SpeechService _speechService;
+  final NotificationService _notificationService;
 
   AppSettings _settings = const AppSettings();
 
   AppSettings get settings => _settings;
   ThemeMode get themeMode => _settings.themeMode;
   bool get showTranscription => _settings.showTranscription;
-  bool get notificationsEnabled => _settings.notificationsEnabled;
+  ReminderSettings get reminders => _settings.reminders;
   bool get autoSpeak => _settings.autoSpeak;
   double get speechRate => _settings.speechRate;
 
@@ -41,10 +45,34 @@ class SettingsViewModel extends ChangeNotifier {
     await _settingsRepository.saveShowTranscription(value);
   }
 
-  Future<void> setNotificationsEnabled(bool value) async {
-    _settings = _settings.copyWith(notificationsEnabled: value);
+  /// Turning on asks for the system permission first. Returns false when
+  /// it was denied: reminders stay off, the UI explains how to allow them.
+  Future<bool> setRemindersEnabled(bool value) async {
+    if (value && !await _notificationService.requestPermission()) return false;
+    await _setReminders(reminders.copyWith(enabled: value));
+    return true;
+  }
+
+  /// [days] as in DateTime.weekday; an empty set is ignored.
+  Future<void> setReminderDays(Set<int> days) async {
+    if (days.isEmpty) return;
+    await _setReminders(reminders.copyWith(days: days));
+  }
+
+  /// 1–3 reminders a day.
+  Future<void> setReminderCount(int count) =>
+      _setReminders(reminders.withCount(count));
+
+  Future<void> setReminderTime(int index, ReminderTime time) =>
+      _setReminders(reminders.withTime(index, time));
+
+  Future<void> openNotificationSettings() =>
+      _notificationService.openSystemSettings();
+
+  Future<void> _setReminders(ReminderSettings value) async {
+    _settings = _settings.copyWith(reminders: value);
     notifyListeners();
-    await _settingsRepository.saveNotificationsEnabled(value);
+    await _settingsRepository.saveReminders(value);
   }
 
   Future<void> setAutoSpeak(bool value) async {

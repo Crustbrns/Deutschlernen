@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart' show ValueListenable;
 import 'package:material_ui/material_ui.dart';
+import 'package:deutschlernen/domain/models/reminder_plan.dart';
 import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/ui/cards/widgets/cards_screen.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
@@ -22,11 +24,18 @@ class HomeShell extends StatefulWidget {
     required this.viewModel,
     required this.languageViewModel,
     required this.settingsViewModel,
+    required this.reminderOpened,
+    required this.onReminderHandled,
   });
 
   final LearningViewModel viewModel;
   final LanguageViewModel languageViewModel;
   final SettingsViewModel settingsViewModel;
+
+  /// Set when a reminder is tapped; the shell opens its session, then calls
+  /// [onReminderHandled].
+  final ValueListenable<ReminderKind?> reminderOpened;
+  final VoidCallback onReminderHandled;
 
   @override
   State<HomeShell> createState() => _HomeShellState();
@@ -37,6 +46,34 @@ class _HomeShellState extends State<HomeShell> {
 
   LearningViewModel get _vm => widget.viewModel;
   LanguageViewModel get _lang => widget.languageViewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.reminderOpened.addListener(_onReminder);
+    // Set before the shell was built (app started from the reminder).
+    WidgetsBinding.instance.addPostFrameCallback((_) => _onReminder());
+  }
+
+  @override
+  void dispose() {
+    widget.reminderOpened.removeListener(_onReminder);
+    super.dispose();
+  }
+
+  /// Opens the tapped reminder's session on the Learn tab. A session that
+  /// is already open is closed first: the new one starts fresh.
+  void _onReminder() {
+    final kind = widget.reminderOpened.value;
+    if (kind == null || !mounted) return;
+    widget.onReminderHandled();
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    setState(() => _tab = HomeTab.learn);
+    if (_vm.sessionFor(kind) case final mode?) {
+      _vm.startSession(mode);
+      _openCards();
+    }
+  }
 
   void _openCards() {
     Navigator.of(context).push(
