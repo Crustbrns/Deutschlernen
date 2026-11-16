@@ -135,7 +135,7 @@ Separate blocks are only for different kinds of content (e.g. a title, then a li
 - **Primary action** (one per screen at most): `FilledButton`, radius 14.
 - **Audio**: `PlayButton` (`lib/ui/core/widgets/play_button.dart`) in rows — blue, outlined.
   On the word card the German word and its plural are left-aligned with a speaker button
-  (`_TranscriptionButton` without text: rounded square, radius 12) on the right of the word,
+  (`TranscriptionButton` in `transcription_button.dart`, without text: rounded square, radius 12) on the right of the word,
   8px after it; the row reaches 12px into the card's right inset (`OverflowBox`), so long words
   get more room before wrapping; the transcription pill below
   (text only, left, also speaks) appears when transcription is on.
