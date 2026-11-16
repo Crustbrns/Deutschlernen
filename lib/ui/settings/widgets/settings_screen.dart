@@ -170,7 +170,7 @@ class SettingsScreen extends StatelessWidget {
         ),
         content: Text(
           strings.resetAllConfirmBody,
-          style: MenuRow.hintStyle(context),
+          style: MenuRow.hintStyle(context, soft: true),
         ),
         actions: [
           TextButton(
@@ -207,7 +207,7 @@ class _Category extends StatelessWidget {
           Padding(
             // 8 = same left edge as the screen title.
             padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-            child: Text(title, style: MenuRow.hintStyle(context)),
+            child: Text(title, style: MenuRow.hintStyle(context, soft: true)),
           ),
           GroupedCard(children: children),
         ],
@@ -277,7 +277,7 @@ class _SpeedRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final strings = AppStrings.of(context);
     final palette = AppPalette.of(context);
-    final hint = MenuRow.hintStyle(context).copyWith(fontSize: 13);
+    final hint = MenuRow.hintStyle(context, soft: true).copyWith(fontSize: 13);
 
     return Column(
       children: [

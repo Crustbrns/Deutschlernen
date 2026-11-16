@@ -78,8 +78,9 @@ render them as separate cards with gaps between them.
   as `title`, word count under it in `subtitle` style but `mutedText` gray ("5 слов",
   `AppStrings.wordCount`), and on the right the share of seen words ("40 %" with a
   non-breaking space — known or started learning) in `subtitle` style, color halfway between
-  `onSurface` and `mutedText`. In the light theme both the count and the percent are 25% lighter
-  (`AppColors.lighten`, user's choice). Padding 16 horizontal, 12 vertical.
+  `onSurface` and `mutedText`. In the light theme both the count and the percent are 50% lighter
+  (`AppColors.lighten`, user's choice). Count 15 (not 16), percent 17, 4px gap under the
+  level name (not `AppListText.gap`). Padding 16 horizontal, 12 vertical.
   Each level row starts with a colored icon (26, 14px gap), a growth metaphor: A1 `plant`
   (sprout, `AppColors.levelA1` teal), A2 `flowerTulip` (pink), B1 `tree` (green), B2
   `mountains` (blue) — `LevelIcon` (`lib/ui/core/widgets/level_icon.dart`); the level picker sheet
@@ -230,7 +231,9 @@ Prefer `Curves.easeOutCubic` for things that open or grow.
 `GroupedCard` of `MenuRow`s (`lib/ui/core/widgets/menu_row.dart`, shared with the Learn menu:
 title 17 w600 -0.4, gray hint 15 w600 -0.3). **No icons in settings rows** (user removed them;
 the Learn menu keeps its colored icons). Rows use `compact: true`: line height 1.2, 2px above
-the hint. Reset all progress: title in `decisionRed`.
+the hint. Light theme: all gray settings text (hints, category names, slow/fast, reset dialog
+body) is `AppColors.softSecondary` — the same as the level word count (mutedText 50% lighter);
+`MenuRow.hintStyle(context, soft: true)`. Reset all progress: title in `decisionRed`.
 
 - Switches: `AppSwitch` (`lib/ui/core/widgets/app_switch.dart`), same on both platforms: track
   60×31, oval white thumb 37×25 (wider than tall, user's choice), on = `AppColors.softBlue`

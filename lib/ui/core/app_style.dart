@@ -158,6 +158,11 @@ abstract final class AppColors {
   /// The old divider gray, still the base of [quietText].
   static Color _gray(ColorScheme colors) => darken(colors.outlineVariant, 0.18);
 
+  /// Light theme secondary text in lists and settings (level word count,
+  /// settings hints): mutedText 50% lighter (user's choice).
+  static Color softSecondary(BuildContext context) =>
+      lighten(AppPalette.of(context).mutedText, 0.5);
+
   /// Quiet gray for low-priority text and icons (search hint, word counts):
   /// [_gray] moved 30% toward the text color, so it is a bit lighter in the
   /// dark theme and a bit darker in the light one. Not based on [divider]:
