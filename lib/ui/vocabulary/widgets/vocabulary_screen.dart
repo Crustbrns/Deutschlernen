@@ -167,6 +167,11 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
         .where((w) => widget.stateOf(w.id).status != WordStatus.newWord)
         .length;
     final percent = words.isEmpty ? 0 : (seen * 100 / words.length).round();
+    final muted = AppPalette.of(context).mutedText;
+    // Light theme: count and percent 25% lighter (user's choice), on white
+    // they looked too heavy.
+    Color soft(Color c) =>
+        colors.brightness == Brightness.light ? AppColors.lighten(c, 0.25) : c;
 
     // Same typography as a word row: level like the German word, count like
     // the translation. Own row instead of ListTile, which adds its own
@@ -190,7 +195,7 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
                   Text(
                     AppStrings.of(context).wordCount(words.length),
                     style: AppListText.subtitle(colors)
-                        .copyWith(color: AppPalette.of(context).mutedText),
+                        .copyWith(color: soft(muted)),
                   ),
                 ],
               ),
@@ -201,11 +206,7 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
               '$percent\u00A0%',
               style: AppListText.subtitle(colors).copyWith(
                 // Light gray: between the main text and the muted count.
-                color: Color.lerp(
-                  colors.onSurface,
-                  AppPalette.of(context).mutedText,
-                  0.5,
-                ),
+                color: soft(Color.lerp(colors.onSurface, muted, 0.5)!),
               ),
             ),
           ],

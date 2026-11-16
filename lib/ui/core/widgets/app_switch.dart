@@ -19,9 +19,9 @@ class AppSwitch extends StatefulWidget {
 }
 
 class _AppSwitchState extends State<AppSwitch> with TickerProviderStateMixin {
-  static const _trackWidth = 56.0;
+  static const _trackWidth = 60.0; // +4 with the thumb: keeps 17px of travel
   static const _trackHeight = 31.0;
-  static const _thumbWidth = 33.0;
+  static const _thumbWidth = 37.0;
   static const _thumbHeight = 25.0;
   static const _stretch = 6.0; // extra thumb width while pressed
   static const _pad = (_trackHeight - _thumbHeight) / 2;

@@ -15,6 +15,9 @@ The app has a dark and a light theme. All colors, fonts and sizes come from
 
 Never write a hex color or `Colors.white`/`Colors.black` in a widget — it breaks one of the themes.
 Main text uses `colors.onSurface`.
+Light theme (user's choice): text `onSurface` = rgb(8,8,8) `#080808` (set in `AppTheme._build`),
+dividers `AppColors.divider` = rgb(230,230,230) `#E6E6E6`. `quietText` is not derived from the
+divider any more (it would be too pale), it keeps the old gray base.
 
 ## Surfaces
 
@@ -75,7 +78,8 @@ render them as separate cards with gaps between them.
   as `title`, word count under it in `subtitle` style but `mutedText` gray ("5 слов",
   `AppStrings.wordCount`), and on the right the share of seen words ("40 %" with a
   non-breaking space — known or started learning) in `subtitle` style, color halfway between
-  `onSurface` and `mutedText`. Padding 16 horizontal, 12 vertical.
+  `onSurface` and `mutedText`. In the light theme both the count and the percent are 25% lighter
+  (`AppColors.lighten`, user's choice). Padding 16 horizontal, 12 vertical.
   Each level row starts with a colored icon (26, 14px gap), a growth metaphor: A1 `plant`
   (sprout, `AppColors.levelA1` teal), A2 `flowerTulip` (pink), B1 `tree` (green), B2
   `mountains` (blue) — `LevelIcon` (`lib/ui/core/widgets/level_icon.dart`); the level picker sheet
@@ -229,13 +233,17 @@ the Learn menu keeps its colored icons). Rows use `compact: true`: line height 1
 the hint. Reset all progress: title in `decisionRed`.
 
 - Switches: `AppSwitch` (`lib/ui/core/widgets/app_switch.dart`), same on both platforms: track
-  56×31, oval white thumb 33×25 (wider than tall, user's choice), on = `AppColors.softBlue`
+  60×31, oval white thumb 37×25 (wider than tall, user's choice), on = `AppColors.softBlue`
   `#0A84FF` (softer than `accentBlue`), off = `subtleButton`; the whole row toggles. iOS behavior:
   tap toggles, the thumb can be dragged (snaps to the nearer side, a flick > 300 px/s decides
   by direction), stretches 6px toward the middle while pressed, track color lerps with the
   thumb, `HapticFeedback.lightImpact` on change.
-- Theme: two icon-only segments (moon / sun, 44×32, icon 20; labels squeezed the title) on a `subtleButton` block, selected one
-  `accentBlue` α 0.14 fill + blue text, like the Progress period switch.
+- Theme: `ThemeSwitch` (`settings/widgets/theme_switch.dart`), an iOS segmented control: pill
+  as tall as `AppSwitch` (31, `subtleButton`, padding 2), two icon-only segments 42 wide
+  (moon / sun 18; labels squeezed the title). The chosen one sits on a raised thumb
+  (`palette.segmentThumb`: white in light, #3A3A3D in dark, shadow like the switch thumb); tap
+  a segment or drag the thumb (snaps, flick > 300 px/s decides), pressed thumb shrinks to 0.94,
+  haptic on change; icons fade `quietText` → `onSurface` with the thumb. No blue here.
 - Language rows: current language name (no flag) as `AppColors.softBlue` trailing text, no
   chevron. Language sheet (`language_sheet.dart`): no flags, chosen language and its check in
   `softBlue`.

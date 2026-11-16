@@ -1,5 +1,4 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/domain/models/app_language.dart';
 import 'package:deutschlernen/domain/models/app_settings.dart';
 import 'package:deutschlernen/ui/cards/widgets/language_sheet.dart';
@@ -9,6 +8,7 @@ import 'package:deutschlernen/ui/core/widgets/app_switch.dart';
 import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
 import 'package:deutschlernen/ui/core/widgets/menu_row.dart';
 import 'package:deutschlernen/ui/settings/view_models/settings_view_model.dart';
+import 'package:deutschlernen/ui/settings/widgets/theme_switch.dart';
 
 /// Settings tab: title, then one block per category, rows like the Learn
 /// menu (split by dividers) but without icons — the user's choice.
@@ -66,7 +66,7 @@ class SettingsScreen extends StatelessWidget {
                 MenuRow(
                   compact: true,
                   title: strings.theme,
-                  trailing: _ThemeSwitch(
+                  trailing: ThemeSwitch(
                     mode: settings.themeMode,
                     onChanged: settings.setThemeMode,
                   ),
@@ -237,66 +237,6 @@ class _SwitchRow extends StatelessWidget {
       subtitle: hint,
       trailing: AppSwitch(value: value, onChanged: onChanged),
       onTap: () => onChanged(!value),
-    );
-  }
-}
-
-/// Dark / light as two icon segments (moon, sun); the chosen one is blue,
-/// like the period switch on the Progress tab.
-class _ThemeSwitch extends StatelessWidget {
-  const _ThemeSwitch({required this.mode, required this.onChanged});
-
-  final ThemeMode mode;
-  final ValueChanged<ThemeMode> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    final strings = AppStrings.of(context);
-    final colors = Theme.of(context).colorScheme;
-
-    Widget segment(ThemeMode value, IconData icon, String label) {
-      final selected = value == mode;
-      final color = selected ? AppColors.accentBlue : colors.onSurface;
-      return GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () => onChanged(value),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          curve: Curves.easeOutCubic,
-          width: 44,
-          height: 32,
-          decoration: BoxDecoration(
-            color: selected
-                ? AppColors.accentBlue.withValues(alpha: 0.14)
-                : Colors.transparent,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          // Icons only: with labels the switch squeezed the "Тема" title
-          // into one letter per line. The label stays for screen readers.
-          child: Semantics(
-            label: label,
-            selected: selected,
-            button: true,
-            child: Icon(icon, size: 20, color: color),
-          ),
-        ),
-      );
-    }
-
-    return Container(
-      padding: const EdgeInsets.all(3),
-      decoration: BoxDecoration(
-        // subtleButton, not card: the switch sits inside a card already.
-        color: AppPalette.of(context).subtleButton,
-        borderRadius: BorderRadius.circular(13),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          segment(ThemeMode.dark, AppIcons.moon, strings.themeDark),
-          segment(ThemeMode.light, AppIcons.sun, strings.themeLight),
-        ],
-      ),
     );
   }
 }

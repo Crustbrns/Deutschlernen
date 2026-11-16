@@ -15,18 +15,21 @@ class AppPalette extends ThemeExtension<AppPalette> {
     required this.card,
     required this.subtleButton,
     required this.mutedText,
+    required this.segmentThumb,
   });
 
   final Color background; // behind the cards
   final Color card;
   final Color subtleButton; // barely different from the card
   final Color mutedText; // secondary labels
+  final Color segmentThumb; // raised selected segment (theme switch)
 
   static const dark = AppPalette(
     background: Color(0xFF0B0B0D),
     card: Color(0xFF151517),
     subtleButton: Color(0xFF222225),
     mutedText: Color(0xFF8C8C8C), // rgb(140,140,140)
+    segmentThumb: Color(0xFF3A3A3D),
   );
 
   static const light = AppPalette(
@@ -34,6 +37,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
     card: Color(0xFFFFFFFF),
     subtleButton: Color(0xFFEDEDF0),
     mutedText: Color(0xFF6A6A70),
+    segmentThumb: Color(0xFFFFFFFF),
   );
 
   static AppPalette of(BuildContext context) =>
@@ -45,11 +49,13 @@ class AppPalette extends ThemeExtension<AppPalette> {
     Color? card,
     Color? subtleButton,
     Color? mutedText,
+    Color? segmentThumb,
   }) => AppPalette(
     background: background ?? this.background,
     card: card ?? this.card,
     subtleButton: subtleButton ?? this.subtleButton,
     mutedText: mutedText ?? this.mutedText,
+    segmentThumb: segmentThumb ?? this.segmentThumb,
   );
 
   @override
@@ -60,6 +66,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
       card: Color.lerp(card, other.card, t)!,
       subtleButton: Color.lerp(subtleButton, other.subtleButton, t)!,
       mutedText: Color.lerp(mutedText, other.mutedText, t)!,
+      segmentThumb: Color.lerp(segmentThumb, other.segmentThumb, t)!,
     );
   }
 }
@@ -71,8 +78,14 @@ abstract final class AppTheme {
 
   static ThemeData _build(Brightness brightness, AppPalette palette) {
     return ThemeData(
-      brightness: brightness,
-      colorSchemeSeed: AppColors.accentBlue,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: AppColors.accentBlue,
+        brightness: brightness,
+        // Light theme text: near-black rgb(8,8,8) (user's choice).
+        onSurface: brightness == Brightness.light
+            ? const Color(0xFF080808)
+            : null,
+      ),
       scaffoldBackgroundColor: palette.background,
       extensions: [palette],
     );
@@ -130,15 +143,27 @@ abstract final class AppColors {
   static Color darken(Color color, double amount) =>
       Color.lerp(color, const Color(0xFF000000), amount)!;
 
-  /// Lines between the example rows.
+  /// Mixes [color] with white: amount 0.25 = 25% lighter.
+  static Color lighten(Color color, double amount) =>
+      Color.lerp(color, const Color(0xFFFFFFFF), amount)!;
+
+  /// Lines between rows in blocks (GroupedCard, examples), chart grid.
+  /// Light theme: a fixed soft gray (user's choice), the derived one was
+  /// too dark on white.
   static Color divider(ColorScheme colors) =>
-      darken(colors.outlineVariant, 0.18);
+      colors.brightness == Brightness.light
+      ? const Color(0xFFE6E6E6) // rgb(230,230,230)
+      : _gray(colors);
+
+  /// The old divider gray, still the base of [quietText].
+  static Color _gray(ColorScheme colors) => darken(colors.outlineVariant, 0.18);
 
   /// Quiet gray for low-priority text and icons (search hint, word counts):
-  /// the divider color moved 30% toward the text color, so it is a bit
-  /// lighter in the dark theme and a bit darker in the light one.
+  /// [_gray] moved 30% toward the text color, so it is a bit lighter in the
+  /// dark theme and a bit darker in the light one. Not based on [divider]:
+  /// the light divider is too pale for text.
   static Color quietText(ColorScheme colors) =>
-      Color.lerp(divider(colors), colors.onSurface, 0.3)!;
+      Color.lerp(_gray(colors), colors.onSurface, 0.3)!;
 
   /// Color of a word's status: the strip in word lists and the square on
   /// the opened card use the same one.
