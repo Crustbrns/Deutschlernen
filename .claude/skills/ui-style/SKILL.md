@@ -235,19 +235,24 @@ The list doubles as the chart's legend, so the chart has none of its own.
   user's choice), learning (pink),
   review (yellow), learned (green); colors via `ProgressChart.colorFor`, the legend dots too.
   2px gaps between segments, radius 6, bar ≤ 44 wide (62% of its slot). Neighbouring bars are
-  joined per status by bands (same color α 0.22, cubic curves). "d.M" x labels 12 w600
-  `mutedText`. Slots narrower than 52 scroll sideways, opening at the latest bar.
+  joined per status by bands (same color α 0.22, cubic curves). x labels 12 w600 `mutedText`,
+  a short date with the month abbreviated (`AppStrings.dateShort`: "16 ноя", "16 Nov",
+  "11月 16日"); if any label is wider than its column, all break into two lines (day / month). Slots narrower than 52 scroll sideways, opening at the latest bar.
 - Every non-empty segment shows its word count centered (14 regular w400, -0.3, always black
   `AppColors.chartCount` — all fills are light), so it is at least 22px tall; the rest of
   the height is linear, one scale for all bars. Y axis (34 wide, 12 w600 `mutedText`) and a
   dashed grid in `AppColors.divider` stay: round steps 1/2/5/10/…, ≤ 4 lines above 0; if the
   minimums make a bar too tall, the scale shrinks to fit and the ticks follow
   (`ProgressChart._layout`).
-- Vertical grid: every other column (slot, full height incl. the date) has a faint backing,
-  `onSurface` α 0.05, radius 10, 2px inset; counted from the right, so the latest bar is plain. A segment raised to the minimum looks bigger than its value on
+- Vertical grid: dashed lines between columns, same style as the horizontal ones (1px,
+  4 on / 4 off, `AppColors.divider`), plot height only; scroll with the bars. (Zebra column
+  backings were tried and rejected: the user wants plain dashes both ways.) A segment raised to the minimum looks bigger than its value on
   the axis — intended, the user's choice.
-- Meaning (layers don't overlap, a word is in one of them): known — "already know"; learning
-  ("Изучаю") — taken to learn, never recalled; review ("Повторено") — recalled at least once,
-  not learned yet; learned ("Выучено") — interval ≥ 21 days.
+- Meaning — a funnel, layers overlap (user's choice): known — "already know" (separate);
+  pink "Изучаю" — every word taken to learn (pink + yellow + green statuses); yellow
+  "Повторено" — unique words recalled at least once (yellow + green); green "Выучено" —
+  interval ≥ 21 days. A learned word adds to pink, yellow and green, so a bar is taller than
+  the number of words (`StatusCounts.stack` / `stackTotal`). The list under the chart shows
+  the same funnel numbers.
 - Height = all words in each status at the end of that day/week (not the day's activity).
   7 days — a bar per day; 30 / 90 days / all time — a bar per week (Monday start).
