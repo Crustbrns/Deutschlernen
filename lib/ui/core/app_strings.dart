@@ -23,6 +23,7 @@ class AppStrings {
   String get language => _get('language');
   String get interfaceLanguage => _get('interfaceLanguage');
   String get wordsLanguage => _get('wordsLanguage');
+  String get systemLanguage => _get('systemLanguage');
   String get settingsAppearance => _get('settingsAppearance');
   String get settingsLanguages => _get('settingsLanguages');
   String get settingsVoice => _get('settingsVoice');
@@ -30,6 +31,7 @@ class AppStrings {
   String get theme => _get('theme');
   String get themeDark => _get('themeDark');
   String get themeLight => _get('themeLight');
+  String get themeSystem => _get('themeSystem');
   String get showTranscription => _get('showTranscription');
   String get showTranscriptionHint => _get('showTranscriptionHint');
   String get reminders => _get('reminders');

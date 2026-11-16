@@ -7,7 +7,10 @@ import 'package:deutschlernen/domain/models/app_settings.dart';
 class SettingsRepository {
   static const _uiLanguageKey = 'ui_language';
   static const _wordLanguageKey = 'word_language';
-  static const _darkThemeKey = 'dark_theme';
+  static const _themeModeKey = 'theme_mode'; // system / dark / light
+
+  /// Old bool (dark or light), read while no [_themeModeKey] is saved.
+  static const _legacyDarkThemeKey = 'dark_theme';
   static const _showTranscriptionKey = 'show_transcription';
   static const _notificationsKey = 'notifications';
   static const _autoSpeakKey = 'auto_speak';
@@ -16,6 +19,10 @@ class SettingsRepository {
 
   /// One shared choice, saved before the two were separated.
   static const _legacyLanguageKey = 'language';
+
+  /// Saved instead of a language code: follow the device language. Not just
+  /// a removed key: then the legacy single choice would win again.
+  static const systemLanguageCode = 'system';
 
   final _prefs = SharedPreferencesAsync();
 
@@ -38,14 +45,18 @@ class SettingsRepository {
   /// Missing values stay at the defaults of [AppSettings].
   Future<AppSettings> loadSettings() async {
     const defaults = AppSettings();
-    final isDark = await _prefs.getBool(_darkThemeKey);
+    final themeName = await _prefs.getString(_themeModeKey);
+    final legacyDark = await _prefs.getBool(_legacyDarkThemeKey);
     final rate = await _prefs.getDouble(_speechRateKey);
 
     return AppSettings(
-      themeMode: switch (isDark) {
-        false => ThemeMode.light,
-        _ => defaults.themeMode,
-      },
+      themeMode:
+          ThemeMode.values.asNameMap()[themeName] ??
+          switch (legacyDark) {
+            true => ThemeMode.dark,
+            false => ThemeMode.light,
+            null => defaults.themeMode,
+          },
       showTranscription:
           await _prefs.getBool(_showTranscriptionKey) ??
           defaults.showTranscription,
@@ -61,7 +72,7 @@ class SettingsRepository {
   }
 
   Future<void> saveThemeMode(ThemeMode mode) =>
-      _prefs.setBool(_darkThemeKey, mode != ThemeMode.light);
+      _prefs.setString(_themeModeKey, mode.name);
 
   Future<void> saveShowTranscription(bool value) =>
       _prefs.setBool(_showTranscriptionKey, value);

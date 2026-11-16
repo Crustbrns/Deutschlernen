@@ -86,6 +86,11 @@ class CardsViewModel extends ChangeNotifier {
 
   /// Language of the word translations.
   AppLanguage _wordLanguage = _defaultLanguage;
+
+  /// "Same as system": the language comes from the device (no saved code yet
+  /// counts too, so new users start here).
+  bool _uiFollowsSystem = true;
+  bool _wordFollowsSystem = true;
   AppStrings _strings = const AppStrings({});
   final List<_Step> _history = [];
   CardDecision? _lastUndone;
@@ -148,6 +153,11 @@ class CardsViewModel extends ChangeNotifier {
   List<AppLanguage> get languages => _languages;
   AppLanguage get uiLanguage => _uiLanguage;
   AppLanguage get wordLanguage => _wordLanguage;
+  bool get uiFollowsSystem => _uiFollowsSystem;
+  bool get wordFollowsSystem => _wordFollowsSystem;
+
+  /// What "same as system" gives right now (shown in the language sheet).
+  AppLanguage get systemLanguage => _pickLanguage(null);
   AppStrings get strings => _strings;
   bool get isLoading => _isLoading;
   bool get showTranscription => _settingsViewModel.showTranscription;
@@ -234,10 +244,12 @@ class CardsViewModel extends ChangeNotifier {
     notifyListeners();
 
     _languages = await _languageRepository.getLanguages();
-    _uiLanguage = _pickLanguage(await _settingsRepository.loadUiLanguageCode());
-    _wordLanguage = _pickLanguage(
-      await _settingsRepository.loadWordLanguageCode(),
-    );
+    final uiCode = await _settingsRepository.loadUiLanguageCode();
+    final wordCode = await _settingsRepository.loadWordLanguageCode();
+    _uiFollowsSystem = _followsSystem(uiCode);
+    _wordFollowsSystem = _followsSystem(wordCode);
+    _uiLanguage = _pickLanguage(_uiFollowsSystem ? null : uiCode);
+    _wordLanguage = _pickLanguage(_wordFollowsSystem ? null : wordCode);
 
     _setWords(await _wordRepository.getWords(_wordLanguage));
     _progress = await _progressRepository.load();
@@ -263,6 +275,12 @@ class CardsViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Nothing saved, the "system" mark, or a language that no longer exists.
+  bool _followsSystem(String? savedCode) =>
+      savedCode == null ||
+      savedCode == SettingsRepository.systemLanguageCode ||
+      !_languages.any((l) => l.code == savedCode);
+
   /// Saved choice, else the device language, else English, else the first one.
   AppLanguage _pickLanguage(String? savedCode) {
     AppLanguage? find(String? code) {
@@ -278,32 +296,47 @@ class CardsViewModel extends ChangeNotifier {
         _languages.first;
   }
 
-  /// Switches the interface language. Words and progress stay as they are.
-  Future<void> setUiLanguage(AppLanguage language) async {
-    if (language == _uiLanguage) return;
+  /// Switches the interface language; null = same as the system. Words and
+  /// progress stay as they are.
+  Future<void> setUiLanguage(AppLanguage? choice) async {
+    final followsSystem = choice == null;
+    final language = choice ?? systemLanguage;
+    if (followsSystem == _uiFollowsSystem && language == _uiLanguage) return;
 
-    final texts = await _languageRepository.getUiTexts(language);
-
+    if (language != _uiLanguage) {
+      final texts = await _languageRepository.getUiTexts(language);
+      _strings = AppStrings(texts, languageCode: language.code);
+    }
     _uiLanguage = language;
-    _strings = AppStrings(texts, languageCode: language.code);
+    _uiFollowsSystem = followsSystem;
     notifyListeners();
 
-    await _settingsRepository.saveUiLanguageCode(language.code);
+    await _settingsRepository.saveUiLanguageCode(
+      choice?.code ?? SettingsRepository.systemLanguageCode,
+    );
   }
 
-  /// Switches the language of the translations without losing the progress.
-  Future<void> setWordLanguage(AppLanguage language) async {
-    if (language == _wordLanguage) return;
+  /// Switches the language of the translations without losing the progress;
+  /// null = same as the system.
+  Future<void> setWordLanguage(AppLanguage? choice) async {
+    final followsSystem = choice == null;
+    final language = choice ?? systemLanguage;
+    if (followsSystem == _wordFollowsSystem && language == _wordLanguage) {
+      return;
+    }
 
-    final words = await _wordRepository.getWords(language);
-
+    if (language != _wordLanguage) {
+      _setWords(await _wordRepository.getWords(language));
+      // Same ids, so the session and its position stay valid.
+      _syncDeck();
+    }
     _wordLanguage = language;
-    _setWords(words);
-    // Same ids, so the session and its position stay valid.
-    _syncDeck();
+    _wordFollowsSystem = followsSystem;
     notifyListeners();
 
-    await _settingsRepository.saveWordLanguageCode(language.code);
+    await _settingsRepository.saveWordLanguageCode(
+      choice?.code ?? SettingsRepository.systemLanguageCode,
+    );
   }
 
   void _setWords(List<Word> words) {
