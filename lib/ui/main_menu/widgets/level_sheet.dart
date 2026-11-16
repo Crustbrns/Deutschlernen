@@ -80,7 +80,7 @@ Future<void> showLevelSheet({
                               trailing: current.contains(level)
                                   ? const Icon(
                                       AppIcons.checkCircle,
-                                      color: AppColors.accentBlue,
+                                      color: AppColors.softBlue,
                                     )
                                   : Icon(
                                       AppIcons.circle,

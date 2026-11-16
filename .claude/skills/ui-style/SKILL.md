@@ -47,8 +47,8 @@ render them as separate cards with gaps between them.
   dividers only *between* rows (`Divider` height 1, indent 16, `AppColors.divider(colors)`).
 - Rows: no own background or outline, horizontal padding 16 (so text starts where
   the divider starts), the whole row is tappable (`InkWell`/`ListTile`).
-- Selection inside a block: shown in the row itself — trailing `Icons.check_circle`
-  in `AppColors.accentBlue` for the chosen one, `Icons.circle_outlined` in
+- Selection inside a block: shown in the row itself — trailing `AppIcons.checkCircle`
+  in `AppColors.softBlue` for the chosen one (level sheet, language sheet), `AppIcons.circle` in
   `colors.onSurfaceVariant` for the others. Not by an outline.
 
 - Word rows (`WordRow` in `word_list.dart`, category lists and search results) start with a
@@ -241,15 +241,17 @@ body) is `AppColors.softSecondary` — the same as the level word count (mutedTe
   tap toggles, the thumb can be dragged (snaps to the nearer side, a flick > 300 px/s decides
   by direction), stretches 6px toward the middle while pressed, track color lerps with the
   thumb, `HapticFeedback.lightImpact` on change.
-- Theme: `ThemeSwitch` (`settings/widgets/theme_switch.dart`), an iOS segmented control: pill
-  as tall as `AppSwitch` (31, `subtleButton`, padding 2), two icon-only segments 42 wide
-  (moon / sun 18; labels squeezed the title). The chosen one sits on a raised thumb
-  (`palette.segmentThumb`: white in light, #3A3A3D in dark, shadow like the switch thumb); tap
-  a segment or drag the thumb (snaps, flick > 300 px/s decides), pressed thumb shrinks to 0.94,
-  haptic on change; icons fade `quietText` → `onSurface` with the thumb. No blue here.
-- Language rows: current language name (no flag) as `AppColors.softBlue` trailing text, no
-  chevron. Language sheet (`language_sheet.dart`): no flags, chosen language and its check in
-  `softBlue`.
+- Theme: a value row like the language rows ("Тема" … blue current value) opening a choice
+  sheet: same as system / dark / light (user replaced the segmented switch).
+- Language and theme rows (`_ValueRow`): current choice as `AppColors.softBlue` trailing text,
+  no chevron; "Как в системе" when following the device. Pick-one sheets use `showChoiceSheet` (`lib/ui/core/widgets/choice_sheet.dart`). Language
+  sheet (`language_sheet.dart`): first row "Как в системе" with the language it gives now as a
+  gray subtitle; built like the level sheet — screen background,
+  title `titleLarge` (8 from the left), one `GroupedCard` of compact `MenuRow`s; no flags; chosen
+  language title + `checkCircle` in `softBlue`, others `circle` `onSurfaceVariant`; tap picks
+  and closes.
+- Bottom sheets' drag handle (`AppTheme` → `bottomSheetTheme.dragHandleColor`): quiet, just off the
+  sheet background — light: background 10% darker, dark: background 20% lighter.
 - Speech rate: a `MenuRow` header, then a slider (track 4, `softBlue`, thumb radius 10, no value
   indicator) and slow / fast 13 gray under it.
 - Reset dialog: `palette.card`, radius 20, title `AppListText.title`, body gray hint, buttons

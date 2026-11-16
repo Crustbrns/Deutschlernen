@@ -5,10 +5,10 @@ import 'package:deutschlernen/ui/cards/widgets/language_sheet.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/app_switch.dart';
+import 'package:deutschlernen/ui/core/widgets/choice_sheet.dart';
 import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
 import 'package:deutschlernen/ui/core/widgets/menu_row.dart';
 import 'package:deutschlernen/ui/settings/view_models/settings_view_model.dart';
-import 'package:deutschlernen/ui/settings/widgets/theme_switch.dart';
 
 /// Settings tab: title, then one block per category, rows like the Learn
 /// menu (split by dividers) but without icons — the user's choice.
@@ -19,6 +19,9 @@ class SettingsScreen extends StatelessWidget {
     required this.languages,
     required this.uiLanguage,
     required this.wordLanguage,
+    required this.uiFollowsSystem,
+    required this.wordFollowsSystem,
+    required this.systemLanguage,
     required this.onUiLanguageSelected,
     required this.onWordLanguageSelected,
     required this.onResetAllProgress,
@@ -28,8 +31,15 @@ class SettingsScreen extends StatelessWidget {
   final List<AppLanguage> languages;
   final AppLanguage uiLanguage;
   final AppLanguage wordLanguage;
-  final ValueChanged<AppLanguage> onUiLanguageSelected;
-  final ValueChanged<AppLanguage> onWordLanguageSelected;
+  final bool uiFollowsSystem;
+  final bool wordFollowsSystem;
+
+  /// What "same as system" resolves to on this device.
+  final AppLanguage systemLanguage;
+
+  /// null = same as the system.
+  final ValueChanged<AppLanguage?> onUiLanguageSelected;
+  final ValueChanged<AppLanguage?> onWordLanguageSelected;
 
   /// Makes every word new again (after the user confirms).
   final VoidCallback onResetAllProgress;
@@ -37,6 +47,12 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final strings = AppStrings.of(context);
+    // Sheet order: same as system first, like the language sheets.
+    final themeLabels = {
+      ThemeMode.system: strings.themeSystem,
+      ThemeMode.dark: strings.themeDark,
+      ThemeMode.light: strings.themeLight,
+    };
 
     return SafeArea(
       bottom: false,
@@ -63,18 +79,18 @@ class SettingsScreen extends StatelessWidget {
             _Category(
               title: strings.settingsAppearance,
               children: [
-                MenuRow(
-                  compact: true,
+                _ValueRow(
                   title: strings.theme,
-                  trailing: ThemeSwitch(
-                    mode: settings.themeMode,
-                    onChanged: settings.setThemeMode,
-                  ),
-                  // Tapping the row itself flips the theme too.
-                  onTap: () => settings.setThemeMode(
-                    settings.themeMode == ThemeMode.dark
-                        ? ThemeMode.light
-                        : ThemeMode.dark,
+                  value: themeLabels[settings.themeMode]!,
+                  onTap: () => showChoiceSheet<ThemeMode>(
+                    context: context,
+                    title: strings.theme,
+                    current: settings.themeMode,
+                    onSelected: settings.setThemeMode,
+                    choices: [
+                      for (final e in themeLabels.entries)
+                        Choice(e.key, e.value),
+                    ],
                   ),
                 ),
                 _SwitchRow(
@@ -88,25 +104,33 @@ class SettingsScreen extends StatelessWidget {
             _Category(
               title: strings.settingsLanguages,
               children: [
-                _LanguageRow(
+                _ValueRow(
                   title: strings.interfaceLanguage,
-                  current: uiLanguage,
+                  value: uiFollowsSystem
+                      ? strings.systemLanguage
+                      : uiLanguage.label,
                   onTap: () => showLanguageSheet(
                     context: context,
                     title: strings.interfaceLanguage,
+                    systemLabel: strings.systemLanguage,
+                    systemLanguage: systemLanguage,
                     languages: languages,
-                    current: uiLanguage,
+                    current: uiFollowsSystem ? null : uiLanguage,
                     onSelected: onUiLanguageSelected,
                   ),
                 ),
-                _LanguageRow(
+                _ValueRow(
                   title: strings.wordsLanguage,
-                  current: wordLanguage,
+                  value: wordFollowsSystem
+                      ? strings.systemLanguage
+                      : wordLanguage.label,
                   onTap: () => showLanguageSheet(
                     context: context,
                     title: strings.wordsLanguage,
+                    systemLabel: strings.systemLanguage,
+                    systemLanguage: systemLanguage,
                     languages: languages,
-                    current: wordLanguage,
+                    current: wordFollowsSystem ? null : wordLanguage,
                     onSelected: onWordLanguageSelected,
                   ),
                 ),
@@ -241,16 +265,17 @@ class _SwitchRow extends StatelessWidget {
   }
 }
 
-/// Opens the language sheet; the current language is the blue value on the
-/// right (no chevron: navigation rows don't have one).
-class _LanguageRow extends StatelessWidget {
-  const _LanguageRow({
+/// Opens a choice sheet (language, theme); the current choice is the blue
+/// value on the right (no chevron: navigation rows don't have one).
+class _ValueRow extends StatelessWidget {
+  const _ValueRow({
     required this.title,
-    required this.current,
+    required this.value,
     required this.onTap,
   });
+
   final String title;
-  final AppLanguage current;
+  final String value;
   final VoidCallback onTap;
 
   @override
@@ -259,7 +284,7 @@ class _LanguageRow extends StatelessWidget {
       compact: true,
       title: title,
       trailing: Text(
-        current.label,
+        value,
         style: MenuRow.hintStyle(context).copyWith(color: AppColors.softBlue),
       ),
       onTap: onTap,

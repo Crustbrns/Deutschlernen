@@ -15,21 +15,18 @@ class AppPalette extends ThemeExtension<AppPalette> {
     required this.card,
     required this.subtleButton,
     required this.mutedText,
-    required this.segmentThumb,
   });
 
   final Color background; // behind the cards
   final Color card;
   final Color subtleButton; // barely different from the card
   final Color mutedText; // secondary labels
-  final Color segmentThumb; // raised selected segment (theme switch)
 
   static const dark = AppPalette(
     background: Color(0xFF0B0B0D),
     card: Color(0xFF151517),
     subtleButton: Color(0xFF222225),
     mutedText: Color(0xFF8C8C8C), // rgb(140,140,140)
-    segmentThumb: Color(0xFF3A3A3D),
   );
 
   static const light = AppPalette(
@@ -37,7 +34,6 @@ class AppPalette extends ThemeExtension<AppPalette> {
     card: Color(0xFFFFFFFF),
     subtleButton: Color(0xFFEDEDF0),
     mutedText: Color(0xFF6A6A70),
-    segmentThumb: Color(0xFFFFFFFF),
   );
 
   static AppPalette of(BuildContext context) =>
@@ -49,13 +45,11 @@ class AppPalette extends ThemeExtension<AppPalette> {
     Color? card,
     Color? subtleButton,
     Color? mutedText,
-    Color? segmentThumb,
   }) => AppPalette(
     background: background ?? this.background,
     card: card ?? this.card,
     subtleButton: subtleButton ?? this.subtleButton,
     mutedText: mutedText ?? this.mutedText,
-    segmentThumb: segmentThumb ?? this.segmentThumb,
   );
 
   @override
@@ -66,7 +60,6 @@ class AppPalette extends ThemeExtension<AppPalette> {
       card: Color.lerp(card, other.card, t)!,
       subtleButton: Color.lerp(subtleButton, other.subtleButton, t)!,
       mutedText: Color.lerp(mutedText, other.mutedText, t)!,
-      segmentThumb: Color.lerp(segmentThumb, other.segmentThumb, t)!,
     );
   }
 }
@@ -87,6 +80,13 @@ abstract final class AppTheme {
             : null,
       ),
       scaffoldBackgroundColor: palette.background,
+      // Sheet drag handle: quiet, just off the sheet's background (user's
+      // choice) — a bit darker in light, a bit lighter in dark.
+      bottomSheetTheme: BottomSheetThemeData(
+        dragHandleColor: brightness == Brightness.light
+            ? AppColors.darken(palette.background, 0.1)
+            : AppColors.lighten(palette.background, 0.2),
+      ),
       extensions: [palette],
     );
   }
