@@ -48,6 +48,17 @@ Layered, following Flutter's recommended app architecture: `lib/data` (services 
 - Never commit directly to `main`; work reaches `main` only by merging a branch.
 - After merging a branch into `main`, delete that branch right away, without asking — locally with `git branch -d` (refuses unmerged work, never `-D`) and, if it was pushed, on GitHub with `git push origin --delete <branch>` once `main` with the merge is pushed. Only the branch of the current task: other people's branches are not touched. If `-d` refuses, keep the branch and say why. Merged branches must not pile up on GitHub: the other developer sees them as clutter.
 
+## Code structure (top priority)
+
+Clean, well-organized code matters more than speed: every change must leave the structure at least as tidy as it was. Before writing code, decide where it belongs.
+
+- **Logic is separate from UI.** Rules (what happens on an answer, which words are due, counting, filtering) go into plain Dart classes in `lib/domain/models` with no Flutter imports, and get tests in `test/domain/`. View models only load, save, call those classes and notify. Widgets only display state and forward taps; no business logic, no repository calls in widgets.
+- **One responsibility per class and file.** When a view model starts to hold unrelated things, split it, as `CardsViewModel` was split into `LanguageViewModel`, `LearningViewModel`, `CardSession` and `ProgressBook`. A widget file over ~250 lines, or with several large private widgets, gets split into separate files.
+- **Everything in its place.** Feature folder = tab (`lib/ui/<feature>/{view_models,widgets}`); something used by two or more features goes to `ui/core` (`widgets`, `view_models`); data access only in `lib/data`. Names of files, classes and folders match what the user sees.
+- **No dead code.** Unused files, widgets, icons, colors and string keys are removed (ask before deleting), not left "for later".
+- **No duplication.** A UI piece or rule repeated in two places becomes one shared widget or function (`MenuRow`, `LevelRow`, `showChoiceSheet`).
+- If a task can't be done cleanly in the current structure, say so and propose the refactor first instead of adding a workaround.
+
 ## Conventions
 
 - Visual rules (colors, buttons, icons, grouped lists) are in the `ui-style` skill (`.claude/skills/ui-style/SKILL.md`); follow it for any UI change.
