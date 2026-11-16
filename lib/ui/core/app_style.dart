@@ -96,6 +96,12 @@ abstract final class AppColors {
   // in both themes, since the fill doesn't change with the theme.
   static const onAccent = Color(0xFFFFFFFF);
 
+  // Level icons on the Categories tab: growth from a sprout to a peak.
+  static const levelA1 = accentTeal; // sprout
+  static const levelA2 = Color(0xFFFF5C8A); // pink tulip
+  static const levelB1 = Color(0xFF34C759); // green tree
+  static const levelB2 = accentBlue; // mountains
+
   // Word status strips in the word lists (new words use a theme gray).
   static const statusLearning = Color(0xFFFF5C8A); // pink
   static const statusReview = Color(0xFFFFA530); // orange-yellow

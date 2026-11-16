@@ -76,6 +76,9 @@ render them as separate cards with gaps between them.
   `AppStrings.wordCount`), and on the right the share of seen words ("40 %" with a
   non-breaking space — known or started learning) in `subtitle` style, color halfway between
   `onSurface` and `mutedText`. Padding 16 horizontal, 12 vertical.
+  Each level row starts with a colored icon (26, 14px gap), a growth metaphor: A1 `plant`
+  (sprout, `AppColors.levelA1` teal), A2 `flowerTulip` (pink), B1 `tree` (green), B2
+  `mountains` (blue) — `_levelIcons` in `vocabulary_screen.dart`.
 
 Separate blocks are only for different kinds of content (e.g. a title, then a list).
 
