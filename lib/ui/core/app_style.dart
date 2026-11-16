@@ -125,12 +125,6 @@ abstract final class AppColors {
   // in both themes, since the fill doesn't change with the theme.
   static const onAccent = Color(0xFFFFFFFF);
 
-  // Level icons on the Categories tab: growth from a sprout to a peak.
-  static const levelA1 = accentTeal; // sprout
-  static const levelA2 = Color(0xFFFF5C8A); // pink tulip
-  static const levelB1 = Color(0xFF34C759); // green tree
-  static const levelB2 = accentBlue; // mountains
-
   // Progress chart. "Already know" is a soft light gray there (white in the
   // lists); all segment fills are light, so the counts on them are black in
   // both themes.

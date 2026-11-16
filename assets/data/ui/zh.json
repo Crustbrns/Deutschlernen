@@ -67,7 +67,6 @@
   "learnedToday": "今天已学会：{n}/{goal}",
   "settingsProgress": "进度",
   "resetAllProgress": "重置全部进度",
-  "resetAllProgressHint": "所有单词都会变回新单词",
   "resetAllConfirmTitle": "重置全部进度？",
   "resetAllConfirmBody": "所有单词都会变回新单词。此操作无法撤销。",
   "resetConfirm": "重置",

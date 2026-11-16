@@ -76,7 +76,6 @@
   "learnedToday": "Выучено сегодня: {n} из {goal}",
   "settingsProgress": "Прогресс",
   "resetAllProgress": "Сбросить весь прогресс",
-  "resetAllProgressHint": "Все слова снова станут новыми",
   "resetAllConfirmTitle": "Сбросить весь прогресс?",
   "resetAllConfirmBody": "Все слова снова станут новыми. Это нельзя отменить.",
   "resetConfirm": "Сбросить",

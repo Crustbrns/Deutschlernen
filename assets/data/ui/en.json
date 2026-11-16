@@ -72,7 +72,6 @@
   "learnedToday": "Learned today: {n} of {goal}",
   "settingsProgress": "Progress",
   "resetAllProgress": "Reset all progress",
-  "resetAllProgressHint": "All words become new again",
   "resetAllConfirmTitle": "Reset all progress?",
   "resetAllConfirmBody": "All words become new again. This can’t be undone.",
   "resetConfirm": "Reset",

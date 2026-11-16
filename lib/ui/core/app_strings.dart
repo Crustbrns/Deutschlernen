@@ -46,7 +46,6 @@ class AppStrings {
   String get finish => _get('finish');
   String get settingsProgress => _get('settingsProgress');
   String get resetAllProgress => _get('resetAllProgress');
-  String get resetAllProgressHint => _get('resetAllProgressHint');
   String get resetAllConfirmTitle => _get('resetAllConfirmTitle');
   String get resetAllConfirmBody => _get('resetAllConfirmBody');
   String get resetConfirm => _get('resetConfirm');

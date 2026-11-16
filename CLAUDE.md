@@ -17,7 +17,7 @@ flutter test                         # all tests
 flutter test test/domain/card_session_test.dart --plain-name "<test name>"   # single test
 ```
 
-`test/domain/` covers the session and progress rules. `test/widget_test.dart` is still the default counter template and fails against the real app.
+`test/domain/` covers the session and progress rules; there are no widget tests yet.
 
 Run `dart format` only on files you changed — formatting whole folders rewrites unrelated files and pollutes the diff.
 
@@ -55,4 +55,3 @@ Layered, following Flutter's recommended app architecture: `lib/data` (services 
 - Import `package:material_ui/material_ui.dart` instead of `package:flutter/material.dart`. Icons come only from `AppIcons` (`lib/ui/core/app_icons.dart`, Phosphor Regular font in `assets/fonts/`), see the `ui-style` skill. Don't add the `phosphor_flutter` package — it fails to compile with current Flutter (`IconData` is final).
 - Adding a UI string means adding the key to every `assets/data/ui/*.json` file and a getter in `AppStrings`. Text with a number ("5 слов") uses plural forms: keys `<name>One/Few/Many/Other` with `{n}`, chosen by the language's rule in `AppStrings` (see `wordCount`); ru and uk need One/Few/Many, en/es One/Other, zh Other. A new word needs an entry in `words.json` and the same `id` in every `translations/*.json`.
 - Code comments are short, in English, and only on non-obvious places.
-- `lib/ui/screens/home_screen.dart` and `greeting_card.dart` are unused template leftovers.

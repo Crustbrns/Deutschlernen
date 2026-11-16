@@ -1,7 +1,7 @@
 [
-  { "code": "uk", "label": "Українська", "country": "UA" },
-  { "code": "ru", "label": "Русский", "country": "RU" },
-  { "code": "en", "label": "English", "country": "GB" },
-  { "code": "es", "label": "Español", "country": "ES" },
-  { "code": "zh", "label": "中文（简体）", "country": "CN" }
+  { "code": "uk", "label": "Українська" },
+  { "code": "ru", "label": "Русский" },
+  { "code": "en", "label": "English" },
+  { "code": "es", "label": "Español" },
+  { "code": "zh", "label": "中文（简体）" }
 ]
