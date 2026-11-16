@@ -74,5 +74,12 @@
   "resetAllConfirmTitle": "Reset all progress?",
   "resetAllConfirmBody": "All words become new again. This can’t be undone.",
   "resetConfirm": "Reset",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "statsPeriodWeek": "7 days",
+  "statsPeriodMonth": "30 days",
+  "statsPeriodQuarter": "90 days",
+  "statsPeriodAll": "All time",
+  "statsReview": "Reviewing",
+  "statsLearned": "Learned",
+  "statsEmpty": "Your progress will show up here: mark your first words in Learn"
 }

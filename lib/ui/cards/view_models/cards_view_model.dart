@@ -2,6 +2,7 @@ import 'dart:async' show unawaited;
 import 'dart:math' show Random;
 
 import 'package:flutter/foundation.dart';
+import 'package:deutschlernen/data/repositories/history_repository.dart';
 import 'package:deutschlernen/data/repositories/language_repository.dart';
 import 'package:deutschlernen/data/repositories/lookup_repository.dart';
 import 'package:deutschlernen/data/repositories/progress_repository.dart';
@@ -11,6 +12,7 @@ import 'package:deutschlernen/data/services/review_scheduler.dart';
 import 'package:deutschlernen/data/services/speech_service.dart';
 import 'package:deutschlernen/domain/models/app_language.dart';
 import 'package:deutschlernen/domain/models/card_decision.dart';
+import 'package:deutschlernen/domain/models/status_counts.dart';
 import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/domain/models/word_progress.dart';
 import 'package:deutschlernen/domain/models/word_status.dart';
@@ -24,6 +26,7 @@ class CardsViewModel extends ChangeNotifier {
     required this._settingsRepository,
     required this._lookupRepository,
     required this._progressRepository,
+    required this._historyRepository,
     required this._reviewScheduler,
     required this._speechService,
     required this._settingsViewModel,
@@ -37,6 +40,7 @@ class CardsViewModel extends ChangeNotifier {
   final SettingsRepository _settingsRepository;
   final LookupRepository _lookupRepository;
   final ProgressRepository _progressRepository;
+  final HistoryRepository _historyRepository;
   final ReviewScheduler _reviewScheduler;
   final SpeechService _speechService;
   final SettingsViewModel _settingsViewModel;
@@ -56,6 +60,11 @@ class CardsViewModel extends ChangeNotifier {
 
   /// Word id → progress. Words without an entry are new.
   Map<String, WordProgress> _progress = {};
+
+  /// Daily status counts for the progress chart, keyed by local midnight.
+  Map<DateTime, StatusCounts> _statusHistory = {};
+  Map<DateTime, StatusCounts> get statusHistory =>
+      Map.unmodifiable(_statusHistory);
 
   SessionMode _mode = SessionMode.newWords;
 
@@ -232,6 +241,9 @@ class CardsViewModel extends ChangeNotifier {
 
     _setWords(await _wordRepository.getWords(_wordLanguage));
     _progress = await _progressRepository.load();
+    _statusHistory = await _historyRepository.load();
+    // Today gets a snapshot even without answers, so the chart has it.
+    _recordSnapshot();
     _lookupCounts = await _lookupRepository.loadCounts();
     // Unknown saved levels are dropped; nothing valid left = all levels.
     final savedLevels = (await _settingsRepository.loadLearnLevels())
@@ -414,7 +426,38 @@ class CardsViewModel extends ChangeNotifier {
   void _syncDeck() => _deck = [for (final id in _deckIds) _wordsById[id]!];
 
   // Not awaited: the UI already shows the new state; the write runs after.
-  void _saveProgress() => unawaited(_progressRepository.save(_progress));
+  void _saveProgress() {
+    unawaited(_progressRepository.save(_progress));
+    _recordSnapshot();
+  }
+
+  /// Overwrites today's entry in the history with the current counts.
+  void _recordSnapshot() {
+    final now = DateTime.now();
+    final nowUtc = now.toUtc();
+    var known = 0, learning = 0, review = 0, learned = 0;
+    for (final p in _progress.values) {
+      switch (WordStatus.of(p, nowUtc).status) {
+        case WordStatus.known:
+          known++;
+        case WordStatus.learning:
+          learning++;
+        case WordStatus.review:
+          review++;
+        case WordStatus.learned:
+          learned++;
+        case WordStatus.newWord:
+          break;
+      }
+    }
+    _statusHistory[DateTime(now.year, now.month, now.day)] = StatusCounts(
+      known: known,
+      learning: learning,
+      review: review,
+      learned: learned,
+    );
+    unawaited(_historyRepository.save(_statusHistory));
+  }
 
   /// The cards screen has opened: read the word on top, if the user wants that.
   void onCardsOpened() => _speakCurrentIfAuto();

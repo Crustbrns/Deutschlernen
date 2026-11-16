@@ -208,3 +208,22 @@ under the bar.
 
 Judge smoothness only in `flutter run --profile` on a device; debug mode always stutters.
 Prefer `Curves.easeOutCubic` for things that open or grow.
+
+## Progress chart
+
+`StatisticsScreen` (Progress tab): title like the other tabs, then a period switch, then one
+`palette.card` block (radius 20) with the legend and `ProgressChart`.
+
+- Period switch (`_PeriodSwitch`): one `palette.card` block, radius 14, padding 4; four equal
+  segments 36 tall, radius 10 — 7 / 30 / 90 days / all time. Selected: `accentBlue` α 0.14 fill,
+  `accentBlue` text; others `onSurface`; 14 w600 -0.3.
+- Chart (`progress_chart.dart`, `CustomPainter`): stacked bars, bottom to top known
+  (`onSurface`), learning (pink), review (yellow), learned (green) — the colors of
+  `AppColors.forWordStatus`, same as the list strips. 2px gaps between segments, radius 6,
+  bar ≤ 44 wide (62% of its slot). Neighbouring bars are joined per status by bands (same color
+  α 0.22, cubic curves). Dashed grid in `AppColors.divider`, y labels and "d.M" x labels
+  12 w600 `mutedText`. Slots narrower than 52 scroll sideways, opening at the latest bar.
+- Each segment shows its word count centered: 12 w700 -0.3, black (`AppColors.chartCountDark`),
+  white on a dark fill (the light theme's black "known"); hidden when it doesn't fit.
+- Height = all words in each status at the end of that day/week (not the day's activity).
+  7 days — a bar per day; 30 / 90 days / all time — a bar per week (Monday start).

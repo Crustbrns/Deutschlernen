@@ -92,6 +92,11 @@ abstract final class AppColors {
   static const menuNewWords = Color(0xFFFF5C8A); // pink
   static const menuRepeat = Color(0xFFFFC83D); // yellow
 
+  // Word counts on the progress chart's colored segments; the fills don't
+  // change with the theme, so neither do these.
+  static const chartCountDark = Color(0xFF000000);
+  static const chartCountLight = Color(0xFFFFFFFF);
+
   // Word status strips in the word lists (new words use a theme gray).
   static const statusLearning = Color(0xFFFF5C8A); // pink
   static const statusReview = Color(0xFFFFA530); // orange-yellow
@@ -184,4 +189,3 @@ abstract final class AppListText {
     letterSpacing: _spacing,
   );
 }
-

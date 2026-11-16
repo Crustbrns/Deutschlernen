@@ -69,5 +69,12 @@
   "resetAllConfirmTitle": "重置全部进度？",
   "resetAllConfirmBody": "所有单词都会变回新单词。此操作无法撤销。",
   "resetConfirm": "重置",
-  "cancel": "取消"
+  "cancel": "取消",
+  "statsPeriodWeek": "7 天",
+  "statsPeriodMonth": "30 天",
+  "statsPeriodQuarter": "90 天",
+  "statsPeriodAll": "全部",
+  "statsReview": "复习中",
+  "statsLearned": "已学会",
+  "statsEmpty": "你的进度会显示在这里：先在“学习”中标记第一批单词"
 }

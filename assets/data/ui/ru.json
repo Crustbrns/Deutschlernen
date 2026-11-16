@@ -78,5 +78,12 @@
   "resetAllConfirmTitle": "Сбросить весь прогресс?",
   "resetAllConfirmBody": "Все слова снова станут новыми. Это нельзя отменить.",
   "resetConfirm": "Сбросить",
-  "cancel": "Отмена"
+  "cancel": "Отмена",
+  "statsPeriodWeek": "7 дней",
+  "statsPeriodMonth": "30 дней",
+  "statsPeriodQuarter": "90 дней",
+  "statsPeriodAll": "Всё время",
+  "statsReview": "Повторяю",
+  "statsLearned": "Выучено",
+  "statsEmpty": "Здесь появится твой прогресс: отметь первые слова в разделе «Учить»"
 }
