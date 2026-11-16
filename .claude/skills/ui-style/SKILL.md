@@ -78,7 +78,8 @@ render them as separate cards with gaps between them.
   `onSurface` and `mutedText`. Padding 16 horizontal, 12 vertical.
   Each level row starts with a colored icon (26, 14px gap), a growth metaphor: A1 `plant`
   (sprout, `AppColors.levelA1` teal), A2 `flowerTulip` (pink), B1 `tree` (green), B2
-  `mountains` (blue) — `_levelIcons` in `vocabulary_screen.dart`.
+  `mountains` (blue) — `LevelIcon` (`lib/ui/core/widgets/level_icon.dart`); the level picker sheet
+  (`level_sheet.dart`) shows the same icons as `ListTile.leading`.
 
 Separate blocks are only for different kinds of content (e.g. a title, then a list).
 
@@ -229,13 +230,24 @@ The list doubles as the chart's legend, so the chart has none of its own.
 - Period switch (`_PeriodSwitch`): one `palette.card` block, radius 14, padding 4; four equal
   segments 36 tall, radius 10 — 7 / 30 / 90 days / all time. Selected: `accentBlue` α 0.14 fill,
   `accentBlue` text; others `onSurface`; 14 w600 -0.3.
-- Chart (`progress_chart.dart`, `CustomPainter`): stacked bars, bottom to top known
-  (`onSurface`), learning (pink), review (yellow), learned (green) — the colors of
-  `AppColors.forWordStatus`, same as the list strips. 2px gaps between segments, radius 6,
-  bar ≤ 44 wide (62% of its slot). Neighbouring bars are joined per status by bands (same color
-  α 0.22, cubic curves). Dashed grid in `AppColors.divider`, y labels and "d.M" x labels
-  12 w600 `mutedText`. Slots narrower than 52 scroll sideways, opening at the latest bar.
-- Each segment shows its word count centered: 12 w700 -0.3, black (`AppColors.chartCountDark`),
-  white on a dark fill (the light theme's black "known"); hidden when it doesn't fit.
+- Chart (`progress_chart.dart`, `CustomPainter`): stacked bars, bottom to top known (soft light
+  gray `AppColors.chartKnown` #C7C7CC in both themes — white in the lists, gray here by the
+  user's choice), learning (pink),
+  review (yellow), learned (green); colors via `ProgressChart.colorFor`, the legend dots too.
+  2px gaps between segments, radius 6, bar ≤ 44 wide (62% of its slot). Neighbouring bars are
+  joined per status by bands (same color α 0.22, cubic curves). "d.M" x labels 12 w600
+  `mutedText`. Slots narrower than 52 scroll sideways, opening at the latest bar.
+- Every non-empty segment shows its word count centered (14 regular w400, -0.3, always black
+  `AppColors.chartCount` — all fills are light), so it is at least 22px tall; the rest of
+  the height is linear, one scale for all bars. Y axis (34 wide, 12 w600 `mutedText`) and a
+  dashed grid in `AppColors.divider` stay: round steps 1/2/5/10/…, ≤ 4 lines above 0; if the
+  minimums make a bar too tall, the scale shrinks to fit and the ticks follow
+  (`ProgressChart._layout`).
+- Vertical grid: every other column (slot, full height incl. the date) has a faint backing,
+  `onSurface` α 0.05, radius 10, 2px inset; counted from the right, so the latest bar is plain. A segment raised to the minimum looks bigger than its value on
+  the axis — intended, the user's choice.
+- Meaning (layers don't overlap, a word is in one of them): known — "already know"; learning
+  ("Изучаю") — taken to learn, never recalled; review ("Повторено") — recalled at least once,
+  not learned yet; learned ("Выучено") — interval ≥ 21 days.
 - Height = all words in each status at the end of that day/week (not the day's activity).
   7 days — a bar per day; 30 / 90 days / all time — a bar per week (Monday start).

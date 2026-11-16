@@ -77,6 +77,7 @@ class AppStrings {
   String get statsPeriodAll => _get('statsPeriodAll');
   String get statusKnown => _get('statusKnown');
   String get statusLearning => _get('statusLearning');
+  String get statsLearning => _get('statsLearning');
   String get statsReview => _get('statsReview');
   String get statsLearned => _get('statsLearned');
   String get statsEmpty => _get('statsEmpty');

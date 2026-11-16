@@ -5,6 +5,7 @@ import 'package:deutschlernen/domain/models/word_status.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
+import 'package:deutschlernen/ui/core/widgets/level_icon.dart';
 import 'package:deutschlernen/ui/core/widgets/round_icon_button.dart';
 import 'package:deutschlernen/ui/vocabulary/widgets/level_words_screen.dart';
 import 'package:deutschlernen/ui/vocabulary/widgets/word_list.dart';
@@ -160,14 +161,6 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
     );
   }
 
-  // Growth from A1 to B2: sprout, tulip, tree, mountain peak.
-  static const _levelIcons = {
-    'A1': (AppIcons.plant, AppColors.levelA1),
-    'A2': (AppIcons.flowerTulip, AppColors.levelA2),
-    'B1': (AppIcons.tree, AppColors.levelB1),
-    'B2': (AppIcons.mountains, AppColors.levelB2),
-  };
-
   Widget _buildLevelRow(String level, List<Word> words, ColorScheme colors) {
     // Seen = the user decided on it: "already know" or started learning.
     final seen = words
@@ -185,10 +178,8 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Row(
           children: [
-            if (_levelIcons[level] case (final icon, final color)) ...[
-              Icon(icon, size: 26, color: color),
-              const SizedBox(width: 14),
-            ],
+            LevelIcon(level),
+            const SizedBox(width: 14),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

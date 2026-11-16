@@ -80,7 +80,8 @@
   "statsPeriodMonth": "30 days",
   "statsPeriodQuarter": "90 days",
   "statsPeriodAll": "All time",
-  "statsReview": "Reviewing",
+  "statsLearning": "Learning",
+  "statsReview": "Reviewed",
   "statsLearned": "Learned",
   "statsEmpty": "Your progress will show up here: mark your first words in Learn"
 }

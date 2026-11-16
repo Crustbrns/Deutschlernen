@@ -84,7 +84,8 @@
   "statsPeriodMonth": "30 дней",
   "statsPeriodQuarter": "90 дней",
   "statsPeriodAll": "Всё время",
-  "statsReview": "Повторяю",
+  "statsLearning": "Изучаю",
+  "statsReview": "Повторено",
   "statsLearned": "Выучено",
   "statsEmpty": "Здесь появится твой прогресс: отметь первые слова в разделе «Учить»"
 }

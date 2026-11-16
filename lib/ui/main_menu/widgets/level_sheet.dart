@@ -4,6 +4,7 @@ import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
+import 'package:deutschlernen/ui/core/widgets/level_icon.dart';
 
 /// Bottom sheet to pick the levels (A1–B2) to learn, several at once.
 /// Every tap is applied right away, so there is no "Done" button.
@@ -18,6 +19,11 @@ Future<void> showLevelSheet({
   return showModalBottomSheet<void>(
     context: context,
     showDragHandle: true,
+    // Height follows the content. Without it the sheet stops at 9/16 of the
+    // screen and cut off the last level row.
+    isScrollControlled: true,
+    // ...but never under the status bar / notch.
+    useSafeArea: true,
     // Screen background, so the card-colored block stands out on it.
     backgroundColor: AppPalette.of(context).background,
     builder: (sheetContext) {
@@ -40,47 +46,52 @@ Future<void> showLevelSheet({
             }
 
             return SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
-                      child: Text(
-                        strings.chooseLevels,
-                        style: Theme.of(context).textTheme.titleLarge,
+              // Scrolls instead of clipping on short screens.
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
+                        child: Text(
+                          strings.chooseLevels,
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
                       ),
-                    ),
-                    GroupedCard(
-                      children: [
-                        for (final level in Word.levels)
-                          ListTile(
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                            ),
-                            title: Text(level),
-                            subtitle: Text(
-                              strings.wordCount(wordCounts[level] ?? 0),
-                              style: TextStyle(
-                                color: AppColors.quietText(colors),
+                      GroupedCard(
+                        children: [
+                          for (final level in Word.levels)
+                            ListTile(
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 16,
                               ),
+                              // Same icons as on the Categories tab.
+                              leading: LevelIcon(level),
+                              title: Text(level),
+                              subtitle: Text(
+                                strings.wordCount(wordCounts[level] ?? 0),
+                                style: TextStyle(
+                                  color: AppColors.quietText(colors),
+                                ),
+                              ),
+                              trailing: current.contains(level)
+                                  ? const Icon(
+                                      AppIcons.checkCircle,
+                                      color: AppColors.accentBlue,
+                                    )
+                                  : Icon(
+                                      AppIcons.circle,
+                                      color: colors.onSurfaceVariant,
+                                    ),
+                              onTap: () => toggle(level),
                             ),
-                            trailing: current.contains(level)
-                                ? const Icon(
-                                    AppIcons.checkCircle,
-                                    color: AppColors.accentBlue,
-                                  )
-                                : Icon(
-                                    AppIcons.circle,
-                                    color: colors.onSurfaceVariant,
-                                  ),
-                            onTap: () => toggle(level),
-                          ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );
