@@ -81,22 +81,21 @@ class MenuRow extends StatelessWidget {
   );
 
   /// Gray secondary text: hints, current values, counts.
-  /// [soft]: settings text — lighter in the light theme, the same as the
-  /// level word count (`AppColors.softSecondary`).
+  /// [soft]: settings text (`AppPalette.softHint`), lighter in the light
+  /// theme.
   static TextStyle hintStyle(
     BuildContext context, {
     double? height,
     bool soft = false,
   }) {
-    final colors = Theme.of(context).colorScheme;
     return TextStyle(
       fontSize: 15,
       fontWeight: FontWeight.w600,
       letterSpacing: -0.3,
       height: height,
-      color: soft && colors.brightness == Brightness.light
-          ? AppColors.softSecondary(context)
-          : AppColors.quietText(colors),
+      color: soft
+          ? AppPalette.of(context).softHint
+          : AppColors.quietText(Theme.of(context).colorScheme),
     );
   }
 }

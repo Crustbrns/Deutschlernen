@@ -28,7 +28,7 @@ divider any more (it would be too pale), it keeps the old gray base.
 | Word card (learning and lookup) | `palette.card`, **no outline** (solid) | radius 32 |
 | Search field | fill `palette.card`, **no outline** when idle, gray `AppColors.divider(colors)` outline (same as list dividers, not blue) only while focused; vertical padding 10, dense | pill (fully round) |
 
-Search field behavior (`_SearchField` in `vocabulary_screen.dart`): while focused or holding text,
+Search field behavior (`SearchField` in `search_field.dart`): while focused or holding text,
 the field shrinks (animated) and a `RoundIconButton` with `Icons.close` appears on its right;
 it clears the text, hides the keyboard and returns the field to full width.
 The hint text and that close icon are gray too: the outline color made 30% lighter
@@ -90,6 +90,10 @@ render them as separate cards with gaps between them.
   (`level_sheet.dart`) uses the same `LevelRow` (`lib/ui/core/widgets/level_row.dart`) as the
   Categories tab, with the picker check (`softBlue` `checkCircle` / `circle`) as trailing.
 
+Theme-dependent colors are fields of `AppPalette` with a value per theme (e.g. `secondaryText`
+for the level word count, `levelPercent` for "40 %"). Widgets never check
+`Theme.of(context).brightness` themselves.
+
 Separate blocks are only for different kinds of content (e.g. a title, then a list).
 
 ## Buttons
@@ -110,7 +114,7 @@ Separate blocks are only for different kinds of content (e.g. a title, then a li
   (`palette.background` α 0.75 on top) fades out, so it is full size and bright
   the moment the top one is gone; deeper cards are empty shapes. Each card gets its own bottom
   bar (`bottomBarFor`); only the top one reacts to the drag.
-- **Recall buttons** (`RecallBar` in `decision_bar.dart`) for pink words and reviews: two
+- **Recall buttons** (`RecallBar` in `recall_bar.dart`) for pink words and reviews: two
   separate buttons, 12px apart, 56 tall, radius 14, fill `palette.card` at rest; 1.5px outline
   and face icon 24 (`smileySad` / `smiley`, Regular) in `onSurface` moved 40% toward the card;
   label 17 w700 -0.4 on one line ("Забыл" / "Помню") in `onSurface` moved 25% toward the card. On drag the matching side is
@@ -127,11 +131,11 @@ Separate blocks are only for different kinds of content (e.g. a title, then a li
   replaces it with the translation (no way back); review session — the three-button
   `AnswerModeBar` (Show / Write / Choose). `WordCard.answerModes` switches them.
 - **Selected / active state**: fill `AppColors.accentBlue` α 0.14, border `AppColors.accentBlue`,
-  icon and text `AppColors.accentBlue` (see `_ModeButton` in `answer_modes.dart`).
+  icon and text `AppColors.accentBlue` (see `_ModeButton` in `answer_mode_bar.dart`).
 - **Primary action** (one per screen at most): `FilledButton`, radius 14.
 - **Audio**: `PlayButton` (`lib/ui/core/widgets/play_button.dart`) in rows — blue, outlined.
   On the word card the German word and its plural are left-aligned with a speaker button
-  (`_TranscriptionButton` without text: rounded square, radius 12) on the right of the word,
+  (`TranscriptionButton` in `transcription_button.dart`, without text: rounded square, radius 12) on the right of the word,
   8px after it; the row reaches 12px into the card's right inset (`OverflowBox`), so long words
   get more room before wrapping; the transcription pill below
   (text only, left, also speaks) appears when transcription is on.
@@ -200,10 +204,10 @@ under the bar.
   `colors.onSurface` on filled neutral buttons.
 - Practice tab menu text is condensed: title `headlineSmall` letter spacing -0.5, row titles
   17 w600 / -0.4, trailing count 15 w600 / -0.3 (default spacing looked too loose to the user).
-- Exception: the Learn tab menu (`main_menu_screen.dart`) has colored leading icons, size 26,
+- Exception: the Learn tab menu (`learn_screen.dart`) has colored leading icons, size 26,
   one color per action (`AppColors.menuCategories` blue, `menuNewWords` pink, `menuRepeat`
   yellow); a disabled row fades its icon to α 0.4.
-- Week strip (`WeekStrip` in `main_menu/widgets/week_strip.dart`), 16px under the Practice
+- Week strip (`WeekStrip` in `learn/widgets/week_strip.dart`), 16px under the Practice
   menu block: 7 tiles Mon–Sun (`AppStrings.weekdaysShort`, day names only, no dates), 6px
   apart, 52 tall, radius 14, fill `palette.card`, text 15 w600 -0.3 `onSurface`; today is
   filled `AppColors.menuNewWords` pink with `AppColors.onAccent` (white) text.
@@ -236,9 +240,9 @@ Prefer `Curves.easeOutCubic` for things that open or grow.
 `GroupedCard` of `MenuRow`s (`lib/ui/core/widgets/menu_row.dart`, shared with the Learn menu:
 title 17 w600 -0.4, gray hint 15 w600 -0.3). **No icons in settings rows** (user removed them;
 the Learn menu keeps its colored icons). Rows use `compact: true`: line height 1.12, 4px above
-the hint. Light theme: all gray settings text (hints, category names, slow/fast, reset dialog
-body) is `AppColors.softSecondary` — the same as the level word count (mutedText 50% lighter);
-`MenuRow.hintStyle(context, soft: true)`. Reset all progress: title in `decisionRed`, no hint line, trailing
+the hint. All gray settings text (hints, category names, slow/fast, reset dialog body) is
+`AppPalette.softHint` via `MenuRow.hintStyle(context, soft: true)`; in the light theme it equals
+the level word count (mutedText 50% lighter). Reset all progress: title in `decisionRed`, no hint line, trailing
 `AppIcons.arrowCounterClockwise` 22 in `decisionRed`.
 
 - Switches: `AppSwitch` (`lib/ui/core/widgets/app_switch.dart`), same on both platforms: track
@@ -249,7 +253,7 @@ body) is `AppColors.softSecondary` — the same as the level word count (mutedTe
   thumb, `HapticFeedback.lightImpact` on change.
 - Theme: a value row like the language rows ("Тема" … blue current value) opening a choice
   sheet: same as system / dark / light (user replaced the segmented switch).
-- Language and theme rows (`_ValueRow`): current choice as `AppColors.softBlue` trailing text,
+- Language and theme rows (`SettingsValueRow` in `settings_rows.dart`): current choice as `AppColors.softBlue` trailing text,
   no chevron; "Как в системе" when following the device. Pick-one sheets use `showChoiceSheet` (`lib/ui/core/widgets/choice_sheet.dart`). Language
   sheet (`language_sheet.dart`): first row "Как в системе" with the language it gives now as a
   gray subtitle; built like the level sheet — screen background,
@@ -260,14 +264,14 @@ body) is `AppColors.softSecondary` — the same as the level word count (mutedTe
   sheet background — light: background 10% darker, dark: background 20% lighter.
 - Speech rate: a `MenuRow` header, then a slider (track 6, filled `softBlue`, unfilled
   `palette.sliderTrack` soft pastel gray, white pill thumb 30×20 with the switch's shadow
-  (`_PillThumbShape`), no ripple, no value indicator; `SliderThemeData.padding` 16 horizontal, so
+  (`_PillThumbShape` in `speed_row.dart`), no ripple, no value indicator; `SliderThemeData.padding` 16 horizontal, so
   the track is level with the row text; slow / fast labels at the same 16 edges) and slow / fast 13 gray under it.
 - Reset dialog: `palette.card`, radius 20, title `AppListText.title`, body gray hint, buttons
   17 w600 (cancel `onSurface`, reset red).
 
 ## Progress chart
 
-`StatisticsScreen` (Progress tab): title like the other tabs, then a period switch, then one
+`ProgressScreen` (Progress tab): title like the other tabs, then a period switch, then one
 `palette.card` block (radius 20) with `ProgressChart`, then a `GroupedCard` with the current count
 per status (`_TotalRow`: 12px status dot, 12 gap, name in `AppListText.subtitle`, count right in
 `AppListText.title`; padding 16/14), top of the stack first: learned, review, learning, known.

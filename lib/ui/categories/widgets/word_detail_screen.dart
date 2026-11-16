@@ -5,9 +5,9 @@ import 'package:deutschlernen/ui/cards/widgets/word_card.dart';
 import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
-import 'package:deutschlernen/ui/vocabulary/widgets/word_hero.dart';
+import 'package:deutschlernen/ui/categories/widgets/word_hero.dart';
 
-/// One word's card opened from the vocabulary.
+/// One word's card opened from the Categories tab.
 /// Same card as in learning, in its compact lookup mode. A word with
 /// progress gets a "reset progress" button under the card.
 /// Shown over a solid black backdrop that hides the list behind it
@@ -16,7 +16,7 @@ class WordDetailScreen extends StatefulWidget {
   const WordDetailScreen({
     super.key,
     required this.word,
-    required this.otherTranslations,
+    required this.translationPool,
     required this.showTranscription,
     required this.lookupCount,
     required this.onSpeak,
@@ -25,7 +25,7 @@ class WordDetailScreen extends StatefulWidget {
   });
 
   final Word word;
-  final List<String> otherTranslations;
+  final List<String> translationPool;
   final bool showTranscription;
   final int lookupCount; // times opened from the search, shown in the header
   final ValueChanged<String> onSpeak;
@@ -100,7 +100,7 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
                           word: word,
                           onSpeak: widget.onSpeak,
                           showTranscription: widget.showTranscription,
-                          otherTranslations: widget.otherTranslations,
+                          translationPool: widget.translationPool,
                           bottomBar: const SizedBox.shrink(),
                           lookup: true,
                           lookupCount: widget.lookupCount,

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// How many times the user opened each word from the vocabulary search.
+/// How many times the user opened each word from the Categories search.
 /// Stored as one JSON map {wordId: count}: a single read at start-up instead
 /// of one key per word.
 class LookupRepository {

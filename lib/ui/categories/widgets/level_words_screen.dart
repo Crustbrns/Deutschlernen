@@ -4,9 +4,9 @@ import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/domain/models/word_status.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/widgets/round_icon_button.dart';
-import 'package:deutschlernen/ui/vocabulary/widgets/word_list.dart';
+import 'package:deutschlernen/ui/categories/widgets/word_list.dart';
 
-/// Words of one level (A1, A2, …), opened from the vocabulary tab.
+/// Words of one level (A1, A2, …), opened from the Categories tab.
 class LevelWordsScreen extends StatelessWidget {
   const LevelWordsScreen({
     super.key,

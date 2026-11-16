@@ -28,7 +28,8 @@ class AppSettings {
 
   static const minSpeechRate = 0.2;
   static const maxSpeechRate = 0.6;
-  static const defaultSpeechRate = 0.4; // what the app used before it was a setting
+  static const defaultSpeechRate =
+      0.4; // what the app used before it was a setting
 
   AppSettings copyWith({
     ThemeMode? themeMode,

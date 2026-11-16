@@ -8,8 +8,9 @@ import 'package:deutschlernen/data/repositories/word_repository.dart';
 import 'package:deutschlernen/data/services/speech_service.dart';
 import 'package:deutschlernen/data/repositories/language_repository.dart';
 import 'package:deutschlernen/data/services/asset_service.dart';
-import 'package:deutschlernen/ui/cards/view_models/cards_view_model.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
+import 'package:deutschlernen/ui/core/view_models/language_view_model.dart';
+import 'package:deutschlernen/ui/core/view_models/learning_view_model.dart';
 import 'package:deutschlernen/ui/home/widgets/home_shell.dart';
 import 'package:deutschlernen/ui/settings/view_models/settings_view_model.dart';
 
@@ -32,9 +33,12 @@ class _MyAppState extends State<MyApp> {
     settingsRepository: _settingsRepository,
     speechService: _speechService,
   )..load();
-  late final CardsViewModel _cardsViewModel = CardsViewModel(
-    wordRepository: WordRepository(assetService: _assetService),
+  late final _languageViewModel = LanguageViewModel(
     languageRepository: LanguageRepository(assetService: _assetService),
+    settingsRepository: _settingsRepository,
+  );
+  late final _learningViewModel = LearningViewModel(
+    wordRepository: WordRepository(assetService: _assetService),
     settingsRepository: _settingsRepository,
     lookupRepository: LookupRepository(),
     progressRepository: ProgressRepository(),
@@ -42,11 +46,25 @@ class _MyAppState extends State<MyApp> {
     reviewScheduler: ReviewScheduler(),
     speechService: _speechService,
     settingsViewModel: _settingsViewModel,
-  )..load();
+    languageViewModel: _languageViewModel,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  // Words are loaded in the translation language, so languages go first.
+  Future<void> _load() async {
+    await _languageViewModel.load();
+    await _learningViewModel.load();
+  }
 
   @override
   void dispose() {
-    _cardsViewModel.dispose();
+    _learningViewModel.dispose();
+    _languageViewModel.dispose();
     _settingsViewModel.dispose();
     _speechService.dispose();
     super.dispose();
@@ -62,7 +80,8 @@ class _MyAppState extends State<MyApp> {
         darkTheme: AppTheme.dark(),
         themeMode: _settingsViewModel.themeMode,
         home: HomeShell(
-          viewModel: _cardsViewModel,
+          viewModel: _learningViewModel,
+          languageViewModel: _languageViewModel,
           settingsViewModel: _settingsViewModel,
         ),
       ),

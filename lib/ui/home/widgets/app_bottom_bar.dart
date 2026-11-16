@@ -3,13 +3,14 @@ import 'dart:ui' show ImageFilter, lerpDouble;
 
 import 'package:flutter/services.dart' show HapticFeedback;
 import 'package:material_ui/material_ui.dart';
-import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
+import 'package:deutschlernen/ui/home/widgets/bar_tab.dart';
+import 'package:deutschlernen/ui/home/widgets/glass_lens.dart';
 
 /// Order of the tabs in the bottom bar and in the shell's page stack.
-enum HomeTab { main, vocabulary, statistics, settings }
+enum HomeTab { learn, categories, progress, settings }
 
 /// Floating bottom navigation: a frosted-glass pill inset from the screen
 /// edges; the content scrolls under it (Scaffold.extendBody) and shows
@@ -157,10 +158,10 @@ class _AppBottomBarState extends State<AppBottomBar>
 
     // Solid (Fill) icons, the user's choice.
     final tabs = [
-      (AppIcons.houseFill, strings.tabMain),
+      (AppIcons.houseFill, strings.tabLearn),
       // Categories: the word levels and the search.
-      (AppIcons.squaresFourFill, strings.tabVocabulary),
-      (AppIcons.fileTextFill, strings.tabStatistics),
+      (AppIcons.squaresFourFill, strings.tabCategories),
+      (AppIcons.fileTextFill, strings.tabProgress),
       (AppIcons.gearFill, strings.tabSettings),
     ];
 
@@ -201,8 +202,7 @@ class _AppBottomBarState extends State<AppBottomBar>
                   clipBehavior: Clip.none,
                   children: [
                     _buildBar(palette, colors, tabs, tabWidth, pillLeft, lift),
-                    if (lift > 0.01)
-                      _buildLens(colors, tabWidth, pillLeft, lift),
+                    if (lift > 0.01) _buildLens(tabWidth, pillLeft, lift),
                   ],
                 );
               },
@@ -264,7 +264,7 @@ class _AppBottomBarState extends State<AppBottomBar>
                     children: [
                       for (var i = 0; i < tabs.length; i++)
                         Expanded(
-                          child: _TabButton(
+                          child: BarTab(
                             icon: tabs[i].$1,
                             label: tabs[i].$2,
                             isSelected: i == widget.selected.index,
@@ -282,111 +282,20 @@ class _AppBottomBarState extends State<AppBottomBar>
     );
   }
 
-  /// Glass lens over the tabs: RawMagnifier enlarges what is under it, and
-  /// a LiquidGlass layer on top bends it at the edges (real refraction via
-  /// a shader, like iOS 26), with no blur and no color fringes.
-  Widget _buildLens(
-    ColorScheme colors,
-    double tabWidth,
-    double pillLeft,
-    double lift,
-  ) {
+  /// The lifted lens, centered on the flat pill and a bit bigger.
+  Widget _buildLens(double tabWidth, double pillLeft, double lift) {
     final width = tabWidth * (1 + 0.2 * lift);
     final height = _tabHeight * (1 + 0.22 * lift);
     // Center of the flat pill, in the outer Stack's coordinates.
     final cx = _inset + pillLeft + tabWidth / 2;
     const cy = _inset + _tabHeight / 2;
-    final size = Size(width, height);
 
     return Positioned(
       left: cx - width / 2,
       top: cy - height / 2,
       width: width,
       height: height,
-      child: IgnorePointer(
-        child: Stack(
-          children: [
-            RawMagnifier(
-              size: size,
-              magnificationScale: 1 + 0.12 * lift,
-              decoration: MagnifierDecoration(
-                shape: const StadiumBorder(),
-                shadows: [
-                  BoxShadow(
-                    color: colors.shadow.withValues(alpha: 0.2 * lift),
-                    blurRadius: 14,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-            ),
-            LiquidGlass.withOwnLayer(
-              shape: LiquidRoundedSuperellipse(borderRadius: height / 2),
-              settings: LiquidGlassSettings(
-                // Fades the glass in and out with the lift.
-                visibility: lift,
-                thickness: 14,
-                refractiveIndex: 1.3,
-                blur: 0, // sharp, not soapy
-                chromaticAberration: 0, // no rainbow edges
-                lightIntensity: 0.6,
-                saturation: 1,
-                glassColor: colors.onSurface.withValues(alpha: 0.04),
-              ),
-              child: SizedBox.fromSize(size: size),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _TabButton extends StatelessWidget {
-  const _TabButton({
-    required this.icon,
-    required this.label,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  final IconData icon;
-  final String label;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    // All tabs in the main text color (white in the dark theme); the
-    // selected one is marked by the pill only.
-    final color = Theme.of(context).colorScheme.onSurface;
-
-    // Taps are handled by the bar (it also runs the lens); Semantics keeps
-    // each tab a separate button for screen readers.
-    return Semantics(
-      button: true,
-      selected: isSelected,
-      label: label,
-      excludeSemantics: true,
-      onTap: onTap,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, size: 22, color: color),
-          const SizedBox(height: 2),
-          Text(
-            label,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              letterSpacing: -0.3,
-              color: color,
-            ),
-          ),
-        ],
-      ),
+      child: GlassLens(size: Size(width, height), lift: lift),
     );
   }
 }

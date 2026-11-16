@@ -20,13 +20,6 @@ class LevelRow extends StatelessWidget {
   final Widget? trailing;
   final VoidCallback onTap;
 
-  /// Muted gray of the secondary text; light theme 50% lighter (user's
-  /// choice), on white it looked too heavy.
-  static Color secondaryColor(BuildContext context) =>
-      Theme.of(context).brightness == Brightness.light
-      ? AppColors.softSecondary(context)
-      : AppPalette.of(context).mutedText;
-
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
@@ -53,8 +46,10 @@ class LevelRow extends StatelessWidget {
                   Text(
                     AppStrings.of(context).wordCount(wordCount),
                     // A size smaller than a word row's translation.
-                    style: AppListText.subtitle(colors)
-                        .copyWith(color: secondaryColor(context), fontSize: 15),
+                    style: AppListText.subtitle(colors).copyWith(
+                      color: AppPalette.of(context).secondaryText,
+                      fontSize: 15,
+                    ),
                   ),
                 ],
               ),
