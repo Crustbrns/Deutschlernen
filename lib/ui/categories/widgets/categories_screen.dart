@@ -5,8 +5,8 @@ import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
 import 'package:deutschlernen/ui/core/widgets/level_row.dart';
+import 'package:deutschlernen/ui/core/widgets/search_field.dart';
 import 'package:deutschlernen/ui/categories/widgets/level_words_screen.dart';
-import 'package:deutschlernen/ui/categories/widgets/search_field.dart';
 import 'package:deutschlernen/ui/categories/widgets/word_list.dart';
 
 /// Categories tab: title, word search under it, below them the levels
@@ -53,18 +53,13 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
-  final _searchController = TextEditingController();
-
-  @override
-  void dispose() {
-    _searchController.dispose(); // controllers hold listeners, free them
-    super.dispose();
-  }
+  /// What the results show: set by the field once typing pauses.
+  String _query = '';
 
   @override
   Widget build(BuildContext context) {
     final strings = AppStrings.of(context);
-    final query = _searchController.text.trim();
+    final query = _query;
 
     return SafeArea(
       bottom: false,
@@ -82,10 +77,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
             child: SearchField(
-              controller: _searchController,
               hint: strings.searchHint,
-              // The controller already holds the text; setState only rebuilds.
-              onChanged: () => setState(() {}),
+              onSearch: (query) => setState(() => _query = query),
             ),
           ),
           Expanded(

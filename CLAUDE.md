@@ -17,7 +17,7 @@ flutter test                         # all tests
 flutter test test/domain/card_session_test.dart --plain-name "<test name>"   # single test
 ```
 
-`test/domain/` covers the session and progress rules; there are no widget tests yet.
+`test/domain/` covers the session, progress and reminder rules; `test/ui/` has widget tests (search field, lazy word list).
 
 Run `dart format` only on files you changed — formatting whole folders rewrites unrelated files and pollutes the diff.
 
@@ -67,3 +67,5 @@ Clean, well-organized code matters more than speed: every change must leave the 
 - Import `package:material_ui/material_ui.dart` instead of `package:flutter/material.dart`. Icons come only from `AppIcons` (`lib/ui/core/app_icons.dart`, Phosphor Regular font in `assets/fonts/`), see the `ui-style` skill. Don't add the `phosphor_flutter` package — it fails to compile with current Flutter (`IconData` is final).
 - Adding a UI string means adding the key to every `assets/data/ui/*.json` file and a getter in `AppStrings`. Text with a number ("5 слов") uses plural forms: keys `<name>One/Few/Many/Other` with `{n}`, chosen by the language's rule in `AppStrings` (see `wordCount`); ru and uk need One/Few/Many, en/es One/Other, zh Other. A new word needs an entry in `words.json` and the same `id` in every `translations/*.json`.
 - Code comments are short, in English, and only on non-obvious places.
+- **Virtualize long lists: only the visible rows are built.** Anything whose length grows with the content (words, search results, history) is a lazy sliver/builder list, never a `Column` or `ListView(children: …)` of all items. A grouped block of such rows is `GroupedSliverList` in a `CustomScrollView` (`lib/ui/core/widgets/grouped_card.dart`); `GroupedCard` only for short fixed lists (levels, settings, pickers).
+- **Search and autocomplete run only once the user has stopped typing**, never on every key: a debounce of `SearchField.pause` (350 ms) after the last key; the search key and clearing run it right away. Every search or autocomplete input uses `SearchField` (`lib/ui/core/widgets/search_field.dart`), which does this and reports the query through `onSearch`; don't filter in a raw `TextField.onChanged`.

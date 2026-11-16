@@ -37,3 +37,61 @@ class GroupedCard extends StatelessWidget {
     );
   }
 }
+
+/// [GroupedCard] for long lists (words, search results): rows are built
+/// lazily, only the ones on screen. Put it in a CustomScrollView.
+/// The block's fill is one decoration behind the whole list, so there are
+/// no seams between rows; each row gets its own transparent Material, so
+/// its ripple shows on the fill and is clipped to the outer corners.
+class GroupedSliverList extends StatelessWidget {
+  const GroupedSliverList({
+    super.key,
+    required this.itemCount,
+    required this.itemBuilder,
+  });
+
+  final int itemCount;
+  final IndexedWidgetBuilder itemBuilder;
+
+  static const _radius = Radius.circular(20);
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
+    return DecoratedSliver(
+      decoration: BoxDecoration(
+        color: AppPalette.of(context).card,
+        borderRadius: const BorderRadius.all(_radius),
+      ),
+      sliver: SliverList.builder(
+        itemCount: itemCount,
+        itemBuilder: (context, i) => Material(
+          type: MaterialType.transparency,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              top: i == 0 ? _radius : Radius.zero,
+              bottom: i == itemCount - 1 ? _radius : Radius.zero,
+            ),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Same line as GroupedCard puts between rows.
+              if (i > 0)
+                Divider(
+                  height: 1,
+                  thickness: 1,
+                  indent: 16,
+                  endIndent: 16,
+                  color: AppColors.divider(colors),
+                ),
+              itemBuilder(context, i),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

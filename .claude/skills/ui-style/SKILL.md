@@ -28,7 +28,7 @@ divider any more (it would be too pale), it keeps the old gray base.
 | Word card (learning and lookup) | `palette.card`, **no outline** (solid) | radius 32 |
 | Search field | fill `palette.card`, **no outline** when idle, gray `AppColors.divider(colors)` outline (same as list dividers, not blue) only while focused; vertical padding 10, dense | pill (fully round) |
 
-Search field behavior (`SearchField` in `search_field.dart`): while focused or holding text,
+Search field behavior (`SearchField` in `lib/ui/core/widgets/search_field.dart`, the one widget for every search): results update only once typing pauses (350 ms), the search key and the close button update them at once. While focused or holding text,
 the field shrinks (animated) and a `RoundIconButton` with `Icons.close` appears on its right;
 it clears the text, hides the keyboard and returns the field to full width.
 The hint text and that close icon are gray too: the outline color made 30% lighter
@@ -45,6 +45,8 @@ render them as separate cards with gaps between them.
 
 - Block: `GroupedCard` (`lib/ui/core/widgets/grouped_card.dart`). It draws the block and puts
   dividers only *between* rows (`Divider` height 1, indent 16, `AppColors.divider(colors)`).
+  Long lists (words, search results) use `GroupedSliverList` from the same file instead: same
+  look, but only the visible rows are built (project rule).
 - Rows: no own background or outline, horizontal padding 16 (so text starts where
   the divider starts), the whole row is tappable (`InkWell`/`ListTile`).
 - Selection inside a block: shown in the row itself — trailing `AppIcons.checkCircle`
