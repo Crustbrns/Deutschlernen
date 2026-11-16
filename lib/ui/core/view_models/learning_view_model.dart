@@ -120,6 +120,9 @@ class LearningViewModel extends ChangeNotifier {
   double seenShare(String level) =>
       _progress.decidedShare([for (final w in _wordsByLevel[level]!) w.id]);
 
+  /// Review times of the selected levels' words, for the reminders.
+  List<DateTime> get reviewDueTimes => _progress.dueTimes(_inLearnLevels);
+
   /// 0 for a word that was never searched.
   int lookupCount(String wordId) => _lookupCounts[wordId] ?? 0;
 

@@ -71,6 +71,13 @@ class ProgressBook {
     return [for (final e in due) e.key];
   }
 
+  /// Review times of recalled words (pink and known ones are never due),
+  /// for planning reminders ahead.
+  List<DateTime> dueTimes(bool Function(String wordId) exists) => [
+    for (final MapEntry(key: id, value: p) in _entries.entries)
+      if (p.card case final card? when !p.isUnrecalled && exists(id)) card.due,
+  ];
+
   /// How many words are in each status right now, for the progress chart.
   StatusCounts counts(DateTime nowUtc) {
     var known = 0, learning = 0, review = 0, learned = 0;

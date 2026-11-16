@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart' show ThemeMode;
+import 'package:deutschlernen/domain/models/reminder_settings.dart';
 
 /// Everything the user can switch in Settings, except the two languages
 /// (those are kept by the cards view model).
@@ -6,7 +7,7 @@ class AppSettings {
   const AppSettings({
     this.themeMode = ThemeMode.dark,
     this.showTranscription = true,
-    this.notificationsEnabled = false,
+    this.reminders = const ReminderSettings(),
     this.autoSpeak = false,
     this.speechRate = defaultSpeechRate,
   });
@@ -17,8 +18,8 @@ class AppSettings {
   /// The phonetic spelling under the German word.
   final bool showTranscription;
 
-  /// Reminders to practice. Only the choice is stored for now.
-  final bool notificationsEnabled;
+  /// Reminders to practice: on/off, days and times.
+  final ReminderSettings reminders;
 
   /// Read each new word aloud as soon as its card appears.
   final bool autoSpeak;
@@ -34,14 +35,14 @@ class AppSettings {
   AppSettings copyWith({
     ThemeMode? themeMode,
     bool? showTranscription,
-    bool? notificationsEnabled,
+    ReminderSettings? reminders,
     bool? autoSpeak,
     double? speechRate,
   }) {
     return AppSettings(
       themeMode: themeMode ?? this.themeMode,
       showTranscription: showTranscription ?? this.showTranscription,
-      notificationsEnabled: notificationsEnabled ?? this.notificationsEnabled,
+      reminders: reminders ?? this.reminders,
       autoSpeak: autoSpeak ?? this.autoSpeak,
       speechRate: speechRate ?? this.speechRate,
     );

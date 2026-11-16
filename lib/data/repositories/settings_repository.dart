@@ -3,6 +3,7 @@ import 'dart:ui' show PlatformDispatcher;
 import 'package:material_ui/material_ui.dart' show ThemeMode;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:deutschlernen/domain/models/app_settings.dart';
+import 'package:deutschlernen/domain/models/reminder_settings.dart';
 
 class SettingsRepository {
   static const _uiLanguageKey = 'ui_language';
@@ -12,7 +13,11 @@ class SettingsRepository {
   /// Old bool (dark or light), read while no [_themeModeKey] is saved.
   static const _legacyDarkThemeKey = 'dark_theme';
   static const _showTranscriptionKey = 'show_transcription';
-  static const _notificationsKey = 'notifications';
+  // New key: the old 'notifications' switch did nothing, so an old "on"
+  // must not start reminders without asking for permission.
+  static const _remindersEnabledKey = 'reminders_enabled';
+  static const _reminderDaysKey = 'reminder_days'; // "1","2",… (weekday)
+  static const _reminderTimesKey = 'reminder_times'; // "9:00","19:30",…
   static const _autoSpeakKey = 'auto_speak';
   static const _speechRateKey = 'speech_rate';
   static const _learnLevelsKey = 'learn_levels';
@@ -60,9 +65,7 @@ class SettingsRepository {
       showTranscription:
           await _prefs.getBool(_showTranscriptionKey) ??
           defaults.showTranscription,
-      notificationsEnabled:
-          await _prefs.getBool(_notificationsKey) ??
-          defaults.notificationsEnabled,
+      reminders: await _loadReminders(defaults.reminders),
       autoSpeak: await _prefs.getBool(_autoSpeakKey) ?? defaults.autoSpeak,
       speechRate: (rate ?? defaults.speechRate).clamp(
         AppSettings.minSpeechRate,
@@ -77,8 +80,44 @@ class SettingsRepository {
   Future<void> saveShowTranscription(bool value) =>
       _prefs.setBool(_showTranscriptionKey, value);
 
-  Future<void> saveNotificationsEnabled(bool value) =>
-      _prefs.setBool(_notificationsKey, value);
+  /// Broken or empty saved values fall back to [defaults].
+  Future<ReminderSettings> _loadReminders(ReminderSettings defaults) async {
+    final days = (await _prefs.getStringList(_reminderDaysKey))
+        ?.map(int.tryParse)
+        .whereType<int>()
+        .where((d) => d >= DateTime.monday && d <= DateTime.sunday)
+        .toSet();
+    final times = (await _prefs.getStringList(_reminderTimesKey))
+        ?.map(_parseTime)
+        .whereType<ReminderTime>()
+        .take(ReminderSettings.maxPerDay)
+        .toList();
+    return ReminderSettings(
+      enabled: await _prefs.getBool(_remindersEnabledKey) ?? defaults.enabled,
+      days: days == null || days.isEmpty ? defaults.days : days,
+      times: times == null || times.isEmpty ? defaults.times : times,
+    );
+  }
+
+  static ReminderTime? _parseTime(String text) {
+    final parts = text.split(':');
+    if (parts.length != 2) return null;
+    final h = int.tryParse(parts[0]), m = int.tryParse(parts[1]);
+    if (h == null || m == null || h < 0 || h > 23 || m < 0 || m > 59) {
+      return null;
+    }
+    return (hour: h, minute: m);
+  }
+
+  Future<void> saveReminders(ReminderSettings reminders) async {
+    await _prefs.setBool(_remindersEnabledKey, reminders.enabled);
+    await _prefs.setStringList(_reminderDaysKey, [
+      for (final d in reminders.days) '$d',
+    ]);
+    await _prefs.setStringList(_reminderTimesKey, [
+      for (final t in reminders.times) '${t.hour}:${t.minute}',
+    ]);
+  }
 
   Future<void> saveAutoSpeak(bool value) =>
       _prefs.setBool(_autoSpeakKey, value);

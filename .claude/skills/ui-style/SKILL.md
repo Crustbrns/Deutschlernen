@@ -266,8 +266,19 @@ the level word count (mutedText 50% lighter). Reset all progress: title in `deci
   `palette.sliderTrack` soft pastel gray, white pill thumb 30×20 with the switch's shadow
   (`_PillThumbShape` in `speed_row.dart`), no ripple, no value indicator; `SliderThemeData.padding` 16 horizontal, so
   the track is level with the row text; slow / fast labels at the same 16 edges) and slow / fast 13 gray under it.
-- Reset dialog: `palette.card`, radius 20, title `AppListText.title`, body gray hint, buttons
-  17 w600 (cancel `onSurface`, reset red).
+- Dialogs: `showConfirmDialog` (`lib/ui/core/widgets/confirm_dialog.dart`) — `palette.card`,
+  radius 20, title `AppListText.title`, body gray hint, buttons 17 w600 (cancel `onSurface`,
+  action in its color: reset red, "open settings" `softBlue`). Don't style an AlertDialog inline.
+- All picker sheets go through `showSheet` (`choice_sheet.dart`): drag handle, title, content on
+  the screen background. Several-at-once picks: `showMultiChoiceSheet` (applied on each tap,
+  the last one can't be turned off), same rows as `showChoiceSheet`.
+- Reminders block (`RemindersCategory`, `reminders_category.dart`): the switch; while on, value
+  rows "Дни" ("Каждый день" / "Будни" / "Выходные" / "Пн, Ср, Пт"; full day names in the
+  multi-choice sheet), "Сколько раз в день" (1–3, choice sheet) and one "Время" row per reminder
+  ("Время 1", "Время 2" when several), value "09:00". Time sheet (`time_sheet.dart`): iOS-style
+  looping wheels for hours and minutes, 24-hour, tabular digits 24 w500, in a `palette.card`
+  block radius 20, 220 tall, `subtleButton` band radius 12 behind the selected row, haptic tick
+  per step; full-width "Готово" `FilledButton` 52 tall radius 14; the value applies on close.
 
 ## Progress chart
 

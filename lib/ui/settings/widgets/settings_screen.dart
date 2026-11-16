@@ -7,6 +7,7 @@ import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/choice_sheet.dart';
 import 'package:deutschlernen/ui/core/widgets/menu_row.dart';
 import 'package:deutschlernen/ui/settings/view_models/settings_view_model.dart';
+import 'package:deutschlernen/ui/settings/widgets/reminders_category.dart';
 import 'package:deutschlernen/ui/settings/widgets/reset_progress_dialog.dart';
 import 'package:deutschlernen/ui/settings/widgets/settings_rows.dart';
 import 'package:deutschlernen/ui/settings/widgets/speed_row.dart';
@@ -131,17 +132,7 @@ class SettingsScreen extends StatelessWidget {
                 SpeedRow(settings: settings),
               ],
             ),
-            SettingsCategory(
-              title: strings.settingsNotifications,
-              children: [
-                SettingsSwitchRow(
-                  title: strings.reminders,
-                  hint: strings.remindersHint,
-                  value: settings.notificationsEnabled,
-                  onChanged: settings.setNotificationsEnabled,
-                ),
-              ],
-            ),
+            RemindersCategory(settings: settings),
             SettingsCategory(
               title: strings.settingsProgress,
               children: [
