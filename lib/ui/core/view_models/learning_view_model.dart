@@ -56,6 +56,8 @@ class LearningViewModel extends ChangeNotifier {
 
   List<Word> _words = [];
   Map<String, Word> _wordsById = {};
+  Map<String, List<Word>> _wordsByLevel = Word.byLevel(const []);
+  List<String> _translations = [];
 
   /// Translation language [_words] were loaded in.
   AppLanguage? _wordsLanguage;
@@ -85,6 +87,12 @@ class LearningViewModel extends ChangeNotifier {
 
   /// All words, for the Categories tab.
   List<Word> get words => _words;
+
+  /// Words of each level, in [Word.levels] order.
+  Map<String, List<Word>> get wordsByLevel => _wordsByLevel;
+
+  /// Every word's translation: wrong options for the "choose" mode.
+  List<String> get translations => _translations;
   Set<String> get learnLevels => _learnLevels;
   Map<DateTime, StatusCounts> get statusHistory =>
       Map.unmodifiable(_statusHistory);
@@ -107,6 +115,11 @@ class LearningViewModel extends ChangeNotifier {
     final now = DateTime.now();
     return _progress.recalledSince(DateTime(now.year, now.month, now.day));
   }
+
+  /// Share (0–1) of the level's words the user has decided on: "already
+  /// know" or started learning.
+  double seenShare(String level) =>
+      _progress.decidedShare([for (final w in _wordsByLevel[level]!) w.id]);
 
   /// 0 for a word that was never searched.
   int lookupCount(String wordId) => _lookupCounts[wordId] ?? 0;
@@ -163,6 +176,8 @@ class LearningViewModel extends ChangeNotifier {
     _wordsLanguage = language;
     _words = await _wordRepository.getWords(language);
     _wordsById = {for (final w in _words) w.id: w};
+    _wordsByLevel = Word.byLevel(_words);
+    _translations = [for (final w in _words) w.translation];
     // Same ids in every language, so the session and its position stay valid.
     _syncDeck();
   }

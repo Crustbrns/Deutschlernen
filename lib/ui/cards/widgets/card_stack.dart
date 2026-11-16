@@ -120,10 +120,7 @@ class CardStack extends StatelessWidget {
     word: word,
     onSpeak: onSpeak,
     showTranscription: showTranscription,
-    otherTranslations: [
-      for (final other in words)
-        if (other.id != word.id) other.translation,
-    ],
+    translationPool: [for (final w in words) w.translation],
     bottomBar: bottomBarFor(word, isTop: isTop),
     answerModes: answerModes,
     state: stateOf(word.id),

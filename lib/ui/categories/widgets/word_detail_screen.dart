@@ -16,7 +16,7 @@ class WordDetailScreen extends StatefulWidget {
   const WordDetailScreen({
     super.key,
     required this.word,
-    required this.otherTranslations,
+    required this.translationPool,
     required this.showTranscription,
     required this.lookupCount,
     required this.onSpeak,
@@ -25,7 +25,7 @@ class WordDetailScreen extends StatefulWidget {
   });
 
   final Word word;
-  final List<String> otherTranslations;
+  final List<String> translationPool;
   final bool showTranscription;
   final int lookupCount; // times opened from the search, shown in the header
   final ValueChanged<String> onSpeak;
@@ -100,7 +100,7 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
                           word: word,
                           onSpeak: widget.onSpeak,
                           showTranscription: widget.showTranscription,
-                          otherTranslations: widget.otherTranslations,
+                          translationPool: widget.translationPool,
                           bottomBar: const SizedBox.shrink(),
                           lookup: true,
                           lookupCount: widget.lookupCount,

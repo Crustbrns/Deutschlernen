@@ -34,6 +34,11 @@ class ProgressBook {
 
   bool contains(String wordId) => _entries.containsKey(wordId);
 
+  /// Share (0–1) of [wordIds] with progress, i.e. not new; 0 for none.
+  double decidedShare(List<String> wordIds) => wordIds.isEmpty
+      ? 0
+      : wordIds.where(_entries.containsKey).length / wordIds.length;
+
   WordState stateOf(String wordId, DateTime nowUtc) =>
       WordStatus.of(_entries[wordId], nowUtc);
 

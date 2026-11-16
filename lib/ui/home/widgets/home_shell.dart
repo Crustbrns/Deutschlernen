@@ -52,11 +52,7 @@ class _HomeShellState extends State<HomeShell> {
         strings: _lang.strings,
         screen: WordDetailScreen(
           word: word,
-          // Wrong options for the "choose" answer mode.
-          otherTranslations: [
-            for (final w in _vm.words)
-              if (w.id != word.id) w.translation,
-          ],
+          translationPool: _vm.translations,
           showTranscription: widget.settingsViewModel.showTranscription,
           lookupCount: _vm.lookupCount(word.id),
           onSpeak: _vm.speak,
@@ -103,10 +99,9 @@ class _HomeShellState extends State<HomeShell> {
                       strings: _lang.strings,
                       selected: _vm.learnLevels,
                       wordCounts: {
-                        for (final level in Word.levels)
-                          level: _vm.words
-                              .where((w) => w.level == level)
-                              .length,
+                        for (final MapEntry(key: level, value: words)
+                            in _vm.wordsByLevel.entries)
+                          level: words.length,
                       },
                       onChanged: _vm.setLearnLevels,
                     ),
@@ -121,6 +116,8 @@ class _HomeShellState extends State<HomeShell> {
                   ),
                   CategoriesScreen(
                     words: _vm.words,
+                    wordsByLevel: _vm.wordsByLevel,
+                    seenShare: _vm.seenShare,
                     onWordSelected: _openWord,
                     onSearchResultSelected: (word) {
                       // Count first, so the card already shows this lookup.

@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/domain/models/word.dart';
@@ -271,13 +269,13 @@ class ChoiceAnswerPanel extends StatefulWidget {
   const ChoiceAnswerPanel({
     super.key,
     required this.word,
-    required this.otherTranslations,
+    required this.translationPool,
   });
 
   final Word word;
 
-  /// Translations of other words, used as wrong options.
-  final List<String> otherTranslations;
+  /// Translations to take the wrong options from.
+  final List<String> translationPool;
 
   @override
   State<ChoiceAnswerPanel> createState() => _ChoiceAnswerPanelState();
@@ -293,18 +291,6 @@ class _ChoiceAnswerPanelState extends State<ChoiceAnswerPanel> {
     if (oldWidget.word.translation != widget.word.translation) _picked = null;
   }
 
-  /// Correct answer plus up to 3 wrong ones. The seed is the word, so the
-  /// order stays the same when the card rebuilds.
-  List<String> _options() {
-    final random = math.Random(widget.word.id.hashCode);
-    final wrong = widget.otherTranslations
-        .where((text) => text.isNotEmpty && text != widget.word.translation)
-        .toSet()
-        .toList()
-      ..shuffle(random);
-    return [widget.word.translation, ...wrong.take(3)]..shuffle(random);
-  }
-
   @override
   Widget build(BuildContext context) {
     final picked = _picked;
@@ -314,7 +300,7 @@ class _ChoiceAnswerPanelState extends State<ChoiceAnswerPanel> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        for (final option in _options())
+        for (final option in widget.word.choiceOptions(widget.translationPool))
           Padding(
             padding: const EdgeInsets.only(bottom: 8),
             child: _ChoiceOption(
@@ -366,7 +352,9 @@ class _ChoiceOption extends StatelessWidget {
       opacity: state == _OptionState.dimmed ? 0.45 : 1,
       duration: const Duration(milliseconds: 200),
       child: Material(
-        color: accent?.withValues(alpha: 0.14) ?? AppPalette.of(context).subtleButton,
+        color:
+            accent?.withValues(alpha: 0.14) ??
+            AppPalette.of(context).subtleButton,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(14),
           side: BorderSide(

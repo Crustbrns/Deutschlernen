@@ -1,3 +1,5 @@
+import 'dart:math' show Random;
+
 import 'package:deutschlernen/domain/models/example_sentence.dart';
 
 class Word {
@@ -41,6 +43,27 @@ class Word {
     if (given.isEmpty) return false;
     return {translation, german, withArticle}.map(_normalize).contains(given);
   }
+
+  /// "Choose" answer mode: the translation plus up to 3 wrong ones from
+  /// [pool] (other words' translations; this word's own and empty ones are
+  /// skipped). Seeded by the word, so the order is the same on every call.
+  List<String> choiceOptions(Iterable<String> pool) {
+    final random = Random(id.hashCode);
+    final wrong =
+        pool.where((t) => t.isNotEmpty && t != translation).toSet().toList()
+          ..shuffle(random);
+    return [translation, ...wrong.take(3)]..shuffle(random);
+  }
+
+  /// Groups [words] by level, in [levels] order; a level without words
+  /// gets an empty list.
+  static Map<String, List<Word>> byLevel(Iterable<Word> words) => {
+    for (final level in levels)
+      level: [
+        for (final w in words)
+          if (w.level == level) w,
+      ],
+  };
 
   static String _normalize(String text) => text
       .trim()

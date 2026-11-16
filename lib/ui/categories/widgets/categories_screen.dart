@@ -17,6 +17,8 @@ class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({
     super.key,
     required this.words,
+    required this.wordsByLevel,
+    required this.seenShare,
     required this.onWordSelected,
     required this.onSearchResultSelected,
     required this.onSpeak,
@@ -24,7 +26,14 @@ class CategoriesScreen extends StatefulWidget {
     required this.progressChanges,
   });
 
+  /// All words, for the search.
   final List<Word> words;
+
+  /// Words of each level, in display order.
+  final Map<String, List<Word>> wordsByLevel;
+
+  /// Share (0–1) of a level's words already seen: known or started.
+  final double Function(String level) seenShare;
 
   /// Word opened from a level's list.
   final ValueChanged<Word> onWordSelected;
@@ -150,23 +159,16 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       ),
       child: GroupedCard(
         children: [
-          for (final level in Word.levels)
-            _buildLevelRow(
-              level,
-              widget.words.where((w) => w.level == level).toList(),
-              colors,
-            ),
+          for (final MapEntry(key: level, value: words)
+              in widget.wordsByLevel.entries)
+            _buildLevelRow(level, words, colors),
         ],
       ),
     );
   }
 
   Widget _buildLevelRow(String level, List<Word> words, ColorScheme colors) {
-    // Seen = the user decided on it: "already know" or started learning.
-    final seen = words
-        .where((w) => widget.stateOf(w.id).status != WordStatus.newWord)
-        .length;
-    final percent = words.isEmpty ? 0 : (seen * 100 / words.length).round();
+    final percent = (widget.seenShare(level) * 100).round();
     return LevelRow(
       level: level,
       wordCount: words.length,

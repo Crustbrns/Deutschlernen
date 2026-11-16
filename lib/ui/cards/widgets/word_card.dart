@@ -16,7 +16,7 @@ class WordCard extends StatefulWidget {
     required this.word,
     required this.onSpeak,
     required this.showTranscription,
-    required this.otherTranslations,
+    required this.translationPool,
     required this.bottomBar,
     this.lookup = false,
     this.answerModes = true,
@@ -51,8 +51,8 @@ class WordCard extends StatefulWidget {
   /// When off, the speaker button stays but the phonetic text is hidden.
   final bool showTranscription;
 
-  /// Translations of the other words, used as wrong options in the choice mode.
-  final List<String> otherTranslations;
+  /// Translations to take the wrong options from in the choice mode.
+  final List<String> translationPool;
 
   /// Pinned to the bottom of the card, outside the scrolling content.
   final Widget bottomBar;
@@ -272,8 +272,7 @@ class _WordCardState extends State<WordCard> {
                                     padding: const EdgeInsets.only(top: 16),
                                     child: ChoiceAnswerPanel(
                                       word: word,
-                                      otherTranslations:
-                                          widget.otherTranslations,
+                                      translationPool: widget.translationPool,
                                     ),
                                   ),
                                 },

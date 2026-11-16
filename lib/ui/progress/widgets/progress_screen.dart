@@ -4,7 +4,7 @@ import 'package:deutschlernen/domain/models/word_status.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
-import 'package:deutschlernen/ui/progress/view_models/progress_chart_data.dart';
+import 'package:deutschlernen/domain/models/chart_bars.dart';
 import 'package:deutschlernen/ui/progress/widgets/progress_chart.dart';
 
 /// Progress tab: title, period switch (7 / 30 / 90 days / all time), then
