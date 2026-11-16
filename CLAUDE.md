@@ -44,7 +44,7 @@ Layered, following Flutter's recommended app architecture: `lib/data` (services 
 - Never work on `main`. Before changing any file, check the current branch (`git branch --show-current`). If it is `main`, first create a branch: `git switch -c feature/<short-name>` (uncommitted changes move with it).
 - If you notice changes were already made on `main`, move them to a new branch the same way before doing anything else.
 - Never commit directly to `main`; work reaches `main` only by merging a branch.
-- After merging a branch into `main`, delete that **local** branch right away, without asking: use `git branch -d` (refuses unmerged work), never `-D`. Only the branch of the current task; remote branches and other people's branches are not touched. If `-d` refuses, keep the branch and say why.
+- After merging a branch into `main`, delete that branch right away, without asking — locally with `git branch -d` (refuses unmerged work, never `-D`) and, if it was pushed, on GitHub with `git push origin --delete <branch>` once `main` with the merge is pushed. Only the branch of the current task: other people's branches are not touched. If `-d` refuses, keep the branch and say why. Merged branches must not pile up on GitHub: the other developer sees them as clutter.
 
 ## Conventions
 
