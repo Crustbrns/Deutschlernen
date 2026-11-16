@@ -168,10 +168,14 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
         .length;
     final percent = words.isEmpty ? 0 : (seen * 100 / words.length).round();
     final muted = AppPalette.of(context).mutedText;
-    // Light theme: count and percent 25% lighter (user's choice), on white
+    // Light theme: count and percent 50% lighter (user's choice), on white
     // they looked too heavy.
     Color soft(Color c) =>
-        colors.brightness == Brightness.light ? AppColors.lighten(c, 0.25) : c;
+        colors.brightness == Brightness.light ? AppColors.lighten(c, 0.5) : c;
+    // Count a size smaller than a word row's translation; the percent
+    // bigger, it is the row's progress at a glance (user's choice).
+    const secondarySize = 15.0;
+    const percentSize = 17.0;
 
     // Same typography as a word row: level like the German word, count like
     // the translation. Own row instead of ListTile, which adds its own
@@ -190,12 +194,18 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(level, style: AppListText.title(colors)),
-                  const SizedBox(height: AppListText.gap),
+                  // More air than a word row (AppListText.gap): the count
+                  // is smaller and lighter, it shouldn't stick to the name.
+                  const SizedBox(height: 4),
                   // Gray: secondary to the level name.
                   Text(
                     AppStrings.of(context).wordCount(words.length),
-                    style: AppListText.subtitle(colors)
-                        .copyWith(color: soft(muted)),
+                    style: AppListText.subtitle(colors).copyWith(
+                      color: colors.brightness == Brightness.light
+                          ? AppColors.softSecondary(context)
+                          : muted,
+                      fontSize: secondarySize,
+                    ),
                   ),
                 ],
               ),
@@ -205,6 +215,7 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
             Text(
               '$percent\u00A0%',
               style: AppListText.subtitle(colors).copyWith(
+                fontSize: percentSize,
                 // Light gray: between the main text and the muted count.
                 color: soft(Color.lerp(colors.onSurface, muted, 0.5)!),
               ),

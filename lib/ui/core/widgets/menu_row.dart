@@ -57,7 +57,11 @@ class MenuRow extends StatelessWidget {
               padding: EdgeInsets.only(top: compact ? 2 : 0),
               child: Text(
                 subtitle!,
-                style: MenuRow.hintStyle(context, height: height),
+                style: MenuRow.hintStyle(
+                  context,
+                  height: height,
+                  soft: compact,
+                ),
               ),
             ),
       trailing: trailing,
@@ -77,12 +81,22 @@ class MenuRow extends StatelessWidget {
   );
 
   /// Gray secondary text: hints, current values, counts.
-  static TextStyle hintStyle(BuildContext context, {double? height}) =>
-      TextStyle(
-        fontSize: 15,
-        fontWeight: FontWeight.w600,
-        letterSpacing: -0.3,
-        height: height,
-        color: AppColors.quietText(Theme.of(context).colorScheme),
-      );
+  /// [soft]: settings text — lighter in the light theme, the same as the
+  /// level word count (`AppColors.softSecondary`).
+  static TextStyle hintStyle(
+    BuildContext context, {
+    double? height,
+    bool soft = false,
+  }) {
+    final colors = Theme.of(context).colorScheme;
+    return TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w600,
+      letterSpacing: -0.3,
+      height: height,
+      color: soft && colors.brightness == Brightness.light
+          ? AppColors.softSecondary(context)
+          : AppColors.quietText(colors),
+    );
+  }
 }
