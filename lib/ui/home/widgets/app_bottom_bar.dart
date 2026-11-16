@@ -372,7 +372,7 @@ class _TabButton extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 27, color: color),
+          Icon(icon, size: 22, color: color),
           const SizedBox(height: 2),
           Text(
             label,
@@ -381,6 +381,7 @@ class _TabButton extends StatelessWidget {
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
+              letterSpacing: -0.3,
               color: color,
             ),
           ),

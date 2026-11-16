@@ -144,7 +144,7 @@ Separate blocks are only for different kinds of content (e.g. a title, then a li
 glass: 16 from the screen sides, above the home indicator (12 from the bottom without one),
 radius 34, `BackdropFilter` blur 20 over `palette.card` at α 0.75, thin border
 `colors.outlineVariant` α 0.4, no ripple. A custom row of tabs, not Material's `NavigationBar`.
-Tab: icon 27, 2px gap, 12px w600 label.
+Tab: icon 22, 2px gap, 12px w600 label, letter spacing -0.3.
 
 Selection: a lighter pill behind the selected tab (`colors.onSurface` α 0.1, 6px inset from
 the bar's edge). All icons and labels are `colors.onSurface` (white in dark); the pill alone
