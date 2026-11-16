@@ -29,11 +29,14 @@ abstract final class AppIcons {
   static const deviceMobile = IconData(0xe1e0, fontFamily: _font);
   static const faders = IconData(0xe228, fontFamily: _font);
   static const eye = IconData(0xe220, fontFamily: _font);
+  static const flowerTulip = IconData(0xeacc, fontFamily: _font);
   static const info = IconData(0xe2ce, fontFamily: _font);
   static const listChecks = IconData(0xeadc, fontFamily: _font);
   static const magnifyingGlass = IconData(0xe30c, fontFamily: _font);
   static const moon = IconData(0xe330, fontFamily: _font);
+  static const mountains = IconData(0xe7ae, fontFamily: _font);
   static const pencilSimple = IconData(0xe3b4, fontFamily: _font);
+  static const plant = IconData(0xebae, fontFamily: _font);
   static const play = IconData(0xe3d0, fontFamily: _font);
   static const plusCircle = IconData(0xe3d6, fontFamily: _font);
   static const smiley = IconData(0xe436, fontFamily: _font);
@@ -42,6 +45,7 @@ abstract final class AppIcons {
   static const squaresFour = IconData(0xe464, fontFamily: _font);
   static const sun = IconData(0xe472, fontFamily: _font);
   static const translate = IconData(0xe4a2, fontFamily: _font);
+  static const tree = IconData(0xe6da, fontFamily: _font);
   static const x = IconData(0xe4f6, fontFamily: _font);
   static const xCircle = IconData(0xe4f8, fontFamily: _font);
 

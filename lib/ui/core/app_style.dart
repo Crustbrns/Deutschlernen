@@ -92,6 +92,12 @@ abstract final class AppColors {
   static const menuNewWords = Color(0xFFFF5C8A); // pink
   static const menuRepeat = Color(0xFFFFC83D); // yellow
 
+  // Level icons on the Categories tab: growth from a sprout to a peak.
+  static const levelA1 = accentTeal; // sprout
+  static const levelA2 = Color(0xFFFF5C8A); // pink tulip
+  static const levelB1 = Color(0xFF34C759); // green tree
+  static const levelB2 = accentBlue; // mountains
+
   // Word status strips in the word lists (new words use a theme gray).
   static const statusLearning = Color(0xFFFF5C8A); // pink
   static const statusReview = Color(0xFFFFA530); // orange-yellow
@@ -184,4 +190,3 @@ abstract final class AppListText {
     letterSpacing: _spacing,
   );
 }
-
