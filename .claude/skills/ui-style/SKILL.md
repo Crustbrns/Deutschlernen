@@ -81,9 +81,12 @@ render them as separate cards with gaps between them.
   `onSurface` and `mutedText`. In the light theme both the count and the percent are 50% lighter
   (`AppColors.lighten`, user's choice). Count 15 (not 16), percent 17, 4px gap under the
   level name (not `AppListText.gap`). Padding 16 horizontal, 12 vertical.
-  Each level row starts with a colored icon (26, 14px gap), a growth metaphor: A1 `plant`
-  (sprout, `AppColors.levelA1` teal), A2 `flowerTulip` (pink), B1 `tree` (green), B2
-  `mountains` (blue) — `LevelIcon` (`lib/ui/core/widgets/level_icon.dart`); the level picker sheet
+  Each level row starts with a flat color illustration (30, 14px gap), a growth metaphor:
+  A1 seedling, A2 tulip, B1 tree, B2 snow-capped mountain — Fluent Emoji Flat SVGs (MIT,
+  `assets/icons/levels/`, rendered with `flutter_svg`) via `LevelIcon`
+  (`lib/ui/core/widgets/level_icon.dart`); the user wanted illustrations like in other learning
+  apps instead of tinted line icons. Never take icons from another app's screenshots — use a
+  free-licensed set; the level picker sheet
   (`level_sheet.dart`) uses the same `LevelRow` (`lib/ui/core/widgets/level_row.dart`) as the
   Categories tab, with the picker check (`softBlue` `checkCircle` / `circle`) as trailing.
 
@@ -182,7 +185,8 @@ under the bar.
 
 ## Icons
 
-- All icons are **Phosphor Regular** (thin line icons with rounded ends) — except the example
+- Level illustrations (`LevelIcon`) are the one exception: flat color SVGs, see Lists.
+- All other icons are **Phosphor Regular** (thin line icons with rounded ends) — except the example
   rows' chevron, `caretDownBold` from Phosphor Bold, and the bottom bar tabs (Phosphor Fill,
   see above) — via `AppIcons`
   (`lib/ui/core/app_icons.dart`, font `assets/fonts/Phosphor.ttf`): `AppIcons.x`, `.arrowLeft`,

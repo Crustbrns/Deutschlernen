@@ -38,6 +38,7 @@ dependencies:
   shared_preferences: ^2.5.6
   liquid_glass_renderer: ^0.2.0-dev.4
   fsrs: ^2.0.1
+  flutter_svg: ^2.4.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -65,6 +66,11 @@ flutter:
     - assets/data/languages.json
     - assets/data/translations/
     - assets/data/ui/
+    # Level illustrations, Fluent Emoji Flat (MIT): assets/icons/levels/LICENSE
+    - assets/icons/levels/a1_seedling.svg
+    - assets/icons/levels/a2_tulip.svg
+    - assets/icons/levels/b1_tree.svg
+    - assets/icons/levels/b2_mountain.svg
   fonts:
     # Phosphor Regular icon font, used via AppIcons. License: assets/fonts/Phosphor-MIT.txt
     - family: Phosphor
