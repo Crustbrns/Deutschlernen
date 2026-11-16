@@ -212,12 +212,37 @@ under the bar.
 - Articles are colored by gender with `AppColors.forArticle` on the word card. The plural
   article is always `die` (`Word.pluralWithArticle`).
 - Translations are shown as stored (lowercase); don't capitalize them.
-- No hardcoded UI text: add a key to all four `assets/data/ui/*.json` and a getter in `AppStrings`.
+- No hardcoded UI text: add a key to every `assets/data/ui/*.json` and a getter in `AppStrings`.
 
 ## Animations
 
 Judge smoothness only in `flutter run --profile` on a device; debug mode always stutters.
 Prefer `Curves.easeOutCubic` for things that open or grow.
+
+## Settings
+
+`SettingsScreen`: title (`headlineSmall`, -0.5, 12 below), then per category a gray name
+(`MenuRow.hintStyle`, not uppercase, 8 from the left like the title, 20 above) and a
+`GroupedCard` of `MenuRow`s (`lib/ui/core/widgets/menu_row.dart`, shared with the Learn menu:
+title 17 w600 -0.4, gray hint 15 w600 -0.3). **No icons in settings rows** (user removed them;
+the Learn menu keeps its colored icons). Rows use `compact: true`: line height 1.2, 2px above
+the hint. Reset all progress: title in `decisionRed`.
+
+- Switches: `AppSwitch` (`lib/ui/core/widgets/app_switch.dart`), same on both platforms: track
+  56×31, oval white thumb 33×25 (wider than tall, user's choice), on = `AppColors.softBlue`
+  `#0A84FF` (softer than `accentBlue`), off = `subtleButton`; the whole row toggles. iOS behavior:
+  tap toggles, the thumb can be dragged (snaps to the nearer side, a flick > 300 px/s decides
+  by direction), stretches 6px toward the middle while pressed, track color lerps with the
+  thumb, `HapticFeedback.lightImpact` on change.
+- Theme: two icon-only segments (moon / sun, 44×32, icon 20; labels squeezed the title) on a `subtleButton` block, selected one
+  `accentBlue` α 0.14 fill + blue text, like the Progress period switch.
+- Language rows: current language name (no flag) as `AppColors.softBlue` trailing text, no
+  chevron. Language sheet (`language_sheet.dart`): no flags, chosen language and its check in
+  `softBlue`.
+- Speech rate: a `MenuRow` header, then a slider (track 4, `softBlue`, thumb radius 10, no value
+  indicator) and slow / fast 13 gray under it.
+- Reset dialog: `palette.card`, radius 20, title `AppListText.title`, body gray hint, buttons
+  17 w600 (cancel `onSurface`, reset red).
 
 ## Progress chart
 

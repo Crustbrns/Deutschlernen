@@ -3,6 +3,7 @@ import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
+import 'package:deutschlernen/ui/core/widgets/menu_row.dart';
 import 'package:deutschlernen/ui/main_menu/widgets/week_strip.dart';
 
 /// Learn tab (was "Practice"): title, then one block with the entry
@@ -33,7 +34,6 @@ class MainMenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final strings = AppStrings.of(context);
-    final colors = Theme.of(context).colorScheme;
 
     return SafeArea(
       bottom: false,
@@ -58,13 +58,13 @@ class MainMenuScreen extends StatelessWidget {
           ),
           GroupedCard(
             children: [
-              _MenuRow(
+              MenuRow(
                 icon: AppIcons.squaresFour,
                 iconColor: AppColors.menuCategories,
                 title: strings.levelsSelected(selectedLevelCount),
                 onTap: onChooseLevels,
               ),
-              _MenuRow(
+              MenuRow(
                 icon: AppIcons.plusCircle,
                 iconColor: AppColors.menuNewWords,
                 title: strings.learnNewWords,
@@ -72,7 +72,7 @@ class MainMenuScreen extends StatelessWidget {
                 // Disabled when the chosen levels have no unseen words.
                 onTap: newWordsLeft > 0 ? onLearnNewWords : null,
               ),
-              _MenuRow(
+              MenuRow(
                 icon: AppIcons.clockCounterClockwise,
                 iconColor: AppColors.menuRepeat,
                 title: strings.repeatWords,
@@ -80,12 +80,7 @@ class MainMenuScreen extends StatelessWidget {
                 trailing: dueCount > 0
                     ? Text(
                         strings.wordCount(dueCount),
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: -0.3,
-                          color: AppColors.quietText(colors),
-                        ),
+                        style: MenuRow.hintStyle(context),
                       )
                     : null,
                 onTap: dueCount > 0 ? onReview : null,
@@ -96,66 +91,6 @@ class MainMenuScreen extends StatelessWidget {
           const WeekStrip(),
         ],
       ),
-    );
-  }
-}
-
-/// Colored icon + one line of text. Without [onTap] the row is disabled:
-/// grayed out and not tappable.
-class _MenuRow extends StatelessWidget {
-  const _MenuRow({
-    required this.icon,
-    required this.iconColor,
-    required this.title,
-    this.subtitle,
-    this.trailing,
-    this.onTap,
-  });
-
-  final IconData icon;
-  final Color iconColor;
-  final String title;
-  final String? subtitle; // gray line under the title
-  final Widget? trailing;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final enabled = onTap != null;
-
-    return ListTile(
-      // 16 = divider indent of the GroupedCard.
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-      // Bigger than a settings row: these are the tab's main actions.
-      minVerticalPadding: 14,
-      enabled: enabled,
-      leading: Icon(
-        icon,
-        size: 26,
-        // Disabled ListTile grays only its text; fade the colored icon too.
-        color: enabled ? iconColor : iconColor.withValues(alpha: 0.4),
-      ),
-      title: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 17,
-          fontWeight: FontWeight.w600,
-          letterSpacing: -0.4,
-        ),
-      ),
-      subtitle: subtitle == null
-          ? null
-          : Text(
-              subtitle!,
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-                letterSpacing: -0.3,
-                color: AppColors.quietText(Theme.of(context).colorScheme),
-              ),
-            ),
-      trailing: trailing,
-      onTap: onTap,
     );
   }
 }
