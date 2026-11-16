@@ -3,11 +3,13 @@ import 'package:deutschlernen/domain/models/status_counts.dart';
 import 'package:deutschlernen/domain/models/word_status.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
+import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
 import 'package:deutschlernen/ui/statistics/view_models/progress_chart_data.dart';
 import 'package:deutschlernen/ui/statistics/widgets/progress_chart.dart';
 
 /// Progress tab: title, period switch (7 / 30 / 90 days / all time), then
-/// one block with the legend and the stacked chart of word statuses.
+/// one block with the stacked chart of word statuses, and under it the
+/// current count per status (also the chart's legend).
 class StatisticsScreen extends StatefulWidget {
   const StatisticsScreen({super.key, required this.history});
 
@@ -27,6 +29,18 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
     final palette = AppPalette.of(context);
     final bars = chartBars(_period, widget.history, DateTime.now());
     final isEmpty = bars.every((b) => (b.counts?.total ?? 0) == 0);
+    // Today's snapshot (written at start-up): the counts right now.
+    final latest = widget.history.isEmpty
+        ? const StatusCounts()
+        : widget.history[widget.history.keys.reduce(
+            (a, b) => a.isAfter(b) ? a : b,
+          )]!;
+    final labels = {
+      WordStatus.known: strings.statusKnown,
+      WordStatus.learning: strings.statusLearning,
+      WordStatus.review: strings.statsReview,
+      WordStatus.learned: strings.statsLearned,
+    };
 
     return SafeArea(
       bottom: false,
@@ -65,20 +79,8 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
               color: palette.card,
               borderRadius: BorderRadius.circular(20),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _Legend(
-                  labels: {
-                    WordStatus.known: strings.statusKnown,
-                    WordStatus.learning: strings.statusLearning,
-                    WordStatus.review: strings.statsReview,
-                    WordStatus.learned: strings.statsLearned,
-                  },
-                ),
-                const SizedBox(height: 16),
-                if (isEmpty)
-                  Padding(
+            child: isEmpty
+                ? Padding(
                     padding: const EdgeInsets.symmetric(vertical: 48),
                     child: Text(
                       strings.statsEmpty,
@@ -86,10 +88,19 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                       style: AppListText.caption(context),
                     ),
                   )
-                else
-                  ProgressChart(bars: bars),
-              ],
-            ),
+                : ProgressChart(bars: bars),
+          ),
+          const SizedBox(height: 12),
+          // Also the chart's legend: same dots, top of the stack first.
+          GroupedCard(
+            children: [
+              for (final s in ProgressChart.stackOrder.reversed)
+                _TotalRow(
+                  status: s,
+                  label: labels[s]!,
+                  count: latest.stack[ProgressChart.stackOrder.indexOf(s)],
+                ),
+            ],
           ),
         ],
       ),
@@ -160,45 +171,39 @@ class _PeriodSwitch extends StatelessWidget {
   }
 }
 
-/// Colored dot + status name, in the chart's stacking order.
-class _Legend extends StatelessWidget {
-  const _Legend({required this.labels});
+/// Colored dot, status name and how many words have it now.
+class _TotalRow extends StatelessWidget {
+  const _TotalRow({
+    required this.status,
+    required this.label,
+    required this.count,
+  });
 
-  final Map<WordStatus, String> labels;
+  final WordStatus status;
+  final String label;
+  final int count;
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
 
-    return Wrap(
-      spacing: 14,
-      runSpacing: 6,
-      children: [
-        for (final s in ProgressChart.stackOrder)
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 10,
-                height: 10,
-                decoration: BoxDecoration(
-                  color: AppColors.forWordStatus(s, colors),
-                  shape: BoxShape.circle,
-                ),
-              ),
-              const SizedBox(width: 6),
-              Text(
-                labels[s]!,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: -0.3,
-                  color: colors.onSurface,
-                ),
-              ),
-            ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      child: Row(
+        children: [
+          Container(
+            width: 12,
+            height: 12,
+            decoration: BoxDecoration(
+              color: AppColors.forWordStatus(status, colors),
+              shape: BoxShape.circle,
+            ),
           ),
-      ],
+          const SizedBox(width: 12),
+          Expanded(child: Text(label, style: AppListText.subtitle(colors))),
+          Text('$count', style: AppListText.title(colors)),
+        ],
+      ),
     );
   }
 }

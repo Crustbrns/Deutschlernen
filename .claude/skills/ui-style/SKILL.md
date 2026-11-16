@@ -212,7 +212,10 @@ Prefer `Curves.easeOutCubic` for things that open or grow.
 ## Progress chart
 
 `StatisticsScreen` (Progress tab): title like the other tabs, then a period switch, then one
-`palette.card` block (radius 20) with the legend and `ProgressChart`.
+`palette.card` block (radius 20) with `ProgressChart`, then a `GroupedCard` with the current count
+per status (`_TotalRow`: 12px status dot, 12 gap, name in `AppListText.subtitle`, count right in
+`AppListText.title`; padding 16/14), top of the stack first: learned, review, learning, known.
+The list doubles as the chart's legend, so the chart has none of its own.
 
 - Period switch (`_PeriodSwitch`): one `palette.card` block, radius 14, padding 4; four equal
   segments 36 tall, radius 10 — 7 / 30 / 90 days / all time. Selected: `accentBlue` α 0.14 fill,
