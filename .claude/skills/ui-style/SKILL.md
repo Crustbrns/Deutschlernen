@@ -90,6 +90,10 @@ render them as separate cards with gaps between them.
   (`level_sheet.dart`) uses the same `LevelRow` (`lib/ui/core/widgets/level_row.dart`) as the
   Categories tab, with the picker check (`softBlue` `checkCircle` / `circle`) as trailing.
 
+Theme-dependent colors are fields of `AppPalette` with a value per theme (e.g. `secondaryText`
+for the level word count, `levelPercent` for "40 %"). Widgets never check
+`Theme.of(context).brightness` themselves.
+
 Separate blocks are only for different kinds of content (e.g. a title, then a list).
 
 ## Buttons
@@ -236,9 +240,9 @@ Prefer `Curves.easeOutCubic` for things that open or grow.
 `GroupedCard` of `MenuRow`s (`lib/ui/core/widgets/menu_row.dart`, shared with the Learn menu:
 title 17 w600 -0.4, gray hint 15 w600 -0.3). **No icons in settings rows** (user removed them;
 the Learn menu keeps its colored icons). Rows use `compact: true`: line height 1.12, 4px above
-the hint. Light theme: all gray settings text (hints, category names, slow/fast, reset dialog
-body) is `AppColors.softSecondary` — the same as the level word count (mutedText 50% lighter);
-`MenuRow.hintStyle(context, soft: true)`. Reset all progress: title in `decisionRed`, no hint line, trailing
+the hint. All gray settings text (hints, category names, slow/fast, reset dialog body) is
+`AppPalette.softHint` via `MenuRow.hintStyle(context, soft: true)`; in the light theme it equals
+the level word count (mutedText 50% lighter). Reset all progress: title in `decisionRed`, no hint line, trailing
 `AppIcons.arrowCounterClockwise` 22 in `decisionRed`.
 
 - Switches: `AppSwitch` (`lib/ui/core/widgets/app_switch.dart`), same on both platforms: track

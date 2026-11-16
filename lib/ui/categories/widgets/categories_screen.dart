@@ -167,11 +167,6 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         .where((w) => widget.stateOf(w.id).status != WordStatus.newWord)
         .length;
     final percent = words.isEmpty ? 0 : (seen * 100 / words.length).round();
-    final muted = AppPalette.of(context).mutedText;
-    // Light theme: 50% lighter, like the count (user's choice).
-    Color soft(Color c) =>
-        colors.brightness == Brightness.light ? AppColors.lighten(c, 0.5) : c;
-
     return LevelRow(
       level: level,
       wordCount: words.length,
@@ -181,11 +176,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       // Non-breaking space: "40 %" never splits across lines.
       trailing: Text(
         '$percent\u00A0%',
-        style: AppListText.subtitle(colors).copyWith(
-          fontSize: 17,
-          // Light gray: between the main text and the muted count.
-          color: soft(Color.lerp(colors.onSurface, muted, 0.5)!),
-        ),
+        style: AppListText.subtitle(colors)
+            .copyWith(fontSize: 17, color: AppPalette.of(context).levelPercent),
       ),
     );
   }

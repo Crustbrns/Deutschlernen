@@ -16,6 +16,9 @@ class AppPalette extends ThemeExtension<AppPalette> {
     required this.subtleButton,
     required this.mutedText,
     required this.sliderTrack,
+    required this.secondaryText,
+    required this.softHint,
+    required this.levelPercent,
   });
 
   final Color background; // behind the cards
@@ -24,12 +27,27 @@ class AppPalette extends ThemeExtension<AppPalette> {
   final Color mutedText; // secondary labels
   final Color sliderTrack; // unfilled part of a slider: soft pastel gray
 
+  /// Second line of a level row (word count). Light: mutedText 50% lighter
+  /// (user's choice), on white it looked too heavy.
+  final Color secondaryText;
+
+  /// Settings hints and category names. Light: same as [secondaryText];
+  /// dark: the quiet gray (AppColors.quietText).
+  final Color softHint;
+
+  /// "40 %" on a level row: between the main text and mutedText; light
+  /// 50% lighter, like the count.
+  final Color levelPercent;
+
   static const dark = AppPalette(
     background: Color(0xFF0B0B0D),
     card: Color(0xFF151517),
     subtleButton: Color(0xFF222225),
     mutedText: Color(0xFF8C8C8C), // rgb(140,140,140)
     sliderTrack: Color(0xFF3A3A3E),
+    secondaryText: Color(0xFF8C8C8C),
+    softHint: Color(0xFF696D72),
+    levelPercent: Color(0xFFB6B7BA),
   );
 
   static const light = AppPalette(
@@ -38,6 +56,9 @@ class AppPalette extends ThemeExtension<AppPalette> {
     subtleButton: Color(0xFFEDEDF0),
     mutedText: Color(0xFF6A6A70),
     sliderTrack: Color(0xFFE1E1E6),
+    secondaryText: Color(0xFFB5B5B8),
+    softHint: Color(0xFFB5B5B8),
+    levelPercent: Color(0xFF9C9C9E),
   );
 
   static AppPalette of(BuildContext context) =>
@@ -50,12 +71,18 @@ class AppPalette extends ThemeExtension<AppPalette> {
     Color? subtleButton,
     Color? mutedText,
     Color? sliderTrack,
+    Color? secondaryText,
+    Color? softHint,
+    Color? levelPercent,
   }) => AppPalette(
     background: background ?? this.background,
     card: card ?? this.card,
     subtleButton: subtleButton ?? this.subtleButton,
     mutedText: mutedText ?? this.mutedText,
     sliderTrack: sliderTrack ?? this.sliderTrack,
+    secondaryText: secondaryText ?? this.secondaryText,
+    softHint: softHint ?? this.softHint,
+    levelPercent: levelPercent ?? this.levelPercent,
   );
 
   @override
@@ -67,6 +94,9 @@ class AppPalette extends ThemeExtension<AppPalette> {
       subtleButton: Color.lerp(subtleButton, other.subtleButton, t)!,
       mutedText: Color.lerp(mutedText, other.mutedText, t)!,
       sliderTrack: Color.lerp(sliderTrack, other.sliderTrack, t)!,
+      secondaryText: Color.lerp(secondaryText, other.secondaryText, t)!,
+      softHint: Color.lerp(softHint, other.softHint, t)!,
+      levelPercent: Color.lerp(levelPercent, other.levelPercent, t)!,
     );
   }
 }
@@ -163,11 +193,6 @@ abstract final class AppColors {
 
   /// The old divider gray, still the base of [quietText].
   static Color _gray(ColorScheme colors) => darken(colors.outlineVariant, 0.18);
-
-  /// Light theme secondary text in lists and settings (level word count,
-  /// settings hints): mutedText 50% lighter (user's choice).
-  static Color softSecondary(BuildContext context) =>
-      lighten(AppPalette.of(context).mutedText, 0.5);
 
   /// Quiet gray for low-priority text and icons (search hint, word counts):
   /// [_gray] moved 30% toward the text color, so it is a bit lighter in the
