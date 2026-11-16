@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/domain/models/app_language.dart';
+import 'package:deutschlernen/ui/core/app_style.dart';
 
 Future<void> showLanguageSheet({
   required BuildContext context,
@@ -30,13 +31,11 @@ Future<void> showLanguageSheet({
               shrinkWrap: true,
               children: [
                 for (final language in languages)
+                  // No flags: the chosen language is marked by color only.
                   ListTile(
-                    leading: Text(
-                      language.flag,
-                      style: const TextStyle(fontSize: 28),
-                    ),
                     title: Text(language.label),
                     selected: language == current,
+                    selectedColor: AppColors.softBlue,
                     trailing: language == current
                         ? const Icon(AppIcons.check)
                         : null,
