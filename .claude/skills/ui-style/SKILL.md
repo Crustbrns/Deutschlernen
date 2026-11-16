@@ -131,7 +131,7 @@ Separate blocks are only for different kinds of content (e.g. a title, then a li
   replaces it with the translation (no way back); review session — the three-button
   `AnswerModeBar` (Show / Write / Choose). `WordCard.answerModes` switches them.
 - **Selected / active state**: fill `AppColors.accentBlue` α 0.14, border `AppColors.accentBlue`,
-  icon and text `AppColors.accentBlue` (see `_ModeButton` in `answer_modes.dart`).
+  icon and text `AppColors.accentBlue` (see `_ModeButton` in `answer_mode_bar.dart`).
 - **Primary action** (one per screen at most): `FilledButton`, radius 14.
 - **Audio**: `PlayButton` (`lib/ui/core/widgets/play_button.dart`) in rows — blue, outlined.
   On the word card the German word and its plural are left-aligned with a speaker button
