@@ -4,16 +4,24 @@ typedef ReminderTime = ({int hour, int minute});
 /// Which named group the chosen days form, for a short label.
 enum ReminderDays { everyDay, weekdays, weekend, custom }
 
-/// When the app reminds the user to practice: on/off, the days of the week
-/// and 1–3 times a day.
+/// When the app reminds the user to practice: on/off, which kinds of
+/// reminders, the days of the week and 1–3 times a day.
 class ReminderSettings {
   const ReminderSettings({
     this.enabled = false,
+    this.review = true,
+    this.learn = true,
     this.days = allDays,
     this.times = const [(hour: 19, minute: 0)],
   });
 
   final bool enabled;
+
+  /// "Words are waiting for a review" reminders.
+  final bool review;
+
+  /// "Time for new words" reminders. Both off = no reminders at all.
+  final bool learn;
 
   /// Weekdays as in [DateTime.weekday]: 1 = Monday … 7 = Sunday. Never empty.
   final Set<int> days;
@@ -66,10 +74,14 @@ class ReminderSettings {
 
   ReminderSettings copyWith({
     bool? enabled,
+    bool? review,
+    bool? learn,
     Set<int>? days,
     List<ReminderTime>? times,
   }) => ReminderSettings(
     enabled: enabled ?? this.enabled,
+    review: review ?? this.review,
+    learn: learn ?? this.learn,
     days: days ?? this.days,
     times: times ?? this.times,
   );

@@ -113,5 +113,11 @@
   "reminderLearnBody": "Пара минут — и ещё несколько слов твои",
   "notificationsDeniedTitle": "Уведомления запрещены",
   "notificationsDeniedBody": "Чтобы получать напоминания, разреши уведомления для приложения в настройках телефона.",
-  "openSettings": "Открыть настройки"
+  "openSettings": "Открыть настройки",
+  "reminderKinds": "О чём напоминать",
+  "reminderSchedule": "Расписание",
+  "reminderKindReview": "Повторение слов",
+  "reminderKindReviewHint": "Когда слова ждут повторения",
+  "reminderKindLearn": "Новые слова",
+  "reminderKindLearnHint": "Когда пора учить новые"
 }

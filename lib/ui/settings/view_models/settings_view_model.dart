@@ -53,6 +53,12 @@ class SettingsViewModel extends ChangeNotifier {
     return true;
   }
 
+  Future<void> setReviewReminders(bool value) =>
+      _setReminders(reminders.copyWith(review: value));
+
+  Future<void> setLearnReminders(bool value) =>
+      _setReminders(reminders.copyWith(learn: value));
+
   /// [days] as in DateTime.weekday; an empty set is ignored.
   Future<void> setReminderDays(Set<int> days) async {
     if (days.isEmpty) return;

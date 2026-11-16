@@ -16,6 +16,8 @@ class SettingsRepository {
   // New key: the old 'notifications' switch did nothing, so an old "on"
   // must not start reminders without asking for permission.
   static const _remindersEnabledKey = 'reminders_enabled';
+  static const _reminderReviewKey = 'reminder_review';
+  static const _reminderLearnKey = 'reminder_learn';
   static const _reminderDaysKey = 'reminder_days'; // "1","2",… (weekday)
   static const _reminderTimesKey = 'reminder_times'; // "9:00","19:30",…
   static const _autoSpeakKey = 'auto_speak';
@@ -94,6 +96,8 @@ class SettingsRepository {
         .toList();
     return ReminderSettings(
       enabled: await _prefs.getBool(_remindersEnabledKey) ?? defaults.enabled,
+      review: await _prefs.getBool(_reminderReviewKey) ?? defaults.review,
+      learn: await _prefs.getBool(_reminderLearnKey) ?? defaults.learn,
       days: days == null || days.isEmpty ? defaults.days : days,
       times: times == null || times.isEmpty ? defaults.times : times,
     );
@@ -111,6 +115,8 @@ class SettingsRepository {
 
   Future<void> saveReminders(ReminderSettings reminders) async {
     await _prefs.setBool(_remindersEnabledKey, reminders.enabled);
+    await _prefs.setBool(_reminderReviewKey, reminders.review);
+    await _prefs.setBool(_reminderLearnKey, reminders.learn);
     await _prefs.setStringList(_reminderDaysKey, [
       for (final d in reminders.days) '$d',
     ]);

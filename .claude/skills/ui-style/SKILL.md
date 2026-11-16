@@ -275,7 +275,9 @@ the level word count (mutedText 50% lighter). Reset all progress: title in `deci
 - All picker sheets go through `showSheet` (`choice_sheet.dart`): drag handle, title, content on
   the screen background. Several-at-once picks: `showMultiChoiceSheet` (applied on each tap,
   the last one can't be turned off), same rows as `showChoiceSheet`.
-- Reminders block (`RemindersCategory`, `reminders_category.dart`): the switch; while on, value
+- Reminders (`RemindersCategory`, `reminders_category.dart`): category "Уведомления" with the main
+  switch; while on, two more categories: "О чём напоминать" (switches "Повторение слов" / "Новые
+  слова" with gray hints; both off = no reminders) and "Расписание" with value
   rows "Дни" ("Каждый день" / "Будни" / "Выходные" / "Пн, Ср, Пт"; full day names in the
   multi-choice sheet), "Сколько раз в день" (1–3, choice sheet) and one "Время" row per reminder
   ("Время 1", "Время 2" when several), value "09:00". Time sheet (`time_sheet.dart`): iOS-style

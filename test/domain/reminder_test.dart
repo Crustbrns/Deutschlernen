@@ -16,8 +16,16 @@ void main() {
     bool hasNewWords = true,
     bool goalMetToday = false,
     bool enabled = true,
+    bool review = true,
+    bool learn = true,
   }) => planReminders(
-    settings: ReminderSettings(enabled: enabled, days: days, times: times),
+    settings: ReminderSettings(
+      enabled: enabled,
+      review: review,
+      learn: learn,
+      days: days,
+      times: times,
+    ),
     now: now,
     dueTimes: dueTimes,
     hasNewWords: hasNewWords,
@@ -70,6 +78,27 @@ void main() {
 
     test('nothing to do at all: no reminders', () {
       expect(plan(hasNewWords: false), isEmpty);
+    });
+
+    test('review reminders off: due words ask for new words instead', () {
+      final p = plan(review: false, dueTimes: [DateTime(2026, 11, 18, 8)]);
+
+      expect(p.every((r) => r.kind == ReminderKind.learn), isTrue);
+      expect(p, hasLength(7));
+    });
+
+    test('new-word reminders off: only days with due words', () {
+      final p = plan(learn: false, dueTimes: [DateTime(2026, 11, 20, 8)]);
+
+      expect(p.first.at, DateTime(2026, 11, 20, 19)); // nothing due before
+      expect(p.every((r) => r.kind == ReminderKind.review), isTrue);
+    });
+
+    test('both kinds off: no reminders', () {
+      expect(
+        plan(review: false, learn: false, dueTimes: [DateTime(2026, 11, 18)]),
+        isEmpty,
+      );
     });
 
     test('the same time twice gives one reminder', () {

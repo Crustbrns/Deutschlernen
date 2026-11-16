@@ -25,7 +25,8 @@ typedef PlannedReminder = ({DateTime at, ReminderKind kind, int count});
 /// The progress can't change while the app is closed, so each reminder's
 /// content is known in advance: [dueTimes] are the review times of the
 /// words, and a reminder says how many of them are due at its moment. With
-/// nothing due it asks for new words, if [hasNewWords] and the day's goal
+/// nothing due (or review reminders off) it asks for new words, if those
+/// reminders are on, [hasNewWords] and the day's goal
 /// isn't reached yet ([goalMetToday] concerns today only: other days start
 /// from zero). With nothing to do it is skipped. At most [limit]: iOS keeps
 /// only 64 pending notifications.
@@ -49,9 +50,9 @@ List<PlannedReminder> planReminders({
       final at = DateTime(day.year, day.month, day.day, time.hour, time.minute);
       if (!at.isAfter(now)) continue;
       final due = dueTimes.where((t) => !t.isAfter(at)).length;
-      if (due > 0) {
+      if (settings.review && due > 0) {
         plan.add((at: at, kind: ReminderKind.review, count: due));
-      } else if (hasNewWords && !(d == 0 && goalMetToday)) {
+      } else if (settings.learn && hasNewWords && !(d == 0 && goalMetToday)) {
         plan.add((at: at, kind: ReminderKind.learn, count: 0));
       }
       if (plan.length >= limit) break;
