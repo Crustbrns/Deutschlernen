@@ -2,26 +2,25 @@ import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 
-/// Speaker button next to the word, or the transcription pill under it;
-/// both speak the word.
+/// Speaker button next to the word ([transcription] null), or the
+/// transcription pill under it; both speak the word.
 class TranscriptionButton extends StatelessWidget {
   const TranscriptionButton({
     super.key,
     required this.transcription,
     required this.onPressed,
-    this.showIcon = true,
     this.scale = 1,
   });
 
-  /// null = show only the speaker icon.
+  /// null = the speaker icon instead of the text.
   final String? transcription;
-  final bool showIcon; // false = transcription text only
   final VoidCallback onPressed;
   final double scale; // shrinks text, icon and padding together
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    final transcription = this.transcription; // local copy for null promotion
 
     return OutlinedButton(
       onPressed: onPressed,
@@ -44,21 +43,15 @@ class TranscriptionButton extends StatelessWidget {
         // compact spacing around it.
         tapTargetSize: scale < 1 ? MaterialTapTargetSize.shrinkWrap : null,
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (transcription != null)
-            Text(
-              transcription!,
+      child: transcription == null
+          ? Icon(AppIcons.speakerHigh, size: 19.5 * scale)
+          : Text(
+              transcription,
               style: TextStyle(
                 fontSize: 16.5 * scale,
                 fontWeight: FontWeight.w500,
               ),
             ),
-          if (transcription != null && showIcon) SizedBox(width: 12 * scale),
-          if (showIcon) Icon(AppIcons.speakerHigh, size: 19.5 * scale),
-        ],
-      ),
     );
   }
 }

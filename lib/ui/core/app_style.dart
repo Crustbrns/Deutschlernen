@@ -146,7 +146,6 @@ abstract final class AppColors {
   static const decisionRed = Color(0xFFFF3B30); // saturated red
   static const decisionGreen = Color(0xFF30D158); // saturated green
   static const accentBlue = Color(0xFF1AA7FF);
-  static const accentTeal = Color(0xFF2EE6D6);
   // Settings controls (switch on, slider, chosen language): deeper and
   // softer than accentBlue (iOS blue).
   static const softBlue = Color(0xFF0A84FF);

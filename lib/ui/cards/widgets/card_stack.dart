@@ -76,7 +76,6 @@ class CardStack extends StatelessWidget {
             curve: Curves.easeOut,
             child: switch (depth) {
               0 => SwipeableCard(
-                enabled: true,
                 controller: controller,
                 enterFrom: enterFrom,
                 onSwipeStarted: onSwipeStarted,

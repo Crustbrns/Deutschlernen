@@ -20,18 +20,17 @@ import 'package:deutschlernen/ui/core/widgets/play_button.dart';
 }
 
 /// A row with a chevron on the left. [title] is always visible,
-/// [details] appear under it when the row is expanded.
+/// [details] appear under it when the row is expanded. Starts collapsed:
+/// an open example translation would give away the hidden word translation.
 class ExpandableTile extends StatefulWidget {
   const ExpandableTile({
     super.key,
-    required this.initiallyExpanded,
     required this.title,
     this.details,
     this.trailing,
     this.trailingVisualSize = 24,
   });
 
-  final bool initiallyExpanded;
   final Widget title;
   final Widget? details; // null = nothing to expand
   final Widget? trailing;
@@ -55,7 +54,7 @@ class _ExpandableTileState extends State<ExpandableTile> {
   static const _minHighlight = Duration(milliseconds: 150);
   static const _highlightFadeOut = Duration(milliseconds: 200);
 
-  late bool _expanded = widget.initiallyExpanded;
+  bool _expanded = false;
   bool _highlighted = false;
   int _tapId = 0; // ignores stale timers when taps follow each other fast
 
@@ -198,7 +197,6 @@ class DefinitionTile extends StatelessWidget {
     final translation = this.translation; // local copy for null promotion
 
     return ExpandableTile(
-      initiallyExpanded: false,
       // Plain icon, not a button: the whole row is already tappable.
       // 48x48 matches the play buttons of the examples, so texts line up.
       trailing: SizedBox.square(
@@ -220,15 +218,9 @@ class DefinitionTile extends StatelessWidget {
 
 /// Example sentence. Expanded shows the translation under it.
 class ExampleTile extends StatelessWidget {
-  const ExampleTile({
-    super.key,
-    required this.example,
-    required this.initiallyExpanded,
-    required this.onSpeak,
-  });
+  const ExampleTile({super.key, required this.example, required this.onSpeak});
 
   final ExampleSentence example;
-  final bool initiallyExpanded;
   final ValueChanged<String> onSpeak;
 
   @override
@@ -236,7 +228,6 @@ class ExampleTile extends StatelessWidget {
     final styles = _tileStyles(context);
 
     return ExpandableTile(
-      initiallyExpanded: initiallyExpanded,
       trailingVisualSize: PlayButton.size, // keeps the right edge aligned
       trailing: PlayButton(
         onPressed: () => onSpeak(stripMarkup(example.german)),

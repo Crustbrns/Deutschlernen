@@ -90,7 +90,6 @@ class WordTitle extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: TranscriptionButton(
               transcription: word.transcription,
-              showIcon: false,
               scale: scale,
               onPressed: speak,
             ),
