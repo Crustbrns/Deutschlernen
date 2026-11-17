@@ -303,7 +303,8 @@ The list doubles as the chart's legend, so the chart has none of its own.
 - Period switch (`_PeriodSwitch`): one `palette.card` block, radius 14, padding 4; four equal
   segments 36 tall, radius 10 — 7 / 30 / 90 days / all time. Selected: `accentBlue` α 0.14 fill,
   `accentBlue` text; others `onSurface`; 14 w600 -0.3.
-- Chart (`progress_chart.dart`, `CustomPainter`): stacked bars, bottom to top known (soft light
+- Chart (`progress_chart.dart`, its `CustomPainter`s in the part file
+  `progress_chart_painters.dart`): stacked bars, bottom to top known (soft light
   gray `AppColors.chartKnown` #C7C7CC in both themes — white in the lists, gray here by the
   user's choice), learning (pink),
   review (yellow), learned (green); colors via `ProgressChart.colorFor`, the legend dots too.
