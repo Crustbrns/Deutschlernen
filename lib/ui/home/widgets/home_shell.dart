@@ -3,7 +3,6 @@ import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/domain/models/reminder_plan.dart';
 import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/ui/cards/widgets/cards_screen.dart';
-import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/view_models/language_view_model.dart';
 import 'package:deutschlernen/ui/core/view_models/learning_view_model.dart';
 import 'package:deutschlernen/ui/home/widgets/app_bottom_bar.dart';
@@ -77,17 +76,14 @@ class _HomeShellState extends State<HomeShell> {
 
   void _openCards() {
     Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => CardsScreen(viewModel: _vm, strings: _lang.strings),
-      ),
+      MaterialPageRoute<void>(builder: (_) => CardsScreen(viewModel: _vm)),
     );
   }
 
   void _openWord(Word word) {
     Navigator.of(context).push(
       WordDetailScreen.route(
-        strings: _lang.strings,
-        screen: WordDetailScreen(
+        WordDetailScreen(
           word: word,
           translationPool: _vm.translations,
           showTranscription: widget.settingsViewModel.showTranscription,
@@ -111,73 +107,66 @@ class _HomeShellState extends State<HomeShell> {
           );
         }
 
-        return AppStringsScope(
-          strings: _lang.strings,
-          // Builder: the bar below needs a context under the scope.
-          child: Builder(
-            builder: (context) => Scaffold(
-              // Content runs under the bar, which blurs it. Scaffold then
-              // reports the bar's height as bottom padding in MediaQuery,
-              // so screens keep their last items above the bar with it.
-              extendBody: true,
-              // IndexedStack keeps every tab alive, so e.g. the selected
-              // dictionary is not lost when switching tabs.
-              body: IndexedStack(
-                index: _tab.index,
-                children: [
-                  LearnScreen(
-                    selectedLevelCount: _vm.learnLevels.length,
-                    newWordsLeft: _vm.newWordsLeft,
-                    dueCount: _vm.dueCount,
-                    learnedToday: _vm.learnedToday,
-                    dailyGoal: LearningViewModel.dailyGoal,
-                    onChooseLevels: () => showLevelSheet(
-                      context: context,
-                      strings: _lang.strings,
-                      selected: _vm.learnLevels,
-                      wordCounts: {
-                        for (final MapEntry(key: level, value: words)
-                            in _vm.wordsByLevel.entries)
-                          level: words.length,
-                      },
-                      onChanged: _vm.setLearnLevels,
-                    ),
-                    onLearnNewWords: () {
-                      _vm.startNewWords();
-                      _openCards();
-                    },
-                    onReview: () {
-                      _vm.startReview();
-                      _openCards();
-                    },
-                  ),
-                  CategoriesScreen(
-                    words: _vm.words,
-                    wordsByLevel: _vm.wordsByLevel,
-                    seenShare: _vm.seenShare,
-                    onWordSelected: _openWord,
-                    onSearchResultSelected: (word) {
-                      // Count first, so the card already shows this lookup.
-                      _vm.recordLookup(word.id);
-                      _openWord(word);
-                    },
-                    onSpeak: _vm.speak,
-                    stateOf: _vm.stateOf,
-                    progressChanges: _vm,
-                  ),
-                  ProgressScreen(history: _vm.statusHistory),
-                  SettingsScreen(
-                    settings: widget.settingsViewModel,
-                    languages: _lang,
-                    onResetAllProgress: _vm.resetAllProgress,
-                  ),
-                ],
+        return Scaffold(
+          // Content runs under the bar, which blurs it. Scaffold then
+          // reports the bar's height as bottom padding in MediaQuery,
+          // so screens keep their last items above the bar with it.
+          extendBody: true,
+          // IndexedStack keeps every tab alive, so e.g. the selected
+          // dictionary is not lost when switching tabs.
+          body: IndexedStack(
+            index: _tab.index,
+            children: [
+              LearnScreen(
+                selectedLevelCount: _vm.learnLevels.length,
+                newWordsLeft: _vm.newWordsLeft,
+                dueCount: _vm.dueCount,
+                learnedToday: _vm.learnedToday,
+                dailyGoal: LearningViewModel.dailyGoal,
+                onChooseLevels: () => showLevelSheet(
+                  context: context,
+                  selected: _vm.learnLevels,
+                  wordCounts: {
+                    for (final MapEntry(key: level, value: words)
+                        in _vm.wordsByLevel.entries)
+                      level: words.length,
+                  },
+                  onChanged: _vm.setLearnLevels,
+                ),
+                onLearnNewWords: () {
+                  _vm.startNewWords();
+                  _openCards();
+                },
+                onReview: () {
+                  _vm.startReview();
+                  _openCards();
+                },
               ),
-              bottomNavigationBar: AppBottomBar(
-                selected: _tab,
-                onSelected: (tab) => setState(() => _tab = tab),
+              CategoriesScreen(
+                words: _vm.words,
+                wordsByLevel: _vm.wordsByLevel,
+                seenShare: _vm.seenShare,
+                onWordSelected: _openWord,
+                onSearchResultSelected: (word) {
+                  // Count first, so the card already shows this lookup.
+                  _vm.recordLookup(word.id);
+                  _openWord(word);
+                },
+                onSpeak: _vm.speak,
+                stateOf: _vm.stateOf,
+                progressChanges: _vm,
               ),
-            ),
+              ProgressScreen(history: _vm.statusHistory),
+              SettingsScreen(
+                settings: widget.settingsViewModel,
+                languages: _lang,
+                onResetAllProgress: _vm.resetAllProgress,
+              ),
+            ],
+          ),
+          bottomNavigationBar: AppBottomBar(
+            selected: _tab,
+            onSelected: (tab) => setState(() => _tab = tab),
           ),
         );
       },

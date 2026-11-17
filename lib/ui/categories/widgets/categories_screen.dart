@@ -115,23 +115,17 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   }
 
   void _openLevel(String level, List<Word> words) {
-    final strings = AppStrings.of(context);
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-        // A pushed route is not under the shell's AppStringsScope,
-        // so the scope is provided again.
-        builder: (_) => AppStringsScope(
-          strings: strings,
-          // A pushed route doesn't rebuild with the tab; listen directly.
-          child: ListenableBuilder(
-            listenable: widget.progressChanges,
-            builder: (_, _) => LevelWordsScreen(
-              level: level,
-              words: words,
-              onWordSelected: widget.onWordSelected,
-              onSpeak: widget.onSpeak,
-              stateOf: widget.stateOf,
-            ),
+        // A pushed route doesn't rebuild with the tab; listen directly.
+        builder: (_) => ListenableBuilder(
+          listenable: widget.progressChanges,
+          builder: (_, _) => LevelWordsScreen(
+            level: level,
+            words: words,
+            onWordSelected: widget.onWordSelected,
+            onSpeak: widget.onSpeak,
+            stateOf: widget.stateOf,
           ),
         ),
       ),

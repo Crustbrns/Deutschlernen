@@ -9,6 +9,7 @@ import 'package:deutschlernen/data/services/notification_service.dart';
 import 'package:deutschlernen/data/services/speech_service.dart';
 import 'package:deutschlernen/data/repositories/language_repository.dart';
 import 'package:deutschlernen/data/services/asset_service.dart';
+import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/view_models/language_view_model.dart';
 import 'package:deutschlernen/ui/core/view_models/learning_view_model.dart';
@@ -98,6 +99,15 @@ class _MyAppState extends State<MyApp> {
         theme: AppTheme.light(),
         darkTheme: AppTheme.dark(),
         themeMode: _settingsViewModel.themeMode,
+        // Above the navigator: pushed routes, sheets, dialogs and hero
+        // flights all read the strings without wrapping themselves again.
+        builder: (context, navigator) => ListenableBuilder(
+          listenable: _languageViewModel,
+          builder: (context, _) => AppStringsScope(
+            strings: _languageViewModel.strings,
+            child: navigator!,
+          ),
+        ),
         home: HomeShell(
           viewModel: _learningViewModel,
           languageViewModel: _languageViewModel,

@@ -8,20 +8,11 @@ import 'package:deutschlernen/ui/cards/widgets/decision_bar.dart';
 import 'package:deutschlernen/ui/cards/widgets/recall_bar.dart';
 import 'package:deutschlernen/ui/cards/widgets/swipeable_card.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
-import 'package:deutschlernen/ui/core/app_style.dart';
 
 class CardsScreen extends StatefulWidget {
-  const CardsScreen({
-    super.key,
-    required this.viewModel,
-    required this.strings,
-  });
+  const CardsScreen({super.key, required this.viewModel});
 
   final LearningViewModel viewModel;
-
-  /// Captured on opening: the language can only change in Settings, which
-  /// is under this screen.
-  final AppStrings strings;
 
   @override
   State<CardsScreen> createState() => _CardsScreenState();
@@ -65,28 +56,13 @@ class _CardsScreenState extends State<CardsScreen> {
   /// the split bar, where knowing it is the good side (green) and still to
   /// learn is red.
   Widget _bottomBar(Word word, {required bool isTop}) {
-    final strings = widget.strings;
     final drag = isTop ? _swipeController.dragProgress : _still;
     void left() => _swipeController.swipe(SwipeDirection.left);
     void right() => _swipeController.swipe(SwipeDirection.right);
 
     return _vm.needsRecall(word.id)
-        ? RecallBar(
-            forgotLabel: strings.forgot,
-            rememberedLabel: strings.remembered,
-            onForgot: left,
-            onRemembered: right,
-            dragProgress: drag,
-          )
-        : DecisionBar(
-            leftLabel: strings.known,
-            rightLabel: strings.learn,
-            leftColor: AppColors.decisionGreen,
-            rightColor: AppColors.decisionRed,
-            onKnown: left,
-            onLearn: right,
-            dragProgress: drag,
-          );
+        ? RecallBar(onForgot: left, onRemembered: right, dragProgress: drag)
+        : DecisionBar(onKnown: left, onLearn: right, dragProgress: drag);
   }
 
   @override
@@ -107,57 +83,49 @@ class _CardsScreenState extends State<CardsScreen> {
               return const Center(child: CircularProgressIndicator());
             }
 
-            final strings = widget.strings;
             final review = _vm.mode == SessionMode.review;
 
-            return AppStringsScope(
-              strings: strings,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
-                    child: CardsTopBar(
-                      progress: _vm.progress,
-                      onClose: () => Navigator.of(context).pop(),
-                      onUndo: _vm.canUndo ? _vm.undo : null,
-                      learnedToday: _vm.learnedToday,
-                      dailyGoal: LearningViewModel.dailyGoal,
-                    ),
+            return Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+                  child: CardsTopBar(
+                    progress: _vm.progress,
+                    onClose: () => Navigator.of(context).pop(),
+                    onUndo: _vm.canUndo ? _vm.undo : null,
+                    learnedToday: _vm.learnedToday,
+                    dailyGoal: LearningViewModel.dailyGoal,
                   ),
-                  Expanded(
-                    child: _vm.isFinished
-                        ? _FinishedView(
-                            onDone: () => Navigator.of(context).pop(),
-                          )
-                        : Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                            child: Center(
-                              child: ConstrainedBox(
-                                constraints: const BoxConstraints(
-                                  maxWidth: 560,
-                                ),
-                                child: CardStack(
-                                  words: _vm.deck,
-                                  index: _vm.index,
-                                  controller: _swipeController,
-                                  enterFrom: _enterFrom,
-                                  onSwipeStarted: _vm.onSwipeStarted,
-                                  onSwiped: (direction) =>
-                                      _vm.onCardSwiped(_decisionFor(direction)),
-                                  onSpeak: _vm.speak,
-                                  showTranscription: _vm.showTranscription,
-                                  stateOf: _vm.stateOf,
-                                  // New words: only the eye; review: all
-                                  // three answer modes.
-                                  answerModes: review,
-                                  bottomBarFor: _bottomBar,
-                                ),
+                ),
+                Expanded(
+                  child: _vm.isFinished
+                      ? _FinishedView(onDone: () => Navigator.of(context).pop())
+                      : Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                          child: Center(
+                            child: ConstrainedBox(
+                              constraints: const BoxConstraints(maxWidth: 560),
+                              child: CardStack(
+                                words: _vm.deck,
+                                index: _vm.index,
+                                controller: _swipeController,
+                                enterFrom: _enterFrom,
+                                onSwipeStarted: _vm.onSwipeStarted,
+                                onSwiped: (direction) =>
+                                    _vm.onCardSwiped(_decisionFor(direction)),
+                                onSpeak: _vm.speak,
+                                showTranscription: _vm.showTranscription,
+                                stateOf: _vm.stateOf,
+                                // New words: only the eye; review: all
+                                // three answer modes.
+                                answerModes: review,
+                                bottomBarFor: _bottomBar,
                               ),
                             ),
                           ),
-                  ),
-                ],
-              ),
+                        ),
+                ),
+              ],
             );
           },
         ),

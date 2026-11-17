@@ -13,7 +13,6 @@ import 'package:deutschlernen/ui/core/widgets/level_row.dart';
 /// Like showMultiChoiceSheet, but with the level rows of the Categories tab.
 Future<void> showLevelSheet({
   required BuildContext context,
-  required AppStrings strings,
   required Set<String> selected,
   required Map<String, int> wordCounts, // level → number of words
   required ValueChanged<Set<String>> onChanged,
@@ -23,42 +22,38 @@ Future<void> showLevelSheet({
 
   return showSheet(
     context: context,
-    title: strings.chooseLevels,
-    // The sheet is a new route, outside the shell's strings scope.
-    builder: (_) => AppStringsScope(
-      strings: strings,
-      child: StatefulBuilder(
-        builder: (context, setSheetState) {
-          final colors = Theme.of(context).colorScheme;
+    title: AppStrings.of(context).chooseLevels,
+    builder: (_) => StatefulBuilder(
+      builder: (context, setSheetState) {
+        final colors = Theme.of(context).colorScheme;
 
-          void toggle(String level) {
-            final next = {...current};
-            if (!next.remove(level)) next.add(level);
-            if (next.isEmpty) return;
-            setSheetState(() => current = next);
-            onChanged(next);
-          }
+        void toggle(String level) {
+          final next = {...current};
+          if (!next.remove(level)) next.add(level);
+          if (next.isEmpty) return;
+          setSheetState(() => current = next);
+          onChanged(next);
+        }
 
-          return GroupedCard(
-            children: [
-              for (final level in Word.levels)
-                // Same row as on the Categories tab; the check like in the
-                // other pickers.
-                LevelRow(
-                  level: level,
-                  wordCount: wordCounts[level] ?? 0,
-                  trailing: current.contains(level)
-                      ? const Icon(
-                          AppIcons.checkCircle,
-                          color: AppColors.softBlue,
-                        )
-                      : Icon(AppIcons.circle, color: colors.onSurfaceVariant),
-                  onTap: () => toggle(level),
-                ),
-            ],
-          );
-        },
-      ),
+        return GroupedCard(
+          children: [
+            for (final level in Word.levels)
+              // Same row as on the Categories tab; the check like in the
+              // other pickers.
+              LevelRow(
+                level: level,
+                wordCount: wordCounts[level] ?? 0,
+                trailing: current.contains(level)
+                    ? const Icon(
+                        AppIcons.checkCircle,
+                        color: AppColors.softBlue,
+                      )
+                    : Icon(AppIcons.circle, color: colors.onSurfaceVariant),
+                onTap: () => toggle(level),
+              ),
+          ],
+        );
+      },
     ),
   );
 }
