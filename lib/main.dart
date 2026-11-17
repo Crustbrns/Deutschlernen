@@ -62,12 +62,12 @@ class _MyAppState extends State<MyApp> {
 
   /// The progress is final while the app is in the background, so that is
   /// when the reminders are planned.
-  late final _lifecycle = AppLifecycleListener(onHide: _reminders.reschedule);
+  late final AppLifecycleListener _lifecycle;
 
   @override
   void initState() {
     super.initState();
-    _lifecycle; // late: created on first use
+    _lifecycle = AppLifecycleListener(onHide: _reminders.reschedule);
     _load();
   }
 

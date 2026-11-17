@@ -21,6 +21,9 @@ class CardsScreen extends StatefulWidget {
 class _CardsScreenState extends State<CardsScreen> {
   final _swipeController = SwipeController();
 
+  /// Never moves: the buttons on the card below the top one stay unlit.
+  final _still = ValueNotifier<double>(0);
+
   LearningViewModel get _vm => widget.viewModel;
 
   CardDecision _decisionFor(SwipeDirection direction) {
@@ -44,9 +47,6 @@ class _CardsScreenState extends State<CardsScreen> {
       if (mounted) _vm.onCardsOpened();
     });
   }
-
-  /// Never moves: the buttons on the card below the top one stay unlit.
-  final _still = ValueNotifier<double>(0);
 
   /// Pink / review word: the outlined "forgot / remember" buttons. New word:
   /// the split bar, where knowing it is the good side (green) and still to

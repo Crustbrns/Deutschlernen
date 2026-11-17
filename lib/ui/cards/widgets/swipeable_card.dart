@@ -3,17 +3,15 @@ import 'package:material_ui/material_ui.dart';
 
 enum SwipeDirection { left, right }
 
-/*Tuning
-
-Springier or calmer snap-back: stiffness and ratio in _snapBackSpring. Lower ratio means more bounce.
-Flight speed limits: the 560 and 1120 ms values in swipe.
-Tilt: 0.3. Button swipe arc: _buttonArc.
-Highlight strength: _highlightDistance (fraction of the screen width that fully lights a button).*/
+// Tuning: snap-back = stiffness and ratio in _snapBackSpring (lower ratio,
+// more bounce); flight time = 560–1120 ms in swipe(); tilt = 0.3 in build();
+// button swipe arc = _buttonArc; highlight = _highlightDistance (share of
+// the screen width that fully lights a button).
 
 /// Lets other widgets (the bottom buttons) swipe the top card programmatically,
 /// and tells them how far the card is being dragged.
 class SwipeController {
-  SwipeableCardState? _state;
+  _SwipeableCardState? _state;
 
   /// How far the top card is dragged sideways, from -1 (fully towards "known")
   /// to 1 (fully towards "learn"). 0 when the card is at rest.
@@ -51,10 +49,10 @@ class SwipeableCard extends StatefulWidget {
   final SwipeDirection? enterFrom;
 
   @override
-  State<SwipeableCard> createState() => SwipeableCardState();
+  State<SwipeableCard> createState() => _SwipeableCardState();
 }
 
-class SwipeableCardState extends State<SwipeableCard>
+class _SwipeableCardState extends State<SwipeableCard>
     with SingleTickerProviderStateMixin {
   /// Where the card is, in logical pixels. Dragging just sets the value,
   /// so no setState is needed.
