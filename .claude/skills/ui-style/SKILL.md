@@ -185,9 +185,14 @@ Tabs and their icons (`AppIcons`, font `assets/fonts/PhosphorFill.ttf`): Учи�
 `fileTextFill` (a sheet with text lines), Настройки — `gearFill` (8 rounded teeth).
 
 `HomeShell` uses `extendBody: true`, so tab content scrolls under the bar. Every scrollable
-tab screen adds `MediaQuery.paddingOf(context).bottom` to its bottom padding, and
-centered screens keep `SafeArea` with `bottom: true` — otherwise the last items hide
-under the bar.
+screen ends with `AppSizes.bottomPadding(context)` (24 + the bottom inset, which includes the
+bar), and centered screens keep `SafeArea` with `bottom: true` — otherwise the last items
+hide under the bar.
+
+Tabs: Learn, Progress and Settings are a `TabPage` (`lib/ui/core/widgets/tab_page.dart`):
+16 gutters, the tab's `TabTitle`, then the content. `TabTitle` is the one tab title, also
+above the Categories search: `headlineSmall`, letter spacing -0.5, 24 from the screen edge,
+12 below.
 
 ## Icons
 
@@ -204,8 +209,8 @@ under the bar.
 - Sizes: 20 in rows and small buttons, 24 default, 28 in large mode buttons.
 - Colors: `colors.onSurfaceVariant` when inactive, `AppColors.accentBlue` when active,
   `colors.onSurface` on filled neutral buttons.
-- Practice tab menu text is condensed: title `headlineSmall` letter spacing -0.5, row titles
-  17 w600 / -0.4, trailing count 15 w600 / -0.3 (default spacing looked too loose to the user).
+- Learn tab menu text is condensed: title `TabTitle`, row titles 17 w600 / -0.4, trailing
+  count 15 w600 / -0.3 (default spacing looked too loose to the user).
 - Exception: the Learn tab menu (`learn_screen.dart`) has colored leading icons, size 26,
   one color per action (`AppColors.menuCategories` blue, `menuNewWords` pink, `menuRepeat`
   yellow); a disabled row fades its icon to α 0.4.
@@ -237,7 +242,7 @@ Prefer `Curves.easeOutCubic` for things that open or grow.
 
 ## Settings
 
-`SettingsScreen`: title (`headlineSmall`, -0.5, 12 below), then per category a gray name
+`SettingsScreen`: `TabTitle`, then per category a gray name
 (`MenuRow.hintStyle`, not uppercase, 8 from the left like the title, 20 above) and a
 `GroupedCard` of `MenuRow`s (`lib/ui/core/widgets/menu_row.dart`, shared with the Learn menu:
 title 17 w600 -0.4, gray hint 15 w600 -0.3). **No icons in settings rows** (user removed them;

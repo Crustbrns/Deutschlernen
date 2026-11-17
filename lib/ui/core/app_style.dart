@@ -4,6 +4,12 @@ import 'package:deutschlernen/domain/models/word_status.dart';
 abstract final class AppSizes {
   /// Horizontal inset of the card content from the card edge.
   static const cardInset = 24.0;
+
+  /// Bottom padding of a scrolling screen: 24 above the bottom inset. In the
+  /// shell that inset includes the floating bar (Scaffold.extendBody), so
+  /// the last items stay reachable above it.
+  static double bottomPadding(BuildContext context) =>
+      24 + MediaQuery.paddingOf(context).bottom;
 }
 
 /// Colors that differ between the dark and the light theme.

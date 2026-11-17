@@ -36,13 +36,11 @@ class WordList extends StatelessWidget {
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       slivers: [
         SliverPadding(
-          // + bottom inset: the last row stays above the bottom bar / home
-          // indicator.
           padding: EdgeInsets.fromLTRB(
             16,
             0,
             16,
-            24 + MediaQuery.paddingOf(context).bottom,
+            AppSizes.bottomPadding(context),
           ),
           sliver: GroupedSliverList(
             itemCount: words.length,

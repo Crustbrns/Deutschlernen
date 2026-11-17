@@ -7,6 +7,7 @@ import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/view_models/language_view_model.dart';
 import 'package:deutschlernen/ui/core/widgets/choice_sheet.dart';
 import 'package:deutschlernen/ui/core/widgets/menu_row.dart';
+import 'package:deutschlernen/ui/core/widgets/tab_page.dart';
 import 'package:deutschlernen/ui/settings/view_models/settings_view_model.dart';
 import 'package:deutschlernen/ui/settings/widgets/reminders_category.dart';
 import 'package:deutschlernen/ui/settings/widgets/reset_progress_dialog.dart';
@@ -41,107 +42,88 @@ class SettingsScreen extends StatelessWidget {
       ThemeMode.light: strings.themeLight,
     };
 
-    return SafeArea(
-      bottom: false,
-      child: ListenableBuilder(
-        listenable: settings,
-        builder: (context, _) => ListView(
-          // + bottom inset: the last item stays reachable above the blurred bar.
-          padding: EdgeInsets.fromLTRB(
-            16,
-            16,
-            16,
-            24 + MediaQuery.paddingOf(context).bottom,
-          ),
-          children: [
-            // Same title placement as the other tabs.
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
-              child: Text(
-                strings.tabSettings,
-                style: Theme.of(context).textTheme.headlineSmall
-                    ?.copyWith(letterSpacing: -0.5),
-              ),
-            ),
-            SettingsCategory(
-              title: strings.settingsAppearance,
-              children: [
-                SettingsValueRow(
+    return ListenableBuilder(
+      listenable: settings,
+      builder: (context, _) => TabPage(
+        title: strings.tabSettings,
+        children: [
+          SettingsCategory(
+            title: strings.settingsAppearance,
+            children: [
+              SettingsValueRow(
+                title: strings.theme,
+                value: themeLabels[settings.themeMode]!,
+                onTap: () => showChoiceSheet<ThemeMode>(
+                  context: context,
                   title: strings.theme,
-                  value: themeLabels[settings.themeMode]!,
-                  onTap: () => showChoiceSheet<ThemeMode>(
-                    context: context,
-                    title: strings.theme,
-                    current: settings.themeMode,
-                    onSelected: settings.setThemeMode,
-                    choices: [
-                      for (final e in themeLabels.entries)
-                        Choice(e.key, e.value),
-                    ],
-                  ),
+                  current: settings.themeMode,
+                  onSelected: settings.setThemeMode,
+                  choices: [
+                    for (final e in themeLabels.entries) Choice(e.key, e.value),
+                  ],
                 ),
-                SettingsSwitchRow(
-                  title: strings.showTranscription,
-                  hint: strings.showTranscriptionHint,
-                  value: settings.showTranscription,
-                  onChanged: settings.setShowTranscription,
+              ),
+              SettingsSwitchRow(
+                title: strings.showTranscription,
+                hint: strings.showTranscriptionHint,
+                value: settings.showTranscription,
+                onChanged: settings.setShowTranscription,
+              ),
+            ],
+          ),
+          SettingsCategory(
+            title: strings.settingsLanguages,
+            children: [
+              _languageRow(
+                context,
+                title: strings.interfaceLanguage,
+                current: languages.uiFollowsSystem
+                    ? null
+                    : languages.uiLanguage,
+                choice: LanguageChoice.interface,
+              ),
+              _languageRow(
+                context,
+                title: strings.wordsLanguage,
+                current: languages.wordFollowsSystem
+                    ? null
+                    : languages.wordLanguage,
+                choice: LanguageChoice.words,
+              ),
+            ],
+          ),
+          SettingsCategory(
+            title: strings.settingsVoice,
+            children: [
+              SettingsSwitchRow(
+                title: strings.autoSpeak,
+                hint: strings.autoSpeakHint,
+                value: settings.autoSpeak,
+                onChanged: settings.setAutoSpeak,
+              ),
+              SpeedRow(settings: settings),
+            ],
+          ),
+          RemindersCategory(settings: settings),
+          SettingsCategory(
+            title: strings.settingsProgress,
+            children: [
+              // Red: it wipes data and can't be undone.
+              MenuRow(
+                compact: true,
+                titleColor: AppColors.decisionRed,
+                title: strings.resetAllProgress,
+                // No hint line: the confirm dialog says what happens.
+                trailing: const Icon(
+                  AppIcons.arrowCounterClockwise,
+                  size: 22,
+                  color: AppColors.decisionRed,
                 ),
-              ],
-            ),
-            SettingsCategory(
-              title: strings.settingsLanguages,
-              children: [
-                _languageRow(
-                  context,
-                  title: strings.interfaceLanguage,
-                  current: languages.uiFollowsSystem
-                      ? null
-                      : languages.uiLanguage,
-                  choice: LanguageChoice.interface,
-                ),
-                _languageRow(
-                  context,
-                  title: strings.wordsLanguage,
-                  current: languages.wordFollowsSystem
-                      ? null
-                      : languages.wordLanguage,
-                  choice: LanguageChoice.words,
-                ),
-              ],
-            ),
-            SettingsCategory(
-              title: strings.settingsVoice,
-              children: [
-                SettingsSwitchRow(
-                  title: strings.autoSpeak,
-                  hint: strings.autoSpeakHint,
-                  value: settings.autoSpeak,
-                  onChanged: settings.setAutoSpeak,
-                ),
-                SpeedRow(settings: settings),
-              ],
-            ),
-            RemindersCategory(settings: settings),
-            SettingsCategory(
-              title: strings.settingsProgress,
-              children: [
-                // Red: it wipes data and can't be undone.
-                MenuRow(
-                  compact: true,
-                  titleColor: AppColors.decisionRed,
-                  title: strings.resetAllProgress,
-                  // No hint line: the confirm dialog says what happens.
-                  trailing: const Icon(
-                    AppIcons.arrowCounterClockwise,
-                    size: 22,
-                    color: AppColors.decisionRed,
-                  ),
-                  onTap: () => _confirmReset(context),
-                ),
-              ],
-            ),
-          ],
-        ),
+                onTap: () => _confirmReset(context),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
