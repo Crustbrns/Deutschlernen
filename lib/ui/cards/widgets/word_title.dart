@@ -67,9 +67,8 @@ class WordTitle extends StatelessWidget {
                           ),
                         ),
                         TextSpan(text: word.german),
-                        // Plural is always "die".
-                        if (word.plural != null)
-                          TextSpan(text: ' (die ${word.plural})'),
+                        if (word.pluralWithArticle case final plural?)
+                          TextSpan(text: ' ($plural)'),
                       ],
                     ),
                   ),

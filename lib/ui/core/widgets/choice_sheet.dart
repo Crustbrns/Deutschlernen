@@ -44,14 +44,21 @@ Future<void> showChoiceSheet<T>({
 
 /// Like [showChoiceSheet], but several can be on: a tap toggles and is
 /// applied right away, the sheet stays open. The last one can't be turned
-/// off.
+/// off. [rowBuilder] draws a custom row (e.g. a level row with its icon and
+/// word count); by default it is a [ChoiceRow].
 Future<void> showMultiChoiceSheet<T>({
   required BuildContext context,
   required String title,
   required List<Choice<T>> choices,
   required Set<T> selected,
   required ValueChanged<Set<T>> onChanged,
+  Widget Function(Choice<T> choice, bool isSelected, VoidCallback onTap)?
+  rowBuilder,
 }) {
+  final row =
+      rowBuilder ??
+      (choice, isSelected, onTap) =>
+          ChoiceRow(choice: choice, isSelected: isSelected, onTap: onTap);
   // Local copy: the sheet redraws itself on each tap.
   var current = {...selected};
   return showSheet(
@@ -61,17 +68,13 @@ Future<void> showMultiChoiceSheet<T>({
       builder: (context, setSheetState) => GroupedCard(
         children: [
           for (final choice in choices)
-            ChoiceRow(
-              choice: choice,
-              isSelected: current.contains(choice.value),
-              onTap: () {
-                final next = {...current};
-                if (!next.remove(choice.value)) next.add(choice.value);
-                if (next.isEmpty) return;
-                setSheetState(() => current = next);
-                onChanged(next);
-              },
-            ),
+            row(choice, current.contains(choice.value), () {
+              final next = {...current};
+              if (!next.remove(choice.value)) next.add(choice.value);
+              if (next.isEmpty) return;
+              setSheetState(() => current = next);
+              onChanged(next);
+            }),
         ],
       ),
     ),
@@ -167,13 +170,26 @@ class ChoiceRow<T> extends StatelessWidget {
       title: choice.label,
       subtitle: choice.subtitle,
       titleColor: isSelected ? AppColors.softBlue : null,
-      trailing: isSelected
-          ? const Icon(AppIcons.checkCircle, color: AppColors.softBlue)
-          : Icon(
-              AppIcons.circle,
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-            ),
+      trailing: SelectionMark(isSelected: isSelected),
       onTap: onTap,
     );
+  }
+}
+
+/// Right end of a pickable row: a blue check when chosen, else an empty
+/// circle.
+class SelectionMark extends StatelessWidget {
+  const SelectionMark({super.key, required this.isSelected});
+
+  final bool isSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return isSelected
+        ? const Icon(AppIcons.checkCircle, color: AppColors.softBlue)
+        : Icon(
+            AppIcons.circle,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          );
   }
 }
