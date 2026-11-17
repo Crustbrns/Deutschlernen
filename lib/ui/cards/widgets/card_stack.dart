@@ -18,12 +18,17 @@ class CardStack extends StatelessWidget {
     required this.onSwiped,
     required this.onSpeak,
     required this.showTranscription,
+    required this.translationPool,
     required this.bottomBarFor,
     required this.answerModes,
     required this.stateOf,
   });
 
   final List<Word> words;
+
+  /// Every word's translation, for the choice mode's wrong options: the
+  /// session alone may have too few words for four.
+  final List<String> translationPool;
   final int index;
   final SwipeController controller;
   final SwipeDirection? enterFrom;
@@ -120,7 +125,7 @@ class CardStack extends StatelessWidget {
     word: word,
     onSpeak: onSpeak,
     showTranscription: showTranscription,
-    translationPool: [for (final w in words) w.translation],
+    translationPool: translationPool,
     bottomBar: bottomBarFor(word, isTop: isTop),
     answerModes: answerModes,
     state: stateOf(word.id),

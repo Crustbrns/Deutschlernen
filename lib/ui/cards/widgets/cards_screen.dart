@@ -23,13 +23,9 @@ class _CardsScreenState extends State<CardsScreen> {
 
   LearningViewModel get _vm => widget.viewModel;
 
-  /// A new (gray) word is answered with "already know" / "learn"; a pink
-  /// word and any review word with "don't remember" / "remember".
-  bool get _recall => _vm.mode == SessionMode.review || _vm.currentIsUnrecalled;
-
   CardDecision _decisionFor(SwipeDirection direction) {
     final left = direction == SwipeDirection.left;
-    return _recall
+    return _vm.currentNeedsRecall
         ? (left ? CardDecision.forgot : CardDecision.remembered)
         : (left ? CardDecision.known : CardDecision.learn);
   }
@@ -115,6 +111,7 @@ class _CardsScreenState extends State<CardsScreen> {
                                     _vm.onCardSwiped(_decisionFor(direction)),
                                 onSpeak: _vm.speak,
                                 showTranscription: _vm.showTranscription,
+                                translationPool: _vm.translations,
                                 stateOf: _vm.stateOf,
                                 // New words: only the eye; review: all
                                 // three answer modes.

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart' show ValueListenable;
 import 'package:material_ui/material_ui.dart';
+import 'package:deutschlernen/domain/models/card_decision.dart';
 import 'package:deutschlernen/domain/models/reminder_plan.dart';
 import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/ui/cards/widgets/cards_screen.dart';
@@ -68,13 +69,12 @@ class _HomeShellState extends State<HomeShell> {
     widget.onReminderHandled();
     Navigator.of(context).popUntil((route) => route.isFirst);
     setState(() => _tab = HomeTab.learn);
-    if (_vm.sessionFor(kind) case final mode?) {
-      _vm.startSession(mode);
-      _openCards();
-    }
+    if (_vm.sessionFor(kind) case final mode?) _startSession(mode);
   }
 
-  void _openCards() {
+  /// Starts a session and opens the cards over the shell.
+  void _startSession(SessionMode mode) {
+    _vm.startSession(mode);
     Navigator.of(context).push(
       MaterialPageRoute<void>(builder: (_) => CardsScreen(viewModel: _vm)),
     );
@@ -85,7 +85,6 @@ class _HomeShellState extends State<HomeShell> {
       WordDetailScreen.route(
         WordDetailScreen(
           word: word,
-          translationPool: _vm.translations,
           showTranscription: widget.settingsViewModel.showTranscription,
           lookupCount: _vm.lookupCount(word.id),
           onSpeak: _vm.speak,
@@ -133,14 +132,8 @@ class _HomeShellState extends State<HomeShell> {
                   },
                   onChanged: _vm.setLearnLevels,
                 ),
-                onLearnNewWords: () {
-                  _vm.startNewWords();
-                  _openCards();
-                },
-                onReview: () {
-                  _vm.startReview();
-                  _openCards();
-                },
+                onLearnNewWords: () => _startSession(SessionMode.newWords),
+                onReview: () => _startSession(SessionMode.review),
               ),
               CategoriesScreen(
                 words: _vm.words,

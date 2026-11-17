@@ -77,17 +77,13 @@ class SettingsScreen extends StatelessWidget {
               _languageRow(
                 context,
                 title: strings.interfaceLanguage,
-                current: languages.uiFollowsSystem
-                    ? null
-                    : languages.uiLanguage,
+                current: languages.uiChoice,
                 choice: LanguageChoice.interface,
               ),
               _languageRow(
                 context,
                 title: strings.wordsLanguage,
-                current: languages.wordFollowsSystem
-                    ? null
-                    : languages.wordLanguage,
+                current: languages.wordChoice,
                 choice: LanguageChoice.words,
               ),
             ],

@@ -19,8 +19,8 @@ class WordCard extends StatelessWidget {
     required this.word,
     required this.onSpeak,
     required this.showTranscription,
-    required this.translationPool,
     required this.bottomBar,
+    this.translationPool = const [],
     this.lookup = false,
     this.answerModes = true,
     this.lookupCount = 0,
@@ -54,7 +54,8 @@ class WordCard extends StatelessWidget {
   /// When off, the speaker button stays but the phonetic text is hidden.
   final bool showTranscription;
 
-  /// Translations to take the wrong options from in the choice mode.
+  /// Translations to take the wrong options from in the choice mode
+  /// (learning only: the lookup card shows the translation right away).
   final List<String> translationPool;
 
   /// Pinned to the bottom of the card, outside the scrolling content.

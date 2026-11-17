@@ -30,12 +30,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
     final palette = AppPalette.of(context);
     final bars = chartBars(_period, widget.history, DateTime.now());
     final isEmpty = bars.every((b) => (b.counts?.total ?? 0) == 0);
-    // Today's snapshot (written at start-up): the counts right now.
-    final latest = widget.history.isEmpty
-        ? const StatusCounts()
-        : widget.history[widget.history.keys.reduce(
-            (a, b) => a.isAfter(b) ? a : b,
-          )]!;
+    final latest = latestCounts(widget.history);
     final labels = {
       WordStatus.known: strings.statusKnown,
       WordStatus.learning: strings.statsLearning,
