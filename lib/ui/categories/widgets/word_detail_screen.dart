@@ -16,7 +16,6 @@ class WordDetailScreen extends StatefulWidget {
   const WordDetailScreen({
     super.key,
     required this.word,
-    required this.translationPool,
     required this.showTranscription,
     required this.lookupCount,
     required this.onSpeak,
@@ -25,7 +24,6 @@ class WordDetailScreen extends StatefulWidget {
   });
 
   final Word word;
-  final List<String> translationPool;
   final bool showTranscription;
   final int lookupCount; // times opened from the search, shown in the header
   final ValueChanged<String> onSpeak;
@@ -36,10 +34,7 @@ class WordDetailScreen extends StatefulWidget {
 
   /// The card grows out of the list row via [WordHero] while the barrier
   /// fades in to solid black, so the list is hidden once the card is open.
-  static Route<void> route({
-    required AppStrings strings,
-    required WordDetailScreen screen,
-  }) {
+  static Route<void> route(WordDetailScreen screen) {
     return PageRouteBuilder<void>(
       // Not opaque: the list stays painted while the barrier fades in and
       // out, and the hero has its row to fly back to on close.
@@ -49,10 +44,7 @@ class WordDetailScreen extends StatefulWidget {
       barrierColor: Colors.black,
       transitionDuration: const Duration(milliseconds: 350),
       reverseTransitionDuration: const Duration(milliseconds: 300),
-      // A pushed route is not under the shell's AppStringsScope,
-      // so the scope is provided again.
-      pageBuilder: (_, _, _) =>
-          AppStringsScope(strings: strings, child: screen),
+      pageBuilder: (_, _, _) => screen,
       // No page transition: the only visible thing is the card, and the
       // hero animates it. A fade on top would just make it look washed out.
       transitionsBuilder: (_, _, _, child) => child,
@@ -92,21 +84,15 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
                   Expanded(
                     child: WordHero(
                       wordId: word.id,
-                      // The shuttle flies in the Navigator overlay, outside
-                      // this route, so it needs its own strings scope.
-                      child: AppStringsScope(
-                        strings: strings,
-                        child: WordCard(
-                          word: word,
-                          onSpeak: widget.onSpeak,
-                          showTranscription: widget.showTranscription,
-                          translationPool: widget.translationPool,
-                          bottomBar: const SizedBox.shrink(),
-                          lookup: true,
-                          lookupCount: widget.lookupCount,
-                          state: _state,
-                          onClose: () => Navigator.of(context).pop(),
-                        ),
+                      child: WordCard(
+                        word: word,
+                        onSpeak: widget.onSpeak,
+                        showTranscription: widget.showTranscription,
+                        bottomBar: const SizedBox.shrink(),
+                        lookup: true,
+                        lookupCount: widget.lookupCount,
+                        state: _state,
+                        onClose: () => Navigator.of(context).pop(),
                       ),
                     ),
                   ),

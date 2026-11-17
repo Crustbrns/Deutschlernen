@@ -25,9 +25,7 @@ Future<void> showLanguageSheet({
         final strings = languages.strings;
         final words = choice == LanguageChoice.words;
         // null = same as the system.
-        final current = words
-            ? (languages.wordFollowsSystem ? null : languages.wordLanguage)
-            : (languages.uiFollowsSystem ? null : languages.uiLanguage);
+        final current = words ? languages.wordChoice : languages.uiChoice;
         final shown = current ?? languages.systemLanguage;
 
         void select(AppLanguage? language) => words

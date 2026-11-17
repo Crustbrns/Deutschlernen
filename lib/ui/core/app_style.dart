@@ -4,6 +4,12 @@ import 'package:deutschlernen/domain/models/word_status.dart';
 abstract final class AppSizes {
   /// Horizontal inset of the card content from the card edge.
   static const cardInset = 24.0;
+
+  /// Bottom padding of a scrolling screen: 24 above the bottom inset. In the
+  /// shell that inset includes the floating bar (Scaffold.extendBody), so
+  /// the last items stay reachable above it.
+  static double bottomPadding(BuildContext context) =>
+      24 + MediaQuery.paddingOf(context).bottom;
 }
 
 /// Colors that differ between the dark and the light theme.
@@ -140,7 +146,6 @@ abstract final class AppColors {
   static const decisionRed = Color(0xFFFF3B30); // saturated red
   static const decisionGreen = Color(0xFF30D158); // saturated green
   static const accentBlue = Color(0xFF1AA7FF);
-  static const accentTeal = Color(0xFF2EE6D6);
   // Settings controls (switch on, slider, chosen language): deeper and
   // softer than accentBlue (iOS blue).
   static const softBlue = Color(0xFF0A84FF);

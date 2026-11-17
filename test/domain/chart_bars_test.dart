@@ -64,4 +64,12 @@ void main() {
     expect(bars.first.start, DateTime(2026, 11, 2));
     expect(chartBars(ChartPeriod.all, {}, now), hasLength(1));
   });
+
+  test('latest counts: the newest snapshot, whatever the map order', () {
+    expect(
+      latestCounts({DateTime(2026, 11, 18): two, DateTime(2026, 11, 13): one}),
+      two,
+    );
+    expect(latestCounts({}).total, 0);
+  });
 }

@@ -4,6 +4,7 @@ import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
 import 'package:deutschlernen/ui/core/widgets/menu_row.dart';
+import 'package:deutschlernen/ui/core/widgets/tab_page.dart';
 import 'package:deutschlernen/ui/learn/widgets/week_strip.dart';
 
 /// Learn tab (was "Practice"): title, then one block with the entry
@@ -35,62 +36,43 @@ class LearnScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final strings = AppStrings.of(context);
 
-    return SafeArea(
-      bottom: false,
-      child: ListView(
-        // + bottom inset: the block stays above the blurred bar.
-        padding: EdgeInsets.fromLTRB(
-          16,
-          16,
-          16,
-          24 + MediaQuery.paddingOf(context).bottom,
-        ),
-        children: [
-          // Same title placement as the Categories and Settings tabs.
-          Padding(
-            padding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
-            child: Text(
-              strings.tabLearn,
-              // Condensed: at the default spacing the letters drift apart.
-              style: Theme.of(context).textTheme.headlineSmall
-                  ?.copyWith(letterSpacing: -0.5),
+    return TabPage(
+      title: strings.tabLearn,
+      children: [
+        GroupedCard(
+          children: [
+            MenuRow(
+              icon: AppIcons.squaresFour,
+              iconColor: AppColors.menuCategories,
+              title: strings.levelsSelected(selectedLevelCount),
+              onTap: onChooseLevels,
             ),
-          ),
-          GroupedCard(
-            children: [
-              MenuRow(
-                icon: AppIcons.squaresFour,
-                iconColor: AppColors.menuCategories,
-                title: strings.levelsSelected(selectedLevelCount),
-                onTap: onChooseLevels,
-              ),
-              MenuRow(
-                icon: AppIcons.plusCircle,
-                iconColor: AppColors.menuNewWords,
-                title: strings.learnNewWords,
-                subtitle: strings.learnedToday(learnedToday, dailyGoal),
-                // Disabled when the chosen levels have no unseen words.
-                onTap: newWordsLeft > 0 ? onLearnNewWords : null,
-              ),
-              MenuRow(
-                icon: AppIcons.clockCounterClockwise,
-                iconColor: AppColors.menuRepeat,
-                title: strings.repeatWords,
-                // "5 слов" waiting; disabled when there is nothing to review.
-                trailing: dueCount > 0
-                    ? Text(
-                        strings.wordCount(dueCount),
-                        style: MenuRow.hintStyle(context),
-                      )
-                    : null,
-                onTap: dueCount > 0 ? onReview : null,
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          const WeekStrip(),
-        ],
-      ),
+            MenuRow(
+              icon: AppIcons.plusCircle,
+              iconColor: AppColors.menuNewWords,
+              title: strings.learnNewWords,
+              subtitle: strings.learnedToday(learnedToday, dailyGoal),
+              // Disabled when the chosen levels have no unseen words.
+              onTap: newWordsLeft > 0 ? onLearnNewWords : null,
+            ),
+            MenuRow(
+              icon: AppIcons.clockCounterClockwise,
+              iconColor: AppColors.menuRepeat,
+              title: strings.repeatWords,
+              // "5 слов" waiting; disabled when there is nothing to review.
+              trailing: dueCount > 0
+                  ? Text(
+                      strings.wordCount(dueCount),
+                      style: MenuRow.hintStyle(context),
+                    )
+                  : null,
+              onTap: dueCount > 0 ? onReview : null,
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        const WeekStrip(),
+      ],
     );
   }
 }

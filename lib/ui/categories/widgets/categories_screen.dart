@@ -6,6 +6,7 @@ import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
 import 'package:deutschlernen/ui/core/widgets/level_row.dart';
 import 'package:deutschlernen/ui/core/widgets/search_field.dart';
+import 'package:deutschlernen/ui/core/widgets/tab_page.dart';
 import 'package:deutschlernen/ui/categories/widgets/level_words_screen.dart';
 import 'package:deutschlernen/ui/categories/widgets/word_list.dart';
 
@@ -68,11 +69,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         children: [
           // Title stays above the search, visible in both states.
           Padding(
-            padding: const EdgeInsets.fromLTRB(24, 16, 24, 12),
-            child: Text(
-              strings.tabCategories,
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+            child: TabTitle(strings.tabCategories),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
@@ -115,23 +113,17 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   }
 
   void _openLevel(String level, List<Word> words) {
-    final strings = AppStrings.of(context);
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-        // A pushed route is not under the shell's AppStringsScope,
-        // so the scope is provided again.
-        builder: (_) => AppStringsScope(
-          strings: strings,
-          // A pushed route doesn't rebuild with the tab; listen directly.
-          child: ListenableBuilder(
-            listenable: widget.progressChanges,
-            builder: (_, _) => LevelWordsScreen(
-              level: level,
-              words: words,
-              onWordSelected: widget.onWordSelected,
-              onSpeak: widget.onSpeak,
-              stateOf: widget.stateOf,
-            ),
+        // A pushed route doesn't rebuild with the tab; listen directly.
+        builder: (_) => ListenableBuilder(
+          listenable: widget.progressChanges,
+          builder: (_, _) => LevelWordsScreen(
+            level: level,
+            words: words,
+            onWordSelected: widget.onWordSelected,
+            onSpeak: widget.onSpeak,
+            stateOf: widget.stateOf,
           ),
         ),
       ),
@@ -142,13 +134,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     final colors = Theme.of(context).colorScheme;
 
     return SingleChildScrollView(
-      // + bottom inset: the last row stays reachable above the blurred bar.
-      padding: EdgeInsets.fromLTRB(
-        16,
-        0,
-        16,
-        24 + MediaQuery.paddingOf(context).bottom,
-      ),
+      padding: EdgeInsets.fromLTRB(16, 0, 16, AppSizes.bottomPadding(context)),
       child: GroupedCard(
         children: [
           for (final MapEntry(key: level, value: words)

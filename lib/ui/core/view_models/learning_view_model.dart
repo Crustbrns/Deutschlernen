@@ -139,12 +139,13 @@ class LearningViewModel extends ChangeNotifier {
   /// Set after an undo, so the UI can fly the card back in from the right side.
   CardDecision? get lastUndone => _lastUndone;
 
+  /// The word is answered with "forgot / remember" (pink word, or any word
+  /// in a review) rather than "already know / learn".
   bool needsRecall(String wordId) => _session?.needsRecall(wordId) ?? false;
 
-  /// The top card is a pink word in a new-words session: it is answered with
-  /// "don't remember" / "remember" instead of "already know" / "learn".
-  bool get currentIsUnrecalled =>
-      !isFinished && (_progress[_session!.currentId]?.isUnrecalled ?? false);
+  /// [needsRecall] for the top card.
+  bool get currentNeedsRecall =>
+      !isFinished && _session!.needsRecall(_session!.currentId);
 
   /// Top bar progress. New-words session: today's goal, so the bar opens
   /// at e.g. 60% when 6 of 10 words were learned earlier today. Review
@@ -226,30 +227,23 @@ class LearningViewModel extends ChangeNotifier {
     await _lookupRepository.saveCounts(_lookupCounts);
   }
 
-  /// Up to [newWordsPerSession] unseen words from the selected levels.
-  /// Pink words left from earlier sessions go first.
-  void startNewWords() => _startSession(
-    SessionMode.newWords,
-    [..._unrecalledIds(), ..._newWordIds()].take(newWordsPerSession),
-  );
-
   /// Session a tapped reminder opens now; null = nothing to do.
   SessionMode? sessionFor(ReminderKind kind) =>
       sessionForReminder(kind, dueCount: dueCount, newWordsLeft: newWordsLeft);
 
-  /// Starts a session of [mode].
-  void startSession(SessionMode mode) => switch (mode) {
-    SessionMode.newWords => startNewWords(),
-    SessionMode.review => startReview(),
-  };
-
-  /// All due words of the selected levels.
-  void startReview() => _startSession(SessionMode.review, _dueIds());
-
-  void _startSession(SessionMode mode, Iterable<String> ids) {
+  /// New words: up to [newWordsPerSession] unseen words of the selected
+  /// levels, pink words left from earlier sessions first. Review: all due
+  /// words of the selected levels.
+  void startSession(SessionMode mode) {
     _session = CardSession(
       mode: mode,
-      wordIds: ids,
+      wordIds: switch (mode) {
+        SessionMode.newWords => [
+          ..._unrecalledIds(),
+          ..._newWordIds(),
+        ].take(newWordsPerSession),
+        SessionMode.review => _dueIds(),
+      },
       progress: _progress,
       schedule: _reviewScheduler.answer,
       nextNewWord: (inDeck) =>

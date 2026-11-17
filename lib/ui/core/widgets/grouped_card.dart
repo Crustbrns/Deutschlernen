@@ -11,8 +11,6 @@ class GroupedCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
-
     return Material(
       color: AppPalette.of(context).card,
       // No outline: the block stands out by its fill only.
@@ -22,14 +20,7 @@ class GroupedCard extends StatelessWidget {
       child: Column(
         children: [
           for (var i = 0; i < children.length; i++) ...[
-            if (i > 0)
-              Divider(
-                height: 1,
-                thickness: 1,
-                indent: 16,
-                endIndent: 16,
-                color: AppColors.divider(colors),
-              ),
+            if (i > 0) const _RowDivider(),
             children[i],
           ],
         ],
@@ -57,8 +48,6 @@ class GroupedSliverList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
-
     return DecoratedSliver(
       decoration: BoxDecoration(
         color: AppPalette.of(context).card,
@@ -77,21 +66,26 @@ class GroupedSliverList extends StatelessWidget {
           clipBehavior: Clip.antiAlias,
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
-              // Same line as GroupedCard puts between rows.
-              if (i > 0)
-                Divider(
-                  height: 1,
-                  thickness: 1,
-                  indent: 16,
-                  endIndent: 16,
-                  color: AppColors.divider(colors),
-                ),
-              itemBuilder(context, i),
-            ],
+            children: [if (i > 0) const _RowDivider(), itemBuilder(context, i)],
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Thin line between two rows of a block, inset 16 like the row text.
+class _RowDivider extends StatelessWidget {
+  const _RowDivider();
+
+  @override
+  Widget build(BuildContext context) {
+    return Divider(
+      height: 1,
+      thickness: 1,
+      indent: 16,
+      endIndent: 16,
+      color: AppColors.divider(Theme.of(context).colorScheme),
     );
   }
 }

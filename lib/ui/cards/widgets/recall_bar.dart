@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/ui/core/app_icons.dart';
+import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 
 /// Answer buttons for recalling a word (a pink word, or a review): two
@@ -10,15 +11,11 @@ import 'package:deutschlernen/ui/core/app_style.dart';
 class RecallBar extends StatelessWidget {
   const RecallBar({
     super.key,
-    required this.forgotLabel,
-    required this.rememberedLabel,
     required this.onForgot,
     required this.onRemembered,
     required this.dragProgress,
   });
 
-  final String forgotLabel;
-  final String rememberedLabel;
   final VoidCallback onForgot;
   final VoidCallback onRemembered;
 
@@ -27,6 +24,8 @@ class RecallBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = AppStrings.of(context);
+
     return ValueListenableBuilder<double>(
       valueListenable: dragProgress,
       builder: (context, progress, _) => Row(
@@ -34,7 +33,7 @@ class RecallBar extends StatelessWidget {
           Expanded(
             child: _RecallButton(
               icon: AppIcons.smileySad,
-              label: forgotLabel,
+              label: strings.forgot,
               color: AppColors.decisionRed,
               highlight: (-progress).clamp(0.0, 1.0),
               onPressed: onForgot,
@@ -44,7 +43,7 @@ class RecallBar extends StatelessWidget {
           Expanded(
             child: _RecallButton(
               icon: AppIcons.smiley,
-              label: rememberedLabel,
+              label: strings.remembered,
               color: AppColors.decisionGreen,
               highlight: progress.clamp(0.0, 1.0),
               onPressed: onRemembered,

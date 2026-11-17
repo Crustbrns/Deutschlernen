@@ -4,6 +4,7 @@ import 'package:deutschlernen/domain/models/word_status.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
+import 'package:deutschlernen/ui/core/widgets/tab_page.dart';
 import 'package:deutschlernen/domain/models/chart_bars.dart';
 import 'package:deutschlernen/ui/progress/widgets/progress_chart.dart';
 
@@ -29,12 +30,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
     final palette = AppPalette.of(context);
     final bars = chartBars(_period, widget.history, DateTime.now());
     final isEmpty = bars.every((b) => (b.counts?.total ?? 0) == 0);
-    // Today's snapshot (written at start-up): the counts right now.
-    final latest = widget.history.isEmpty
-        ? const StatusCounts()
-        : widget.history[widget.history.keys.reduce(
-            (a, b) => a.isAfter(b) ? a : b,
-          )]!;
+    final latest = latestCounts(widget.history);
     final labels = {
       WordStatus.known: strings.statusKnown,
       WordStatus.learning: strings.statsLearning,
@@ -42,68 +38,50 @@ class _ProgressScreenState extends State<ProgressScreen> {
       WordStatus.learned: strings.statsLearned,
     };
 
-    return SafeArea(
-      bottom: false,
-      child: ListView(
-        // + bottom inset: the block stays above the floating bar.
-        padding: EdgeInsets.fromLTRB(
-          16,
-          16,
-          16,
-          24 + MediaQuery.paddingOf(context).bottom,
+    return TabPage(
+      title: strings.tabProgress,
+      children: [
+        _PeriodSwitch(
+          selected: _period,
+          labels: {
+            ChartPeriod.week: strings.statsPeriodWeek,
+            ChartPeriod.month: strings.statsPeriodMonth,
+            ChartPeriod.quarter: strings.statsPeriodQuarter,
+            ChartPeriod.all: strings.statsPeriodAll,
+          },
+          onSelected: (p) => setState(() => _period = p),
         ),
-        children: [
-          // Same title placement as the other tabs.
-          Padding(
-            padding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
-            child: Text(
-              strings.tabProgress,
-              style: Theme.of(context).textTheme.headlineSmall
-                  ?.copyWith(letterSpacing: -0.5),
-            ),
+        const SizedBox(height: 12),
+        Container(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+          decoration: BoxDecoration(
+            color: palette.card,
+            borderRadius: BorderRadius.circular(20),
           ),
-          _PeriodSwitch(
-            selected: _period,
-            labels: {
-              ChartPeriod.week: strings.statsPeriodWeek,
-              ChartPeriod.month: strings.statsPeriodMonth,
-              ChartPeriod.quarter: strings.statsPeriodQuarter,
-              ChartPeriod.all: strings.statsPeriodAll,
-            },
-            onSelected: (p) => setState(() => _period = p),
-          ),
-          const SizedBox(height: 12),
-          Container(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-            decoration: BoxDecoration(
-              color: palette.card,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: isEmpty
-                ? Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 48),
-                    child: Text(
-                      strings.statsEmpty,
-                      textAlign: TextAlign.center,
-                      style: AppListText.caption(context),
-                    ),
-                  )
-                : ProgressChart(bars: bars),
-          ),
-          const SizedBox(height: 12),
-          // Also the chart's legend: same dots, top of the stack first.
-          GroupedCard(
-            children: [
-              for (final s in ProgressChart.stackOrder.reversed)
-                _TotalRow(
-                  status: s,
-                  label: labels[s]!,
-                  count: latest.stack[ProgressChart.stackOrder.indexOf(s)],
-                ),
-            ],
-          ),
-        ],
-      ),
+          child: isEmpty
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 48),
+                  child: Text(
+                    strings.statsEmpty,
+                    textAlign: TextAlign.center,
+                    style: AppListText.caption(context),
+                  ),
+                )
+              : ProgressChart(bars: bars),
+        ),
+        const SizedBox(height: 12),
+        // Also the chart's legend: same dots, top of the stack first.
+        GroupedCard(
+          children: [
+            for (final s in ProgressChart.stackOrder.reversed)
+              _TotalRow(
+                status: s,
+                label: labels[s]!,
+                count: latest.stack[ProgressChart.stackOrder.indexOf(s)],
+              ),
+          ],
+        ),
+      ],
     );
   }
 }

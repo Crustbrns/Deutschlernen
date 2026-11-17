@@ -42,8 +42,12 @@ class LanguageViewModel extends ChangeNotifier {
 
   /// Language of the word translations.
   AppLanguage get wordLanguage => _wordLanguage;
-  bool get uiFollowsSystem => _uiFollowsSystem;
-  bool get wordFollowsSystem => _wordFollowsSystem;
+
+  /// What the user picked for the interface; null = same as the system.
+  AppLanguage? get uiChoice => _uiFollowsSystem ? null : _uiLanguage;
+
+  /// What the user picked for the words; null = same as the system.
+  AppLanguage? get wordChoice => _wordFollowsSystem ? null : _wordLanguage;
   AppStrings get strings => _strings;
   bool get isLoading => _isLoading;
 

@@ -1,28 +1,19 @@
 import 'package:flutter/foundation.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/ui/core/app_icons.dart';
+import 'package:deutschlernen/ui/core/app_strings.dart';
+import 'package:deutschlernen/ui/core/app_style.dart';
 
+/// Answer bar of a new (gray) word: "Already know" on the left, "Start
+/// learning" on the right. Knowing it is the good side, so the left button
+/// lights up green while the card is dragged that way, the right one red.
 class DecisionBar extends StatelessWidget {
   const DecisionBar({
     super.key,
-    required this.leftLabel,
-    required this.rightLabel,
-    required this.leftColor,
-    required this.rightColor,
     required this.onKnown,
     required this.onLearn,
     required this.dragProgress,
   });
-
-  /// "Already know" / "Start learning", or "Don't remember" / "Remember"
-  /// in a review session.
-  final String leftLabel;
-  final String rightLabel;
-
-  /// Highlight while the card is dragged that way: green for the "good"
-  /// side ("already know", "remember"), red for the other.
-  final Color leftColor;
-  final Color rightColor;
 
   final VoidCallback onKnown;
   final VoidCallback onLearn;
@@ -33,6 +24,8 @@ class DecisionBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = AppStrings.of(context);
+
     return ValueListenableBuilder<double>(
       valueListenable: dragProgress,
       builder: (context, progress, _) {
@@ -40,22 +33,22 @@ class DecisionBar extends StatelessWidget {
           children: [
             Expanded(
               child: _DecisionButton(
-                label: leftLabel,
+                label: strings.known,
                 icon: AppIcons.arrowLeft,
                 iconFirst: true,
                 highlight: (-progress).clamp(0.0, 1.0),
-                highlightColor: leftColor,
+                highlightColor: AppColors.decisionGreen,
                 onPressed: onKnown,
               ),
             ),
             const _DoubleDivider(),
             Expanded(
               child: _DecisionButton(
-                label: rightLabel,
+                label: strings.learn,
                 icon: AppIcons.arrowRight,
                 iconFirst: false,
                 highlight: progress.clamp(0.0, 1.0),
-                highlightColor: rightColor,
+                highlightColor: AppColors.decisionRed,
                 onPressed: onLearn,
               ),
             ),

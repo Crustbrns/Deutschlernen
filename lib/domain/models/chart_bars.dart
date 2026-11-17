@@ -61,6 +61,13 @@ List<ChartBar> chartBars(
   ];
 }
 
+/// The newest snapshot (today's, written at start-up): the counts right
+/// now. Zero counts before there is any history.
+StatusCounts latestCounts(Map<DateTime, StatusCounts> history) =>
+    history.isEmpty
+    ? const StatusCounts()
+    : history[history.keys.reduce((a, b) => a.isAfter(b) ? a : b)]!;
+
 DateTime _weekStart(DateTime d) => _addDays(d, -(d.weekday - 1));
 
 // Calendar days, not 24-hour steps: survives daylight saving changes.

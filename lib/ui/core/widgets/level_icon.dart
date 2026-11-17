@@ -6,10 +6,11 @@ import 'package:material_ui/material_ui.dart';
 /// assets/icons/levels/LICENSE). Used wherever levels are listed. Empty for
 /// an unknown level.
 class LevelIcon extends StatelessWidget {
-  const LevelIcon(this.level, {super.key, this.size = 30});
+  const LevelIcon(this.level, {super.key});
 
   final String level;
-  final double size;
+
+  static const _size = 30.0;
 
   static const _assets = {
     'A1': 'assets/icons/levels/a1_seedling.svg',
@@ -21,8 +22,8 @@ class LevelIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final asset = _assets[level];
-    if (asset == null) return SizedBox.square(dimension: size);
+    if (asset == null) return const SizedBox.square(dimension: _size);
     // Own colors in both themes: illustrations, not tinted icons.
-    return SvgPicture.asset(asset, width: size, height: size);
+    return SvgPicture.asset(asset, width: _size, height: _size);
   }
 }

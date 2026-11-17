@@ -12,15 +12,10 @@ class AppStrings {
   // A missing key shows its own name, so gaps are easy to spot.
   String _get(String key) => _values[key] ?? key;
 
-  String get newWord => _get('newWord');
-  String get showTranslation => _get('showTranslation');
-  String get plural => _get('plural');
   String get known => _get('known');
   String get learn => _get('learn');
   String get close => _get('close');
   String get back => _get('back');
-  String get menu => _get('menu');
-  String get language => _get('language');
   String get interfaceLanguage => _get('interfaceLanguage');
   String get wordsLanguage => _get('wordsLanguage');
   String get systemLanguage => _get('systemLanguage');
@@ -57,11 +52,9 @@ class AppStrings {
   String get tabCategories => _get('tabCategories');
   String get tabProgress => _get('tabProgress');
   String get tabSettings => _get('tabSettings');
-  String get startLearning => _get('startLearning');
   String get learnNewWords => _get('learnNewWords');
   String get repeatWords => _get('repeatWords');
   String get chooseLevels => _get('chooseLevels');
-  String get comingSoon => _get('comingSoon');
   String get modeShow => _get('modeShow');
   String get modeWrite => _get('modeWrite');
   String get modeChoice => _get('modeChoice');
@@ -77,7 +70,6 @@ class AppStrings {
   String get statsPeriodQuarter => _get('statsPeriodQuarter');
   String get statsPeriodAll => _get('statsPeriodAll');
   String get statusKnown => _get('statusKnown');
-  String get statusLearning => _get('statusLearning');
   String get statsLearning => _get('statsLearning');
   String get statsReview => _get('statsReview');
   String get statsLearned => _get('statsLearned');

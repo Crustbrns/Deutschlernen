@@ -34,9 +34,6 @@ class WordExamples extends StatelessWidget {
           ExampleTile(
             key: ValueKey(example.german),
             example: example,
-            // All collapsed: an open translation would spoil the hidden
-            // word translation above.
-            initiallyExpanded: false,
             onSpeak: onSpeak,
           ),
         // Lookup: the last example ends at the card's bottom edge, so no

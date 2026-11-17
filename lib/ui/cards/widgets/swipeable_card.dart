@@ -3,17 +3,15 @@ import 'package:material_ui/material_ui.dart';
 
 enum SwipeDirection { left, right }
 
-/*Tuning
-
-Springier or calmer snap-back: stiffness and ratio in _snapBackSpring. Lower ratio means more bounce.
-Flight speed limits: the 560 and 1120 ms values in swipe.
-Tilt: 0.3. Button swipe arc: _buttonArc.
-Highlight strength: _highlightDistance (fraction of the screen width that fully lights a button).*/
+// Tuning: snap-back = stiffness and ratio in _snapBackSpring (lower ratio,
+// more bounce); flight time = 560–1120 ms in swipe(); tilt = 0.3 in build();
+// button swipe arc = _buttonArc; highlight = _highlightDistance (share of
+// the screen width that fully lights a button).
 
 /// Lets other widgets (the bottom buttons) swipe the top card programmatically,
 /// and tells them how far the card is being dragged.
 class SwipeController {
-  SwipeableCardState? _state;
+  _SwipeableCardState? _state;
 
   /// How far the top card is dragged sideways, from -1 (fully towards "known")
   /// to 1 (fully towards "learn"). 0 when the card is at rest.
@@ -36,7 +34,6 @@ class SwipeableCard extends StatefulWidget {
   const SwipeableCard({
     super.key,
     required this.child,
-    required this.enabled,
     required this.controller,
     required this.onSwipeStarted,
     required this.onSwiped,
@@ -44,9 +41,6 @@ class SwipeableCard extends StatefulWidget {
   });
 
   final Widget child;
-
-  /// Only the top card of the stack is enabled.
-  final bool enabled;
   final SwipeController controller;
   final VoidCallback onSwipeStarted;
   final ValueChanged<SwipeDirection> onSwiped;
@@ -55,10 +49,10 @@ class SwipeableCard extends StatefulWidget {
   final SwipeDirection? enterFrom;
 
   @override
-  State<SwipeableCard> createState() => SwipeableCardState();
+  State<SwipeableCard> createState() => _SwipeableCardState();
 }
 
-class SwipeableCardState extends State<SwipeableCard>
+class _SwipeableCardState extends State<SwipeableCard>
     with SingleTickerProviderStateMixin {
   /// Where the card is, in logical pixels. Dragging just sets the value,
   /// so no setState is needed.
@@ -95,20 +89,20 @@ class SwipeableCardState extends State<SwipeableCard>
   void initState() {
     super.initState();
     _offset.addListener(_publishProgress);
-    _attachIfEnabled();
+    widget.controller._state = this;
   }
 
   @override
   void didUpdateWidget(SwipeableCard oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _attachIfEnabled();
+    widget.controller._state = this;
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final from = widget.enterFrom;
-    if (!_enterHandled && from != null && widget.enabled) {
+    if (!_enterHandled && from != null) {
       _enterHandled = true;
       _isEntering = true;
       final width = MediaQuery.sizeOf(context).width;
@@ -132,16 +126,12 @@ class SwipeableCardState extends State<SwipeableCard>
     super.dispose();
   }
 
-  void _attachIfEnabled() {
-    if (widget.enabled) widget.controller._state = this;
-  }
-
   void _onAnimationTick() {
     _offset.value = Offset.lerp(_from, _to, _controller.value)!;
   }
 
   void _publishProgress() {
-    if (!widget.enabled || _isEntering) return;
+    if (_isEntering) return;
     final width = MediaQuery.sizeOf(context).width;
     widget.controller.reveal.value = (_offset.value.dx.abs() / width)
         .clamp(0.0, 1.0)
@@ -221,7 +211,7 @@ class SwipeableCardState extends State<SwipeableCard>
   /// [heading] is the direction of flight; the card leaves along it until it
   /// is past the screen edge. Buttons pass none and get a slight upward arc.
   void swipe(SwipeDirection direction, {Offset? heading, double speed = 0}) {
-    if (_isSwiping || !widget.enabled) return;
+    if (_isSwiping) return;
     _isSwiping = true;
     widget.onSwipeStarted();
 
@@ -266,12 +256,10 @@ class SwipeableCardState extends State<SwipeableCard>
     // Pan instead of horizontal drag, so the card follows the finger in
     // every direction. A scrollable child still wins vertical drags.
     return GestureDetector(
-      onPanStart: widget.enabled ? _onDragStart : null,
-      onPanUpdate: widget.enabled ? _onDragUpdate : null,
-      onPanEnd: widget.enabled ? _onDragEnd : null,
-      onPanCancel: widget.enabled && !_isSwiping
-          ? () => _snapBack(Offset.zero)
-          : null,
+      onPanStart: _onDragStart,
+      onPanUpdate: _onDragUpdate,
+      onPanEnd: _onDragEnd,
+      onPanCancel: _isSwiping ? null : () => _snapBack(Offset.zero),
       child: ValueListenableBuilder<Offset>(
         valueListenable: _offset,
         // Painted once, then only moved around while swiping.
