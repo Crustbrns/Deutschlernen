@@ -11,9 +11,11 @@ import 'package:deutschlernen/data/services/speech_service.dart';
 import 'package:deutschlernen/domain/models/app_language.dart';
 import 'package:deutschlernen/domain/models/card_decision.dart';
 import 'package:deutschlernen/domain/models/card_session.dart';
+import 'package:deutschlernen/domain/models/chart_bars.dart';
 import 'package:deutschlernen/domain/models/day_snapshot.dart';
 import 'package:deutschlernen/domain/models/progress_book.dart';
 import 'package:deutschlernen/domain/models/reminder_plan.dart';
+import 'package:deutschlernen/domain/models/study_streak.dart';
 import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/domain/models/word_status.dart';
 import 'package:deutschlernen/ui/core/view_models/language_view_model.dart';
@@ -95,8 +97,18 @@ class LearningViewModel extends ChangeNotifier {
   /// Every word's translation: wrong options for the "choose" mode.
   List<String> get translations => _translations;
   Set<String> get learnLevels => _learnLevels;
-  Map<DateTime, DaySnapshot> get statusHistory =>
-      Map.unmodifiable(_statusHistory);
+
+  /// Progress chart for [period]: its bars and their totals per layer.
+  ({List<ChartBar> bars, List<int> totals}) chartFor(ChartPeriod period) {
+    final bars = chartBars(period, _statusHistory, DateTime.now());
+    return (bars: bars, totals: periodTotals(bars));
+  }
+
+  /// Words in each status right now, per chart layer.
+  List<int> get currentTotals => latestCounts(_statusHistory).stack;
+
+  /// The daily streak, as of now.
+  StudyStreak get streak => StudyStreak.of(_statusHistory, DateTime.now());
   bool get showTranscription => _settingsViewModel.showTranscription;
 
   /// Learning status and next review of a word, for the word lists.

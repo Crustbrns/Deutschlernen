@@ -14,6 +14,7 @@ import 'package:deutschlernen/ui/settings/widgets/settings_screen.dart';
 import 'package:deutschlernen/ui/progress/widgets/progress_screen.dart';
 import 'package:deutschlernen/ui/categories/widgets/categories_screen.dart';
 import 'package:deutschlernen/ui/categories/widgets/word_detail_screen.dart';
+import 'package:deutschlernen/ui/core/widgets/readable_width.dart';
 
 /// The app's root screen: four tabs with the bottom bar.
 /// The cards screen is not a tab. It opens on top of the shell, full screen
@@ -114,53 +115,61 @@ class _HomeShellState extends State<HomeShell> {
           extendBody: true,
           // IndexedStack keeps every tab alive, so e.g. the selected
           // dictionary is not lost when switching tabs.
-          body: IndexedStack(
-            index: _tab.index,
-            children: [
-              LearnScreen(
-                selectedLevelCount: _vm.learnLevels.length,
-                newWordsLeft: _vm.newWordsLeft,
-                dueCount: _vm.dueCount,
-                learnedToday: _vm.learnedToday,
-                dailyGoal: LearningViewModel.dailyGoal,
-                onChooseLevels: () => showLevelSheet(
-                  context: context,
-                  selected: _vm.learnLevels,
-                  wordCounts: {
-                    for (final MapEntry(key: level, value: words)
-                        in _vm.wordsByLevel.entries)
-                      level: words.length,
-                  },
-                  onChanged: _vm.setLearnLevels,
+          body: ReadableWidth(
+            child: IndexedStack(
+              index: _tab.index,
+              children: [
+                LearnScreen(
+                  selectedLevelCount: _vm.learnLevels.length,
+                  newWordsLeft: _vm.newWordsLeft,
+                  dueCount: _vm.dueCount,
+                  learnedToday: _vm.learnedToday,
+                  dailyGoal: LearningViewModel.dailyGoal,
+                  onChooseLevels: () => showLevelSheet(
+                    context: context,
+                    selected: _vm.learnLevels,
+                    wordCounts: {
+                      for (final MapEntry(key: level, value: words)
+                          in _vm.wordsByLevel.entries)
+                        level: words.length,
+                    },
+                    onChanged: _vm.setLearnLevels,
+                  ),
+                  onLearnNewWords: () => _startSession(SessionMode.newWords),
+                  onReview: () => _startSession(SessionMode.review),
                 ),
-                onLearnNewWords: () => _startSession(SessionMode.newWords),
-                onReview: () => _startSession(SessionMode.review),
-              ),
-              CategoriesScreen(
-                words: _vm.words,
-                wordsByLevel: _vm.wordsByLevel,
-                seenShare: _vm.seenShare,
-                onWordSelected: _openWord,
-                onSearchResultSelected: (word) {
-                  // Count first, so the card already shows this lookup.
-                  _vm.recordLookup(word.id);
-                  _openWord(word);
-                },
-                onSpeak: _vm.speak,
-                stateOf: _vm.stateOf,
-                progressChanges: _vm,
-              ),
-              ProgressScreen(history: _vm.statusHistory),
-              SettingsScreen(
-                settings: widget.settingsViewModel,
-                languages: _lang,
-                onResetAllProgress: _vm.resetAllProgress,
-              ),
-            ],
+                CategoriesScreen(
+                  words: _vm.words,
+                  wordsByLevel: _vm.wordsByLevel,
+                  seenShare: _vm.seenShare,
+                  onWordSelected: _openWord,
+                  onSearchResultSelected: (word) {
+                    // Count first, so the card already shows this lookup.
+                    _vm.recordLookup(word.id);
+                    _openWord(word);
+                  },
+                  onSpeak: _vm.speak,
+                  stateOf: _vm.stateOf,
+                  progressChanges: _vm,
+                ),
+                ProgressScreen(
+                  streak: _vm.streak,
+                  currentTotals: _vm.currentTotals,
+                  chartFor: _vm.chartFor,
+                ),
+                SettingsScreen(
+                  settings: widget.settingsViewModel,
+                  languages: _lang,
+                  onResetAllProgress: _vm.resetAllProgress,
+                ),
+              ],
+            ),
           ),
-          bottomNavigationBar: AppBottomBar(
-            selected: _tab,
-            onSelected: (tab) => setState(() => _tab = tab),
+          bottomNavigationBar: ReadableWidth(
+            child: AppBottomBar(
+              selected: _tab,
+              onSelected: (tab) => setState(() => _tab = tab),
+            ),
           ),
         );
       },

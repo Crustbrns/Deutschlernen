@@ -5,6 +5,9 @@ abstract final class AppSizes {
   /// Horizontal inset of the card content from the card edge.
   static const cardInset = 24.0;
 
+  /// Widest a tab or a list gets on big screens (iPad), with its gutters.
+  static const maxContentWidth = 640.0;
+
   /// Bottom padding of a scrolling screen: 24 above the bottom inset. In the
   /// shell that inset includes the floating bar (Scaffold.extendBody), so
   /// the last items stay reachable above it.
