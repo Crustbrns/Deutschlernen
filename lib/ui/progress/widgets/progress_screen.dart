@@ -1,5 +1,4 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:deutschlernen/domain/models/day_snapshot.dart';
 import 'package:deutschlernen/domain/models/study_streak.dart';
 import 'package:deutschlernen/domain/models/word_status.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
@@ -16,10 +15,21 @@ import 'package:deutschlernen/ui/progress/widgets/streak_card.dart';
 /// and under it the totals per status, for the period and for all time (also
 /// the chart's legend).
 class ProgressScreen extends StatefulWidget {
-  const ProgressScreen({super.key, required this.history});
+  const ProgressScreen({
+    super.key,
+    required this.streak,
+    required this.currentTotals,
+    required this.chartFor,
+  });
 
-  /// Daily snapshots, keyed by local midnight.
-  final Map<DateTime, DaySnapshot> history;
+  final StudyStreak streak;
+
+  /// Words in each status now, per chart layer ("Всего").
+  final List<int> currentTotals;
+
+  /// The chart of a period: its bars and their totals per layer.
+  final ({List<ChartBar> bars, List<int> totals}) Function(ChartPeriod)
+  chartFor;
 
   @override
   State<ProgressScreen> createState() => _ProgressScreenState();
@@ -32,11 +42,10 @@ class _ProgressScreenState extends State<ProgressScreen> {
   Widget build(BuildContext context) {
     final strings = AppStrings.of(context);
     final palette = AppPalette.of(context);
-    final bars = chartBars(_period, widget.history, DateTime.now());
+    final (:bars, :totals) = widget.chartFor(_period);
     final isEmpty = bars.every((b) => b.layers?.every((v) => v == 0) ?? true);
     // "All time" would show the same numbers twice: one column then.
-    final periodTotal = _period == ChartPeriod.all ? null : periodTotals(bars);
-    final total = latestCounts(widget.history).stack;
+    final periodTotal = _period == ChartPeriod.all ? null : totals;
     final periodLabels = {
       ChartPeriod.week: strings.statsPeriodWeek,
       ChartPeriod.month: strings.statsPeriodMonth,
@@ -53,7 +62,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
     return TabPage(
       title: strings.tabProgress,
       children: [
-        StreakCard(streak: StudyStreak.of(widget.history, DateTime.now())),
+        StreakCard(streak: widget.streak),
         const SizedBox(height: 12),
         _PeriodSwitch(
           selected: _period,
@@ -83,7 +92,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
           labels: labels,
           periodLabel: periodTotal == null ? null : periodLabels[_period],
           period: periodTotal,
-          total: total,
+          total: widget.currentTotals,
         ),
       ],
     );
