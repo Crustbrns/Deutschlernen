@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/ui/cards/widgets/example_tile.dart';
+import 'package:deutschlernen/ui/cards/widgets/expandable_tile.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 
 /// The definition and the examples of the word card, full card width so the
@@ -41,7 +42,9 @@ class WordExamples extends StatelessWidget {
         if (!lookup) ...[
           // Closing line under the last row, same as the rows' top borders.
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSizes.cardInset),
+            padding: const EdgeInsets.symmetric(
+              horizontal: ExpandableTile.inset,
+            ),
             child: Divider(
               height: 1,
               thickness: 1,
