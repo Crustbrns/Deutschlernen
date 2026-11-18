@@ -54,10 +54,10 @@ class WordTitle extends StatelessWidget {
                       // Theme font, like the rest of the UI.
                       style: TextStyle(
                         fontSize: 32 * scale,
-                        fontWeight: FontWeight.w600,
-                        // Condensed: big text looks loose.
-                        letterSpacing: -0.6,
-                        height: 1.15,
+                        fontWeight: FontWeight.w700,
+                        // Condensed: big bold text looks loose.
+                        letterSpacing: -0.8,
+                        height: 1.1,
                       ),
                       children: [
                         TextSpan(

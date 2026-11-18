@@ -14,8 +14,8 @@ class Choice<T> {
 }
 
 /// Bottom sheet to pick one of [choices], built like the level sheet: title,
-/// then one GroupedCard on the screen background. The chosen one is blue
-/// with a check; a tap picks and closes. Used for the language and theme.
+/// then one GroupedCard on the screen background. The chosen one is in the
+/// accent color with a check; a tap picks and closes. Used for the language and theme.
 Future<void> showChoiceSheet<T>({
   required BuildContext context,
   required String title,
@@ -150,7 +150,8 @@ class SheetDoneButton extends StatelessWidget {
   }
 }
 
-/// The chosen one is blue with a check, the others have an empty circle.
+/// The chosen one is in the accent color with a check, the others have an
+/// empty circle.
 class ChoiceRow<T> extends StatelessWidget {
   const ChoiceRow({
     super.key,
@@ -169,14 +170,14 @@ class ChoiceRow<T> extends StatelessWidget {
       compact: true,
       title: choice.label,
       subtitle: choice.subtitle,
-      titleColor: isSelected ? AppColors.softBlue : null,
+      titleColor: isSelected ? AppPalette.of(context).accentText : null,
       trailing: SelectionMark(isSelected: isSelected),
       onTap: onTap,
     );
   }
 }
 
-/// Right end of a pickable row: a blue check when chosen, else an empty
+/// Right end of a pickable row: an accent check when chosen, else an empty
 /// circle.
 class SelectionMark extends StatelessWidget {
   const SelectionMark({super.key, required this.isSelected});
@@ -186,7 +187,7 @@ class SelectionMark extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return isSelected
-        ? const Icon(AppIcons.checkCircle, color: AppColors.softBlue)
+        ? Icon(AppIcons.checkCircle, color: AppPalette.of(context).accentText)
         : Icon(
             AppIcons.circle,
             color: Theme.of(context).colorScheme.onSurfaceVariant,

@@ -128,8 +128,8 @@ class WordTranslation extends StatelessWidget {
           // Theme font, like the rest of the UI.
           style: TextStyle(
             fontSize: 32 * scale,
-            fontWeight: FontWeight.w600,
-            letterSpacing: -0.6,
+            fontWeight: FontWeight.w700,
+            letterSpacing: -0.8,
           ),
         ),
       ),

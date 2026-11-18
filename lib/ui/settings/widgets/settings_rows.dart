@@ -60,7 +60,7 @@ class SettingsSwitchRow extends StatelessWidget {
   }
 }
 
-/// Opens a choice sheet (language, theme); the current choice is the blue
+/// Opens a choice sheet (language, theme); the current choice is the accent
 /// value on the right (no chevron: navigation rows don't have one).
 class SettingsValueRow extends StatelessWidget {
   const SettingsValueRow({
@@ -81,7 +81,8 @@ class SettingsValueRow extends StatelessWidget {
       title: title,
       trailing: Text(
         value,
-        style: MenuRow.hintStyle(context).copyWith(color: AppColors.softBlue),
+        style: MenuRow.hintStyle(context)
+            .copyWith(color: AppPalette.of(context).accentText),
       ),
       onTap: onTap,
     );

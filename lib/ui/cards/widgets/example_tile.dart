@@ -1,22 +1,35 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/ui/core/app_icons.dart';
+import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/domain/models/example_sentence.dart';
 import 'package:deutschlernen/ui/cards/widgets/expandable_tile.dart';
 import 'package:deutschlernen/ui/core/highlight.dart';
 import 'package:deutschlernen/ui/core/widgets/play_button.dart';
 
-/// Base text styles of the rows: white regular text, white bold word.
-({TextStyle base, TextStyle bold}) _tileStyles(BuildContext context) {
+/// Text styles of the rows. German: white, translations under it: gray.
+/// The marked word is yellow in both (a marker in the light theme).
+({TextStyle base, TextStyle mark, TextStyle detail}) _tileStyles(
+  BuildContext context,
+) {
   final colors = Theme.of(context).colorScheme;
+  final palette = AppPalette.of(context);
   final base = TextStyle(
     fontSize: 16, // 17 wrapped long German sentences into too many lines
     fontWeight: FontWeight.w400,
     height: 1.2, // lines close together
     letterSpacing: -0.2, // condensed like the rest of the card
-    // As white as the highlighted word; only weight sets that one apart.
     color: colors.onSurface,
   );
-  return (base: base, bold: base.copyWith(fontWeight: FontWeight.w800));
+  return (
+    base: base,
+    // A span style: only overrides weight and colors of the line's style.
+    mark: TextStyle(
+      fontWeight: FontWeight.w700,
+      color: palette.markText,
+      backgroundColor: palette.markFill,
+    ),
+    detail: base.copyWith(color: palette.mutedText),
+  );
 }
 
 /// German explanation of the word. Expanded shows its translation under it.
@@ -53,7 +66,7 @@ class DefinitionTile extends StatelessWidget {
       title: Text(definition, style: styles.base),
       details: translation == null
           ? null
-          : Text(translation, style: styles.base),
+          : Text(translation, style: styles.detail),
     );
   }
 }
@@ -76,13 +89,13 @@ class ExampleTile extends StatelessWidget {
       title: Text.rich(
         TextSpan(
           style: styles.base,
-          children: markedSpans(example.german, styles.bold),
+          children: markedSpans(example.german, styles.mark),
         ),
       ),
       details: Text.rich(
         TextSpan(
-          style: styles.base,
-          children: markedSpans(example.translation, styles.bold),
+          style: styles.detail,
+          children: markedSpans(example.translation, styles.mark),
         ),
       ),
     );

@@ -72,8 +72,8 @@ Future<void> showLanguageSheet({
   );
 }
 
-/// Card with a big blue greeting and a gray line under it, both in the
-/// chosen language; crossfades when the choice changes.
+/// Card with a big accent-colored greeting and a gray line under it, both in
+/// the chosen language; crossfades when the choice changes.
 class _Preview extends StatelessWidget {
   const _Preview({required this.hello, required this.note});
 
@@ -100,11 +100,11 @@ class _Preview extends StatelessWidget {
               Text(
                 hello,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 40,
                   fontWeight: FontWeight.w700,
                   letterSpacing: -0.8,
-                  color: AppColors.softBlue,
+                  color: AppPalette.of(context).accentText,
                 ),
               ),
               const SizedBox(height: 6),

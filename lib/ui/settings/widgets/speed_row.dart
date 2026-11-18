@@ -42,7 +42,7 @@ class _SpeedRowState extends State<SpeedRow> {
         SliderTheme(
           data: SliderTheme.of(context).copyWith(
             trackHeight: 6,
-            activeTrackColor: AppColors.softBlue,
+            activeTrackColor: AppColors.yellow,
             inactiveTrackColor: palette.sliderTrack,
             // No ripple halo: the white pill thumb is enough feedback.
             overlayColor: Colors.transparent,

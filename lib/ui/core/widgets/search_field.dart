@@ -7,7 +7,7 @@ import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/round_icon_button.dart';
 
 /// Pill-shaped search field, iOS-style. Idle: no outline, full width.
-/// Active (focused or holding text): blue outline while focused, and the
+/// Active (focused or holding text): gray outline while focused, and the
 /// field shrinks to make room for a round close button on its right.
 /// The button clears the text, hides the keyboard and returns the idle look.
 ///

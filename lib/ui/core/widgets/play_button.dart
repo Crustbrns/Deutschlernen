@@ -2,7 +2,8 @@ import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 
-/// Blue play button for German audio, used in example rows and search results.
+/// Play button for German audio: accent-colored in search results, white in
+/// the card's example rows (on the card only the main action is colored).
 class PlayButton extends StatelessWidget {
   const PlayButton({super.key, required this.onPressed}) : _rowEnd = false;
 
@@ -23,7 +24,9 @@ class PlayButton extends StatelessWidget {
       onPressed: onPressed,
       icon: const Icon(AppIcons.play), // thin rounded triangle
       iconSize: _size,
-      color: AppColors.accentBlue,
+      color: _rowEnd
+          ? Theme.of(context).colorScheme.onSurface
+          : AppPalette.of(context).accentText,
       style: _rowEnd
           ? IconButton.styleFrom(
               fixedSize: const Size.square(46),
