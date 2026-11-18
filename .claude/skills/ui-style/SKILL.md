@@ -139,14 +139,24 @@ Separate blocks are only for different kinds of content (e.g. a title, then a li
   `AppColors.decisionGreen` for the "good" side,
   `decisionRed` for the other. New word: left "Уже знаю" green, right "Начать учить" red.
   Pink word / review: left "Не помню" red, right "Помню" green.
+- **Yellow card style** (cards screen and the lookup card, from a reference the user liked:
+  yellow on black): one accent `AppColors.yellow` `#FFC72C`, content on it `AppColors.onYellow`
+  (black, both themes). Yellow = the card's main action (`RevealButton`, "Проверить"), the
+  selected answer mode, the write field's focus border, the session progress bar and the
+  highlighted word in examples. Everything else on the card stays neutral (example play
+  buttons white); red / green decision colors and article colors are unchanged. Outside the
+  card the accent is still blue — if the yellow sticks, move it there too (one accent per app).
 - **Answer controls on a learning card**: new-words session — only `RevealButton` (64×64,
-  radius 16, no outline, fill `subtleButton` darkened 10%, eye icon, no label, centered); a tap
+  radius 16, no outline, fill `AppColors.yellow`, black eye icon, no label, centered); a tap
   replaces it with the translation (no way back); review session — the three-button
   `AnswerModeBar` (Show / Write / Choose). `WordCard.answerModes` switches them.
 - **Selected / active state**: fill `AppColors.accentBlue` α 0.14, border `AppColors.accentBlue`,
-  icon and text `AppColors.accentBlue` (see `_ModeButton` in `answer_mode_bar.dart`).
+  icon and text `AppColors.accentBlue` (period switch on Progress). On the card (`_ModeButton` in
+  `answer_mode_bar.dart`): solid `AppColors.yellow` fill, black icon and text — yellow text on
+  white would be unreadable.
 - **Primary action** (one per screen at most): `FilledButton`, radius 14.
-- **Audio**: `PlayButton` (`lib/ui/core/widgets/play_button.dart`) in rows — blue, outlined.
+- **Audio**: `PlayButton` (`lib/ui/core/widgets/play_button.dart`) — blue in search results,
+  `onSurface` (white) in the card's example rows (`PlayButton.rowEnd`).
   On the word card the German word and its plural are left-aligned with a speaker button
   (`TranscriptionButton` in `transcription_button.dart`, without text: rounded square, radius 12) on the right of the word,
   8px after it; the row reaches 12px into the card's right inset (`OverflowBox`), so long words
@@ -238,11 +248,16 @@ above the Categories search: `headlineSmall`, letter spacing -0.5, 24 from the s
 - Secondary labels (level, hints, captions): `palette.mutedText`.
 - All text uses the theme font — the word card too (no decorative fonts; Fraunces/Lora were
   dropped: the user found the hooked letters too fancy). Word card: "der Hund (die Hunde)" as one
-  left-aligned text, 32 w600, letter spacing -0.6 — the plural continues the line in brackets,
-  same style and color (only the article is colored); long ones wrap. Translation 32 w600,
-  -0.6, left-aligned. Examples and the
-  definition (`example_tile.dart`): theme font 16 (was 17: long sentences wrapped too much), `onSurface` (white), regular; the highlighted
-  word is the same color, extra bold (w800) — weight alone sets it apart. Expand chevron: 11px
+  left-aligned text, 32 w700, letter spacing -0.8, line height 1.1 — the plural continues the
+  line in brackets, same style and color (only the article is colored); long ones wrap.
+  Translation 32 w700, -0.8, left-aligned (bolder for the yellow card style; the user kept
+  the system font instead of a geometric one). Examples and the
+  definition (`example_tile.dart`): theme font 16 (was 17: long sentences wrapped too much),
+  `onSurface` (white), regular; the highlighted word w700 in `palette.markText` on
+  `palette.markFill` — dark: yellow text, no fill; light: dark text on a yellow marker (α 0.6;
+  user's choice, yellow text on white is 1.6:1). Opened translations under them are
+  `mutedText` gray with their marked word `onSurface` w700: the German line stays in focus.
+  Expand chevron: 11px
   `AppIcons.caretDownBold` (Phosphor Bold, `assets/fonts/PhosphorBold.ttf`), 8px gap to the text.
 - Articles are colored by gender with `AppColors.forArticle` on the word card. The plural
   article is always `die` (`Word.pluralWithArticle`).

@@ -28,6 +28,8 @@ class AppPalette extends ThemeExtension<AppPalette> {
     required this.secondaryText,
     required this.softHint,
     required this.levelPercent,
+    required this.markText,
+    required this.markFill,
   });
 
   final Color background; // behind the cards
@@ -48,6 +50,12 @@ class AppPalette extends ThemeExtension<AppPalette> {
   /// 50% lighter, like the count.
   final Color levelPercent;
 
+  /// Highlighted word in the card's examples. Dark: yellow text, no fill;
+  /// light: yellow text on white is unreadable (1.6:1), so a yellow marker
+  /// under dark text (user's choice).
+  final Color markText;
+  final Color markFill;
+
   static const dark = AppPalette(
     background: Color(0xFF0B0B0D),
     card: Color(0xFF151517),
@@ -57,6 +65,8 @@ class AppPalette extends ThemeExtension<AppPalette> {
     secondaryText: Color(0xFF8C8C8C),
     softHint: Color(0xFF696D72),
     levelPercent: Color(0xFFB6B7BA),
+    markText: AppColors.yellow,
+    markFill: Color(0x00000000),
   );
 
   static const light = AppPalette(
@@ -68,6 +78,8 @@ class AppPalette extends ThemeExtension<AppPalette> {
     secondaryText: Color(0xFFB5B5B8),
     softHint: Color(0xFFB5B5B8),
     levelPercent: Color(0xFF9C9C9E),
+    markText: Color(0xFF080808), // the light theme's onSurface
+    markFill: Color(0x99FFC72C), // AppColors.yellow at α 0.6
   );
 
   static AppPalette of(BuildContext context) =>
@@ -83,6 +95,8 @@ class AppPalette extends ThemeExtension<AppPalette> {
     Color? secondaryText,
     Color? softHint,
     Color? levelPercent,
+    Color? markText,
+    Color? markFill,
   }) => AppPalette(
     background: background ?? this.background,
     card: card ?? this.card,
@@ -92,6 +106,8 @@ class AppPalette extends ThemeExtension<AppPalette> {
     secondaryText: secondaryText ?? this.secondaryText,
     softHint: softHint ?? this.softHint,
     levelPercent: levelPercent ?? this.levelPercent,
+    markText: markText ?? this.markText,
+    markFill: markFill ?? this.markFill,
   );
 
   @override
@@ -106,6 +122,8 @@ class AppPalette extends ThemeExtension<AppPalette> {
       secondaryText: Color.lerp(secondaryText, other.secondaryText, t)!,
       softHint: Color.lerp(softHint, other.softHint, t)!,
       levelPercent: Color.lerp(levelPercent, other.levelPercent, t)!,
+      markText: Color.lerp(markText, other.markText, t)!,
+      markFill: Color.lerp(markFill, other.markFill, t)!,
     );
   }
 }
@@ -152,6 +170,11 @@ abstract final class AppColors {
   // Settings controls (switch on, slider, chosen language): deeper and
   // softer than accentBlue (iOS blue).
   static const softBlue = Color(0xFF0A84FF);
+  // Accent of the learning card (yellow on black): the main action, the
+  // selected answer mode, the highlighted word, the session progress.
+  static const yellow = Color(0xFFFFC72C);
+  // Text and icons on a yellow fill: black in both themes.
+  static const onYellow = Color(0xFF000000);
   static const switchThumbShadow = Color(0x2E000000); // black, α 0.18
 
   // Icons of the learn menu rows (categories / new words / repeat).

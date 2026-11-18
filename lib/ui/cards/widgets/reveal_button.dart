@@ -14,18 +14,16 @@ class RevealButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
-
     return Material(
-      // Slightly darker than the other neutral buttons; no outline.
-      color: AppColors.darken(AppPalette.of(context).subtleButton, 0.1),
+      // The card's main action: the yellow accent, no outline.
+      color: AppColors.yellow,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onPressed,
         child: SizedBox.square(
           dimension: size,
-          child: Icon(AppIcons.eye, size: 28, color: colors.onSurfaceVariant),
+          child: Icon(AppIcons.eye, size: 28, color: AppColors.onYellow),
         ),
       ),
     );

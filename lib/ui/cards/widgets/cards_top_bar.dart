@@ -72,7 +72,7 @@ class _ProgressBar extends StatelessWidget {
             builder: (context, value, _) => FractionallySizedBox(
               alignment: Alignment.centerLeft,
               widthFactor: value.clamp(0.0, 1.0).toDouble(),
-              child: ColoredBox(color: colors.onSurface),
+              child: const ColoredBox(color: AppColors.yellow),
             ),
           ),
         ),
