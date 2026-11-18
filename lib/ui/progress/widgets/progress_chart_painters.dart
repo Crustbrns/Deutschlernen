@@ -54,6 +54,8 @@ class _BarsPainter extends CustomPainter {
   _BarsPainter({
     required this.bars,
     required this.slot,
+    required this.barWidth,
+    required this.minSegment,
     required this.scale,
     required this.segmentColors,
     required this.labels,
@@ -63,6 +65,8 @@ class _BarsPainter extends CustomPainter {
 
   final List<ChartBar> bars;
   final double slot;
+  final double barWidth;
+  final double minSegment; // see ProgressChart.segmentHeight
   final double scale; // pixels per word, see ProgressChart._layout
   final List<Color> segmentColors;
   final List<String> labels; // "16 ноя", one per bar
@@ -75,15 +79,14 @@ class _BarsPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final barWidth = math.min(slot * 0.62, 44.0);
-
     // Segment edges of each bar: [(bottom, top)] per status, in pixels.
     List<(double, double)>? edges(ChartBar bar) {
       final layers = bar.layers;
       if (layers == null || layers.every((v) => v == 0)) return null;
       var y = ProgressChart._plotHeight;
       return [
-        for (final v in layers) (y, y -= ProgressChart.segmentHeight(v, scale)),
+        for (final v in layers)
+          (y, y -= ProgressChart.segmentHeight(v, scale, minSegment)),
       ];
     }
 
@@ -133,7 +136,8 @@ class _BarsPainter extends CustomPainter {
     // Dates: one line ("16 ноя") if every label fits its column, else all
     // in two (day over month), so the row looks the same throughout.
     TextPainter dateLabel(String text) => TextPainter(
-      text: TextSpan(text: text, style: labelStyle),
+      // Tighter lines: day and month read as one label.
+      text: TextSpan(text: text, style: labelStyle.copyWith(height: 1.05)),
       textAlign: TextAlign.center,
       textDirection: TextDirection.ltr,
     )..layout();
@@ -146,13 +150,26 @@ class _BarsPainter extends CustomPainter {
       final left = slot * i + (slot - barWidth) / 2;
       final e = all[i];
       if (e != null) {
+        var isLowest = true;
         for (var s = 0; s < e.length; s++) {
-          final (bottom, segTop) = _inset(e[s]);
+          var (bottom, segTop) = _inset(e[s]);
           if (bottom <= segTop) continue; // empty status
+          // The lowest segment stands on the axis: no gap, square bottom.
+          if (isLowest) bottom = e[s].$1;
           canvas.drawRRect(
-            RRect.fromLTRBR(left, segTop, left + barWidth, bottom, _radius),
+            RRect.fromLTRBAndCorners(
+              left,
+              segTop,
+              left + barWidth,
+              bottom,
+              topLeft: _radius,
+              topRight: _radius,
+              bottomLeft: isLowest ? Radius.zero : _radius,
+              bottomRight: isLowest ? Radius.zero : _radius,
+            ),
             Paint()..color = segmentColors[s],
           );
+          isLowest = false;
           _paintCount(
             canvas,
             bars[i].layers![s],
@@ -167,7 +184,11 @@ class _BarsPainter extends CustomPainter {
         Offset(
           slot * i + (slot - tp.width) / 2,
           ProgressChart._plotHeight +
-              (ProgressChart._labelHeight - tp.height) / 2,
+              ProgressChart._labelGap +
+              (ProgressChart._labelHeight -
+                      ProgressChart._labelGap -
+                      tp.height) /
+                  2,
         ),
       );
     }
@@ -200,6 +221,8 @@ class _BarsPainter extends CustomPainter {
   bool shouldRepaint(_BarsPainter old) =>
       old.bars != bars ||
       old.slot != slot ||
+      old.barWidth != barWidth ||
+      old.minSegment != minSegment ||
       old.scale != scale ||
       !listEquals(old.labels, labels) ||
       old.labelStyle != labelStyle ||
