@@ -13,10 +13,17 @@ class StreakCard extends StatelessWidget {
 
   final StudyStreak streak;
 
+  /// "5 дней подряд"; the goal card's "12 из 100 слов" looks the same.
+  static TextStyle titleStyle(BuildContext context) => TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w700,
+    letterSpacing: -0.5,
+    color: Theme.of(context).colorScheme.onSurface,
+  );
+
   @override
   Widget build(BuildContext context) {
     final strings = AppStrings.of(context);
-    final colors = Theme.of(context).colorScheme;
     final palette = AppPalette.of(context);
     final days = strings.weekdaysShort;
     final week = streak.week;
@@ -43,12 +50,7 @@ class StreakCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   strings.streakDays(streak.current),
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: -0.5,
-                    color: colors.onSurface,
-                  ),
+                  style: titleStyle(context),
                 ),
               ),
               Text(
