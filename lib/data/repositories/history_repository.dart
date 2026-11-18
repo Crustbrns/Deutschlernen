@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:deutschlernen/data/services/stored_map.dart';
 import 'package:deutschlernen/domain/models/day_snapshot.dart';
 
 /// Daily snapshots of the status counts and reviews, for the progress chart.
@@ -11,18 +12,16 @@ class HistoryRepository {
 
   final _prefs = SharedPreferencesAsync();
 
-  /// Keys are local dates at midnight.
-  Future<Map<DateTime, DaySnapshot>> load() async {
-    final raw = await _prefs.getString(_key);
-    if (raw == null) return {};
-    final decoded = jsonDecode(raw) as Map<String, dynamic>;
-    return decoded.map(
-      (day, json) => MapEntry(
-        DateTime.parse(day),
-        DaySnapshot.fromJson(json as Map<String, dynamic>),
-      ),
-    );
-  }
+  /// Keys are local dates at midnight. Unreadable days are skipped (see
+  /// [readStoredMap]).
+  Future<Map<DateTime, DaySnapshot>> load() => readStoredMap(
+    _prefs,
+    _key,
+    (day, json) => MapEntry(
+      DateTime.parse(day),
+      DaySnapshot.fromJson(json as Map<String, dynamic>),
+    ),
+  );
 
   Future<void> save(Map<DateTime, DaySnapshot> history) => _prefs.setString(
     _key,

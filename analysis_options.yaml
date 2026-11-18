@@ -10,6 +10,11 @@
 include: package:flutter_lints/flutter.yaml
 
 analyzer:
+  # No silent dynamic: casts, inferred types and generics must be explicit.
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
   exclude:
     - build/**
     - android/**
