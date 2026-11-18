@@ -17,7 +17,7 @@ flutter test                         # all tests
 flutter test test/domain/card_session_test.dart --plain-name "<test name>"   # single test
 ```
 
-`test/domain/` covers the session, progress and reminder rules; `test/ui/` has widget tests (search field, lazy word list).
+`test/domain/` covers the session, progress, chart, streak and reminder rules and that saved models read back unchanged; `test/data/` the safe reading of saved data; `test/content/` checks the asset files (same UI keys and plural forms in every language, every word translated everywhere); `test/ui/` has widget tests (search field, lazy word list).
 
 Run `dart format` only on files you changed — formatting whole folders rewrites unrelated files and pollutes the diff.
 
@@ -39,6 +39,7 @@ Layered, following Flutter's recommended app architecture: `lib/data` (services 
 - **`WordCard`** (`lib/ui/cards/widgets/word_card.dart`) is shared: the learning mode (answer modes Show/Write/Choose, swipes, decision bar) and `lookup: true` for the compact card opened from the Categories search (translation shown, close button via `onClose`). Change one mode without breaking the other. Its parts are separate files next to it: `WordCardHeader`, `WordTitle`, `WordAnswer` (holds the open answer mode), `WordExamples`.
 - **Categories search → card** uses a Hero (`WordHero` in `lib/ui/categories/widgets/word_hero.dart`) with a custom shuttle and a non-opaque `PageRouteBuilder` (`WordDetailScreen.route`) with a solid black barrier: the list is hidden behind the open card but stays painted for the hero flight back.
 - Styling constants (colors, fonts, sizes) live in `lib/ui/core/app_style.dart`. There is a dark and a light theme (`AppTheme`): theme-dependent colors come from `AppPalette.of(context)` (a `ThemeExtension`), fixed accents from `AppColors`. All text uses the theme font; `assets/fonts/` holds only the Phosphor icon font.
+- **Saved data** lives in shared_preferences. JSON maps (progress, history, lookup counts) are read with `readStoredMap` (`lib/data/services/stored_map.dart`): an unreadable entry is skipped instead of failing the start-up, and the original text is kept under `<key>_backup` before the app saves over it. There is no backend: a change to a saved format must still read the old data (add a test in `test/domain/serialization_test.dart`).
 - TTS: `SpeechService` wraps `flutter_tts` with `de-DE`.
 - **Reminders** are local notifications (`NotificationService`, flutter_local_notifications). `RemindersCoordinator` (`ui/core/view_models`) replans the next 7 days when the reminder settings change and when the app is hidden (`AppLifecycleListener` in `main.dart`): the progress can't change while the app is closed, so `planReminders` (domain) knows in advance how many words are due at each reminder, and skips reminders with nothing to do. A notification's payload is its `ReminderKind`; a tap (or a launch from it) goes through `RemindersCoordinator.opened` to `HomeShell`, which opens that session (`sessionForReminder`). Android needs the receivers in `AndroidManifest.xml` and core library desugaring in `build.gradle.kts`; iOS sets the notification delegate in `AppDelegate.swift`.
 
