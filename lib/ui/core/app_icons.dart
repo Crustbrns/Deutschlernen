@@ -40,11 +40,13 @@ abstract final class AppIcons {
 
   static const caretDownBold = IconData(0xe136, fontFamily: _boldFont);
 
-  // Phosphor Fill (solid), only for the bottom bar tabs. Same code points
+  // Phosphor Fill (solid), only for the bottom bar tabs and the streak
+  // flame. Same code points
   // as in Regular (phosphor_icons_fill.dart in the same repo).
   static const _fillFont = 'PhosphorFill';
 
   static const fileTextFill = IconData(0xe23a, fontFamily: _fillFont);
+  static const fireFill = IconData(0xe242, fontFamily: _fillFont);
   static const gearFill = IconData(0xe270, fontFamily: _fillFont);
   static const houseFill = IconData(0xe2c2, fontFamily: _fillFont);
   static const squaresFourFill = IconData(0xe464, fontFamily: _fillFont);

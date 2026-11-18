@@ -76,6 +76,12 @@ class AppStrings {
   String get statsEmpty => _get('statsEmpty');
   String get statsTotal => _get('statsTotal');
 
+  /// "5 дней подряд": the current daily streak.
+  String streakDays(int n) => _plural('streakDays', n);
+
+  /// "Рекорд: 12": the longest streak.
+  String streakBest(int n) => _get('streakBest').replaceAll('{n}', '$n');
+
   /// Short date, "16 ноя" / "16 Nov" / "11月 16日": the order comes from
   /// `dateShort` ({d}, {m}), the month from `monthsShort` (12, comma-separated).
   /// The space lets a narrow label break into day and month.

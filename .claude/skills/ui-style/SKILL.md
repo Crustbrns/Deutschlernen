@@ -198,8 +198,8 @@ above the Categories search: `headlineSmall`, letter spacing -0.5, 24 from the s
 
 - Level illustrations (`LevelIcon`) are the one exception: flat color SVGs, see Lists.
 - All other icons are **Phosphor Regular** (thin line icons with rounded ends) — except the example
-  rows' chevron, `caretDownBold` from Phosphor Bold, and the bottom bar tabs (Phosphor Fill,
-  see above) — via `AppIcons`
+  rows' chevron, `caretDownBold` from Phosphor Bold, the bottom bar tabs (Phosphor Fill,
+  see above) and the streak flame `fireFill` (Phosphor Fill) — via `AppIcons`
   (`lib/ui/core/app_icons.dart`, font `assets/fonts/Phosphor.ttf`): `AppIcons.x`, `.arrowLeft`,
   `.speakerHigh`, … Never use Material `Icons.*` or `CupertinoIcons.*` — the app must look like
   one icon set. Do NOT add the `phosphor_flutter` package: it doesn't compile with current
@@ -294,7 +294,8 @@ the level word count (mutedText 50% lighter). Reset all progress: title in `deci
 
 ## Progress chart
 
-`ProgressScreen` (Progress tab): title like the other tabs, then a period switch, then one
+`ProgressScreen` (Progress tab): title like the other tabs, then the streak block, then a
+period switch, then one
 `palette.card` block (radius 20) with `ProgressChart`, then the totals: a gray header
 (`_TotalsHeader`, `MenuRow.hintStyle(soft: true)`, 20 above, 8 below) naming the number
 columns — the period ("7 дней") and "Всего" — and a `GroupedCard` (`_TotalRow`: 12px status
@@ -338,3 +339,16 @@ each status now (`latestCounts`). With "all time" selected only the "Всего"
   over the days of a week/month; `DaySnapshot.reviewed`), in "Всего" the unique words
   recalled at least once; green "Выучено" — interval ≥ 21 days. A bar's layers are the growth
   since the previous bar (drops count as 0).
+
+## Daily streak
+
+`StreakCard` (`lib/ui/progress/widgets/streak_card.dart`), the first block on the Progress tab,
+12 above the period switch: `palette.card`, radius 20, padding 16. Top row: `AppIcons.fireFill`
+28 — `AppColors.streak` orange #FF9500 once the user studied today, `palette.mutedText` before —
+8 gap, "5 дней подряд" (`AppStrings.streakDays`, plural) 20 w700 -0.5 `onSurface`, and on the
+right "Рекорд: 12" in `MenuRow.hintStyle(soft: true)`. 14 below: this week Mon–Sun, each a
+12 w600 day name (`mutedText`, today `onSurface`) over a 30px circle, 6 apart vertically:
+studied = `AppColors.streak` fill, else `palette.subtleButton`; today not studied yet gets a
+1.5px `AppColors.streak` ring. Rule (`StudyStreak`, domain): a day counts if the user reviewed a
+word or took a new one to learn ("Уже знаю" doesn't); today not studied yet doesn't break the
+streak before midnight. The Learn tab's week strip doesn't show studied days (user's choice).

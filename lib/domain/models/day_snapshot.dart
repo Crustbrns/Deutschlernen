@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:deutschlernen/domain/models/status_counts.dart';
 
 /// One day of the progress history: the status counts at the end of the day
@@ -10,6 +12,11 @@ class DaySnapshot {
   /// Words reviewed that day, old ones too (each word once). Null for days
   /// saved before this was counted.
   final int? reviewed;
+
+  /// [reviewed]; for days saved before reviews were counted, the words
+  /// recalled for the first time since [before] (the previous snapshot).
+  int reviewedAfter(StatusCounts? before) =>
+      reviewed ?? math.max(0, counts.reviewed - (before?.reviewed ?? 0));
 
   Map<String, dynamic> toJson() => {
     ...counts.toJson(),

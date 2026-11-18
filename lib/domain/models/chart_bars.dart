@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:deutschlernen/domain/models/dates.dart';
 import 'package:deutschlernen/domain/models/day_snapshot.dart';
 import 'package:deutschlernen/domain/models/status_counts.dart';
 
@@ -47,14 +48,12 @@ List<ChartBar> chartBars(
     final (start, end) = range;
     final after = at(end);
     if (after == null) return (start: start, layers: null);
-    final layers = _gains(at(_addDays(start, -1)), after);
-    // Every review counts, not only a word's first one. Days saved before
-    // reviews were counted fall back to their first recalls.
+    final layers = _gains(at(addDays(start, -1)), after);
+    // Every review counts, not only a word's first one.
     layers[_reviewedLayer] = [
       for (final d in days)
         if (!d.isBefore(start) && !d.isAfter(end))
-          history[d]!.reviewed ??
-              _gains(at(_addDays(d, -1)), history[d]!.counts)[_reviewedLayer],
+          history[d]!.reviewedAfter(at(addDays(d, -1))),
     ].fold(0, (a, b) => a + b);
     return (start: start, layers: layers);
   }
@@ -89,18 +88,17 @@ List<int> _gains(StatusCounts? before, StatusCounts after) => [
 // Ranges (first day, last day) for the bars, oldest first; the last one
 // ends today.
 List<(DateTime, DateTime)> _days(DateTime today, int count) => [
-  for (var i = count - 1; i >= 0; i--)
-    (_addDays(today, -i), _addDays(today, -i)),
+  for (var i = count - 1; i >= 0; i--) (addDays(today, -i), addDays(today, -i)),
 ];
 
 // Weeks start on Monday.
 List<(DateTime, DateTime)> _weeks(DateTime today, int count) {
-  final thisWeek = _addDays(today, -(today.weekday - 1));
+  final thisWeek = addDays(today, -(today.weekday - 1));
   return [
     for (var i = count - 1; i >= 0; i--)
       (
-        _addDays(thisWeek, -7 * i),
-        i == 0 ? today : _addDays(thisWeek, -7 * i + 6),
+        addDays(thisWeek, -7 * i),
+        i == 0 ? today : addDays(thisWeek, -7 * i + 6),
       ),
   ];
 }
@@ -119,6 +117,3 @@ List<(DateTime, DateTime)> _months(DateTime today, DateTime first) {
       ),
   ];
 }
-
-// Calendar days, not 24-hour steps: survives daylight saving changes.
-DateTime _addDays(DateTime d, int n) => DateTime(d.year, d.month, d.day + n);

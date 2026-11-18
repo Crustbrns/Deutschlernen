@@ -166,6 +166,9 @@ abstract final class AppColors {
   static const chartKnown = Color(0xFFC7C7CC);
   static const chartCount = Color(0xFF000000);
 
+  // Streak flame and studied days on the Progress tab (iOS orange).
+  static const streak = Color(0xFFFF9500);
+
   // Word status strips in the word lists (new words use a theme gray).
   static const statusLearning = Color(0xFFFF5C8A); // pink
   static const statusReview = Color(0xFFFFA530); // orange-yellow
