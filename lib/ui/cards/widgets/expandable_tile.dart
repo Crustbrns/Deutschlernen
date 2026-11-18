@@ -34,7 +34,7 @@ class ExpandableTile extends StatefulWidget {
 class _ExpandableTileState extends State<ExpandableTile> {
   // Small: the chevron is a hint, the text matters (halved from 22 / 8).
   static const _chevronSize = 11.0;
-  static const _chevronGap = 4.0;
+  static const _chevronGap = 8.0; // was 4: text too close to the chevron
 
   // Minimum time the highlight stays visible after a quick tap.
   static const _minHighlight = Duration(milliseconds: 150);

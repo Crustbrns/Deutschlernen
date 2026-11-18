@@ -241,9 +241,9 @@ above the Categories search: `headlineSmall`, letter spacing -0.5, 24 from the s
   left-aligned text, 32 w600, letter spacing -0.6 — the plural continues the line in brackets,
   same style and color (only the article is colored); long ones wrap. Translation 32 w600,
   -0.6, left-aligned. Examples and the
-  definition (`example_tile.dart`): theme font 17, `onSurface` (white), regular; the highlighted
+  definition (`example_tile.dart`): theme font 16 (was 17: long sentences wrapped too much), `onSurface` (white), regular; the highlighted
   word is the same color, extra bold (w800) — weight alone sets it apart. Expand chevron: 11px
-  `AppIcons.caretDownBold` (Phosphor Bold, `assets/fonts/PhosphorBold.ttf`), 4px gap.
+  `AppIcons.caretDownBold` (Phosphor Bold, `assets/fonts/PhosphorBold.ttf`), 8px gap to the text.
 - Articles are colored by gender with `AppColors.forArticle` on the word card. The plural
   article is always `die` (`Word.pluralWithArticle`).
 - Translations are shown as stored (lowercase); don't capitalize them.
