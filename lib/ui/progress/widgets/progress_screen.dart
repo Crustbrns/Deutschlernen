@@ -99,8 +99,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
   }
 }
 
-/// Four equal segments in one rounded block; the chosen one is blue
-/// (the app's selected state).
+/// Four equal segments in one rounded block; the chosen one is solid
+/// yellow with black text (the app's selected state).
 class _PeriodSwitch extends StatelessWidget {
   const _PeriodSwitch({
     required this.selected,
@@ -139,7 +139,7 @@ class _PeriodSwitch extends StatelessWidget {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: p == selected
-                          ? AppColors.accentBlue.withValues(alpha: 0.14)
+                          ? AppColors.yellow
                           : Colors.transparent,
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -152,7 +152,7 @@ class _PeriodSwitch extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                         letterSpacing: -0.3,
                         color: p == selected
-                            ? AppColors.accentBlue
+                            ? AppColors.onYellow
                             : colors.onSurface,
                       ),
                     ),

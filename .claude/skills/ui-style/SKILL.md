@@ -9,7 +9,14 @@ The app has a dark and a light theme. All colors, fonts and sizes come from
 `lib/ui/core/app_style.dart`:
 - `AppPalette.of(context)` — colors that differ per theme: `background`, `card`, `subtleButton`,
   `mutedText`. A new theme-dependent color goes here, with a value for both themes.
-- `AppColors` — fixed accents (`accentBlue`, article colors, …) and helpers computed from the
+- **One accent: yellow** (user's choice, 2026-11-19; blue is gone from the UI). Fills —
+  switches, slider, selected segments, primary buttons — `AppColors.yellow` `#FFC72C` with
+  `AppColors.onYellow` (black) content, in both themes. Accent **text and icons** on a surface —
+  chosen values, checks, play buttons, cursor — `palette.accentText`: yellow in dark, `#9A6700`
+  in light (yellow on white is 1.6:1, this is 4.9:1). `colorScheme.primary` is yellow, so default
+  `FilledButton`s and spinners follow. `AppColors.accentBlue` is left only as the color seed
+  (neutral grays), the Learn menu's categories icon and the unknown-article fallback.
+- `AppColors` — fixed accents (`yellow`, article colors, …) and helpers computed from the
   `ColorScheme` (`divider`, `quietText`).
 - `AppSizes`, `AppListText` (list row typography).
 
@@ -54,7 +61,7 @@ render them as separate cards with gaps between them.
 - Rows: no own background or outline, horizontal padding 16 (so text starts where
   the divider starts), the whole row is tappable (`InkWell`/`ListTile`).
 - Selection inside a block: shown in the row itself — trailing `AppIcons.checkCircle`
-  in `AppColors.softBlue` for the chosen one (level sheet, language sheet), `AppIcons.circle` in
+  in `palette.accentText` for the chosen one (level sheet, language sheet), `AppIcons.circle` in
   `colors.onSurfaceVariant` for the others. Not by an outline.
 
 - Word rows (`WordRow` in `word_list.dart`, category lists and search results) start with a
@@ -94,7 +101,7 @@ render them as separate cards with gaps between them.
   apps instead of tinted line icons. Never take icons from another app's screenshots — use a
   free-licensed set; the level picker sheet
   (`level_sheet.dart`) uses the same `LevelRow` (`lib/ui/core/widgets/level_row.dart`) as the
-  Categories tab, with the picker check (`softBlue` `checkCircle` / `circle`) as trailing.
+  Categories tab, with the picker check (`accentText` `checkCircle` / `circle`) as trailing.
 
 Theme-dependent colors are fields of `AppPalette` with a value per theme (e.g. `secondaryText`
 for the level word count, `levelPercent` for "40 %"). Widgets never check
@@ -144,18 +151,17 @@ Separate blocks are only for different kinds of content (e.g. a title, then a li
   (black, both themes). Yellow = the card's main action (`RevealButton`, "Проверить"), the
   selected answer mode, the write field's focus border, the session progress bar and the
   highlighted word in examples. Everything else on the card stays neutral (example play
-  buttons white); red / green decision colors and article colors are unchanged. Outside the
-  card the accent is still blue — if the yellow sticks, move it there too (one accent per app).
+  buttons white); red / green decision colors and article colors are unchanged. The same
+  yellow is the accent of the whole app (see the top of this file).
 - **Answer controls on a learning card**: new-words session — only `RevealButton` (64×64,
   radius 16, no outline, fill `AppColors.yellow`, black eye icon, no label, centered); a tap
   replaces it with the translation (no way back); review session — the three-button
   `AnswerModeBar` (Show / Write / Choose). `WordCard.answerModes` switches them.
-- **Selected / active state**: fill `AppColors.accentBlue` α 0.14, border `AppColors.accentBlue`,
-  icon and text `AppColors.accentBlue` (period switch on Progress). On the card (`_ModeButton` in
-  `answer_mode_bar.dart`): solid `AppColors.yellow` fill, black icon and text — yellow text on
-  white would be unreadable.
+- **Selected / active state**: solid `AppColors.yellow` fill, black (`onYellow`) icon and text —
+  the period switch on Progress, `_ModeButton` in `answer_mode_bar.dart`. Not yellow text on a
+  tinted fill: unreadable in the light theme.
 - **Primary action** (one per screen at most): `FilledButton`, radius 14.
-- **Audio**: `PlayButton` (`lib/ui/core/widgets/play_button.dart`) — blue in search results,
+- **Audio**: `PlayButton` (`lib/ui/core/widgets/play_button.dart`) — `accentText` in search results,
   `onSurface` (white) in the card's example rows (`PlayButton.rowEnd`).
   On the word card the German word and its plural are left-aligned with a speaker button
   (`TranscriptionButton` in `transcription_button.dart`, without text: rounded square, radius 12) on the right of the word,
@@ -228,10 +234,10 @@ above the Categories search: `headlineSmall`, letter spacing -0.5, 24 from the s
   `.speakerHigh`, … Never use Material `Icons.*` or `CupertinoIcons.*` — the app must look like
   one icon set. Do NOT add the `phosphor_flutter` package: it doesn't compile with current
   Flutter. To add an icon, follow the comment at the top of `app_icons.dart`.
-- A selected state is shown by **color** (blue icon and label), not by a highlight behind the
-  icon. Only the bottom bar uses a highlight pill (see above).
+- A selected icon is shown by **color** (`palette.accentText`), not by a highlight behind it.
+  Only the bottom bar uses a highlight pill (see above).
 - Sizes: 20 in rows and small buttons, 24 default, 28 in large mode buttons.
-- Colors: `colors.onSurfaceVariant` when inactive, `AppColors.accentBlue` when active,
+- Colors: `colors.onSurfaceVariant` when inactive, `palette.accentText` when active,
   `colors.onSurface` on filled neutral buttons.
 - Learn tab menu text is condensed: title `TabTitle`, row titles 17 w600 / -0.4, trailing
   count 15 w600 / -0.3 (default spacing looked too loose to the user).
@@ -292,32 +298,32 @@ the level word count (mutedText 50% lighter). Reset all progress: title in `deci
 `AppIcons.arrowCounterClockwise` 22 in `decisionRed`.
 
 - Switches: `AppSwitch` (`lib/ui/core/widgets/app_switch.dart`), same on both platforms: track
-  60×31, oval white thumb 37×25 (wider than tall, user's choice), on = `AppColors.softBlue`
-  `#0A84FF` (softer than `accentBlue`), off = `subtleButton`; the whole row toggles. iOS behavior:
+  60×31, oval white thumb 37×25 (wider than tall, user's choice), on = `AppColors.yellow`,
+  off = `subtleButton`; the whole row toggles. iOS behavior:
   tap toggles, the thumb can be dragged (snaps to the nearer side, a flick > 300 px/s decides
   by direction), stretches 6px toward the middle while pressed, track color lerps with the
   thumb, `HapticFeedback.lightImpact` on change.
-- Theme: a value row like the language rows ("Тема" … blue current value) opening a choice
+- Theme: a value row like the language rows ("Тема" … accent current value) opening a choice
   sheet: same as system / dark / light (user replaced the segmented switch).
-- Language and theme rows (`SettingsValueRow` in `settings_rows.dart`): current choice as `AppColors.softBlue` trailing text,
+- Language and theme rows (`SettingsValueRow` in `settings_rows.dart`): current choice as `palette.accentText` trailing text,
   no chevron; "Как в системе" when following the device. Pick-one sheets use `showChoiceSheet` (`lib/ui/core/widgets/choice_sheet.dart`). Language
   sheet (`language_sheet.dart`, the same for the interface and the word language): title, then a
   preview card (`palette.card`, radius 20, padding 20/28, centered) with the greeting of the
-  chosen language ("Привет", 40 w700 -0.8 `softBlue`) and a gray line under it in that language
+  chosen language ("Привет", 40 w700 -0.8 `accentText`) and a gray line under it in that language
   ("Меню и тексты на русском" / "Переводы слов на русском", 15 w500 `mutedText`), crossfading
   on change; then the `GroupedCard` — first row "Как в системе" with the language it gives now as
-  a gray subtitle, then the languages; no flags; chosen one `softBlue` + `checkCircle`. A tap
+  a gray subtitle, then the languages; no flags; chosen one `accentText` + `checkCircle`. A tap
   applies right away and the sheet stays open (the interface language redraws the sheet too);
   "Готово" (`SheetDoneButton`) or a swipe closes it.
 - Bottom sheets' drag handle (`AppTheme` → `bottomSheetTheme.dragHandleColor`): quiet, just off the
   sheet background — light: background 10% darker, dark: background 20% lighter.
-- Speech rate: a `MenuRow` header, then a slider (track 6, filled `softBlue`, unfilled
+- Speech rate: a `MenuRow` header, then a slider (track 6, filled `AppColors.yellow`, unfilled
   `palette.sliderTrack` soft pastel gray, white pill thumb 30×20 with the switch's shadow
   (`_PillThumbShape` in `speed_row.dart`), no ripple, no value indicator; `SliderThemeData.padding` 16 horizontal, so
   the track is level with the row text; slow / fast labels at the same 16 edges) and slow / fast 13 gray under it.
 - Dialogs: `showConfirmDialog` (`lib/ui/core/widgets/confirm_dialog.dart`) — `palette.card`,
   radius 20, title `AppListText.title`, body gray hint, buttons 17 w600 (cancel `onSurface`,
-  action in its color: reset red, "open settings" `softBlue`). Don't style an AlertDialog inline.
+  action in its color: reset red, "open settings" `accentText`). Don't style an AlertDialog inline.
 - All picker sheets go through `showSheet` (`choice_sheet.dart`): drag handle, title, content on
   the screen background. Several-at-once picks: `showMultiChoiceSheet` (applied on each tap,
   the last one can't be turned off), same rows as `showChoiceSheet`.
@@ -345,8 +351,8 @@ each status now (`latestCounts`). With "all time" selected only the "Всего"
 (the two would repeat). The list doubles as the chart's legend, so the chart has none.
 
 - Period switch (`_PeriodSwitch`): one `palette.card` block, radius 14, padding 4; four equal
-  segments 36 tall, radius 10 — 7 / 30 / 90 days / all time. Selected: `accentBlue` α 0.14 fill,
-  `accentBlue` text; others `onSurface`; 14 w600 -0.3.
+  segments 36 tall, radius 10 — 7 / 30 / 90 days / all time. Selected: solid `AppColors.yellow`
+  fill, `onYellow` (black) text; others `onSurface`; 14 w600 -0.3.
 - Bars show only their own period's activity (user's choice, not the running stock):
   7 and 30 days — a bar per day, 90 days — per week (Monday start), all time — per calendar
   month (label "ноя", `AppStrings.monthShort`). See `chartBars`.

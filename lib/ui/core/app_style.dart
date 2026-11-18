@@ -30,6 +30,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
     required this.levelPercent,
     required this.markText,
     required this.markFill,
+    required this.accentText,
   });
 
   final Color background; // behind the cards
@@ -56,6 +57,11 @@ class AppPalette extends ThemeExtension<AppPalette> {
   final Color markText;
   final Color markFill;
 
+  /// Accent text and icons on the background or a card (chosen values,
+  /// checks, play buttons). Dark: AppColors.yellow; light: dark yellow, as
+  /// yellow on white is unreadable. Yellow fills stay AppColors.yellow.
+  final Color accentText;
+
   static const dark = AppPalette(
     background: Color(0xFF0B0B0D),
     card: Color(0xFF151517),
@@ -67,6 +73,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
     levelPercent: Color(0xFFB6B7BA),
     markText: AppColors.yellow,
     markFill: Color(0x00000000),
+    accentText: AppColors.yellow,
   );
 
   static const light = AppPalette(
@@ -80,6 +87,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
     levelPercent: Color(0xFF9C9C9E),
     markText: Color(0xFF080808), // the light theme's onSurface
     markFill: Color(0x99FFC72C), // AppColors.yellow at α 0.6
+    accentText: Color(0xFF9A6700), // 4.9:1 on white
   );
 
   static AppPalette of(BuildContext context) =>
@@ -97,6 +105,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
     Color? levelPercent,
     Color? markText,
     Color? markFill,
+    Color? accentText,
   }) => AppPalette(
     background: background ?? this.background,
     card: card ?? this.card,
@@ -108,6 +117,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
     levelPercent: levelPercent ?? this.levelPercent,
     markText: markText ?? this.markText,
     markFill: markFill ?? this.markFill,
+    accentText: accentText ?? this.accentText,
   );
 
   @override
@@ -124,6 +134,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
       levelPercent: Color.lerp(levelPercent, other.levelPercent, t)!,
       markText: Color.lerp(markText, other.markText, t)!,
       markFill: Color.lerp(markFill, other.markFill, t)!,
+      accentText: Color.lerp(accentText, other.accentText, t)!,
     );
   }
 }
@@ -141,12 +152,22 @@ abstract final class AppTheme {
   static ThemeData _build(Brightness brightness, AppPalette palette) {
     return ThemeData(
       colorScheme: ColorScheme.fromSeed(
+        // The seed only tints the neutral grays; the accent is set below.
         seedColor: AppColors.accentBlue,
         brightness: brightness,
+        // Default buttons and spinners: yellow fill, black content.
+        primary: AppColors.yellow,
+        onPrimary: AppColors.onYellow,
         // Light theme text: near-black rgb(8,8,8) (user's choice).
         onSurface: brightness == Brightness.light
             ? const Color(0xFF080808)
             : null,
+      ),
+      // The cursor and handles are drawn on the background: readable accent.
+      textSelectionTheme: TextSelectionThemeData(
+        cursorColor: palette.accentText,
+        selectionColor: AppColors.yellow.withValues(alpha: 0.4),
+        selectionHandleColor: palette.accentText,
       ),
       scaffoldBackgroundColor: palette.background,
       // Sheet drag handle: quiet, just off the sheet's background (user's
@@ -166,12 +187,12 @@ abstract final class AppColors {
   // see CardsScreen (new word: left green / right red; recall: the reverse).
   static const decisionRed = Color(0xFFFF3B30); // saturated red
   static const decisionGreen = Color(0xFF30D158); // saturated green
+  // Only the color seed, the Learn menu's categories icon and the fallback
+  // article color; the app's accent is [yellow].
   static const accentBlue = Color(0xFF1AA7FF);
-  // Settings controls (switch on, slider, chosen language): deeper and
-  // softer than accentBlue (iOS blue).
-  static const softBlue = Color(0xFF0A84FF);
-  // Accent of the learning card (yellow on black): the main action, the
-  // selected answer mode, the highlighted word, the session progress.
+  // The app's accent (yellow on black): main actions, selected states,
+  // switches and sliders, the highlighted word. Text and icons on a surface
+  // take AppPalette.accentText instead (readable in the light theme).
   static const yellow = Color(0xFFFFC72C);
   // Text and icons on a yellow fill: black in both themes.
   static const onYellow = Color(0xFF000000);

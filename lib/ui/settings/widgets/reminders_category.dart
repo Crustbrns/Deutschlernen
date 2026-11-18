@@ -122,7 +122,7 @@ class RemindersCategory extends StatelessWidget {
       body: strings.notificationsDeniedBody,
       cancelLabel: strings.cancel,
       confirmLabel: strings.openSettings,
-      confirmColor: AppColors.softBlue,
+      confirmColor: AppPalette.of(context).accentText,
     );
     if (open) await settings.openNotificationSettings();
   }
