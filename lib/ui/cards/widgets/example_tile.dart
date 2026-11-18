@@ -9,7 +9,7 @@ import 'package:deutschlernen/ui/core/widgets/play_button.dart';
 ({TextStyle base, TextStyle bold}) _tileStyles(BuildContext context) {
   final colors = Theme.of(context).colorScheme;
   final base = TextStyle(
-    fontSize: 17,
+    fontSize: 16, // 17 wrapped long German sentences into too many lines
     fontWeight: FontWeight.w400,
     height: 1.2, // lines close together
     letterSpacing: -0.2, // condensed like the rest of the card
