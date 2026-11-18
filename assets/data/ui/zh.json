@@ -73,6 +73,7 @@
   "statsReview": "已复习",
   "statsLearned": "已学会",
   "statsEmpty": "你的进度会显示在这里：先在“学习”中标记第一批单词",
+  "statsTotal": "总计",
   "monthsShort": "1月,2月,3月,4月,5月,6月,7月,8月,9月,10月,11月,12月",
   "dateShort": "{m} {d}日",
   "done": "完成",

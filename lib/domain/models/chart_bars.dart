@@ -74,6 +74,12 @@ StatusCounts latestCounts(Map<DateTime, DaySnapshot> history) => history.isEmpty
     ? const StatusCounts()
     : history[history.keys.reduce((a, b) => a.isAfter(b) ? a : b)]!.counts;
 
+/// Totals of the whole period per layer: the sum of its [bars].
+List<int> periodTotals(List<ChartBar> bars) => [
+  for (var i = 0; i < const StatusCounts().stack.length; i++)
+    bars.fold(0, (sum, b) => sum + (b.layers?[i] ?? 0)),
+];
+
 /// Growth of each layer from [before] (null = nothing yet) to [after].
 List<int> _gains(StatusCounts? before, StatusCounts after) => [
   for (var i = 0; i < after.stack.length; i++)

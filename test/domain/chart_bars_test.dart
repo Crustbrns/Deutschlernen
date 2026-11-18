@@ -100,6 +100,17 @@ void main() {
     expect(chartBars(ChartPeriod.all, {}, now), hasLength(1));
   });
 
+  test('period totals: each layer summed over the bars', () {
+    final bars = <ChartBar>[
+      (start: DateTime(2026, 11, 16), layers: null),
+      (start: DateTime(2026, 11, 17), layers: [1, 3, 0, 0]),
+      (start: DateTime(2026, 11, 18), layers: [0, 2, 4, 1]),
+    ];
+
+    expect(periodTotals(bars), [1, 5, 4, 1]);
+    expect(periodTotals([]), [0, 0, 0, 0]);
+  });
+
   test('latest counts: the newest snapshot, whatever the map order', () {
     const one = StatusCounts(known: 1);
     const two = StatusCounts(known: 2);

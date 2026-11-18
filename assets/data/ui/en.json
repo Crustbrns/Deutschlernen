@@ -78,6 +78,7 @@
   "statsReview": "Reviewed",
   "statsLearned": "Learned",
   "statsEmpty": "Your progress will show up here: mark your first words in Learn",
+  "statsTotal": "Total",
   "monthsShort": "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec",
   "dateShort": "{d} {m}",
   "done": "Done",

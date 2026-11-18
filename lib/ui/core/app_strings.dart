@@ -74,6 +74,7 @@ class AppStrings {
   String get statsReview => _get('statsReview');
   String get statsLearned => _get('statsLearned');
   String get statsEmpty => _get('statsEmpty');
+  String get statsTotal => _get('statsTotal');
 
   /// Short date, "16 ноя" / "16 Nov" / "11月 16日": the order comes from
   /// `dateShort` ({d}, {m}), the month from `monthsShort` (12, comma-separated).

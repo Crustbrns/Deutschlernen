@@ -78,6 +78,7 @@
   "statsReview": "Repasadas",
   "statsLearned": "Aprendidas",
   "statsEmpty": "Aquí aparecerá tu progreso: marca tus primeras palabras en Aprender",
+  "statsTotal": "Total",
   "monthsShort": "ene,feb,mar,abr,may,jun,jul,ago,sep,oct,nov,dic",
   "dateShort": "{d} {m}",
   "done": "Listo",

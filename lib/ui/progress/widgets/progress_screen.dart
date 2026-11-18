@@ -4,13 +4,15 @@ import 'package:deutschlernen/domain/models/word_status.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
+import 'package:deutschlernen/ui/core/widgets/menu_row.dart';
 import 'package:deutschlernen/ui/core/widgets/tab_page.dart';
 import 'package:deutschlernen/domain/models/chart_bars.dart';
 import 'package:deutschlernen/ui/progress/widgets/progress_chart.dart';
 
 /// Progress tab: title, period switch (7 / 30 / 90 days / all time), then
 /// one block with the stacked chart of what was done per day, week or month,
-/// and under it the current count per status (also the chart's legend).
+/// and under it the totals per status, for the period and for all time (also
+/// the chart's legend).
 class ProgressScreen extends StatefulWidget {
   const ProgressScreen({super.key, required this.history});
 
@@ -30,7 +32,15 @@ class _ProgressScreenState extends State<ProgressScreen> {
     final palette = AppPalette.of(context);
     final bars = chartBars(_period, widget.history, DateTime.now());
     final isEmpty = bars.every((b) => b.layers?.every((v) => v == 0) ?? true);
-    final latest = latestCounts(widget.history);
+    // "All time" would show the same numbers twice: one column then.
+    final periodTotal = _period == ChartPeriod.all ? null : periodTotals(bars);
+    final total = latestCounts(widget.history).stack;
+    final periodLabels = {
+      ChartPeriod.week: strings.statsPeriodWeek,
+      ChartPeriod.month: strings.statsPeriodMonth,
+      ChartPeriod.quarter: strings.statsPeriodQuarter,
+      ChartPeriod.all: strings.statsPeriodAll,
+    };
     final labels = {
       WordStatus.known: strings.statusKnown,
       WordStatus.learning: strings.statsLearning,
@@ -43,12 +53,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
       children: [
         _PeriodSwitch(
           selected: _period,
-          labels: {
-            ChartPeriod.week: strings.statsPeriodWeek,
-            ChartPeriod.month: strings.statsPeriodMonth,
-            ChartPeriod.quarter: strings.statsPeriodQuarter,
-            ChartPeriod.all: strings.statsPeriodAll,
-          },
+          labels: periodLabels,
           onSelected: (p) => setState(() => _period = p),
         ),
         const SizedBox(height: 12),
@@ -69,7 +74,12 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 )
               : ProgressChart(bars: bars, byMonth: _period.byMonth),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 20),
+        _TotalsHeader(
+          period: periodTotal == null ? null : periodLabels[_period],
+          total: strings.statsTotal,
+        ),
+        const SizedBox(height: 8),
         // Also the chart's legend: same dots, top of the stack first.
         GroupedCard(
           children: [
@@ -77,7 +87,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
               _TotalRow(
                 status: s,
                 label: labels[s]!,
-                count: latest.stack[ProgressChart.stackOrder.indexOf(s)],
+                period: periodTotal?[ProgressChart.stackOrder.indexOf(s)],
+                total: total[ProgressChart.stackOrder.indexOf(s)],
               ),
           ],
         ),
@@ -149,17 +160,58 @@ class _PeriodSwitch extends StatelessWidget {
   }
 }
 
-/// Colored dot, status name and how many words have it now.
+/// Width of a number column under the chart, so the header and the rows
+/// line up.
+const _columnWidth = 76.0;
+
+/// Gray column names above the totals: the period (none for all time) and
+/// "total".
+class _TotalsHeader extends StatelessWidget {
+  const _TotalsHeader({required this.period, required this.total});
+
+  final String? period;
+  final String total;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = MenuRow.hintStyle(context, soft: true);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          for (final text in [?period, total])
+            SizedBox(
+              width: _columnWidth,
+              child: Text(
+                text,
+                textAlign: TextAlign.end,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: style,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Colored dot, status name, the chosen period's count (null for all time)
+/// and the count for all time.
 class _TotalRow extends StatelessWidget {
   const _TotalRow({
     required this.status,
     required this.label,
-    required this.count,
+    required this.period,
+    required this.total,
   });
 
   final WordStatus status;
   final String label;
-  final int count;
+  final int? period;
+  final int total;
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +231,15 @@ class _TotalRow extends StatelessWidget {
           ),
           const SizedBox(width: 12),
           Expanded(child: Text(label, style: AppListText.subtitle(colors))),
-          Text('$count', style: AppListText.title(colors)),
+          for (final n in [?period, total])
+            SizedBox(
+              width: _columnWidth,
+              child: Text(
+                '$n',
+                textAlign: TextAlign.end,
+                style: AppListText.title(colors),
+              ),
+            ),
         ],
       ),
     );
