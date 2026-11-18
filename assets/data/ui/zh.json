@@ -76,6 +76,8 @@
   "statsTotal": "总计",
   "streakDaysOther": "连续 {n} 天",
   "streakBest": "最佳：{n}",
+  "wordGoal": "目标",
+  "wordGoalProgress": "{n}/{goal}",
   "monthsShort": "1月,2月,3月,4月,5月,6月,7月,8月,9月,10月,11月,12月",
   "dateShort": "{m} {d}日",
   "done": "完成",

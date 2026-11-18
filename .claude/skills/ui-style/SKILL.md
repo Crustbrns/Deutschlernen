@@ -339,8 +339,8 @@ the level word count (mutedText 50% lighter). Reset all progress: title in `deci
 
 ## Progress chart
 
-`ProgressScreen` (Progress tab): title like the other tabs, then the streak block, then a
-period switch, then one
+`ProgressScreen` (Progress tab): title like the other tabs, then the streak block, the word
+goal block, then a period switch, then one
 `palette.card` block (radius 20) with `ProgressChart`, then the totals: a gray header
 (`_TotalsHeader`, `MenuRow.hintStyle(soft: true)`, 20 above, 8 below) naming the number
 columns — the period ("7 дней") and "Всего" — and a `GroupedCard` (`_TotalRow`: 12px status
@@ -388,7 +388,7 @@ each status now (`latestCounts`). With "all time" selected only the "Всего"
 ## Daily streak
 
 `StreakCard` (`lib/ui/progress/widgets/streak_card.dart`), the first block on the Progress tab,
-12 above the period switch: `palette.card`, radius 20, padding 16. Top row: `AppIcons.fireFill`
+12 above the word goal: `palette.card`, radius 20, padding 16. Top row: `AppIcons.fireFill`
 28 — `AppColors.streak` orange #FF9500 once the user studied today, `palette.mutedText` before —
 8 gap, "5 дней подряд" (`AppStrings.streakDays`, plural) 20 w700 -0.5 `onSurface`, and on the
 right "Рекорд: 12" in `MenuRow.hintStyle(soft: true)`. 14 below: this week Mon–Sun, each a
@@ -397,3 +397,12 @@ studied = `AppColors.streak` fill, else `palette.subtleButton`; today not studie
 1.5px `AppColors.streak` ring. Rule (`StudyStreak`, domain): a day counts if the user reviewed a
 word or took a new one to learn ("Уже знаю" doesn't); today not studied yet doesn't break the
 streak before midnight. The Learn tab's week strip doesn't show studied days (user's choice).
+
+## Word goal
+
+`GoalCard` (`lib/ui/progress/widgets/goal_card.dart`), under the streak, 12 above the period
+switch, same block as the streak (`palette.card`, radius 20, padding 16). Top row: "12 из 100
+слов" (`AppStrings.wordGoalProgress`) in `StreakCard.titleStyle`, on the right "Цель" in
+`MenuRow.hintStyle(soft: true)`; 14 below a `ProgressBar` (`ui/core/widgets/progress_bar.dart`,
+8 tall) filled `AppColors.statusLearned` green. Counts green + "Уже знаю" words
+(`StatusCounts.mastered`, user's choice); the goal is set in Settings → Прогресс (50–1000).

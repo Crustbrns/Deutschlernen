@@ -82,6 +82,8 @@
   "streakDaysOne": "{n} día seguido",
   "streakDaysOther": "{n} días seguidos",
   "streakBest": "Récord: {n}",
+  "wordGoal": "Meta",
+  "wordGoalProgress": "{n} de {goal}",
   "monthsShort": "ene,feb,mar,abr,may,jun,jul,ago,sep,oct,nov,dic",
   "dateShort": "{d} {m}",
   "done": "Listo",

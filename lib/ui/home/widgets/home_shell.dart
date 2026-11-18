@@ -154,6 +154,8 @@ class _HomeShellState extends State<HomeShell> {
                 ),
                 ProgressScreen(
                   streak: _vm.streak,
+                  mastered: _vm.masteredCount,
+                  wordGoal: _vm.wordGoal,
                   currentTotals: _vm.currentTotals,
                   chartFor: _vm.chartFor,
                 ),

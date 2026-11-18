@@ -1,5 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/domain/models/app_language.dart';
+import 'package:deutschlernen/domain/models/app_settings.dart';
 import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/ui/core/widgets/language_sheet.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
@@ -104,6 +105,20 @@ class SettingsScreen extends StatelessWidget {
           SettingsCategory(
             title: strings.settingsProgress,
             children: [
+              SettingsValueRow(
+                title: strings.wordGoal,
+                value: strings.wordCount(settings.wordGoal),
+                onTap: () => showChoiceSheet<int>(
+                  context: context,
+                  title: strings.wordGoal,
+                  current: settings.wordGoal,
+                  onSelected: settings.setWordGoal,
+                  choices: [
+                    for (final n in AppSettings.wordGoals)
+                      Choice(n, strings.wordCount(n)),
+                  ],
+                ),
+              ),
               // Red: it wipes data and can't be undone.
               MenuRow(
                 compact: true,

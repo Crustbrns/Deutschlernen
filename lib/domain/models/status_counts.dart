@@ -20,6 +20,10 @@ class StatusCounts {
   /// Recalled at least once (unique words): yellow and green.
   int get reviewed => review + learned;
 
+  /// Words the user knows: green or "already know". The word goal on the
+  /// Progress tab counts these (user's choice).
+  int get mastered => learned + known;
+
   /// Chart layers, bottom to top: known, started, reviewed, learned. A funnel
   /// (user's choice): a reviewed word also counts as started, a learned one
   /// as started and reviewed.
