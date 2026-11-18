@@ -34,7 +34,11 @@ it clears the text, hides the keyboard and returns the field to full width.
 The hint text and that close icon are gray too: the outline color made 30% lighter
 (`AppColors.quietText(colors)`) — quiet but readable in both themes.
 
-Screen side gutters are 16. Inside the word card content is inset by `AppSizes.cardInset` (24).
+Screen side gutters are 16. Inside the word card content is inset by `AppSizes.cardInset` (24),
+except the definition / example rows (`ExpandableTile`): inset 16 with their dividers, so the
+German text gets more room (user's choice). Their trailing slot (`ExpandableTile.trailingWidth`,
+46) runs from the text to the card's edge: 10 gap, the 20 icon ending 16 from the edge
+(`PlayButton.rowEnd`), and the whole slot is the tap area.
 
 ## Lists: one block with dividers
 

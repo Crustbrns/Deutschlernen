@@ -11,24 +11,27 @@ class ExpandableTile extends StatefulWidget {
     required this.title,
     this.details,
     this.trailing,
-    this.trailingVisualSize = 24,
   });
+
+  /// Side inset of the rows and their dividers: smaller than the card's
+  /// (24), so the German text gets more room (user's choice).
+  static const inset = 16.0;
+
+  /// Width of [trailing], from the text to the card's edge: 10 gap, a 20
+  /// icon and the 16 inset; the whole slot is the tap area (46).
+  static const trailingWidth = 46.0;
 
   final Widget title;
   final Widget? details; // null = nothing to expand
-  final Widget? trailing;
 
-  /// Visible size of [trailing] (icon or circle). Used to line its right
-  /// edge up with the card inset.
-  final double trailingVisualSize;
+  /// Fills [trailingWidth]; its icon should end [inset] from the right.
+  final Widget? trailing;
 
   @override
   State<ExpandableTile> createState() => _ExpandableTileState();
 }
 
 class _ExpandableTileState extends State<ExpandableTile> {
-  // Width of IconButton's default tap area; the info icon uses the same.
-  static const _trailingWidth = 48.0;
   // Small: the chevron is a hint, the text matters (halved from 22 / 8).
   static const _chevronSize = 11.0;
   static const _chevronGap = 4.0;
@@ -84,77 +87,73 @@ class _ExpandableTileState extends State<ExpandableTile> {
               ),
             ),
           ),
+          // Top divider, inset on both sides. Painted over the row, not part
+          // of its layout, so the row runs on to the card's edge.
+          Positioned(
+            top: 0,
+            left: ExpandableTile.inset,
+            right: ExpandableTile.inset,
+            height: 1,
+            child: ColoredBox(color: AppColors.divider(colors)),
+          ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSizes.cardInset),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(color: AppColors.divider(colors)),
+            // Left inset only: the trailing slot runs to the card's edge,
+            // so its tap area takes in the right inset too.
+            padding: const EdgeInsets.only(left: ExpandableTile.inset),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Chevron and trailing button are centered on the title
+                // only, so they stay in place when the details open below.
+                Row(
+                  children: [
+                    Padding(
+                      // No left inset, small gap to the text: more room.
+                      padding: const EdgeInsets.only(right: _chevronGap),
+                      // One "down" icon rotated by half a turn instead of
+                      // swapping two icons: rotation can be animated.
+                      child: AnimatedRotation(
+                        turns: _expanded ? 0.5 : 0,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeOut,
+                        child: const Icon(
+                          AppIcons.caretDownBold,
+                          size: _chevronSize,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        child: widget.title,
+                      ),
+                    ),
+                    SizedBox(
+                      width: widget.trailing == null
+                          ? ExpandableTile.inset
+                          : ExpandableTile.trailingWidth,
+                      child: widget.trailing,
+                    ),
+                  ],
                 ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // Chevron and trailing button are centered on the title
-                  // only, so they stay in place when the details open below.
-                  Row(
-                    children: [
-                      Padding(
-                        // No left inset, small gap to the text: more room.
-                        padding: const EdgeInsets.only(right: _chevronGap),
-                        // One "down" icon rotated by half a turn instead of
-                        // swapping two icons: rotation can be animated.
-                        child: AnimatedRotation(
-                          turns: _expanded ? 0.5 : 0,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeOut,
-                          child: const Icon(
-                            AppIcons.caretDownBold,
-                            size: _chevronSize,
+                // AnimatedSize smooths the height change on toggle.
+                AnimatedSize(
+                  duration: const Duration(milliseconds: 170),
+                  curve: Curves.easeOut,
+                  alignment: Alignment.topLeft,
+                  child: _expanded && details != null
+                      ? Padding(
+                          // Left inset lines the details up with the title.
+                          padding: const EdgeInsets.only(
+                            left: _chevronSize + _chevronGap,
+                            right: ExpandableTile.inset,
+                            bottom: 16,
                           ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          child: widget.title,
-                        ),
-                      ),
-                      if (widget.trailing != null)
-                        SizedBox(
-                          width: _trailingWidth,
-                          // The visible icon is centered in a 48px slot, so there is
-                          // (48 - size) / 2 of empty space on its right. Shifting by
-                          // that puts it at the same distance from the card edge as
-                          // the chevron on the left (cardInset).
-                          child: Transform.translate(
-                            offset: Offset(
-                              (_trailingWidth - widget.trailingVisualSize) / 2,
-                              0,
-                            ),
-                            child: Center(child: widget.trailing),
-                          ),
-                        ),
-                    ],
-                  ),
-                  // AnimatedSize smooths the height change on toggle.
-                  AnimatedSize(
-                    duration: const Duration(milliseconds: 170),
-                    curve: Curves.easeOut,
-                    alignment: Alignment.topLeft,
-                    child: _expanded && details != null
-                        ? Padding(
-                            // Left inset lines the details up with the title.
-                            padding: const EdgeInsets.only(
-                              left: _chevronSize + _chevronGap,
-                              bottom: 16,
-                            ),
-                            child: details,
-                          )
-                        : const SizedBox(width: double.infinity),
-                  ),
-                ],
-              ),
+                          child: details,
+                        )
+                      : const SizedBox(width: double.infinity),
+                ),
+              ],
             ),
           ),
         ],

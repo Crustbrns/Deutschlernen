@@ -36,15 +36,18 @@ class DefinitionTile extends StatelessWidget {
     final translation = this.translation; // local copy for null promotion
 
     return ExpandableTile(
-      // Plain icon, not a button: the whole row is already tappable.
-      // 48x48 matches the play buttons of the examples, so texts line up.
-      trailing: SizedBox.square(
-        dimension: 48,
-        child: Icon(
-          AppIcons.info,
-          // Half transparent = ~50% darker on the dark card.
-          color: Theme.of(context).colorScheme.onSurfaceVariant
-              .withValues(alpha: 0.5),
+      // Plain icon, not a button: the whole row is already tappable. Ends
+      // at the row inset, like the play buttons, so texts line up.
+      trailing: Padding(
+        padding: const EdgeInsets.only(right: ExpandableTile.inset),
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: Icon(
+            AppIcons.info,
+            // Half transparent = ~50% darker on the dark card.
+            color: Theme.of(context).colorScheme.onSurfaceVariant
+                .withValues(alpha: 0.5),
+          ),
         ),
       ),
       title: Text(definition, style: styles.base),
@@ -67,8 +70,7 @@ class ExampleTile extends StatelessWidget {
     final styles = _tileStyles(context);
 
     return ExpandableTile(
-      trailingVisualSize: PlayButton.size, // keeps the right edge aligned
-      trailing: PlayButton(
+      trailing: PlayButton.rowEnd(
         onPressed: () => onSpeak(stripMarkup(example.german)),
       ),
       title: Text.rich(
