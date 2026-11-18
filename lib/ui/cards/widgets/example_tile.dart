@@ -6,11 +6,11 @@ import 'package:deutschlernen/ui/cards/widgets/expandable_tile.dart';
 import 'package:deutschlernen/ui/core/highlight.dart';
 import 'package:deutschlernen/ui/core/widgets/play_button.dart';
 
-/// Text styles of the rows. German: white, the marked word yellow (a
-/// marker in the light theme). Translations under it: gray, their marked
-/// word white and bold, so the German line stays in focus.
-({TextStyle base, TextStyle mark, TextStyle detail, TextStyle detailMark})
-_tileStyles(BuildContext context) {
+/// Text styles of the rows. German: white, translations under it: gray.
+/// The marked word is yellow in both (a marker in the light theme).
+({TextStyle base, TextStyle mark, TextStyle detail}) _tileStyles(
+  BuildContext context,
+) {
   final colors = Theme.of(context).colorScheme;
   final palette = AppPalette.of(context);
   final base = TextStyle(
@@ -20,19 +20,15 @@ _tileStyles(BuildContext context) {
     letterSpacing: -0.2, // condensed like the rest of the card
     color: colors.onSurface,
   );
-  final detail = base.copyWith(color: palette.mutedText);
   return (
     base: base,
-    mark: base.copyWith(
+    // A span style: only overrides weight and colors of the line's style.
+    mark: TextStyle(
       fontWeight: FontWeight.w700,
       color: palette.markText,
       backgroundColor: palette.markFill,
     ),
-    detail: detail,
-    detailMark: detail.copyWith(
-      fontWeight: FontWeight.w700,
-      color: colors.onSurface,
-    ),
+    detail: base.copyWith(color: palette.mutedText),
   );
 }
 
@@ -99,7 +95,7 @@ class ExampleTile extends StatelessWidget {
       details: Text.rich(
         TextSpan(
           style: styles.detail,
-          children: markedSpans(example.translation, styles.detailMark),
+          children: markedSpans(example.translation, styles.mark),
         ),
       ),
     );

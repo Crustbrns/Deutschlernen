@@ -256,7 +256,8 @@ above the Categories search: `headlineSmall`, letter spacing -0.5, 24 from the s
   `onSurface` (white), regular; the highlighted word w700 in `palette.markText` on
   `palette.markFill` — dark: yellow text, no fill; light: dark text on a yellow marker (α 0.6;
   user's choice, yellow text on white is 1.6:1). Opened translations under them are
-  `mutedText` gray with their marked word `onSurface` w700: the German line stays in focus.
+  `mutedText` gray with their marked word highlighted the same way (user's choice: yellow in
+  both lines).
   Expand chevron: 11px
   `AppIcons.caretDownBold` (Phosphor Bold, `assets/fonts/PhosphorBold.ttf`), 8px gap to the text.
 - Articles are colored by gender with `AppColors.forArticle` on the word card. The plural
