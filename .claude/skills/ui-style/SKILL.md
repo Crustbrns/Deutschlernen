@@ -198,8 +198,8 @@ above the Categories search: `headlineSmall`, letter spacing -0.5, 24 from the s
 
 - Level illustrations (`LevelIcon`) are the one exception: flat color SVGs, see Lists.
 - All other icons are **Phosphor Regular** (thin line icons with rounded ends) — except the example
-  rows' chevron, `caretDownBold` from Phosphor Bold, and the bottom bar tabs (Phosphor Fill,
-  see above) — via `AppIcons`
+  rows' chevron, `caretDownBold` from Phosphor Bold, the bottom bar tabs (Phosphor Fill,
+  see above) and the streak flame `fireFill` (Phosphor Fill) — via `AppIcons`
   (`lib/ui/core/app_icons.dart`, font `assets/fonts/Phosphor.ttf`): `AppIcons.x`, `.arrowLeft`,
   `.speakerHigh`, … Never use Material `Icons.*` or `CupertinoIcons.*` — the app must look like
   one icon set. Do NOT add the `phosphor_flutter` package: it doesn't compile with current
@@ -294,39 +294,61 @@ the level word count (mutedText 50% lighter). Reset all progress: title in `deci
 
 ## Progress chart
 
-`ProgressScreen` (Progress tab): title like the other tabs, then a period switch, then one
-`palette.card` block (radius 20) with `ProgressChart`, then a `GroupedCard` with the current count
-per status (`_TotalRow`: 12px status dot, 12 gap, name in `AppListText.subtitle`, count right in
-`AppListText.title`; padding 16/14), top of the stack first: learned, review, learning, known.
-The list doubles as the chart's legend, so the chart has none of its own.
+`ProgressScreen` (Progress tab): title like the other tabs, then the streak block, then a
+period switch, then one
+`palette.card` block (radius 20) with `ProgressChart`, then the totals: a gray header
+(`_TotalsHeader`, `MenuRow.hintStyle(soft: true)`, 20 above, 8 below) naming the number
+columns — the period ("7 дней") and "Всего" — and a `GroupedCard` (`_TotalRow`: 12px status
+dot, 12 gap, name in `AppListText.subtitle`, then the numbers in `AppListText.title`,
+right-aligned in 76-wide columns; padding 16/14), top of the stack first: learned, review,
+learning, known. Period column = the sum of the bars (`periodTotals`); "Всего" = words in
+each status now (`latestCounts`). With "all time" selected only the "Всего" column shows
+(the two would repeat). The list doubles as the chart's legend, so the chart has none.
 
 - Period switch (`_PeriodSwitch`): one `palette.card` block, radius 14, padding 4; four equal
   segments 36 tall, radius 10 — 7 / 30 / 90 days / all time. Selected: `accentBlue` α 0.14 fill,
   `accentBlue` text; others `onSurface`; 14 w600 -0.3.
+- Bars show only their own period's activity (user's choice, not the running stock):
+  7 and 30 days — a bar per day, 90 days — per week (Monday start), all time — per calendar
+  month (label "ноя", `AppStrings.monthShort`). See `chartBars`.
 - Chart (`progress_chart.dart`, its `CustomPainter`s in the part file
   `progress_chart_painters.dart`): stacked bars, bottom to top known (soft light
   gray `AppColors.chartKnown` #C7C7CC in both themes — white in the lists, gray here by the
   user's choice), learning (pink),
   review (yellow), learned (green); colors via `ProgressChart.colorFor`, the legend dots too.
-  2px gaps between segments, radius 6, bar ≤ 44 wide (62% of its slot). Neighbouring bars are
+  2px gaps between segments, radius 6; the lowest segment stands on the axis: no gap under it,
+  square bottom corners. Bar 80% of its slot, at most 28 wide. Neighbouring bars are
   joined per status by bands (same color α 0.22, cubic curves). x labels 12 w600 `mutedText`,
-  a short date with the month abbreviated (`AppStrings.dateShort`: "16 ноя", "16 Nov",
-  "11月 16日"); if any label is wider than its column, all break into two lines (day / month). Slots narrower than 52 scroll sideways, opening at the latest bar.
+  3px below the grid, a short date with the month abbreviated (`AppStrings.dateShort`:
+  "16 ноя", "16 Nov", "11月 16日"); if any label is wider than its column, all break into two
+  lines (day / month, line height 1.05). Slots narrower than 36 scroll sideways, opening at
+  the latest bar.
 - Every non-empty segment shows its word count centered (14 regular w400, -0.3, always black
-  `AppColors.chartCount` — all fills are light), so it is at least 22px tall; the rest of
-  the height is linear, one scale for all bars. Y axis (34 wide, 12 w600 `mutedText`) and a
-  dashed grid in `AppColors.divider` stay: round steps 1/2/5/10/…, ≤ 4 lines above 0; if the
-  minimums make a bar too tall, the scale shrinks to fit and the ticks follow
-  (`ProgressChart._layout`).
+  `AppColors.chartCount` — all fills are light) and is at least square (min height = bar
+  width + the 2px gap); the rest of the height is linear, one scale for all bars. Y axis
+  (34 wide, 12 w600 `mutedText`) and a dashed grid in `AppColors.divider` stay: round steps
+  1/2/5/10/…, ≤ 4 lines above 0; the axis top is the tallest bar × 1.5 (headroom, user's
+  choice); if the minimums make a bar too tall, the scale shrinks so it still leaves that
+  headroom, and the ticks follow (`ProgressChart._layout`).
 - Vertical grid: dashed lines between columns, same style as the horizontal ones (1px,
   4 on / 4 off, `AppColors.divider`), plot height only; scroll with the bars. (Zebra column
   backings were tried and rejected: the user wants plain dashes both ways.) A segment raised to the minimum looks bigger than its value on
   the axis — intended, the user's choice.
-- Meaning — a funnel, layers overlap (user's choice): known — "already know" (separate);
-  pink "Изучаю" — every word taken to learn (pink + yellow + green statuses); yellow
-  "Повторено" — unique words recalled at least once (yellow + green); green "Выучено" —
-  interval ≥ 21 days. A learned word adds to pink, yellow and green, so a bar is taller than
-  the number of words (`StatusCounts.stack` / `stackTotal`). The list under the chart shows
-  the same funnel numbers.
-- Height = all words in each status at the end of that day/week (not the day's activity).
-  7 days — a bar per day; 30 / 90 days / all time — a bar per week (Monday start).
+- Layers — a funnel (user's choice): known — "already know"; pink "Изучаю" — words taken to
+  learn; yellow "Повторено" — in a bar, every word reviewed that day (old ones too, summed
+  over the days of a week/month; `DaySnapshot.reviewed`), in "Всего" the unique words
+  recalled at least once; green "Выучено" — interval ≥ 21 days. A bar's layers are the growth
+  since the previous bar (drops count as 0).
+
+## Daily streak
+
+`StreakCard` (`lib/ui/progress/widgets/streak_card.dart`), the first block on the Progress tab,
+12 above the period switch: `palette.card`, radius 20, padding 16. Top row: `AppIcons.fireFill`
+28 — `AppColors.streak` orange #FF9500 once the user studied today, `palette.mutedText` before —
+8 gap, "5 дней подряд" (`AppStrings.streakDays`, plural) 20 w700 -0.5 `onSurface`, and on the
+right "Рекорд: 12" in `MenuRow.hintStyle(soft: true)`. 14 below: this week Mon–Sun, each a
+12 w600 day name (`mutedText`, today `onSurface`) over a 30px circle, 6 apart vertically:
+studied = `AppColors.streak` fill, else `palette.subtleButton`; today not studied yet gets a
+1.5px `AppColors.streak` ring. Rule (`StudyStreak`, domain): a day counts if the user reviewed a
+word or took a new one to learn ("Уже знаю" doesn't); today not studied yet doesn't break the
+streak before midnight. The Learn tab's week strip doesn't show studied days (user's choice).

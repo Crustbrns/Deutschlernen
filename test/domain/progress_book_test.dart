@@ -62,6 +62,24 @@ void main() {
     );
   });
 
+  test('reviewedSince counts any answered review, not pink or known', () {
+    final remembered = scheduler.review(pink(1), remembered: true);
+    final forgot = scheduler.review(remembered, remembered: false);
+    final book = ProgressBook({
+      'a': remembered,
+      'b': forgot,
+      'c': pink(2),
+      'd': const WordProgress.known(),
+    });
+    final reviewedAt = remembered.card!.lastReview!;
+
+    expect(book.reviewedSince(reviewedAt), 2);
+    expect(
+      book.reviewedSince(DateTime.now().add(const Duration(seconds: 1))),
+      0,
+    );
+  });
+
   test('put(null) makes a word new again', () {
     final book = ProgressBook({'a': pink(1)});
     book.put('a', null);

@@ -11,9 +11,9 @@ import 'package:deutschlernen/data/services/speech_service.dart';
 import 'package:deutschlernen/domain/models/app_language.dart';
 import 'package:deutschlernen/domain/models/card_decision.dart';
 import 'package:deutschlernen/domain/models/card_session.dart';
+import 'package:deutschlernen/domain/models/day_snapshot.dart';
 import 'package:deutschlernen/domain/models/progress_book.dart';
 import 'package:deutschlernen/domain/models/reminder_plan.dart';
-import 'package:deutschlernen/domain/models/status_counts.dart';
 import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/domain/models/word_status.dart';
 import 'package:deutschlernen/ui/core/view_models/language_view_model.dart';
@@ -68,8 +68,8 @@ class LearningViewModel extends ChangeNotifier {
   /// Levels new words and reviews are taken from; all by default.
   Set<String> _learnLevels = {...Word.levels};
 
-  /// Daily status counts for the progress chart, keyed by local midnight.
-  Map<DateTime, StatusCounts> _statusHistory = {};
+  /// Daily snapshots for the progress chart, keyed by local midnight.
+  Map<DateTime, DaySnapshot> _statusHistory = {};
 
   /// Word id → times opened from the Categories search.
   Map<String, int> _lookupCounts = {};
@@ -95,7 +95,7 @@ class LearningViewModel extends ChangeNotifier {
   /// Every word's translation: wrong options for the "choose" mode.
   List<String> get translations => _translations;
   Set<String> get learnLevels => _learnLevels;
-  Map<DateTime, StatusCounts> get statusHistory =>
+  Map<DateTime, DaySnapshot> get statusHistory =>
       Map.unmodifiable(_statusHistory);
   bool get showTranscription => _settingsViewModel.showTranscription;
 
@@ -316,8 +316,10 @@ class LearningViewModel extends ChangeNotifier {
   /// Overwrites today's entry in the history with the current counts.
   void _recordSnapshot() {
     final now = DateTime.now();
-    _statusHistory[DateTime(now.year, now.month, now.day)] = _progress.counts(
-      now.toUtc(),
+    final today = DateTime(now.year, now.month, now.day);
+    _statusHistory[today] = DaySnapshot(
+      _progress.counts(now.toUtc()),
+      reviewed: _progress.reviewedSince(today),
     );
     unawaited(_historyRepository.save(_statusHistory));
   }
