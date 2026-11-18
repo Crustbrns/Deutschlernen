@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'dart:ui' show lerpDouble;
 
 import 'package:flutter/physics.dart';
+import 'package:flutter/services.dart' show HapticFeedback;
 import 'package:material_ui/material_ui.dart';
 
 enum SwipeDirection { left, right }
@@ -100,7 +101,14 @@ class _SwipeableCardState extends State<SwipeableCard>
   /// Horizontal drag (fraction of the width) that fully lights a button.
   static const _highlightDistance = 0.3;
 
+  /// Horizontal drag (fraction of the width) past which a release decides.
+  static const _decideDistance = 0.25;
+
   bool _isSwiping = false;
+
+  /// The card is past [_decideDistance]: letting go now decides. Crossing
+  /// it ticks, so the finger feels the moment the swipe will count.
+  bool _pastDecision = false;
   bool _enterHandled = false;
 
   /// True while the card flies in after an undo. The buttons stay unlit then.
@@ -199,15 +207,23 @@ class _SwipeableCardState extends State<SwipeableCard>
     return _controller.animateTo(1, duration: duration, curve: curve);
   }
 
+  bool _isPastDecision() =>
+      _offset.value.dx.abs() >
+      MediaQuery.sizeOf(context).width * _decideDistance;
+
   void _onDragStart(DragStartDetails details) {
     if (_isSwiping) return;
     _controller.stop(); // grab the card even while it is still springing back
     _isEntering = false;
+    _pastDecision = _isPastDecision();
   }
 
   void _onDragUpdate(DragUpdateDetails details) {
     if (_isSwiping) return;
     _offset.value += details.delta;
+    final past = _isPastDecision();
+    if (past && !_pastDecision) HapticFeedback.selectionClick();
+    _pastDecision = past;
   }
 
   void _onDragEnd(DragEndDetails details) {
@@ -220,14 +236,14 @@ class _SwipeableCardState extends State<SwipeableCard>
     // The decision depends on the horizontal part only, so a diagonal
     // swipe counts as left or right.
     final flung = velocity.dx.abs() > 700;
-    final draggedFarEnough = offset.dx.abs() > width * 0.25;
+    final draggedFarEnough = offset.dx.abs() > width * _decideDistance;
 
     if (flung || draggedFarEnough) {
       final heading = flung ? velocity : offset;
       swipe(
         heading.dx > 0 ? SwipeDirection.right : SwipeDirection.left,
         heading: heading,
-        speed: velocity.distance,
+        velocity: velocity,
       );
     } else {
       _snapBack(velocity);
@@ -262,10 +278,19 @@ class _SwipeableCardState extends State<SwipeableCard>
   ///
   /// [heading] is the direction of flight; the card leaves along it until it
   /// is past the screen edge. Buttons pass none and get a slight upward arc.
-  void swipe(SwipeDirection direction, {Offset? heading, double speed = 0}) {
+  /// [velocity] is the finger's at release: the flight starts at it.
+  void swipe(
+    SwipeDirection direction, {
+    Offset? heading,
+    Offset velocity = Offset.zero,
+  }) {
     if (_isSwiping) return;
     _isSwiping = true;
     widget.onSwipeStarted();
+    // The decision is felt: a light tap, unless the drag already ticked
+    // when it crossed the line.
+    if (!_pastDecision) HapticFeedback.lightImpact();
+    _pastDecision = false;
 
     final width = MediaQuery.sizeOf(context).width;
     final sign = direction == SwipeDirection.right ? 1.0 : -1.0;
@@ -284,8 +309,16 @@ class _SwipeableCardState extends State<SwipeableCard>
     // The faster the flick, the shorter the flight. Slow overall
     // (560–1120 ms) so the card visibly glides away; the next one then
     // appears quickly.
-    final flightSpeed = speed.clamp(900, 4000);
+    final flightSpeed = velocity.distance.clamp(900, 4000);
     final ms = (distance / flightSpeed * 1000 * 2).clamp(560, 1120);
+    // Finger speed along the flight path: the card leaves the finger at it.
+    final path = target - _offset.value;
+    final launchSpeed = distance == 0
+        ? 0.0
+        : math.max(
+            0.0,
+            (velocity.dx * path.dx + velocity.dy * path.dy) / distance,
+          );
 
     final exit = _reduceMotion
         // Reduce Motion: no flight, the card fades out where it is.
@@ -299,10 +332,10 @@ class _SwipeableCardState extends State<SwipeableCard>
             target,
             duration: Duration(milliseconds: ms.round()),
             // Button: starts gently and speeds up — a smooth glide from rest.
-            // Drag: the card is already moving, so it keeps going and eases.
+            // Drag: starts at the finger's speed and eases out.
             curve: heading == null
                 ? Curves.easeInOutCubic
-                : Curves.easeOutCubic,
+                : _LaunchCurve(launchSpeed * ms / 1000 / distance),
           );
     exit.whenComplete(() {
       if (!mounted) return;
@@ -344,4 +377,19 @@ class _SwipeableCardState extends State<SwipeableCard>
       ),
     );
   }
+}
+
+/// Eases out from a given start speed: [slope] is the speed at t = 0 in
+/// "whole distance per whole duration" (1 = even pace). A cubic with
+/// f(0) = 0, f(1) = 1, f'(0) = slope, f'(1) = 0. The slope is capped at 3
+/// (= easeOutCubic): steeper would overshoot, so a very fast flick slows a
+/// little at release to keep the 560 ms minimum flight.
+class _LaunchCurve extends Curve {
+  _LaunchCurve(double slope) : slope = slope.clamp(0.0, 3.0);
+
+  final double slope;
+
+  @override
+  double transformInternal(double t) =>
+      ((slope - 2) * t + (3 - 2 * slope)) * t * t + slope * t;
 }

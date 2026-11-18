@@ -115,8 +115,10 @@ Separate blocks are only for different kinds of content (e.g. a title, then a li
 - **Tap areas are at least 44 px** (Apple's minimum), even when the visible control is smaller:
   extend the tappable area with padding inside the gesture detector (see `_PeriodSwitch`), not
   by enlarging the visuals.
-- **Card stack motion**: the top card flies off in 560–1120 ms (button: `easeInOutCubic`,
-  drag: `easeOutCubic`). The next card is a real card under it (`IgnorePointer`) that grows
+- **Card stack motion**: the top card flies off in 560–1120 ms (button: `easeInOutCubic`;
+  drag: `_LaunchCurve` — starts at the finger's speed along the path, then eases out, so there
+  is no seam at release). Haptics: a `selectionClick` when a drag crosses the decision line
+  (25% of the width), a `lightImpact` when a button or a short flick decides. The next card is a real card under it (`IgnorePointer`) that grows
   95% → 100% with `SwipeController.reveal` (how far the top card has moved) while its dimming
   (`palette.background` α 0.75 on top) fades out, so it is full size and bright
   the moment the top one is gone; deeper cards are empty shapes. Each card gets its own bottom
@@ -182,8 +184,11 @@ animations, it looked jerky). The lens grows a little (1.2× wide, 1.22× tall),
 enlarges the tabs under it (×1.12) and `LiquidGlass` (package `liquid_glass_renderer`, Impeller
 only) refracts them at the edges: blur 0 and chromatic aberration 0 — the user rejected both the
 soapy blur and the rainbow rim. Dragging along the bar holds the lens up and moves it with the
-finger, a haptic tick per tab crossed; release snaps to the nearest tab. Taps are handled by
-the bar, not the tabs.
+finger, a haptic tick per tab crossed. Grabbing doesn't jump: the lens starts where it is and
+catches up with the finger over the first half tab. On release the lens springs (damping 0.85,
+stiffness 320) from the finger's speed to the tab the flick is heading for (Apple's momentum
+projection, deceleration 0.99), not just the nearest one. Taps are handled by the bar, not the
+tabs.
 
 Tabs and their icons (`AppIcons`, font `assets/fonts/PhosphorFill.ttf`): Учить / Learn —
 `houseFill`, Категории / Categories — `squaresFourFill`, Прогресс / Progress —
