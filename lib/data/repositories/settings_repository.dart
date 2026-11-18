@@ -23,6 +23,7 @@ class SettingsRepository {
   static const _autoSpeakKey = 'auto_speak';
   static const _speechRateKey = 'speech_rate';
   static const _learnLevelsKey = 'learn_levels';
+  static const _wordGoalKey = 'word_goal';
 
   /// One shared choice, saved before the two were separated.
   static const _legacyLanguageKey = 'language';
@@ -55,6 +56,7 @@ class SettingsRepository {
     final themeName = await _prefs.getString(_themeModeKey);
     final legacyDark = await _prefs.getBool(_legacyDarkThemeKey);
     final rate = await _prefs.getDouble(_speechRateKey);
+    final goal = await _prefs.getInt(_wordGoalKey);
 
     return AppSettings(
       themeMode:
@@ -73,6 +75,8 @@ class SettingsRepository {
         AppSettings.minSpeechRate,
         AppSettings.maxSpeechRate,
       ),
+      // A broken value (0 or less) would divide the goal bar by zero.
+      wordGoal: goal != null && goal > 0 ? goal : defaults.wordGoal,
     );
   }
 
@@ -130,6 +134,8 @@ class SettingsRepository {
 
   Future<void> saveSpeechRate(double value) =>
       _prefs.setDouble(_speechRateKey, value);
+
+  Future<void> saveWordGoal(int value) => _prefs.setInt(_wordGoalKey, value);
 
   /// Levels picked for learning; null = never chosen.
   Future<List<String>?> loadLearnLevels() =>

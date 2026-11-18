@@ -88,6 +88,8 @@
   "streakDaysMany": "{n} днів поспіль",
   "streakDaysOther": "{n} днів поспіль",
   "streakBest": "Рекорд: {n}",
+  "wordGoal": "Мета",
+  "wordGoalProgress": "{n} з {goal}",
   "monthsShort": "січ,лют,бер,кві,тра,чер,лип,сер,вер,жов,лис,гру",
   "dateShort": "{d} {m}",
   "done": "Готово",

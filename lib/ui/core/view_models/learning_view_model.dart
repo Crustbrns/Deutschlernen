@@ -107,6 +107,10 @@ class LearningViewModel extends ChangeNotifier {
   /// Words in each status right now, per chart layer.
   List<int> get currentTotals => latestCounts(_statusHistory).stack;
 
+  /// Words known now (green or "already know"): progress to [wordGoal].
+  int get masteredCount => latestCounts(_statusHistory).mastered;
+  int get wordGoal => _settingsViewModel.wordGoal;
+
   /// The daily streak, as of now.
   StudyStreak get streak => StudyStreak.of(_statusHistory, DateTime.now());
   bool get showTranscription => _settingsViewModel.showTranscription;

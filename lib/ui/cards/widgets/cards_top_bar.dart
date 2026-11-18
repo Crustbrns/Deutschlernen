@@ -2,6 +2,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
+import 'package:deutschlernen/ui/core/widgets/progress_bar.dart';
 import 'package:deutschlernen/ui/core/widgets/round_icon_button.dart';
 
 class CardsTopBar extends StatelessWidget {
@@ -34,7 +35,7 @@ class CardsTopBar extends StatelessWidget {
           child: Padding(
             // 16 to the visible buttons: their tap area adds 4.
             padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: _ProgressBar(progress: progress),
+            child: ProgressBar(progress: progress, color: AppColors.yellow),
           ),
         ),
         _GoalRing(learned: learnedToday, goal: dailyGoal),
@@ -46,37 +47,6 @@ class CardsTopBar extends StatelessWidget {
           onPressed: onUndo,
         ),
       ],
-    );
-  }
-}
-
-class _ProgressBar extends StatelessWidget {
-  const _ProgressBar({required this.progress});
-
-  final double progress;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
-
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(8),
-      child: SizedBox(
-        height: 8,
-        child: ColoredBox(
-          color: colors.surfaceContainerHighest,
-          child: TweenAnimationBuilder<double>(
-            tween: Tween<double>(begin: 0, end: progress),
-            duration: const Duration(milliseconds: 350),
-            curve: Curves.easeOutCubic,
-            builder: (context, value, _) => FractionallySizedBox(
-              alignment: Alignment.centerLeft,
-              widthFactor: value.clamp(0.0, 1.0).toDouble(),
-              child: const ColoredBox(color: AppColors.yellow),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

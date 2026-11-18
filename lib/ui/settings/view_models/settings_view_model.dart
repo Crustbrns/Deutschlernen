@@ -25,6 +25,7 @@ class SettingsViewModel extends ChangeNotifier {
   ReminderSettings get reminders => _settings.reminders;
   bool get autoSpeak => _settings.autoSpeak;
   double get speechRate => _settings.speechRate;
+  int get wordGoal => _settings.wordGoal;
 
   Future<void> load() async {
     _settings = await _settingsRepository.loadSettings();
@@ -79,6 +80,12 @@ class SettingsViewModel extends ChangeNotifier {
     _settings = _settings.copyWith(reminders: value);
     notifyListeners();
     await _settingsRepository.saveReminders(value);
+  }
+
+  Future<void> setWordGoal(int value) async {
+    _settings = _settings.copyWith(wordGoal: value);
+    notifyListeners();
+    await _settingsRepository.saveWordGoal(value);
   }
 
   Future<void> setAutoSpeak(bool value) async {

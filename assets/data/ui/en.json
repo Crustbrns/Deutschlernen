@@ -82,6 +82,8 @@
   "streakDaysOne": "{n}-day streak",
   "streakDaysOther": "{n}-day streak",
   "streakBest": "Best: {n}",
+  "wordGoal": "Goal",
+  "wordGoalProgress": "{n} of {goal}",
   "monthsShort": "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec",
   "dateShort": "{d} {m}",
   "done": "Done",

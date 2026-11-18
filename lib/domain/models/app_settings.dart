@@ -10,6 +10,7 @@ class AppSettings {
     this.reminders = const ReminderSettings(),
     this.autoSpeak = false,
     this.speechRate = defaultSpeechRate,
+    this.wordGoal = defaultWordGoal,
   });
 
   /// Only light or dark; the app has no "follow the system" option.
@@ -32,12 +33,20 @@ class AppSettings {
   static const defaultSpeechRate =
       0.4; // what the app used before it was a setting
 
+  /// How many words to know (learned or "already know"): the goal bar on
+  /// the Progress tab.
+  final int wordGoal;
+
+  static const wordGoals = [50, 100, 250, 500, 1000];
+  static const defaultWordGoal = 100;
+
   AppSettings copyWith({
     ThemeMode? themeMode,
     bool? showTranscription,
     ReminderSettings? reminders,
     bool? autoSpeak,
     double? speechRate,
+    int? wordGoal,
   }) {
     return AppSettings(
       themeMode: themeMode ?? this.themeMode,
@@ -45,6 +54,7 @@ class AppSettings {
       reminders: reminders ?? this.reminders,
       autoSpeak: autoSpeak ?? this.autoSpeak,
       speechRate: speechRate ?? this.speechRate,
+      wordGoal: wordGoal ?? this.wordGoal,
     );
   }
 }

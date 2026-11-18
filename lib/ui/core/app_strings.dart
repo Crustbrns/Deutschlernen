@@ -82,6 +82,16 @@ class AppStrings {
   /// "Рекорд: 12": the longest streak.
   String streakBest(int n) => _get('streakBest').replaceAll('{n}', '$n');
 
+  /// "Цель": the settings row and the label of the goal bar.
+  String get wordGoal => _get('wordGoal');
+
+  /// "12 из 100 слов": known words out of the goal. The goals are 50 or
+  /// more, so [wordCount] gives the right form after "из".
+  String wordGoalProgress(int n, int goal) =>
+      _get('wordGoalProgress')
+          .replaceAll('{n}', '$n')
+          .replaceAll('{goal}', wordCount(goal));
+
   /// Short date, "16 ноя" / "16 Nov" / "11月 16日": the order comes from
   /// `dateShort` ({d}, {m}), the month from `monthsShort` (12, comma-separated).
   /// The space lets a narrow label break into day and month.

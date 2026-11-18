@@ -5,12 +5,13 @@ import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/tab_page.dart';
 import 'package:deutschlernen/domain/models/chart_bars.dart';
+import 'package:deutschlernen/ui/progress/widgets/goal_card.dart';
 import 'package:deutschlernen/ui/progress/widgets/progress_chart.dart';
 import 'package:deutschlernen/ui/progress/widgets/progress_totals.dart';
 import 'package:deutschlernen/ui/progress/widgets/streak_card.dart';
 
-/// Progress tab: title, the daily streak, period switch (7 / 30 / 90 days /
-/// all time), then
+/// Progress tab: title, the daily streak, the word goal, period switch
+/// (7 / 30 / 90 days / all time), then
 /// one block with the stacked chart of what was done per day, week or month,
 /// and under it the totals per status, for the period and for all time (also
 /// the chart's legend).
@@ -18,11 +19,17 @@ class ProgressScreen extends StatefulWidget {
   const ProgressScreen({
     super.key,
     required this.streak,
+    required this.mastered,
+    required this.wordGoal,
     required this.currentTotals,
     required this.chartFor,
   });
 
   final StudyStreak streak;
+
+  /// Words known now (green or "already know") out of [wordGoal].
+  final int mastered;
+  final int wordGoal;
 
   /// Words in each status now, per chart layer ("Всего").
   final List<int> currentTotals;
@@ -63,6 +70,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
       title: strings.tabProgress,
       children: [
         StreakCard(streak: widget.streak),
+        const SizedBox(height: 12),
+        GoalCard(known: widget.mastered, goal: widget.wordGoal),
         const SizedBox(height: 12),
         _PeriodSwitch(
           selected: _period,
