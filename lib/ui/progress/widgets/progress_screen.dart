@@ -108,7 +108,8 @@ class _PeriodSwitch extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
 
     return Container(
-      padding: const EdgeInsets.all(4),
+      // Vertical padding sits inside each segment's tap area: 44 tall.
+      padding: const EdgeInsets.symmetric(horizontal: 4),
       decoration: BoxDecoration(
         color: AppPalette.of(context).card,
         borderRadius: BorderRadius.circular(14),
@@ -120,28 +121,31 @@ class _PeriodSwitch extends StatelessWidget {
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () => onSelected(p),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  curve: Curves.easeOutCubic,
-                  height: 36,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: p == selected
-                        ? AppColors.accentBlue.withValues(alpha: 0.14)
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Text(
-                    labels[p]!,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: -0.3,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    curve: Curves.easeOutCubic,
+                    height: 36,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
                       color: p == selected
-                          ? AppColors.accentBlue
-                          : colors.onSurface,
+                          ? AppColors.accentBlue.withValues(alpha: 0.14)
+                          : Colors.transparent,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      labels[p]!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: -0.3,
+                        color: p == selected
+                            ? AppColors.accentBlue
+                            : colors.onSurface,
+                      ),
                     ),
                   ),
                 ),

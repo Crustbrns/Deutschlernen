@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'dart:ui' show ImageFilter, lerpDouble;
 
+import 'package:flutter/physics.dart';
 import 'package:flutter/services.dart' show HapticFeedback;
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/ui/core/app_icons.dart';
@@ -19,7 +20,8 @@ enum HomeTab { learn, categories, progress, settings }
 /// The selected tab sits on a lighter pill. On a tap or a drag along the bar
 /// the pill "lifts" into a glass lens (iOS 26 style): it grows a little,
 /// magnifies and refracts the tabs under it, slides, and settles back.
-/// Dragging moves the lens with the finger; release selects the nearest tab.
+/// Dragging moves the lens with the finger; on release it springs, at the
+/// finger's speed, to the tab the flick is heading for.
 class AppBottomBar extends StatefulWidget {
   const AppBottomBar({
     super.key,
@@ -41,12 +43,29 @@ class _AppBottomBarState extends State<AppBottomBar>
   static const _tabHeight = 58.0;
 
   /// Slide between tabs. Positions are in tab units (0 = first tab),
-  /// so they don't depend on the bar's width.
-  late final _move = AnimationController(
-    vsync: this,
-    duration: const Duration(milliseconds: 420),
-    value: 1,
+  /// so they don't depend on the bar's width. Unbounded: the release
+  /// spring may overshoot the tab a little.
+  late final _move = AnimationController.unbounded(vsync: this, value: 1);
+  static const _slide = Duration(milliseconds: 420);
+
+  /// After a drag: slight bounce, since the finger threw it (Apple's
+  /// "momentum" spring, damping 0.85, response ≈ 0.35 s).
+  static final _releaseSpring = SpringDescription.withDampingRatio(
+    mass: 1,
+    stiffness: 320,
+    ratio: 0.85,
   );
+
+  /// How far a flick carries: Apple's projection, snappier than scrolling.
+  static const _deceleration = 0.99;
+
+  /// The current slide is the release spring: linear in [_move], may
+  /// overshoot. Taps ease in and out instead.
+  bool _springing = false;
+
+  /// Reduce Motion: a short slide and no lens.
+  static const _calmSlide = Duration(milliseconds: 150);
+  bool _reduceMotion = false;
 
   /// Lens held up by a finger dragging along the bar.
   late final _hold = AnimationController(
@@ -58,6 +77,11 @@ class _AppBottomBarState extends State<AppBottomBar>
   late double _fromPos = widget.selected.index.toDouble();
   late double _toPos = _fromPos;
   bool _dragging = false;
+
+  /// Lens minus finger position when the drag started, and where the finger
+  /// was: the gap closes as the finger moves, so the lens doesn't jump.
+  double _grabOffset = 0;
+  double _grabStartDx = 0;
 
   /// The current slide came from a tap: the lens rises and falls with it.
   bool _bump = false;
@@ -74,18 +98,26 @@ class _AppBottomBarState extends State<AppBottomBar>
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _reduceMotion = MediaQuery.disableAnimationsOf(context);
+  }
+
+  @override
   void dispose() {
     _move.dispose();
     _hold.dispose();
     super.dispose();
   }
 
-  // Slow start, fast middle, slow end. Quart is stronger than Cubic:
+  // Taps: slow start, fast middle, slow end. Quart is stronger than Cubic:
   // the soft ends are clearly visible.
   double get _pos => lerpDouble(
     _fromPos,
     _toPos,
-    Curves.easeInOutQuart.transform(_move.value),
+    _springing
+        ? _move.value
+        : Curves.easeInOutQuart.transform(_move.value.clamp(0.0, 1.0)),
   )!;
 
   /// 0 = flat pill, 1 = lens fully up.
@@ -94,6 +126,7 @@ class _AppBottomBarState extends State<AppBottomBar>
   /// plain sin is fastest at the very start and end (a jump up, a drop
   /// down); sin² starts and ends at zero speed.
   double get _lift {
+    if (_reduceMotion) return 0;
     final bump = _bump
         ? math.pow(math.sin(math.pi * _move.value), 2).toDouble()
         : 0.0;
@@ -105,7 +138,29 @@ class _AppBottomBarState extends State<AppBottomBar>
     _fromPos = _pos;
     _toPos = target;
     _bump = bump;
-    _move.forward(from: 0);
+    _springing = false;
+    _move.value = 0;
+    _move.animateTo(1, duration: _reduceMotion ? _calmSlide : _slide);
+  }
+
+  /// Release: springs from where the lens is to [target], starting at the
+  /// finger's [velocity] (tabs per second), so there is no seam.
+  void _settle(double target, double velocity) {
+    if (_reduceMotion) return _slideTo(target, bump: false);
+    _fromPos = _pos;
+    _toPos = target;
+    _bump = false;
+    final distance = _toPos - _fromPos;
+    if (distance.abs() < 1e-3) {
+      _move.value = 1;
+      return;
+    }
+    _springing = true;
+    _move.value = 0;
+    // Progress runs 0 → 1 over the distance: the speed is relative to it.
+    _move.animateWith(
+      SpringSimulation(_releaseSpring, 0, 1, velocity / distance),
+    );
   }
 
   void _select(int index) {
@@ -120,18 +175,32 @@ class _AppBottomBarState extends State<AppBottomBar>
   double _posAt(double dx, double tabWidth) =>
       (dx / tabWidth - 0.5).clamp(0.0, HomeTab.values.length - 1.0);
 
+  /// The lens under a dragging finger: it starts where it is (even
+  /// mid-slide) and catches up with the finger over the first half tab.
+  double _dragPos(double dx, double tabWidth) {
+    final moved = ((dx - _grabStartDx).abs() / (tabWidth / 2)).clamp(0.0, 1.0);
+    return (_posAt(dx, tabWidth) - _grabOffset * (1 - moved)).clamp(
+      0.0,
+      HomeTab.values.length - 1.0,
+    );
+  }
+
   void _onDragStart(double dx, double tabWidth) {
     _dragging = true;
+    final pos = _pos;
     _move.stop();
     _bump = false;
-    _fromPos = _toPos = _posAt(dx, tabWidth);
+    _springing = false;
+    _grabStartDx = dx;
+    _grabOffset = _posAt(dx, tabWidth) - pos;
+    _fromPos = _toPos = pos;
     _move.value = 1;
-    _lastDragTab = _toPos.round();
+    _lastDragTab = pos.round();
     _hold.forward();
   }
 
   void _onDragUpdate(double dx, double tabWidth) {
-    setState(() => _fromPos = _toPos = _posAt(dx, tabWidth));
+    setState(() => _fromPos = _toPos = _dragPos(dx, tabWidth));
     final tab = _toPos.round();
     if (tab != _lastDragTab) {
       _lastDragTab = tab;
@@ -139,11 +208,19 @@ class _AppBottomBarState extends State<AppBottomBar>
     }
   }
 
-  void _onDragEnd() {
+  /// [velocity] in pixels per second, positive to the right.
+  void _onDragEnd(double velocity, double tabWidth) {
     _dragging = false;
-    final index = _pos.round();
-    // Snap to the nearest tab while the lens settles, at the same time.
-    _slideTo(index.toDouble(), bump: false);
+    final last = HomeTab.values.length - 1;
+    var v = velocity / tabWidth; // tabs per second
+    // Picks the tab the flick is heading for, not the one under the finger.
+    final projected = _pos + v / 1000 * _deceleration / (1 - _deceleration);
+    final index = projected.round().clamp(0, last);
+    // Flung into an end: no speed past it, the lens would leave the bar.
+    if ((index == 0 && v < 0) || (index == last && v > 0)) v = 0;
+    if (index != _lastDragTab) HapticFeedback.selectionClick();
+    // The lens settles while it springs to the tab, at the same time.
+    _settle(index.toDouble(), v);
     _hold.reverse();
     if (index != widget.selected.index) {
       widget.onSelected(HomeTab.values[index]);
@@ -189,8 +266,9 @@ class _AppBottomBarState extends State<AppBottomBar>
                 _onDragStart(inner(d.localPosition.dx), tabWidth),
             onHorizontalDragUpdate: (d) =>
                 _onDragUpdate(inner(d.localPosition.dx), tabWidth),
-            onHorizontalDragEnd: (_) => _onDragEnd(),
-            onHorizontalDragCancel: _onDragEnd,
+            onHorizontalDragEnd: (d) =>
+                _onDragEnd(d.primaryVelocity ?? 0, tabWidth),
+            onHorizontalDragCancel: () => _onDragEnd(0, tabWidth),
             child: AnimatedBuilder(
               animation: Listenable.merge([_move, _hold]),
               builder: (context, _) {

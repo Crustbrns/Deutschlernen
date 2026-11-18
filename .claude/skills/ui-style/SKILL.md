@@ -109,9 +109,16 @@ Separate blocks are only for different kinds of content (e.g. a title, then a li
 - Undo on the cards screen uses `AppIcons.arrowUUpLeft` (curved U-turn), not `arrowLeft`
   (that one means "go back").
 - **Round icon button** (close, undo, …): `RoundIconButton` (`lib/ui/core/widgets/round_icon_button.dart`) —
-  `palette.subtleButton` fill, 36×36, icon 20; disabled = same fill, faded icon. Don't use `filledTonal`.
-- **Card stack motion**: the top card flies off in 560–1120 ms (button: `easeInOutCubic`,
-  drag: `easeOutCubic`). The next card is a real card under it (`IgnorePointer`) that grows
+  `palette.subtleButton` fill, 36×36 visible, icon 20; disabled = same fill, faded icon. Don't use `filledTonal`.
+  It takes **44×44 in the layout** (the tap area, padded tap target + density −1): place it with
+  4 less padding/gap on each side than you want to the visible circle.
+- **Tap areas are at least 44 px** (Apple's minimum), even when the visible control is smaller:
+  extend the tappable area with padding inside the gesture detector (see `_PeriodSwitch`), not
+  by enlarging the visuals.
+- **Card stack motion**: the top card flies off in 560–1120 ms (button: `easeInOutCubic`;
+  drag: `_LaunchCurve` — starts at the finger's speed along the path, then eases out, so there
+  is no seam at release). Haptics: a `selectionClick` when a drag crosses the decision line
+  (25% of the width), a `lightImpact` when a button or a short flick decides. The next card is a real card under it (`IgnorePointer`) that grows
   95% → 100% with `SwipeController.reveal` (how far the top card has moved) while its dimming
   (`palette.background` α 0.75 on top) fades out, so it is full size and bright
   the moment the top one is gone; deeper cards are empty shapes. Each card gets its own bottom
@@ -177,8 +184,11 @@ animations, it looked jerky). The lens grows a little (1.2× wide, 1.22× tall),
 enlarges the tabs under it (×1.12) and `LiquidGlass` (package `liquid_glass_renderer`, Impeller
 only) refracts them at the edges: blur 0 and chromatic aberration 0 — the user rejected both the
 soapy blur and the rainbow rim. Dragging along the bar holds the lens up and moves it with the
-finger, a haptic tick per tab crossed; release snaps to the nearest tab. Taps are handled by
-the bar, not the tabs.
+finger, a haptic tick per tab crossed. Grabbing doesn't jump: the lens starts where it is and
+catches up with the finger over the first half tab. On release the lens springs (damping 0.85,
+stiffness 320) from the finger's speed to the tab the flick is heading for (Apple's momentum
+projection, deceleration 0.99), not just the nearest one. Taps are handled by the bar, not the
+tabs.
 
 Tabs and their icons (`AppIcons`, font `assets/fonts/PhosphorFill.ttf`): Учить / Learn —
 `houseFill`, Категории / Categories — `squaresFourFill`, Прогресс / Progress —
@@ -239,6 +249,15 @@ above the Categories search: `headlineSmall`, letter spacing -0.5, 24 from the s
 
 Judge smoothness only in `flutter run --profile` on a device; debug mode always stutters.
 Prefer `Curves.easeOutCubic` for things that open or grow.
+
+**Reduce Motion** (iOS setting, `MediaQuery.disableAnimationsOf(context)`) is respected: big
+moves become short fades, bounce goes away. Card flight → the card fades out in place (200 ms),
+undo fades it in; snap-back spring without overshoot; bottom bar — no lens, 150 ms slide; word
+detail card — fade, no hero flight. Dragging still follows the finger (direct manipulation
+stays). New motion must follow the same rule.
+
+**Text size**: the iOS text size is followed up to ×1.3 (`MediaQuery.withClampedTextScaling` in
+`main.dart`); fixed-height controls must fit their text at ×1.3.
 
 ## Settings
 

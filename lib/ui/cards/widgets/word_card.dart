@@ -171,8 +171,9 @@ class WordCard extends StatelessWidget {
                 // the examples are scrolled. Centered on the level chip row.
                 if (onClose case final onClose?)
                   Positioned(
-                    top: 14,
-                    right: 14,
+                    // 14 to the visible circle: its tap area adds 4.
+                    top: 10,
+                    right: 10,
                     child: RoundIconButton(
                       icon: AppIcons.x,
                       tooltip: AppStrings.of(context).close,

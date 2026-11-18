@@ -34,7 +34,11 @@ class WordDetailScreen extends StatefulWidget {
 
   /// The card grows out of the list row via [WordHero] while the barrier
   /// fades in to solid black, so the list is hidden once the card is open.
-  static Route<void> route(WordDetailScreen screen) {
+  /// With [reduceMotion] the card just fades in, no hero flight.
+  static Route<void> route(
+    WordDetailScreen screen, {
+    required bool reduceMotion,
+  }) {
     return PageRouteBuilder<void>(
       // Not opaque: the list stays painted while the barrier fades in and
       // out, and the hero has its row to fly back to on close.
@@ -42,12 +46,16 @@ class WordDetailScreen extends StatefulWidget {
       // Solid black, not a dim: the list behind must not show (user's
       // choice). The barrier is not themed, black in both themes.
       barrierColor: Colors.black,
-      transitionDuration: const Duration(milliseconds: 350),
-      reverseTransitionDuration: const Duration(milliseconds: 300),
-      pageBuilder: (_, _, _) => screen,
+      transitionDuration: Duration(milliseconds: reduceMotion ? 200 : 350),
+      reverseTransitionDuration: Duration(
+        milliseconds: reduceMotion ? 200 : 300,
+      ),
+      pageBuilder: (_, _, _) => HeroMode(enabled: !reduceMotion, child: screen),
       // No page transition: the only visible thing is the card, and the
       // hero animates it. A fade on top would just make it look washed out.
-      transitionsBuilder: (_, _, _, child) => child,
+      transitionsBuilder: (_, animation, _, child) => reduceMotion
+          ? FadeTransition(opacity: animation, child: child)
+          : child,
     );
   }
 

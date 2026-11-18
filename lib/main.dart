@@ -101,11 +101,16 @@ class _MyAppState extends State<MyApp> {
         themeMode: _settingsViewModel.themeMode,
         // Above the navigator: pushed routes, sheets, dialogs and hero
         // flights all read the strings without wrapping themselves again.
-        builder: (context, navigator) => ListenableBuilder(
-          listenable: _languageViewModel,
-          builder: (context, _) => AppStringsScope(
-            strings: _languageViewModel.strings,
-            child: navigator!,
+        builder: (context, navigator) => MediaQuery.withClampedTextScaling(
+          // The iOS text size is followed up to ×1.3: beyond that the fixed
+          // height controls (tabs, buttons, the week strip) clip their text.
+          maxScaleFactor: 1.3,
+          child: ListenableBuilder(
+            listenable: _languageViewModel,
+            builder: (context, _) => AppStringsScope(
+              strings: _languageViewModel.strings,
+              child: navigator!,
+            ),
           ),
         ),
         home: HomeShell(
