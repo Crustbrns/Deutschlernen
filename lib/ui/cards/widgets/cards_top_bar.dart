@@ -32,12 +32,13 @@ class CardsTopBar extends StatelessWidget {
         ),
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            // 16 to the visible buttons: their tap area adds 4.
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             child: _ProgressBar(progress: progress),
           ),
         ),
         _GoalRing(learned: learnedToday, goal: dailyGoal),
-        const SizedBox(width: 8),
+        const SizedBox(width: 4), // 8 to the visible undo button
         // Curved "U-turn" arrow: undo, not "go back".
         RoundIconButton(
           icon: AppIcons.arrowUUpLeft,

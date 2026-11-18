@@ -84,7 +84,8 @@ class _CardsScreenState extends State<CardsScreen> {
             return Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+                  // 4 less on each side: the round buttons' tap area.
+                  padding: const EdgeInsets.fromLTRB(12, 4, 12, 8),
                   child: CardsTopBar(
                     progress: _vm.progress,
                     onClose: () => Navigator.of(context).pop(),

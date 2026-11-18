@@ -44,9 +44,14 @@ class _AppBottomBarState extends State<AppBottomBar>
   /// so they don't depend on the bar's width.
   late final _move = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 420),
+    duration: _slide,
     value: 1,
   );
+  static const _slide = Duration(milliseconds: 420);
+
+  /// Reduce Motion: a short slide and no lens.
+  static const _calmSlide = Duration(milliseconds: 150);
+  bool _reduceMotion = false;
 
   /// Lens held up by a finger dragging along the bar.
   late final _hold = AnimationController(
@@ -74,6 +79,12 @@ class _AppBottomBarState extends State<AppBottomBar>
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _reduceMotion = MediaQuery.disableAnimationsOf(context);
+  }
+
+  @override
   void dispose() {
     _move.dispose();
     _hold.dispose();
@@ -94,6 +105,7 @@ class _AppBottomBarState extends State<AppBottomBar>
   /// plain sin is fastest at the very start and end (a jump up, a drop
   /// down); sin² starts and ends at zero speed.
   double get _lift {
+    if (_reduceMotion) return 0;
     final bump = _bump
         ? math.pow(math.sin(math.pi * _move.value), 2).toDouble()
         : 0.0;
@@ -105,6 +117,7 @@ class _AppBottomBarState extends State<AppBottomBar>
     _fromPos = _pos;
     _toPos = target;
     _bump = bump;
+    _move.duration = _reduceMotion ? _calmSlide : _slide;
     _move.forward(from: 0);
   }
 

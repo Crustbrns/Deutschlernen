@@ -122,7 +122,8 @@ class _SearchFieldState extends State<SearchField> {
           curve: Curves.easeOutCubic,
           child: _isActive
               ? Padding(
-                  padding: const EdgeInsets.only(left: 8),
+                  // 8 to the visible circle: its tap area adds 4.
+                  padding: const EdgeInsets.only(left: 4),
                   child: RoundIconButton(
                     icon: AppIcons.x,
                     tooltip: AppStrings.of(context).close,

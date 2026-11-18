@@ -35,7 +35,8 @@ class LevelWordsScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
+              // 4 less around the back button: its tap area adds 4.
+              padding: const EdgeInsets.fromLTRB(12, 12, 16, 8),
               child: Row(
                 children: [
                   RoundIconButton(
@@ -43,7 +44,7 @@ class LevelWordsScreen extends StatelessWidget {
                     tooltip: strings.back,
                     onPressed: () => Navigator.of(context).pop(),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 8),
                   Text(level, style: Theme.of(context).textTheme.headlineSmall),
                 ],
               ),

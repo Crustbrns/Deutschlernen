@@ -91,6 +91,7 @@ class _HomeShellState extends State<HomeShell> {
           state: _vm.stateOf(word.id),
           onResetProgress: () => _vm.resetProgress(word.id),
         ),
+        reduceMotion: MediaQuery.disableAnimationsOf(context),
       ),
     );
   }

@@ -1,3 +1,6 @@
+import 'dart:math' as math;
+import 'dart:ui' show lerpDouble;
+
 import 'package:flutter/physics.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -58,6 +61,10 @@ class _SwipeableCardState extends State<SwipeableCard>
   /// so no setState is needed.
   final ValueNotifier<Offset> _offset = ValueNotifier<Offset>(Offset.zero);
 
+  /// Card opacity: below 1 only with Reduce Motion, where the card fades
+  /// instead of flying.
+  final ValueNotifier<double> _opacity = ValueNotifier<double>(1);
+
   /// Runs an animation from [_from] to [_to] as a 0..1 progress value.
   /// Unbounded, so the snap-back spring may overshoot.
   late final AnimationController _controller = AnimationController.unbounded(
@@ -66,12 +73,26 @@ class _SwipeableCardState extends State<SwipeableCard>
 
   Offset _from = Offset.zero;
   Offset _to = Offset.zero;
+  double _fadeFrom = 1;
+  double _fadeTo = 1;
 
   static final _snapBackSpring = SpringDescription.withDampingRatio(
     mass: 1,
     stiffness: 320,
     ratio: 0.7, // slight overshoot, feels springy
   );
+
+  /// Reduce Motion: the same snap-back without the overshoot.
+  static final _calmSpring = SpringDescription.withDampingRatio(
+    mass: 1,
+    stiffness: 320,
+    ratio: 1,
+  );
+
+  /// Fade instead of a flight, with Reduce Motion.
+  static const _fade = Duration(milliseconds: 200);
+
+  bool get _reduceMotion => MediaQuery.disableAnimationsOf(context);
 
   /// Direction the button swipes fly in: slightly upward.
   static const _buttonArc = -0.08;
@@ -89,6 +110,7 @@ class _SwipeableCardState extends State<SwipeableCard>
   void initState() {
     super.initState();
     _offset.addListener(_publishProgress);
+    _opacity.addListener(_publishProgress);
     widget.controller._state = this;
   }
 
@@ -105,16 +127,29 @@ class _SwipeableCardState extends State<SwipeableCard>
     if (!_enterHandled && from != null) {
       _enterHandled = true;
       _isEntering = true;
-      final width = MediaQuery.sizeOf(context).width;
-      _offset.value = Offset(
-        from == SwipeDirection.right ? width * 1.2 : -width * 1.2,
-        0,
-      );
-      _animateTo(
-        Offset.zero,
-        duration: const Duration(milliseconds: 380),
-        curve: Curves.easeOutCubic,
-      ).whenComplete(() => _isEntering = false);
+      final TickerFuture entry;
+      if (_reduceMotion) {
+        // Fades in where it stands instead of flying in.
+        _opacity.value = 0;
+        entry = _animateTo(
+          Offset.zero,
+          opacity: 1,
+          duration: _fade,
+          curve: Curves.easeOut,
+        );
+      } else {
+        final width = MediaQuery.sizeOf(context).width;
+        _offset.value = Offset(
+          from == SwipeDirection.right ? width * 1.2 : -width * 1.2,
+          0,
+        );
+        entry = _animateTo(
+          Offset.zero,
+          duration: const Duration(milliseconds: 380),
+          curve: Curves.easeOutCubic,
+        );
+      }
+      entry.whenComplete(() => _isEntering = false);
     }
   }
 
@@ -123,19 +158,27 @@ class _SwipeableCardState extends State<SwipeableCard>
     if (widget.controller._state == this) widget.controller._state = null;
     _controller.dispose();
     _offset.dispose();
+    _opacity.dispose();
     super.dispose();
   }
 
   void _onAnimationTick() {
     _offset.value = Offset.lerp(_from, _to, _controller.value)!;
+    _opacity.value = lerpDouble(
+      _fadeFrom,
+      _fadeTo,
+      _controller.value.clamp(0.0, 1.0),
+    )!;
   }
 
   void _publishProgress() {
     if (_isEntering) return;
     final width = MediaQuery.sizeOf(context).width;
-    widget.controller.reveal.value = (_offset.value.dx.abs() / width)
-        .clamp(0.0, 1.0)
-        .toDouble();
+    // A fading card (Reduce Motion) reveals the next one as it fades.
+    widget.controller.reveal.value = math.max(
+      (_offset.value.dx.abs() / width).clamp(0.0, 1.0).toDouble(),
+      1 - _opacity.value,
+    );
     widget.controller.dragProgress.value =
         (_offset.value.dx / (width * _highlightDistance))
             .clamp(-1.0, 1.0)
@@ -144,11 +187,14 @@ class _SwipeableCardState extends State<SwipeableCard>
 
   TickerFuture _animateTo(
     Offset target, {
+    double? opacity,
     required Duration duration,
     required Curve curve,
   }) {
     _from = _offset.value;
     _to = target;
+    _fadeFrom = _opacity.value;
+    _fadeTo = opacity ?? _opacity.value;
     _controller.value = 0;
     return _controller.animateTo(1, duration: duration, curve: curve);
   }
@@ -195,6 +241,7 @@ class _SwipeableCardState extends State<SwipeableCard>
 
     _from = from;
     _to = Offset.zero;
+    _fadeFrom = _fadeTo = _opacity.value;
     _controller.value = 0;
 
     // Progress runs 0 -> 1 while the card moves from -> zero, so the
@@ -202,7 +249,12 @@ class _SwipeableCardState extends State<SwipeableCard>
     final progressVelocity =
         -(velocity.dx * from.dx + velocity.dy * from.dy) / distanceSquared;
     _controller.animateWith(
-      SpringSimulation(_snapBackSpring, 0, 1, progressVelocity),
+      SpringSimulation(
+        _reduceMotion ? _calmSpring : _snapBackSpring,
+        0,
+        1,
+        progressVelocity,
+      ),
     );
   }
 
@@ -235,13 +287,24 @@ class _SwipeableCardState extends State<SwipeableCard>
     final flightSpeed = speed.clamp(900, 4000);
     final ms = (distance / flightSpeed * 1000 * 2).clamp(560, 1120);
 
-    _animateTo(
-      target,
-      duration: Duration(milliseconds: ms.round()),
-      // Button: starts gently and speeds up — a smooth glide from rest.
-      // Drag: the card is already moving, so it just keeps going and eases.
-      curve: heading == null ? Curves.easeInOutCubic : Curves.easeOutCubic,
-    ).whenComplete(() {
+    final exit = _reduceMotion
+        // Reduce Motion: no flight, the card fades out where it is.
+        ? _animateTo(
+            _offset.value,
+            opacity: 0,
+            duration: _fade,
+            curve: Curves.easeOut,
+          )
+        : _animateTo(
+            target,
+            duration: Duration(milliseconds: ms.round()),
+            // Button: starts gently and speeds up — a smooth glide from rest.
+            // Drag: the card is already moving, so it keeps going and eases.
+            curve: heading == null
+                ? Curves.easeInOutCubic
+                : Curves.easeOutCubic,
+          );
+    exit.whenComplete(() {
       if (!mounted) return;
       widget.controller.dragProgress.value = 0;
       widget.controller.reveal.value = 0; // the next card starts small again
@@ -260,17 +323,21 @@ class _SwipeableCardState extends State<SwipeableCard>
       onPanUpdate: _onDragUpdate,
       onPanEnd: _onDragEnd,
       onPanCancel: _isSwiping ? null : () => _snapBack(Offset.zero),
-      child: ValueListenableBuilder<Offset>(
-        valueListenable: _offset,
+      child: ListenableBuilder(
+        listenable: Listenable.merge([_offset, _opacity]),
         // Painted once, then only moved around while swiping.
         child: RepaintBoundary(child: widget.child),
-        builder: (context, offset, child) {
-          return Transform.translate(
-            offset: offset,
-            child: Transform.rotate(
-              angle: (offset.dx / width) * 0.3,
-              alignment: Alignment.bottomCenter,
-              child: child,
+        builder: (context, child) {
+          final offset = _offset.value;
+          return Opacity(
+            opacity: _opacity.value,
+            child: Transform.translate(
+              offset: offset,
+              child: Transform.rotate(
+                angle: (offset.dx / width) * 0.3,
+                alignment: Alignment.bottomCenter,
+                child: child,
+              ),
             ),
           );
         },
