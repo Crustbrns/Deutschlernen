@@ -1,9 +1,7 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 
-/// Glass lens over the bottom bar's tabs: RawMagnifier enlarges what is
-/// under it, and a LiquidGlass layer on top bends it at the edges (real
-/// refraction via a shader, like iOS 26), with no blur and no color fringes.
+/// Glass lens over the bottom bar's tabs. RawMagnifier enlarges the tabs,
+/// while a theme-aware translucent surface gives it a subtle glass edge.
 class GlassLens extends StatelessWidget {
   const GlassLens({super.key, required this.size, required this.lift});
 
@@ -34,18 +32,13 @@ class GlassLens extends StatelessWidget {
               ],
             ),
           ),
-          LiquidGlass.withOwnLayer(
-            shape: LiquidRoundedSuperellipse(borderRadius: height / 2),
-            settings: LiquidGlassSettings(
-              // Fades the glass in and out with the lift.
-              visibility: lift,
-              thickness: 14,
-              refractiveIndex: 1.3,
-              blur: 0, // sharp, not soapy
-              chromaticAberration: 0, // no rainbow edges
-              lightIntensity: 0.6,
-              saturation: 1,
-              glassColor: colors.onSurface.withValues(alpha: 0.04),
+          DecoratedBox(
+            decoration: BoxDecoration(
+              color: colors.onSurface.withValues(alpha: 0.06 * lift),
+              border: Border.all(
+                color: colors.onSurface.withValues(alpha: 0.1 * lift),
+              ),
+              borderRadius: BorderRadius.circular(height / 2),
             ),
             child: SizedBox.fromSize(size: size),
           ),

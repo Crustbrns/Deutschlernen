@@ -16,6 +16,8 @@ enum SwipeDirection { left, right }
 /// and tells them how far the card is being dragged.
 class SwipeController {
   _SwipeableCardState? _state;
+  bool _disposed = false;
+  final ValueNotifier<bool> isSwiping = ValueNotifier<bool>(false);
 
   /// How far the top card is dragged sideways, from -1 (fully towards "known")
   /// to 1 (fully towards "learn"). 0 when the card is at rest.
@@ -26,11 +28,43 @@ class SwipeController {
   /// grows with it, so it is already full size when the top one is gone.
   final ValueNotifier<double> reveal = ValueNotifier<double>(0);
 
-  void swipe(SwipeDirection direction) => _state?.swipe(direction);
+  void swipe(SwipeDirection direction) {
+    if (_disposed || isSwiping.value) return;
+    _state?.swipe(direction);
+  }
+
+  bool _beginSwipe(_SwipeableCardState state) {
+    if (_disposed || isSwiping.value || _state != state) return false;
+    isSwiping.value = true;
+    return true;
+  }
+
+  void _attach(_SwipeableCardState state) {
+    if (_disposed) return;
+    if (_state == state) return;
+    _state = state;
+    isSwiping.value = false;
+  }
+
+  void _detach(_SwipeableCardState state) {
+    if (_disposed || _state != state) return;
+    _state = null;
+    isSwiping.value = false;
+  }
+
+  void _finishSwipe(_SwipeableCardState state) {
+    if (_disposed || _state != state) return;
+    isSwiping.value = false;
+  }
 
   void dispose() {
+    if (_disposed) return;
+    if (isSwiping.value) _state?._cancelSwipeFromController();
+    _disposed = true;
+    _state = null;
     dragProgress.dispose();
     reveal.dispose();
+    isSwiping.dispose();
   }
 }
 
@@ -40,6 +74,7 @@ class SwipeableCard extends StatefulWidget {
     required this.child,
     required this.controller,
     required this.onSwipeStarted,
+    required this.onSwipeCancelled,
     required this.onSwiped,
     this.enterFrom,
   });
@@ -47,6 +82,7 @@ class SwipeableCard extends StatefulWidget {
   final Widget child;
   final SwipeController controller;
   final VoidCallback onSwipeStarted;
+  final VoidCallback onSwipeCancelled;
   final ValueChanged<SwipeDirection> onSwiped;
 
   /// If set, the card flies in from this side when it first appears (undo).
@@ -105,6 +141,7 @@ class _SwipeableCardState extends State<SwipeableCard>
   static const _decideDistance = 0.25;
 
   bool _isSwiping = false;
+  bool _swipeCompleted = false;
 
   /// The card is past [_decideDistance]: letting go now decides. Crossing
   /// it ticks, so the finger feels the moment the swipe will count.
@@ -119,13 +156,16 @@ class _SwipeableCardState extends State<SwipeableCard>
     super.initState();
     _offset.addListener(_publishProgress);
     _opacity.addListener(_publishProgress);
-    widget.controller._state = this;
+    widget.controller._attach(this);
   }
 
   @override
   void didUpdateWidget(SwipeableCard oldWidget) {
     super.didUpdateWidget(oldWidget);
-    widget.controller._state = this;
+    if (oldWidget.controller != widget.controller) {
+      oldWidget.controller._detach(this);
+    }
+    widget.controller._attach(this);
   }
 
   @override
@@ -163,11 +203,20 @@ class _SwipeableCardState extends State<SwipeableCard>
 
   @override
   void dispose() {
-    if (widget.controller._state == this) widget.controller._state = null;
+    if (_isSwiping && !_swipeCompleted) widget.onSwipeCancelled();
+    widget.controller._detach(this);
     _controller.dispose();
     _offset.dispose();
     _opacity.dispose();
     super.dispose();
+  }
+
+  void _cancelSwipeFromController() {
+    if (!_isSwiping || _swipeCompleted) return;
+    _controller.stop();
+    _isSwiping = false;
+    widget.controller._finishSwipe(this);
+    widget.onSwipeCancelled();
   }
 
   void _onAnimationTick() {
@@ -284,7 +333,7 @@ class _SwipeableCardState extends State<SwipeableCard>
     Offset? heading,
     Offset velocity = Offset.zero,
   }) {
-    if (_isSwiping) return;
+    if (_isSwiping || !widget.controller._beginSwipe(this)) return;
     _isSwiping = true;
     widget.onSwipeStarted();
     // The decision is felt: a light tap, unless the drag already ticked
@@ -341,7 +390,12 @@ class _SwipeableCardState extends State<SwipeableCard>
       if (!mounted) return;
       widget.controller.dragProgress.value = 0;
       widget.controller.reveal.value = 0; // the next card starts small again
-      widget.onSwiped(direction);
+      _swipeCompleted = true;
+      try {
+        widget.onSwiped(direction);
+      } finally {
+        widget.controller._finishSwipe(this);
+      }
     });
   }
 
@@ -351,29 +405,35 @@ class _SwipeableCardState extends State<SwipeableCard>
 
     // Pan instead of horizontal drag, so the card follows the finger in
     // every direction. A scrollable child still wins vertical drags.
-    return GestureDetector(
-      onPanStart: _onDragStart,
-      onPanUpdate: _onDragUpdate,
-      onPanEnd: _onDragEnd,
-      onPanCancel: _isSwiping ? null : () => _snapBack(Offset.zero),
-      child: ListenableBuilder(
-        listenable: Listenable.merge([_offset, _opacity]),
-        // Painted once, then only moved around while swiping.
-        child: RepaintBoundary(child: widget.child),
-        builder: (context, child) {
-          final offset = _offset.value;
-          return Opacity(
-            opacity: _opacity.value,
-            child: Transform.translate(
-              offset: offset,
-              child: Transform.rotate(
-                angle: (offset.dx / width) * 0.3,
-                alignment: Alignment.bottomCenter,
-                child: child,
-              ),
-            ),
-          );
-        },
+    return ValueListenableBuilder<bool>(
+      valueListenable: widget.controller.isSwiping,
+      builder: (context, isSwiping, _) => IgnorePointer(
+        ignoring: isSwiping,
+        child: GestureDetector(
+          onPanStart: _onDragStart,
+          onPanUpdate: _onDragUpdate,
+          onPanEnd: _onDragEnd,
+          onPanCancel: _isSwiping ? null : () => _snapBack(Offset.zero),
+          child: ListenableBuilder(
+            listenable: Listenable.merge([_offset, _opacity]),
+            // Painted once, then only moved around while swiping.
+            child: RepaintBoundary(child: widget.child),
+            builder: (context, child) {
+              final offset = _offset.value;
+              return Opacity(
+                opacity: _opacity.value,
+                child: Transform.translate(
+                  offset: offset,
+                  child: Transform.rotate(
+                    angle: (offset.dx / width) * 0.3,
+                    alignment: Alignment.bottomCenter,
+                    child: child,
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
       ),
     );
   }

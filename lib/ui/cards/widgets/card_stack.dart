@@ -15,6 +15,7 @@ class CardStack extends StatelessWidget {
     required this.controller,
     required this.enterFrom,
     required this.onSwipeStarted,
+    required this.onSwipeCancelled,
     required this.onSwiped,
     required this.onSpeak,
     required this.showTranscription,
@@ -33,6 +34,7 @@ class CardStack extends StatelessWidget {
   final SwipeController controller;
   final SwipeDirection? enterFrom;
   final VoidCallback onSwipeStarted;
+  final VoidCallback onSwipeCancelled;
   final ValueChanged<SwipeDirection> onSwiped;
   final ValueChanged<String> onSpeak;
   final bool showTranscription;
@@ -79,6 +81,7 @@ class CardStack extends StatelessWidget {
                 controller: controller,
                 enterFrom: enterFrom,
                 onSwipeStarted: onSwipeStarted,
+                onSwipeCancelled: onSwipeCancelled,
                 onSwiped: onSwiped,
                 child: _card(words[i], isTop: true),
               ),
