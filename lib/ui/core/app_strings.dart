@@ -78,14 +78,15 @@ class AppStrings {
   /// Short date, "16 ноя" / "16 Nov" / "11月 16日": the order comes from
   /// `dateShort` ({d}, {m}), the month from `monthsShort` (12, comma-separated).
   /// The space lets a narrow label break into day and month.
-  String dateShort(DateTime date) {
+  String dateShort(DateTime date) =>
+      _get('dateShort')
+          .replaceAll('{d}', '${date.day}')
+          .replaceAll('{m}', monthShort(date));
+
+  /// Short month name, "ноя" / "Nov" / "11月".
+  String monthShort(DateTime date) {
     final months = _get('monthsShort').split(',');
-    return _get('dateShort')
-        .replaceAll('{d}', '${date.day}')
-        .replaceAll(
-          '{m}',
-          months.length == 12 ? months[date.month - 1] : '${date.month}',
-        );
+    return months.length == 12 ? months[date.month - 1] : '${date.month}';
   }
 
   /// Monday first; stored comma-separated in one key ("Пн,Вт,…").

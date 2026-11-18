@@ -9,17 +9,20 @@ import 'package:deutschlernen/domain/models/chart_bars.dart';
 
 part 'progress_chart_painters.dart';
 
-/// Stacked bars (known, started, reviewed, learned from the bottom — overlapping
-/// layers, see [StatusCounts.stack]) joined by
+/// Stacked bars (known, started, reviewed, learned from the bottom: what was
+/// done in each day, week or month, see [chartBars]) joined by
 /// translucent bands, so the eye follows each status from bar to bar. Every
 /// non-empty segment shows its word count, so it is at least [_minSegment]
 /// tall. The y axis and grid are linear (value × scale); a segment raised to
 /// the minimum stands taller than its value — intended (user's choice).
 /// Scrolls sideways when the bars don't fit; starts at the latest one.
 class ProgressChart extends StatelessWidget {
-  const ProgressChart({super.key, required this.bars});
+  const ProgressChart({super.key, required this.bars, this.byMonth = false});
 
   final List<ChartBar> bars;
+
+  /// Labels name the month ("ноя") instead of the day ("16 ноя").
+  final bool byMonth;
 
   /// Bottom to top.
   static const stackOrder = [
@@ -87,7 +90,9 @@ class ProgressChart extends StatelessWidget {
                     ],
                     labels: [
                       for (final b in bars)
-                        AppStrings.of(context).dateShort(b.start),
+                        byMonth
+                            ? AppStrings.of(context).monthShort(b.start)
+                            : AppStrings.of(context).dateShort(b.start),
                     ],
                     labelStyle: labelStyle,
                     gridColor: AppColors.divider(colors),
@@ -110,7 +115,7 @@ class ProgressChart extends StatelessWidget {
                     else
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
-                        // Opens at the right end: the latest weeks.
+                        // Opens at the right end: the latest bars.
                         reverse: true,
                         child: plot,
                       ),
@@ -132,7 +137,7 @@ class ProgressChart extends StatelessWidget {
     const lines = 4; // grid lines above 0
     final maxTotal = bars.fold(
       0,
-      (m, b) => math.max(m, b.counts?.stackTotal ?? 0),
+      (m, b) => math.max(m, b.layers?.fold<int>(0, (a, v) => a + v) ?? 0),
     );
     final roundTop = _niceStep(maxTotal / lines) * lines;
     final scale = math.min(height / roundTop, _fitScale(bars));
@@ -159,7 +164,7 @@ class ProgressChart extends StatelessWidget {
     const height = _plotHeight - _topPadding;
     var scale = double.infinity;
     for (final bar in bars) {
-      final values = bar.counts?.stack.where((v) => v > 0).toList() ?? [];
+      final values = bar.layers?.where((v) => v > 0).toList() ?? [];
       if (values.isEmpty) continue;
       // Start proportional; segments that come out too small take the
       // minimum, the others share what is left. A few rounds settle it.

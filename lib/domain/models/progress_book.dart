@@ -47,6 +47,11 @@ class ProgressBook {
       .where((p) => !(p.firstRecalledAt?.isBefore(since) ?? true))
       .length;
 
+  /// Words reviewed at or after [since], whatever the answer.
+  int reviewedSince(DateTime since) => _entries.values
+      .where((p) => !(p.card?.lastReview?.isBefore(since) ?? true))
+      .length;
+
   /// Pink words (chosen, never recalled), oldest first. [exists] skips
   /// words no longer in the app.
   List<String> unrecalledIds(bool Function(String wordId) exists) {

@@ -79,12 +79,11 @@ class _BarsPainter extends CustomPainter {
 
     // Segment edges of each bar: [(bottom, top)] per status, in pixels.
     List<(double, double)>? edges(ChartBar bar) {
-      final counts = bar.counts;
-      if (counts == null || counts.total == 0) return null;
+      final layers = bar.layers;
+      if (layers == null || layers.every((v) => v == 0)) return null;
       var y = ProgressChart._plotHeight;
       return [
-        for (final v in counts.stack)
-          (y, y -= ProgressChart.segmentHeight(v, scale)),
+        for (final v in layers) (y, y -= ProgressChart.segmentHeight(v, scale)),
       ];
     }
 
@@ -156,7 +155,7 @@ class _BarsPainter extends CustomPainter {
           );
           _paintCount(
             canvas,
-            bars[i].counts!.stack[s],
+            bars[i].layers![s],
             Rect.fromLTRB(left, segTop, left + barWidth, bottom),
           );
         }

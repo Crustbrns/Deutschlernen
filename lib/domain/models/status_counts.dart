@@ -14,9 +14,6 @@ class StatusCounts {
   final int review; // yellow
   final int learned; // green
 
-  /// Words with any status (each counted once).
-  int get total => known + learning + review + learned;
-
   /// Taken to learn, whatever happened since: pink, yellow and green.
   int get started => learning + review + learned;
 
@@ -25,11 +22,8 @@ class StatusCounts {
 
   /// Chart layers, bottom to top: known, started, reviewed, learned. A funnel
   /// (user's choice): a reviewed word also counts as started, a learned one
-  /// as started and reviewed, so the bar is taller than [total].
+  /// as started and reviewed.
   List<int> get stack => [known, started, reviewed, learned];
-
-  /// Height of the stacked bar, in words.
-  int get stackTotal => known + started + reviewed + learned;
 
   Map<String, dynamic> toJson() => {
     'known': known,

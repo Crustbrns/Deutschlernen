@@ -1,5 +1,5 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:deutschlernen/domain/models/status_counts.dart';
+import 'package:deutschlernen/domain/models/day_snapshot.dart';
 import 'package:deutschlernen/domain/models/word_status.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
@@ -9,13 +9,13 @@ import 'package:deutschlernen/domain/models/chart_bars.dart';
 import 'package:deutschlernen/ui/progress/widgets/progress_chart.dart';
 
 /// Progress tab: title, period switch (7 / 30 / 90 days / all time), then
-/// one block with the stacked chart of word statuses, and under it the
-/// current count per status (also the chart's legend).
+/// one block with the stacked chart of what was done per day, week or month,
+/// and under it the current count per status (also the chart's legend).
 class ProgressScreen extends StatefulWidget {
   const ProgressScreen({super.key, required this.history});
 
-  /// Daily status counts, keyed by local midnight.
-  final Map<DateTime, StatusCounts> history;
+  /// Daily snapshots, keyed by local midnight.
+  final Map<DateTime, DaySnapshot> history;
 
   @override
   State<ProgressScreen> createState() => _ProgressScreenState();
@@ -29,7 +29,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
     final strings = AppStrings.of(context);
     final palette = AppPalette.of(context);
     final bars = chartBars(_period, widget.history, DateTime.now());
-    final isEmpty = bars.every((b) => (b.counts?.total ?? 0) == 0);
+    final isEmpty = bars.every((b) => b.layers?.every((v) => v == 0) ?? true);
     final latest = latestCounts(widget.history);
     final labels = {
       WordStatus.known: strings.statusKnown,
@@ -67,7 +67,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                     style: AppListText.caption(context),
                   ),
                 )
-              : ProgressChart(bars: bars),
+              : ProgressChart(bars: bars, byMonth: _period.byMonth),
         ),
         const SizedBox(height: 12),
         // Also the chart's legend: same dots, top of the stack first.
