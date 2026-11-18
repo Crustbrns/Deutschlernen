@@ -73,7 +73,7 @@ class _CardsScreenState extends State<CardsScreen> {
     return Scaffold(
       body: SafeArea(
         child: ListenableBuilder(
-          listenable: _vm,
+          listenable: Listenable.merge([_vm, _swipeController.isSwiping]),
           builder: (context, _) {
             if (_vm.isLoading) {
               return const Center(child: CircularProgressIndicator());
@@ -89,7 +89,9 @@ class _CardsScreenState extends State<CardsScreen> {
                   child: CardsTopBar(
                     progress: _vm.progress,
                     onClose: () => Navigator.of(context).pop(),
-                    onUndo: _vm.canUndo ? _vm.undo : null,
+                    onUndo: _vm.canUndo && !_swipeController.isSwiping.value
+                        ? _vm.undo
+                        : null,
                     learnedToday: _vm.learnedToday,
                     dailyGoal: LearningViewModel.dailyGoal,
                   ),
@@ -108,6 +110,7 @@ class _CardsScreenState extends State<CardsScreen> {
                                 controller: _swipeController,
                                 enterFrom: _enterFrom,
                                 onSwipeStarted: _vm.onSwipeStarted,
+                                onSwipeCancelled: _vm.onSwipeCancelled,
                                 onSwiped: (direction) =>
                                     _vm.onCardSwiped(_decisionFor(direction)),
                                 onSpeak: _vm.speak,

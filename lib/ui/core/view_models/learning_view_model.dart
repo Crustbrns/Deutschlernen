@@ -267,10 +267,16 @@ class LearningViewModel extends ChangeNotifier {
   }
 
   /// The cards screen has opened: read the word on top, if the user wants that.
-  void onCardsOpened() => _speakCurrentIfAuto();
+  void onCardsOpened() {
+    _isSwiping = false;
+    _speakCurrentIfAuto();
+  }
 
   /// The card has been released and starts flying off screen.
   void onSwipeStarted() => _isSwiping = true;
+
+  /// The card's flight was interrupted before its answer was committed.
+  void onSwipeCancelled() => _isSwiping = false;
 
   /// The card has left the screen.
   void onCardSwiped(CardDecision decision) {
