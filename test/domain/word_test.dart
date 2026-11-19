@@ -50,6 +50,27 @@ void main() {
     expect(grouped['A2'], isEmpty);
   });
 
+  test(
+    'words without an article speak and display without a blank article',
+    () {
+      final own = Word(
+        id: 'own-1',
+        article: '',
+        german: 'lernen',
+        plural: null,
+        translation: 'учить',
+        level: '',
+        transcription: '',
+        definition: '',
+        definitionTranslation: null,
+        examples: const [],
+      );
+
+      expect(own.withArticle, 'lernen');
+      expect(own.pluralWithArticle, isNull);
+    },
+  );
+
   test('decidedShare counts words with any progress', () {
     final book = ProgressBook({'a': const WordProgress.known()});
 

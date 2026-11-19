@@ -133,11 +133,13 @@ class WordCard extends StatelessWidget {
                           ],
                         ),
                       ),
-                      WordExamples(
-                        word: word,
-                        onSpeak: onSpeak,
-                        lookup: lookup,
-                      ),
+                      if (word.definition.isNotEmpty ||
+                          word.examples.isNotEmpty)
+                        WordExamples(
+                          word: word,
+                          onSpeak: onSpeak,
+                          lookup: lookup,
+                        ),
                     ],
                   ),
                 ),

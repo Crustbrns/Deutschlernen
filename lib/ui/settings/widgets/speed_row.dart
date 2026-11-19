@@ -5,7 +5,7 @@ import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/menu_row.dart';
 import 'package:deutschlernen/ui/settings/view_models/settings_view_model.dart';
 
-/// Speech rate: a MenuRow header with a slider and slow / fast under it.
+/// Speech rate: a MenuRow header with a test button and slider.
 class SpeedRow extends StatefulWidget {
   const SpeedRow({super.key, required this.settings});
 
@@ -30,14 +30,25 @@ class _SpeedRowState extends State<SpeedRow> {
 
     return Column(
       children: [
-        // Not tappable itself: the slider below is the control.
-        IgnorePointer(
-          child: MenuRow(
-            compact: true,
-            title: strings.speechRate,
-            subtitle: strings.speechRateHint,
-            onTap: () {}, // keeps the row in its enabled colors
+        MenuRow(
+          compact: true,
+          title: strings.speechRate,
+          subtitle: strings.speechRateHint,
+          trailing: FilledButton(
+            onPressed: settings.testSpeech,
+            style: FilledButton.styleFrom(
+              backgroundColor: palette.subtleButton,
+              foregroundColor: Theme.of(context).colorScheme.onSurfaceVariant,
+              minimumSize: const Size(44, 44),
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
+            ),
+            child: Text(strings.testSpeech),
           ),
+          onTap: () {}, // keeps the row in its enabled colors
         ),
         SliderTheme(
           data: SliderTheme.of(context).copyWith(
@@ -59,7 +70,7 @@ class _SpeedRowState extends State<SpeedRow> {
             min: AppSettings.minSpeechRate,
             max: AppSettings.maxSpeechRate,
             onChanged: (v) => setState(() => _dragValue = v),
-            // Released: save it and say a sample word.
+            // Released: save the speed without playing a sample.
             onChangeEnd: (v) {
               _dragValue = null;
               settings.commitSpeechRate(v);

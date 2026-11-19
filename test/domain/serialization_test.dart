@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:fsrs/fsrs.dart' as fsrs;
 import 'package:deutschlernen/data/services/review_scheduler.dart';
 import 'package:deutschlernen/domain/models/day_snapshot.dart';
+import 'package:deutschlernen/domain/models/own_word.dart';
 import 'package:deutschlernen/domain/models/status_counts.dart';
 import 'package:deutschlernen/domain/models/word_progress.dart';
 
@@ -60,5 +61,19 @@ void main() {
       expect(restored.counts.toJson(), counts.toJson());
       expect(restored.reviewed, isNull);
     });
+  });
+
+  test('own word reads back unchanged', () {
+    const word = OwnWord(
+      id: 'own-1',
+      german: 'die Möglichkeit',
+      translation: 'можливість',
+    );
+
+    final restored = OwnWord.fromJson(word.id, stored(word.toJson()));
+
+    expect(restored.id, word.id);
+    expect(restored.german, word.german);
+    expect(restored.translation, word.translation);
   });
 }

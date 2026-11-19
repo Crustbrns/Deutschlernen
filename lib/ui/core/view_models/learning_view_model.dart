@@ -3,6 +3,7 @@ import 'dart:async' show unawaited;
 import 'package:flutter/foundation.dart';
 import 'package:deutschlernen/data/repositories/history_repository.dart';
 import 'package:deutschlernen/data/repositories/lookup_repository.dart';
+import 'package:deutschlernen/data/repositories/own_words_repository.dart';
 import 'package:deutschlernen/data/repositories/progress_repository.dart';
 import 'package:deutschlernen/data/repositories/settings_repository.dart';
 import 'package:deutschlernen/data/repositories/word_repository.dart';
@@ -13,6 +14,7 @@ import 'package:deutschlernen/domain/models/card_decision.dart';
 import 'package:deutschlernen/domain/models/card_session.dart';
 import 'package:deutschlernen/domain/models/chart_bars.dart';
 import 'package:deutschlernen/domain/models/day_snapshot.dart';
+import 'package:deutschlernen/domain/models/own_word.dart';
 import 'package:deutschlernen/domain/models/progress_book.dart';
 import 'package:deutschlernen/domain/models/reminder_plan.dart';
 import 'package:deutschlernen/domain/models/study_streak.dart';
@@ -29,6 +31,7 @@ class LearningViewModel extends ChangeNotifier {
     required this._wordRepository,
     required this._settingsRepository,
     required this._lookupRepository,
+    required this._ownWordsRepository,
     required this._progressRepository,
     required this._historyRepository,
     required this._reviewScheduler,
@@ -44,6 +47,7 @@ class LearningViewModel extends ChangeNotifier {
   final WordRepository _wordRepository;
   final SettingsRepository _settingsRepository;
   final LookupRepository _lookupRepository;
+  final OwnWordsRepository _ownWordsRepository;
   final ProgressRepository _progressRepository;
   final HistoryRepository _historyRepository;
   final ReviewScheduler _reviewScheduler;
@@ -58,6 +62,8 @@ class LearningViewModel extends ChangeNotifier {
   static const dailyGoal = 10;
 
   List<Word> _words = [];
+  List<Word> _catalogWords = [];
+  List<OwnWord> _ownWords = [];
   Map<String, Word> _wordsById = {};
   Map<String, List<Word>> _wordsByLevel = Word.byLevel(const []);
   List<String> _translations = [];
@@ -90,6 +96,9 @@ class LearningViewModel extends ChangeNotifier {
 
   /// All words, for the Categories tab.
   List<Word> get words => _words;
+
+  /// User-created words, in their saved order.
+  List<Word> get ownWords => [for (final word in _ownWords) _asWord(word)];
 
   /// Words of each level, in [Word.levels] order.
   Map<String, List<Word>> get wordsByLevel => _wordsByLevel;
@@ -137,6 +146,10 @@ class LearningViewModel extends ChangeNotifier {
   double seenShare(String level) =>
       _progress.decidedShare([for (final w in _wordsByLevel[level]!) w.id]);
 
+  /// Share of the user's own words already seen: known or started.
+  double get ownWordsSeenShare =>
+      _progress.decidedShare(_ownWords.map((word) => word.id).toList());
+
   /// Review times of the selected levels' words, for the reminders.
   List<DateTime> get reviewDueTimes => _progress.dueTimes(_inLearnLevels);
 
@@ -175,6 +188,8 @@ class LearningViewModel extends ChangeNotifier {
     notifyListeners();
 
     await _loadWords(_languageViewModel.wordLanguage);
+    _ownWords = await _ownWordsRepository.load();
+    _refreshWordCollections();
     _progress = ProgressBook(await _progressRepository.load());
     _statusHistory = await _historyRepository.load();
     // Today gets a snapshot even without answers, so the chart has it.
@@ -194,13 +209,50 @@ class LearningViewModel extends ChangeNotifier {
 
   Future<void> _loadWords(AppLanguage language) async {
     _wordsLanguage = language;
-    _words = await _wordRepository.getWords(language);
+    _catalogWords = await _wordRepository.getWords(language);
+    _refreshWordCollections();
+  }
+
+  void _refreshWordCollections() {
+    _words = [..._catalogWords, for (final word in _ownWords) _asWord(word)];
     _wordsById = {for (final w in _words) w.id: w};
     _wordsByLevel = Word.byLevel(_words);
     _translations = [for (final w in _words) w.translation];
-    // Same ids in every language, so the session and its position stay valid.
     _syncDeck();
   }
+
+  /// Saves a user-created word without assigning it to a learning level.
+  Future<void> addOwnWord(String german, String translation) async {
+    final trimmedGerman = german.trim();
+    final trimmedTranslation = translation.trim();
+    if (trimmedGerman.isEmpty || trimmedTranslation.isEmpty) {
+      throw ArgumentError('A German word and its translation are required.');
+    }
+
+    final word = OwnWord(
+      id: 'own-${DateTime.now().microsecondsSinceEpoch}',
+      german: trimmedGerman,
+      translation: trimmedTranslation,
+    );
+    final updated = [..._ownWords, word];
+    await _ownWordsRepository.save(updated);
+    _ownWords = updated;
+    _refreshWordCollections();
+    notifyListeners();
+  }
+
+  static Word _asWord(OwnWord word) => Word(
+    id: word.id,
+    article: '',
+    german: word.german,
+    plural: null,
+    translation: word.translation,
+    level: '',
+    transcription: '',
+    definition: '',
+    definitionTranslation: null,
+    examples: const [],
+  );
 
   /// Reloads the words when the translation language changes.
   Future<void> _onLanguageChanged() async {

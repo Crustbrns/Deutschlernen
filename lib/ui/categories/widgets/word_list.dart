@@ -88,7 +88,7 @@ class WordRow extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
     final forms = [word.withArticle, ?word.pluralWithArticle].join(' · ');
     final caption = [
-      if (showLevel) word.level,
+      if (showLevel && word.level.isNotEmpty) word.level,
       AppStrings.of(context).wordState(state, DateTime.now().toUtc()),
     ].join(' · ');
 

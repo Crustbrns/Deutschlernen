@@ -20,8 +20,10 @@ class WordCardHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        CardChip(level, radius: 24),
-        const SizedBox(width: 10),
+        if (level.isNotEmpty) ...[
+          CardChip(level, radius: 24),
+          const SizedBox(width: 10),
+        ],
         Container(
           width: 12,
           height: 12,
