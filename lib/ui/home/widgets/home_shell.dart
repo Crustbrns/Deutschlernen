@@ -13,6 +13,7 @@ import 'package:deutschlernen/ui/settings/view_models/settings_view_model.dart';
 import 'package:deutschlernen/ui/settings/widgets/settings_screen.dart';
 import 'package:deutschlernen/ui/progress/widgets/progress_screen.dart';
 import 'package:deutschlernen/ui/categories/widgets/categories_screen.dart';
+import 'package:deutschlernen/ui/categories/widgets/own_words_screen.dart';
 import 'package:deutschlernen/ui/categories/widgets/word_detail_screen.dart';
 import 'package:deutschlernen/ui/core/widgets/readable_width.dart';
 
@@ -97,6 +98,21 @@ class _HomeShellState extends State<HomeShell> {
     );
   }
 
+  void _openOwnWords() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => OwnWordsScreen(
+          ownWords: () => _vm.ownWords,
+          onWordSelected: _openWord,
+          onSpeak: _vm.speak,
+          stateOf: _vm.stateOf,
+          progressChanges: _vm,
+          onAddWord: _vm.addOwnWord,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
@@ -141,7 +157,11 @@ class _HomeShellState extends State<HomeShell> {
                 CategoriesScreen(
                   words: _vm.words,
                   wordsByLevel: _vm.wordsByLevel,
+                  ownWords: _vm.ownWords,
+                  ownWordsSeenShare: _vm.ownWordsSeenShare,
                   seenShare: _vm.seenShare,
+                  onOwnWordsSelected: _openOwnWords,
+                  onAddOwnWord: _vm.addOwnWord,
                   onWordSelected: _openWord,
                   onSearchResultSelected: (word) {
                     // Count first, so the card already shows this lookup.

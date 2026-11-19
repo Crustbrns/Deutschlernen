@@ -60,12 +60,13 @@ class WordTitle extends StatelessWidget {
                         height: 1.1,
                       ),
                       children: [
-                        TextSpan(
-                          text: '${word.article} ',
-                          style: TextStyle(
-                            color: AppColors.forArticle(word.article),
+                        if (word.article.isNotEmpty)
+                          TextSpan(
+                            text: '${word.article} ',
+                            style: TextStyle(
+                              color: AppColors.forArticle(word.article),
+                            ),
                           ),
-                        ),
                         TextSpan(text: word.german),
                         if (word.pluralWithArticle case final plural?)
                           TextSpan(text: ' ($plural)'),
@@ -83,7 +84,7 @@ class WordTitle extends StatelessWidget {
             ),
           ),
         ),
-        if (showTranscription) ...[
+        if (showTranscription && word.transcription.isNotEmpty) ...[
           SizedBox(height: compact ? 6 : 12),
           // Also speaks the word on tap.
           Align(

@@ -35,6 +35,7 @@ class AppStrings {
   String get autoSpeakHint => _get('autoSpeakHint');
   String get speechRate => _get('speechRate');
   String get speechRateHint => _get('speechRateHint');
+  String get testSpeech => _get('testSpeech');
   String get speedSlow => _get('speedSlow');
   String get speedFast => _get('speedFast');
   String get goodWork => _get('goodWork');
@@ -52,6 +53,11 @@ class AppStrings {
   String get tabCategories => _get('tabCategories');
   String get tabProgress => _get('tabProgress');
   String get tabSettings => _get('tabSettings');
+  String get ownWords => _get('ownWords');
+  String get addWord => _get('addWord');
+  String get germanWord => _get('germanWord');
+  String get translation => _get('translation');
+  String get fieldRequired => _get('fieldRequired');
   String get learnNewWords => _get('learnNewWords');
   String get repeatWords => _get('repeatWords');
   String get chooseLevels => _get('chooseLevels');

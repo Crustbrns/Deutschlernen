@@ -31,7 +31,7 @@ class Word {
   final String? definitionTranslation; // null if not translated yet
   final List<ExampleSentence> examples;
 
-  String get withArticle => '$article $german';
+  String get withArticle => article.isEmpty ? german : '$article $german';
 
   /// German plural always takes "die", whatever the singular article is.
   String? get pluralWithArticle => plural == null ? null : 'die $plural';
