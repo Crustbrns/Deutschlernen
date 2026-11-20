@@ -40,8 +40,11 @@ class AppStrings {
   String get definitionTranslatedHint => _get('definitionTranslatedHint');
   String get definitionGerman => _get('definitionGerman');
   String get definitionGermanHint => _get('definitionGermanHint');
-  String get definitionOnTap => _get('definitionOnTap');
-  String get definitionOnTapHint => _get('definitionOnTapHint');
+  String get definitionGermanOnTap => _get('definitionGermanOnTap');
+  String get definitionGermanOnTapHint => _get('definitionGermanOnTapHint');
+  String get definitionTranslationOnTap => _get('definitionTranslationOnTap');
+  String get definitionTranslationOnTapHint =>
+      _get('definitionTranslationOnTapHint');
   String get showTranscriptionHint => _get('showTranscriptionHint');
   String get reminders => _get('reminders');
   String get remindersHint => _get('remindersHint');

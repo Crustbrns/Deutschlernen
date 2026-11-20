@@ -57,14 +57,19 @@ class SettingsScreen extends StatelessWidget {
         subtitle: strings.definitionTranslatedHint,
       ),
       Choice(
+        DefinitionMode.translationTapForGerman,
+        strings.definitionGermanOnTap,
+        subtitle: strings.definitionGermanOnTapHint,
+      ),
+      Choice(
         DefinitionMode.german,
         strings.definitionGerman,
         subtitle: strings.definitionGermanHint,
       ),
       Choice(
         DefinitionMode.germanTapForTranslation,
-        strings.definitionOnTap,
-        subtitle: strings.definitionOnTapHint,
+        strings.definitionTranslationOnTap,
+        subtitle: strings.definitionTranslationOnTapHint,
       ),
     ];
 

@@ -66,10 +66,13 @@ class _ExpandableTileState extends State<ExpandableTile> {
 
     // InkWell is outermost, so the highlight covers the full card width.
     // The padding inside keeps text and divider aligned with the card content.
+    // Nothing to expand: no tap, no highlight.
+    final expandable = details != null;
+
     return InkWell(
-      onTap: _onTap,
-      onTapDown: (_) => _setHighlighted(true), // finger held down
-      onTapCancel: () => _setHighlighted(false), // turned into a scroll/swipe
+      onTap: expandable ? _onTap : null,
+      onTapDown: expandable ? (_) => _setHighlighted(true) : null, // held down
+      onTapCancel: expandable ? () => _setHighlighted(false) : null, // scrolled
       // Built-in ripple and highlight are off: on a quick tap inside
       // a scroll view they flash for a single frame. Our own layer below
       // is guaranteed to stay visible for _minHighlight.
@@ -110,15 +113,23 @@ class _ExpandableTileState extends State<ExpandableTile> {
                     Padding(
                       // No left inset, small gap to the text: more room.
                       padding: const EdgeInsets.only(right: _chevronGap),
-                      // One "down" icon rotated by half a turn instead of
-                      // swapping two icons: rotation can be animated.
-                      child: AnimatedRotation(
-                        turns: _expanded ? 0.5 : 0,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeOut,
-                        child: const Icon(
-                          AppIcons.caretDownBold,
-                          size: _chevronSize,
+                      // Hidden but still taking its room, so the text
+                      // lines up with the expandable rows.
+                      child: Visibility(
+                        visible: expandable,
+                        maintainSize: true,
+                        maintainAnimation: true,
+                        maintainState: true,
+                        // One "down" icon rotated by half a turn instead of
+                        // swapping two icons: rotation can be animated.
+                        child: AnimatedRotation(
+                          turns: _expanded ? 0.5 : 0,
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeOut,
+                          child: const Icon(
+                            AppIcons.caretDownBold,
+                            size: _chevronSize,
+                          ),
                         ),
                       ),
                     ),
