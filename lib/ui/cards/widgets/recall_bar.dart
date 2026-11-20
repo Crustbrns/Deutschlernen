@@ -4,10 +4,10 @@ import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 
-/// Answer buttons for recalling a word (a pink word, or a review): two
-/// separate outlined buttons in the card's color, "😞 Забыл" and
-/// "🙂 Помню". While the card is dragged, the matching button fills up with
-/// its color (red / green), as in [DecisionBar].
+/// Answer buttons for recalling a word (a pink word, or a review): an
+/// outlined "😞 Забыл" in the card's color and a lime "🙂 Помню" (the main
+/// action). While the card is dragged, "Забыл" fills up with red, as in
+/// [DecisionBar], and "Помню" gets lighter.
 class RecallBar extends StatelessWidget {
   const RecallBar({
     super.key,
@@ -44,7 +44,8 @@ class RecallBar extends StatelessWidget {
             child: _RecallButton(
               icon: AppIcons.smiley,
               label: strings.remembered,
-              color: AppColors.decisionGreen,
+              color: AppColors.lime,
+              filled: true,
               highlight: progress.clamp(0.0, 1.0),
               onPressed: onRemembered,
             ),
@@ -62,15 +63,18 @@ class _RecallButton extends StatelessWidget {
     required this.color,
     required this.highlight,
     required this.onPressed,
+    this.filled = false,
   });
 
   final IconData icon;
   final String label;
-  final Color color; // fill tint while dragged (red / green)
+  final Color color; // filled: the fill; otherwise the tint while dragged
   final double highlight; // 0..1, how far the card is dragged this way
   final VoidCallback onPressed;
+  final bool filled;
 
   static const _maxFill = 0.5;
+  static const _maxLighten = 0.3;
 
   @override
   Widget build(BuildContext context) {
@@ -78,18 +82,21 @@ class _RecallButton extends StatelessWidget {
     final card = AppPalette.of(context).card;
     // Quieter than plain white: outline and icon 40% toward the card, the
     // label 25% (it still has to read first).
-    final line = Color.lerp(onSurface, card, 0.4)!;
-    final text = Color.lerp(onSurface, card, 0.25)!;
+    final line = filled ? AppColors.onLime : Color.lerp(onSurface, card, 0.4)!;
+    final text = filled ? AppColors.onLime : Color.lerp(onSurface, card, 0.25)!;
 
     return Material(
-      // The card's own color at rest; tinted as the card is dragged.
-      color: Color.alphaBlend(
-        color.withValues(alpha: _maxFill * highlight),
-        card,
-      ),
+      // Filled: the accent, lighter (toward white) as the card is dragged.
+      // Outlined: the card's own color at rest, tinted as it is dragged.
+      color: filled
+          ? Color.lerp(color, AppColors.onAccent, _maxLighten * highlight)
+          : Color.alphaBlend(
+              color.withValues(alpha: _maxFill * highlight),
+              card,
+            ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(14),
-        side: BorderSide(color: line, width: 1.5),
+        side: filled ? BorderSide.none : BorderSide(color: line, width: 1.5),
       ),
       clipBehavior: Clip.antiAlias,
       child: InkWell(

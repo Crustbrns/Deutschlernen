@@ -35,7 +35,7 @@ class CardsTopBar extends StatelessWidget {
           child: Padding(
             // 16 to the visible buttons: their tap area adds 4.
             padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: ProgressBar(progress: progress, color: AppColors.yellow),
+            child: ProgressBar(progress: progress, color: AppColors.lime),
           ),
         ),
         _GoalRing(learned: learnedToday, goal: dailyGoal),

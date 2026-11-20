@@ -51,15 +51,15 @@ class AppPalette extends ThemeExtension<AppPalette> {
   /// 50% lighter, like the count.
   final Color levelPercent;
 
-  /// Highlighted word in the card's examples. Dark: yellow text, no fill;
-  /// light: yellow text on white is unreadable (1.6:1), so a yellow marker
+  /// Highlighted word in the card's examples. Dark: lime text, no fill;
+  /// light: lime text on white is unreadable (1.2:1), so a lime marker
   /// under dark text (user's choice).
   final Color markText;
   final Color markFill;
 
   /// Accent text and icons on the background or a card (chosen values,
-  /// checks, play buttons). Dark: AppColors.yellow; light: dark yellow, as
-  /// yellow on white is unreadable. Yellow fills stay AppColors.yellow.
+  /// checks, play buttons). Dark: AppColors.lime; light: dark olive, as
+  /// lime on white is unreadable. Lime fills stay AppColors.lime.
   final Color accentText;
 
   static const dark = AppPalette(
@@ -71,9 +71,9 @@ class AppPalette extends ThemeExtension<AppPalette> {
     secondaryText: Color(0xFF8C8C8C),
     softHint: Color(0xFF696D72),
     levelPercent: Color(0xFFB6B7BA),
-    markText: AppColors.yellow,
+    markText: AppColors.lime,
     markFill: Color(0x00000000),
-    accentText: AppColors.yellow,
+    accentText: AppColors.lime,
   );
 
   static const light = AppPalette(
@@ -86,8 +86,8 @@ class AppPalette extends ThemeExtension<AppPalette> {
     softHint: Color(0xFFB5B5B8),
     levelPercent: Color(0xFF9C9C9E),
     markText: Color(0xFF080808), // the light theme's onSurface
-    markFill: Color(0x99FFC72C), // AppColors.yellow at α 0.6
-    accentText: Color(0xFF9A6700), // 4.9:1 on white
+    markFill: Color(0x99D6F566), // AppColors.lime at α 0.6
+    accentText: Color(0xFF5E7A00), // 4.9:1 on white
   );
 
   static AppPalette of(BuildContext context) =>
@@ -155,9 +155,9 @@ abstract final class AppTheme {
         // The seed only tints the neutral grays; the accent is set below.
         seedColor: AppColors.accentBlue,
         brightness: brightness,
-        // Default buttons and spinners: yellow fill, black content.
-        primary: AppColors.yellow,
-        onPrimary: AppColors.onYellow,
+        // Default buttons and spinners: lime fill, black content.
+        primary: AppColors.lime,
+        onPrimary: AppColors.onLime,
         // Light theme text: near-black rgb(8,8,8) (user's choice).
         onSurface: brightness == Brightness.light
             ? const Color(0xFF080808)
@@ -166,7 +166,7 @@ abstract final class AppTheme {
       // The cursor and handles are drawn on the background: readable accent.
       textSelectionTheme: TextSelectionThemeData(
         cursorColor: palette.accentText,
-        selectionColor: AppColors.yellow.withValues(alpha: 0.4),
+        selectionColor: AppColors.lime.withValues(alpha: 0.4),
         selectionHandleColor: palette.accentText,
       ),
       scaffoldBackgroundColor: palette.background,
@@ -183,19 +183,18 @@ abstract final class AppTheme {
 }
 
 abstract final class AppColors {
-  // Decision button highlights. Which side is which depends on the card:
-  // see CardsScreen (new word: left green / right red; recall: the reverse).
+  // The "bad" side of the answer buttons ("Начать учить", "Забыл"); the
+  // good side is [lime]. See CardsScreen.
   static const decisionRed = Color(0xFFFF3B30); // saturated red
-  static const decisionGreen = Color(0xFF30D158); // saturated green
   // Only the color seed, the Learn menu's categories icon and the fallback
-  // article color; the app's accent is [yellow].
+  // article color; the app's accent is [lime].
   static const accentBlue = Color(0xFF1AA7FF);
-  // The app's accent (yellow on black): main actions, selected states,
+  // The app's accent (lime on black): main actions, selected states,
   // switches and sliders, the highlighted word. Text and icons on a surface
   // take AppPalette.accentText instead (readable in the light theme).
-  static const yellow = Color(0xFFFFC72C);
-  // Text and icons on a yellow fill: black in both themes.
-  static const onYellow = Color(0xFF000000);
+  static const lime = Color(0xFFD6F566);
+  // Text and icons on a lime fill: black in both themes.
+  static const onLime = Color(0xFF000000);
   static const switchThumbShadow = Color(0x2E000000); // black, α 0.18
 
   // Icons of the learn menu rows (categories / new words / repeat).
