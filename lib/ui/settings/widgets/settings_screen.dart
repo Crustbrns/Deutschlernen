@@ -2,6 +2,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
 import 'package:deutschlernen/domain/models/app_language.dart';
 import 'package:deutschlernen/domain/models/app_settings.dart';
+import 'package:deutschlernen/domain/models/definition_mode.dart';
 import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/ui/core/widgets/language_sheet.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
@@ -48,6 +49,24 @@ class SettingsScreen extends StatelessWidget {
       AccentColor.lime: strings.accentLime,
       AccentColor.yellow: strings.accentYellow,
     };
+    // Short names fit the row; the sheet explains each under it.
+    final definitionChoices = [
+      Choice(
+        DefinitionMode.translation,
+        strings.definitionTranslated,
+        subtitle: strings.definitionTranslatedHint,
+      ),
+      Choice(
+        DefinitionMode.german,
+        strings.definitionGerman,
+        subtitle: strings.definitionGermanHint,
+      ),
+      Choice(
+        DefinitionMode.germanTapForTranslation,
+        strings.definitionOnTap,
+        subtitle: strings.definitionOnTapHint,
+      ),
+    ];
 
     return ListenableBuilder(
       listenable: settings,
@@ -82,6 +101,24 @@ class SettingsScreen extends StatelessWidget {
                     for (final e in accentLabels.entries)
                       Choice(e.key, e.value, leading: _Swatch(e.key.fill)),
                   ],
+                ),
+              ),
+            ],
+          ),
+          GroupedSection(
+            title: strings.settingsCards,
+            children: [
+              SettingsValueRow(
+                title: strings.definitionMode,
+                value: definitionChoices
+                    .firstWhere((c) => c.value == settings.definitionMode)
+                    .label,
+                onTap: () => showChoiceSheet<DefinitionMode>(
+                  context: context,
+                  title: strings.definitionMode,
+                  current: settings.definitionMode,
+                  onSelected: settings.setDefinitionMode,
+                  choices: definitionChoices,
                 ),
               ),
               SettingsSwitchRow(

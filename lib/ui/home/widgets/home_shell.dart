@@ -88,6 +88,7 @@ class _HomeShellState extends State<HomeShell> {
         WordDetailScreen(
           word: word,
           showTranscription: widget.settingsViewModel.showTranscription,
+          definitionMode: widget.settingsViewModel.definitionMode,
           lookupCount: _vm.lookupCount(word.id),
           onSpeak: _vm.speak,
           state: _vm.stateOf(word.id),

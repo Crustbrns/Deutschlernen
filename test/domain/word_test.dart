@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:deutschlernen/domain/models/definition_mode.dart';
 import 'package:deutschlernen/domain/models/progress_book.dart';
 import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/domain/models/word_progress.dart';
@@ -76,5 +77,60 @@ void main() {
 
     expect(book.decidedShare(['a', 'b', 'c', 'd']), 0.25);
     expect(book.decidedShare([]), 0);
+  });
+
+  group('definitionFor', () {
+    Word withDefinition({String article = 'die', String? translation}) => Word(
+      id: 'x',
+      article: article,
+      german: 'Lage',
+      plural: '',
+      translation: 't',
+      level: 'A1',
+      transcription: '',
+      definition: 'Der Zustand',
+      definitionTranslation: translation,
+      examples: const [],
+    );
+
+    test('translation: only the translated text, with the gender', () {
+      final d = withDefinition(translation: 'Состояние')
+          .definitionFor(DefinitionMode.translation);
+
+      expect(d.shown, '(f.) Состояние');
+      expect(d.revealed, isNull);
+    });
+
+    test('translation: German when there is no translation yet', () {
+      final d = withDefinition().definitionFor(DefinitionMode.translation);
+
+      expect(d.shown, '(f.) Der Zustand');
+      expect(d.revealed, isNull);
+    });
+
+    test('german: only German, nothing to reveal', () {
+      final d = withDefinition(translation: 'Состояние')
+          .definitionFor(DefinitionMode.german);
+
+      expect(d.shown, '(f.) Der Zustand');
+      expect(d.revealed, isNull);
+    });
+
+    test('tap: German, the translation revealed without the gender', () {
+      final d = withDefinition(translation: 'Состояние')
+          .definitionFor(DefinitionMode.germanTapForTranslation);
+
+      expect(d.shown, '(f.) Der Zustand');
+      expect(d.revealed, 'Состояние');
+    });
+
+    test('no gender mark for words without an article', () {
+      final d = withDefinition(
+        article: '',
+        translation: 'Состояние',
+      ).definitionFor(DefinitionMode.translation);
+
+      expect(d.shown, 'Состояние');
+    });
   });
 }

@@ -115,6 +115,7 @@ class _CardsScreenState extends State<CardsScreen> {
                                     _vm.onCardSwiped(_decisionFor(direction)),
                                 onSpeak: _vm.speak,
                                 showTranscription: _vm.showTranscription,
+                                definitionMode: _vm.definitionMode,
                                 translationPool: _vm.translations,
                                 stateOf: _vm.stateOf,
                                 // New words: only the eye; review: all

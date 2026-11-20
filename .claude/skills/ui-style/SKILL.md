@@ -273,6 +273,10 @@ above the Categories search: `headlineSmall`, letter spacing -0.5, 24 from the s
   user's choice, pastel text on white is unreadable). Opened translations under them are
   `mutedText` gray with their marked word highlighted the same way (user's choice: accent in
   both lines).
+  The definition row follows Settings → Карточки → «Значение слова» (`DefinitionMode`, user's choice
+  2026-11-20): by default only the translated text in the main white style, not expandable;
+  or German only; or German with the translation revealed on tap (gray, like examples).
+  Nouns keep "(f.)" in front in every mode.
   Expand chevron: 11px
   `AppIcons.caretDownBold` (Phosphor Bold, `assets/fonts/PhosphorBold.ttf`), 8px gap to the text.
 - Articles are colored by gender with `AppColors.forArticle` on the word card. The plural

@@ -3,6 +3,7 @@ import 'dart:ui' show PlatformDispatcher;
 import 'package:material_ui/material_ui.dart' show ThemeMode;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:deutschlernen/domain/models/app_settings.dart';
+import 'package:deutschlernen/domain/models/definition_mode.dart';
 import 'package:deutschlernen/domain/models/reminder_settings.dart';
 
 class SettingsRepository {
@@ -10,6 +11,7 @@ class SettingsRepository {
   static const _wordLanguageKey = 'word_language';
   static const _themeModeKey = 'theme_mode'; // system / dark / light
   static const _accentKey = 'accent_color'; // AccentColor name
+  static const _definitionModeKey = 'definition_mode'; // DefinitionMode name
 
   /// Old bool (dark or light), read while no [_themeModeKey] is saved.
   static const _legacyDarkThemeKey = 'dark_theme';
@@ -73,6 +75,11 @@ class SettingsRepository {
       showTranscription:
           await _prefs.getBool(_showTranscriptionKey) ??
           defaults.showTranscription,
+      definitionMode:
+          DefinitionMode.values.asNameMap()[await _prefs.getString(
+            _definitionModeKey,
+          )] ??
+          defaults.definitionMode,
       reminders: await _loadReminders(defaults.reminders),
       autoSpeak: await _prefs.getBool(_autoSpeakKey) ?? defaults.autoSpeak,
       speechRate: (rate ?? defaults.speechRate).clamp(
@@ -89,6 +96,9 @@ class SettingsRepository {
 
   Future<void> saveAccent(AccentColor accent) =>
       _prefs.setString(_accentKey, accent.name);
+
+  Future<void> saveDefinitionMode(DefinitionMode mode) =>
+      _prefs.setString(_definitionModeKey, mode.name);
 
   Future<void> saveShowTranscription(bool value) =>
       _prefs.setBool(_showTranscriptionKey, value);

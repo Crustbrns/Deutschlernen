@@ -1,5 +1,6 @@
 import 'dart:math' show Random;
 
+import 'package:deutschlernen/domain/models/definition_mode.dart';
 import 'package:deutschlernen/domain/models/example_sentence.dart';
 
 class Word {
@@ -95,4 +96,26 @@ class Word {
     'das' => 'n.',
     _ => null,
   };
+
+  /// The definition row of the card in [mode]: the text shown and the one a
+  /// tap reveals under it (null: nothing to reveal). Without a translation
+  /// the German text is shown. Nouns start with their gender: "(f.) ...".
+  ({String shown, String? revealed}) definitionFor(DefinitionMode mode) {
+    String withGender(String text) =>
+        genderMark == null ? text : '($genderMark) $text';
+    final german = withGender(definition);
+    final translated = definitionTranslation;
+
+    return switch (mode) {
+      DefinitionMode.translation => (
+        shown: translated == null ? german : withGender(translated),
+        revealed: null,
+      ),
+      DefinitionMode.german => (shown: german, revealed: null),
+      DefinitionMode.germanTapForTranslation => (
+        shown: german,
+        revealed: translated,
+      ),
+    };
+  }
 }

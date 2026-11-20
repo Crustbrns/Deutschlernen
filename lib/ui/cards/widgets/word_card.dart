@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:deutschlernen/domain/models/definition_mode.dart';
 import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/domain/models/word_status.dart';
 import 'package:deutschlernen/ui/cards/widgets/word_answer.dart';
@@ -19,6 +20,7 @@ class WordCard extends StatelessWidget {
     required this.word,
     required this.onSpeak,
     required this.showTranscription,
+    required this.definitionMode,
     required this.bottomBar,
     this.translationPool = const [],
     this.lookup = false,
@@ -53,6 +55,9 @@ class WordCard extends StatelessWidget {
 
   /// When off, the speaker button stays but the phonetic text is hidden.
   final bool showTranscription;
+
+  /// How the definition row shows the explanation (a Settings choice).
+  final DefinitionMode definitionMode;
 
   /// Translations to take the wrong options from in the choice mode
   /// (learning only: the lookup card shows the translation right away).
@@ -137,6 +142,7 @@ class WordCard extends StatelessWidget {
                           word.examples.isNotEmpty)
                         WordExamples(
                           word: word,
+                          definitionMode: definitionMode,
                           onSpeak: onSpeak,
                           lookup: lookup,
                         ),

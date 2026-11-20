@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:material_ui/material_ui.dart';
+import 'package:deutschlernen/domain/models/definition_mode.dart';
 import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/domain/models/word_status.dart';
 import 'package:deutschlernen/ui/cards/widgets/swipeable_card.dart';
@@ -19,6 +20,7 @@ class CardStack extends StatelessWidget {
     required this.onSwiped,
     required this.onSpeak,
     required this.showTranscription,
+    required this.definitionMode,
     required this.translationPool,
     required this.bottomBarFor,
     required this.answerModes,
@@ -38,6 +40,7 @@ class CardStack extends StatelessWidget {
   final ValueChanged<SwipeDirection> onSwiped;
   final ValueChanged<String> onSpeak;
   final bool showTranscription;
+  final DefinitionMode definitionMode;
 
   /// Buttons at the bottom of a word's card (they differ per word: new vs
   /// pink).
@@ -127,6 +130,7 @@ class CardStack extends StatelessWidget {
     word: word,
     onSpeak: onSpeak,
     showTranscription: showTranscription,
+    definitionMode: definitionMode,
     translationPool: translationPool,
     bottomBar: bottomBarFor(word, isTop: isTop),
     answerModes: answerModes,
