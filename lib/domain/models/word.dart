@@ -111,6 +111,11 @@ class Word {
         shown: translated == null ? german : withGender(translated),
         revealed: null,
       ),
+      // No translation: German is already shown, nothing to reveal.
+      DefinitionMode.translationTapForGerman => (
+        shown: translated == null ? german : withGender(translated),
+        revealed: translated == null ? null : definition,
+      ),
       DefinitionMode.german => (shown: german, revealed: null),
       DefinitionMode.germanTapForTranslation => (
         shown: german,

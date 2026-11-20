@@ -95,6 +95,8 @@ render them as separate cards with gaps between them.
   `mutedText`, the status line above a word); line height 1.27, letter spacing -0.2,
   `AppListText.gap` (2.2) between lines. Don't style list text inline; don't use ListTile's
   title/subtitle for such rows (it adds its own spacing) — build the row with InkWell + Column.
+- Settings value rows (`SettingsValueRow`): the value on the right in `accentText`, at most 40%
+  of the screen width, right-aligned, wraps to 2 lines, so a long value never squeezes the title.
 - Navigation rows (a row that opens a list, e.g. a level): no chevron. Level rows: level name
   as `title`, word count under it in `subtitle` style but `mutedText` gray ("5 слов",
   `AppStrings.wordCount`), and on the right the share of seen words ("40 %" with a
@@ -275,10 +277,13 @@ above the Categories search: `headlineSmall`, letter spacing -0.5, 24 from the s
   both lines).
   The definition row follows Settings → Карточки → «Значение слова» (`DefinitionMode`, user's choice
   2026-11-20): by default only the translated text in the main white style, not expandable;
-  or German only; or German with the translation revealed on tap (gray, like examples).
-  Nouns keep "(f.)" in front in every mode.
+  translated with the German revealed on tap; German only; or German with the translation
+  revealed on tap (the revealed one gray, like examples). Nouns keep "(f.)" in front of the
+  shown text.
   Expand chevron: 11px
   `AppIcons.caretDownBold` (Phosphor Bold, `assets/fonts/PhosphorBold.ttf`), 8px gap to the text.
+  A row with nothing to reveal hides the chevron but keeps its room (text stays aligned with
+  the other rows) and doesn't react to taps (user's choice).
 - Articles are colored by gender with `AppColors.forArticle` on the word card. The plural
   article is always `die` (`Word.pluralWithArticle`).
 - Translations are shown as stored (lowercase); don't capitalize them.

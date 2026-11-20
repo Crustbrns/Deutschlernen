@@ -124,6 +124,26 @@ void main() {
       expect(d.revealed, 'Состояние');
     });
 
+    test('translation, tap: German revealed without the gender', () {
+      final d = withDefinition(translation: 'Состояние')
+          .definitionFor(DefinitionMode.translationTapForGerman);
+
+      expect(d.shown, '(f.) Состояние');
+      expect(d.revealed, 'Der Zustand');
+    });
+
+    test(
+      'translation, tap: no translation shows German, nothing to reveal',
+      () {
+        final d = withDefinition().definitionFor(
+          DefinitionMode.translationTapForGerman,
+        );
+
+        expect(d.shown, '(f.) Der Zustand');
+        expect(d.revealed, isNull);
+      },
+    );
+
     test('no gender mark for words without an article', () {
       final d = withDefinition(
         article: '',

@@ -48,10 +48,20 @@ class SettingsValueRow extends StatelessWidget {
     return MenuRow(
       compact: true,
       title: title,
-      trailing: Text(
-        value,
-        style: MenuRow.hintStyle(context)
-            .copyWith(color: AppPalette.of(context).accentText),
+      // Capped, so a long value ("Немецкий по нажатию", ×1.3 text) wraps
+      // onto a second line instead of squeezing the title.
+      trailing: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.sizeOf(context).width * 0.4,
+        ),
+        child: Text(
+          value,
+          textAlign: TextAlign.end,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: MenuRow.hintStyle(context)
+              .copyWith(color: AppPalette.of(context).accentText),
+        ),
       ),
       onTap: onTap,
     );
