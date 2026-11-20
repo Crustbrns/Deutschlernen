@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
 import 'package:deutschlernen/domain/models/reminder_settings.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
@@ -25,7 +26,7 @@ class RemindersCategory extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        SettingsCategory(
+        GroupedSection(
           title: strings.settingsNotifications,
           children: [
             SettingsSwitchRow(
@@ -37,7 +38,7 @@ class RemindersCategory extends StatelessWidget {
           ],
         ),
         if (reminders.enabled) ...[
-          SettingsCategory(
+          GroupedSection(
             title: strings.reminderKinds,
             children: [
               SettingsSwitchRow(
@@ -54,7 +55,7 @@ class RemindersCategory extends StatelessWidget {
               ),
             ],
           ),
-          SettingsCategory(
+          GroupedSection(
             title: strings.reminderSchedule,
             children: [
               SettingsValueRow(

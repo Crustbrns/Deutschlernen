@@ -15,5 +15,19 @@ import UserNotifications
 
   func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
     GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
+
+    // Keyboard languages for the language sheet (DeviceLanguagesService).
+    if let registrar = engineBridge.pluginRegistry.registrar(forPlugin: "DeviceLanguages") {
+      FlutterMethodChannel(
+        name: "deutschlernen/device_languages",
+        binaryMessenger: registrar.messenger()
+      ).setMethodCallHandler { call, result in
+        guard call.method == "keyboardLanguages" else {
+          return result(FlutterMethodNotImplemented)
+        }
+        // Enabled keyboards in the user's order: "uk-UA", "emoji", ...
+        result(UITextInputMode.activeInputModes.compactMap { $0.primaryLanguage })
+      }
+    }
   }
 }

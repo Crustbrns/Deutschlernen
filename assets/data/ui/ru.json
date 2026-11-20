@@ -25,6 +25,8 @@
   "interfaceLanguage": "Язык интерфейса",
   "wordsLanguage": "Язык слов",
   "systemLanguage": "Как в системе",
+  "languagesOnDevice": "На устройстве",
+  "languagesAvailable": "Доступные",
   "noWordsYet": "Здесь пока нет слов",
   "wordCountOne": "{n} слово",
   "wordCountFew": "{n} слова",

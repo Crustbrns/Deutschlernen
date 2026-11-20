@@ -19,6 +19,8 @@ class AppStrings {
   String get interfaceLanguage => _get('interfaceLanguage');
   String get wordsLanguage => _get('wordsLanguage');
   String get systemLanguage => _get('systemLanguage');
+  String get languagesOnDevice => _get('languagesOnDevice');
+  String get languagesAvailable => _get('languagesAvailable');
   String get settingsAppearance => _get('settingsAppearance');
   String get settingsLanguages => _get('settingsLanguages');
   String get settingsVoice => _get('settingsVoice');

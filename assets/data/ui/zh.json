@@ -25,6 +25,8 @@
   "interfaceLanguage": "界面语言",
   "wordsLanguage": "词汇语言",
   "systemLanguage": "跟随系统",
+  "languagesOnDevice": "本设备上",
+  "languagesAvailable": "可用",
   "noWordsYet": "这里还没有单词",
   "wordCountOther": "{n} 个单词",
   "settingsAppearance": "外观",
