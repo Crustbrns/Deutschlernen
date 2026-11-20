@@ -5,11 +5,10 @@ import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
 import 'package:deutschlernen/ui/core/widgets/menu_row.dart';
 import 'package:deutschlernen/ui/core/widgets/tab_page.dart';
-import 'package:deutschlernen/ui/learn/widgets/week_strip.dart';
 
 /// Learn tab (was "Practice"): title, then one block with the entry
 /// points: categories (which levels new words come from), new words, and
-/// review; under it the current week.
+/// review.
 class LearnScreen extends StatelessWidget {
   const LearnScreen({
     super.key,
@@ -70,8 +69,6 @@ class LearnScreen extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 16),
-        const WeekStrip(),
       ],
     );
   }

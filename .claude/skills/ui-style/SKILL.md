@@ -253,10 +253,7 @@ above the Categories search: `headlineSmall`, letter spacing -0.5, 24 from the s
 - Exception: the Learn tab menu (`learn_screen.dart`) has colored leading icons, size 26,
   one color per action (`AppColors.menuCategories` blue, `menuNewWords` pink, `menuRepeat`
   yellow); a disabled row fades its icon to α 0.4.
-- Week strip (`WeekStrip` in `learn/widgets/week_strip.dart`), 16px under the Practice
-  menu block: 7 tiles Mon–Sun (`AppStrings.weekdaysShort`, day names only, no dates), 6px
-  apart, 52 tall, radius 14, fill `palette.card`, text 15 w600 -0.3 `onSurface`; today is
-  filled `AppColors.menuNewWords` pink with `AppColors.onAccent` (white) text.
+- No week strip (Mon–Sun) on the Learn tab: removed by the user on 2026-11-20.
 
 ## Text
 
@@ -409,7 +406,7 @@ right "Рекорд: 12" in `MenuRow.hintStyle(soft: true)`. 14 below: this week
 studied = `AppColors.streak` fill, else `palette.subtleButton`; today not studied yet gets a
 1.5px `AppColors.streak` ring. Rule (`StudyStreak`, domain): a day counts if the user reviewed a
 word or took a new one to learn ("Уже знаю" doesn't); today not studied yet doesn't break the
-streak before midnight. The Learn tab's week strip doesn't show studied days (user's choice).
+streak before midnight.
 
 ## Word goal
 
