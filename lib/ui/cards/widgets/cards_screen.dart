@@ -48,8 +48,8 @@ class _CardsScreenState extends State<CardsScreen> {
     });
   }
 
-  /// Pink / review word: "forgot" (outlined) and "remember" (lime). New word:
-  /// the split bar, where knowing it is the good side (lime) and still to
+  /// Pink / review word: "forgot" (outlined) and "remember" (accent). New word:
+  /// the split bar, where knowing it is the good side (accent) and still to
   /// learn is red.
   Widget _bottomBar(Word word, {required bool isTop}) {
     final drag = isTop ? _swipeController.dragProgress : _still;
@@ -115,6 +115,7 @@ class _CardsScreenState extends State<CardsScreen> {
                                     _vm.onCardSwiped(_decisionFor(direction)),
                                 onSpeak: _vm.speak,
                                 showTranscription: _vm.showTranscription,
+                                definitionMode: _vm.definitionMode,
                                 translationPool: _vm.translations,
                                 stateOf: _vm.stateOf,
                                 // New words: only the eye; review: all

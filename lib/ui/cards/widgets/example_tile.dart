@@ -7,7 +7,7 @@ import 'package:deutschlernen/ui/core/highlight.dart';
 import 'package:deutschlernen/ui/core/widgets/play_button.dart';
 
 /// Text styles of the rows. German: white, translations under it: gray.
-/// The marked word is lime in both (a marker in the light theme).
+/// The marked word is in the accent in both (a marker in the light theme).
 ({TextStyle base, TextStyle mark, TextStyle detail}) _tileStyles(
   BuildContext context,
 ) {
@@ -32,21 +32,17 @@ import 'package:deutschlernen/ui/core/widgets/play_button.dart';
   );
 }
 
-/// German explanation of the word. Expanded shows its translation under it.
+/// Explanation of the word, in the language the Settings choice gives
+/// ([Word.definitionFor]). Expanded shows the revealed text under it.
 class DefinitionTile extends StatelessWidget {
-  const DefinitionTile({
-    super.key,
-    required this.definition,
-    required this.translation,
-  });
+  const DefinitionTile({super.key, required this.definition});
 
-  final String definition;
-  final String? translation;
+  final ({String shown, String? revealed}) definition;
 
   @override
   Widget build(BuildContext context) {
     final styles = _tileStyles(context);
-    final translation = this.translation; // local copy for null promotion
+    final revealed = definition.revealed; // local copy for null promotion
 
     return ExpandableTile(
       // Plain icon, not a button: the whole row is already tappable. Ends
@@ -63,10 +59,8 @@ class DefinitionTile extends StatelessWidget {
           ),
         ),
       ),
-      title: Text(definition, style: styles.base),
-      details: translation == null
-          ? null
-          : Text(translation, style: styles.detail),
+      title: Text(definition.shown, style: styles.base),
+      details: revealed == null ? null : Text(revealed, style: styles.detail),
     );
   }
 }

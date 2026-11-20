@@ -73,17 +73,21 @@ class _ModeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    final color = isSelected ? AppColors.onLime : colors.onSurfaceVariant;
+    final color = isSelected
+        ? Theme.of(context).colorScheme.onPrimary
+        : colors.onSurfaceVariant;
 
     return Material(
-      // Selected: a solid lime fill, readable in both themes (lime
+      // Selected: a solid accent fill, readable in both themes (pastel
       // text on white wouldn't be).
-      color: isSelected ? AppColors.lime : AppPalette.of(context).subtleButton,
+      color: isSelected
+          ? Theme.of(context).colorScheme.primary
+          : AppPalette.of(context).subtleButton,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(14),
         side: BorderSide(
           color: isSelected
-              ? AppColors.lime
+              ? Theme.of(context).colorScheme.primary
               : colors.outlineVariant.withValues(alpha: 0.4),
         ),
       ),

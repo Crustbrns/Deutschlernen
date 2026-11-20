@@ -2,6 +2,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
 import 'package:deutschlernen/domain/models/app_language.dart';
 import 'package:deutschlernen/domain/models/app_settings.dart';
+import 'package:deutschlernen/domain/models/definition_mode.dart';
 import 'package:deutschlernen/ui/core/app_icons.dart';
 import 'package:deutschlernen/ui/core/widgets/language_sheet.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
@@ -43,6 +44,29 @@ class SettingsScreen extends StatelessWidget {
       ThemeMode.dark: strings.themeDark,
       ThemeMode.light: strings.themeLight,
     };
+    final accentLabels = {
+      AccentColor.blue: strings.accentBlue,
+      AccentColor.lime: strings.accentLime,
+      AccentColor.yellow: strings.accentYellow,
+    };
+    // Short names fit the row; the sheet explains each under it.
+    final definitionChoices = [
+      Choice(
+        DefinitionMode.translation,
+        strings.definitionTranslated,
+        subtitle: strings.definitionTranslatedHint,
+      ),
+      Choice(
+        DefinitionMode.german,
+        strings.definitionGerman,
+        subtitle: strings.definitionGermanHint,
+      ),
+      Choice(
+        DefinitionMode.germanTapForTranslation,
+        strings.definitionOnTap,
+        subtitle: strings.definitionOnTapHint,
+      ),
+    ];
 
     return ListenableBuilder(
       listenable: settings,
@@ -63,6 +87,38 @@ class SettingsScreen extends StatelessWidget {
                   choices: [
                     for (final e in themeLabels.entries) Choice(e.key, e.value),
                   ],
+                ),
+              ),
+              SettingsValueRow(
+                title: strings.accentColor,
+                value: accentLabels[settings.accent]!,
+                onTap: () => showChoiceSheet<AccentColor>(
+                  context: context,
+                  title: strings.accentColor,
+                  current: settings.accent,
+                  onSelected: settings.setAccent,
+                  choices: [
+                    for (final e in accentLabels.entries)
+                      Choice(e.key, e.value, leading: _Swatch(e.key.fill)),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          GroupedSection(
+            title: strings.settingsCards,
+            children: [
+              SettingsValueRow(
+                title: strings.definitionMode,
+                value: definitionChoices
+                    .firstWhere((c) => c.value == settings.definitionMode)
+                    .label,
+                onTap: () => showChoiceSheet<DefinitionMode>(
+                  context: context,
+                  title: strings.definitionMode,
+                  current: settings.definitionMode,
+                  onSelected: settings.setDefinitionMode,
+                  choices: definitionChoices,
                 ),
               ),
               SettingsSwitchRow(
@@ -161,4 +217,18 @@ class SettingsScreen extends StatelessWidget {
   Future<void> _confirmReset(BuildContext context) async {
     if (await confirmResetAllProgress(context)) onResetAllProgress();
   }
+}
+
+/// A round sample of an accent color in the accent picker.
+class _Swatch extends StatelessWidget {
+  const _Swatch(this.color);
+
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) => Container(
+    width: 24,
+    height: 24,
+    decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+  );
 }

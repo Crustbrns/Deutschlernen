@@ -4,6 +4,7 @@ import 'package:deutschlernen/data/repositories/settings_repository.dart';
 import 'package:deutschlernen/data/services/notification_service.dart';
 import 'package:deutschlernen/data/services/speech_service.dart';
 import 'package:deutschlernen/domain/models/app_settings.dart';
+import 'package:deutschlernen/domain/models/definition_mode.dart';
 import 'package:deutschlernen/domain/models/reminder_settings.dart';
 
 class SettingsViewModel extends ChangeNotifier {
@@ -21,7 +22,9 @@ class SettingsViewModel extends ChangeNotifier {
 
   AppSettings get settings => _settings;
   ThemeMode get themeMode => _settings.themeMode;
+  AccentColor get accent => _settings.accent;
   bool get showTranscription => _settings.showTranscription;
+  DefinitionMode get definitionMode => _settings.definitionMode;
   ReminderSettings get reminders => _settings.reminders;
   bool get autoSpeak => _settings.autoSpeak;
   double get speechRate => _settings.speechRate;
@@ -38,6 +41,20 @@ class SettingsViewModel extends ChangeNotifier {
     _settings = _settings.copyWith(themeMode: mode);
     notifyListeners();
     await _settingsRepository.saveThemeMode(mode);
+  }
+
+  Future<void> setAccent(AccentColor accent) async {
+    if (accent == _settings.accent) return;
+    _settings = _settings.copyWith(accent: accent);
+    notifyListeners();
+    await _settingsRepository.saveAccent(accent);
+  }
+
+  Future<void> setDefinitionMode(DefinitionMode mode) async {
+    if (mode == _settings.definitionMode) return;
+    _settings = _settings.copyWith(definitionMode: mode);
+    notifyListeners();
+    await _settingsRepository.saveDefinitionMode(mode);
   }
 
   Future<void> setShowTranscription(bool value) async {

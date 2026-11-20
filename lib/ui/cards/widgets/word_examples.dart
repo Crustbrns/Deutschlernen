@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:deutschlernen/domain/models/definition_mode.dart';
 import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/ui/cards/widgets/example_tile.dart';
 import 'package:deutschlernen/ui/cards/widgets/expandable_tile.dart';
@@ -10,11 +11,13 @@ class WordExamples extends StatelessWidget {
   const WordExamples({
     super.key,
     required this.word,
+    required this.definitionMode,
     required this.onSpeak,
     required this.lookup,
   });
 
   final Word word;
+  final DefinitionMode definitionMode;
   final ValueChanged<String> onSpeak;
   final bool lookup;
 
@@ -24,13 +27,7 @@ class WordExamples extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         // Definition is the first row of the examples block.
-        DefinitionTile(
-          // "(f.) Der Zustand, ..." — gender mark only for nouns.
-          definition: word.genderMark == null
-              ? word.definition
-              : '(${word.genderMark}) ${word.definition}',
-          translation: word.definitionTranslation,
-        ),
+        DefinitionTile(definition: word.definitionFor(definitionMode)),
         for (final example in word.examples)
           ExampleTile(
             key: ValueKey(example.german),

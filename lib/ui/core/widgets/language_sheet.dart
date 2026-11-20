@@ -39,12 +39,15 @@ Future<void> showLanguageSheet({
         List<Widget> rows(List<AppLanguage> list) => [
           for (final language in list)
             ChoiceRow(
-              choice: Choice(language, language.label),
-              isSelected: current == language,
-              leading: _Badge(
-                code: language.code,
-                isSelected: current == language,
+              choice: Choice(
+                language,
+                language.label,
+                leading: _Badge(
+                  code: language.code,
+                  isSelected: current == language,
+                ),
               ),
+              isSelected: current == language,
               onTap: () => select(language),
             ),
         ];
@@ -68,9 +71,9 @@ Future<void> showLanguageSheet({
                     null,
                     strings.systemLanguage,
                     subtitle: languages.systemLanguage.label,
+                    leading: _Badge(isSelected: current == null),
                   ),
                   isSelected: current == null,
-                  leading: _Badge(isSelected: current == null),
                   onTap: () => select(null),
                 ),
               ],

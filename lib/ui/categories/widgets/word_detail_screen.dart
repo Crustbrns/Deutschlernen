@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:deutschlernen/domain/models/definition_mode.dart';
 import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/domain/models/word_status.dart';
 import 'package:deutschlernen/ui/cards/widgets/word_card.dart';
@@ -17,6 +18,7 @@ class WordDetailScreen extends StatefulWidget {
     super.key,
     required this.word,
     required this.showTranscription,
+    required this.definitionMode,
     required this.lookupCount,
     required this.onSpeak,
     required this.state,
@@ -25,6 +27,7 @@ class WordDetailScreen extends StatefulWidget {
 
   final Word word;
   final bool showTranscription;
+  final DefinitionMode definitionMode;
   final int lookupCount; // times opened from the search, shown in the header
   final ValueChanged<String> onSpeak;
 
@@ -96,6 +99,7 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
                         word: word,
                         onSpeak: widget.onSpeak,
                         showTranscription: widget.showTranscription,
+                        definitionMode: widget.definitionMode,
                         bottomBar: const SizedBox.shrink(),
                         lookup: true,
                         lookupCount: widget.lookupCount,

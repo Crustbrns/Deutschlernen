@@ -22,6 +22,7 @@ class AppStrings {
   String get languagesOnDevice => _get('languagesOnDevice');
   String get languagesAvailable => _get('languagesAvailable');
   String get settingsAppearance => _get('settingsAppearance');
+  String get settingsCards => _get('settingsCards');
   String get settingsLanguages => _get('settingsLanguages');
   String get settingsVoice => _get('settingsVoice');
   String get settingsNotifications => _get('settingsNotifications');
@@ -29,7 +30,18 @@ class AppStrings {
   String get themeDark => _get('themeDark');
   String get themeLight => _get('themeLight');
   String get themeSystem => _get('themeSystem');
+  String get accentColor => _get('accentColor');
+  String get accentBlue => _get('accentBlue');
+  String get accentLime => _get('accentLime');
+  String get accentYellow => _get('accentYellow');
   String get showTranscription => _get('showTranscription');
+  String get definitionMode => _get('definitionMode');
+  String get definitionTranslated => _get('definitionTranslated');
+  String get definitionTranslatedHint => _get('definitionTranslatedHint');
+  String get definitionGerman => _get('definitionGerman');
+  String get definitionGermanHint => _get('definitionGermanHint');
+  String get definitionOnTap => _get('definitionOnTap');
+  String get definitionOnTapHint => _get('definitionOnTapHint');
   String get showTranscriptionHint => _get('showTranscriptionHint');
   String get reminders => _get('reminders');
   String get remindersHint => _get('remindersHint');

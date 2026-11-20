@@ -9,6 +9,7 @@ import 'package:deutschlernen/data/repositories/settings_repository.dart';
 import 'package:deutschlernen/data/repositories/word_repository.dart';
 import 'package:deutschlernen/data/services/review_scheduler.dart';
 import 'package:deutschlernen/data/services/speech_service.dart';
+import 'package:deutschlernen/domain/models/definition_mode.dart';
 import 'package:deutschlernen/domain/models/app_language.dart';
 import 'package:deutschlernen/domain/models/card_decision.dart';
 import 'package:deutschlernen/domain/models/card_session.dart';
@@ -123,6 +124,7 @@ class LearningViewModel extends ChangeNotifier {
   /// The daily streak, as of now.
   StudyStreak get streak => StudyStreak.of(_statusHistory, DateTime.now());
   bool get showTranscription => _settingsViewModel.showTranscription;
+  DefinitionMode get definitionMode => _settingsViewModel.definitionMode;
 
   /// Learning status and next review of a word, for the word lists.
   WordState stateOf(String wordId) =>
