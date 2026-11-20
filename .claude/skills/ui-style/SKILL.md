@@ -63,6 +63,11 @@ render them as separate cards with gaps between them.
 - Selection inside a block: shown in the row itself — trailing `AppIcons.checkCircle`
   in `palette.accentText` for the chosen one (level sheet, language sheet), `AppIcons.circle` in
   `colors.onSurfaceVariant` for the others. Not by an outline.
+- Language sheet rows start with a code badge (`_Badge` in `language_sheet.dart`, user's choice
+  2026-11-20): 40×28, radius 8, "UK"/"RU"… 14 w700 +0.3; gray `palette.subtleButton` with
+  `onSurface` text, the chosen one `colorScheme.primary` (the accent) with `onPrimary`. "Same as
+  system" has the same badge with `AppIcons.deviceMobile` 18. Sections: "Как в системе" block,
+  then `GroupedSection`s "На устройстве" / "Доступные".
 
 - Word rows (`WordRow` in `word_list.dart`, category lists and search results) start with a
   status strip: 4px wide, radius 2, full text height, 12px gap to the text. Row padding is

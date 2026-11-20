@@ -1,5 +1,37 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
+import 'package:deutschlernen/ui/core/widgets/menu_row.dart';
+
+/// A gray section name above a GroupedCard with its rows (settings
+/// categories, the language sheet's sections).
+class GroupedSection extends StatelessWidget {
+  const GroupedSection({
+    super.key,
+    required this.title,
+    required this.children,
+  });
+
+  final String title;
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            // 8 = same left edge as the screen title.
+            padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+            child: Text(title, style: MenuRow.hintStyle(context, soft: true)),
+          ),
+          GroupedCard(children: children),
+        ],
+      ),
+    );
+  }
+}
 
 /// One rounded block with its rows split by thin lines, like the examples
 /// on the word card. Use it for any list of same-kind items instead of

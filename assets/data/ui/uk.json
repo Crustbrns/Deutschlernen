@@ -25,6 +25,8 @@
   "interfaceLanguage": "Мова інтерфейсу",
   "wordsLanguage": "Мова слів",
   "systemLanguage": "Як у системі",
+  "languagesOnDevice": "На пристрої",
+  "languagesAvailable": "Доступні",
   "noWordsYet": "Тут поки немає слів",
   "wordCountOne": "{n} слово",
   "wordCountFew": "{n} слова",

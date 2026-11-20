@@ -9,6 +9,7 @@ class MenuRow extends StatelessWidget {
     super.key,
     this.icon,
     this.iconColor,
+    this.leading,
     required this.title,
     this.subtitle,
     this.trailing,
@@ -23,6 +24,10 @@ class MenuRow extends StatelessWidget {
 
   final IconData? icon; // settings rows have none
   final Color? iconColor;
+
+  /// Any other leading widget (e.g. the language code badge); used when
+  /// there is no [icon].
+  final Widget? leading;
   final String title;
   final String? subtitle; // gray line under the title
   final Widget? trailing;
@@ -40,7 +45,7 @@ class MenuRow extends StatelessWidget {
       minVerticalPadding: 14,
       enabled: enabled,
       leading: icon == null
-          ? null
+          ? leading
           : Icon(
               icon,
               size: compact ? 22 : 26,

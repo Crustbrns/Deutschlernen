@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:deutschlernen/ui/core/widgets/grouped_card.dart';
 import 'package:deutschlernen/domain/models/app_language.dart';
 import 'package:deutschlernen/domain/models/app_settings.dart';
 import 'package:deutschlernen/ui/core/app_icons.dart';
@@ -48,7 +49,7 @@ class SettingsScreen extends StatelessWidget {
       builder: (context, _) => TabPage(
         title: strings.tabSettings,
         children: [
-          SettingsCategory(
+          GroupedSection(
             title: strings.settingsAppearance,
             children: [
               SettingsValueRow(
@@ -72,7 +73,7 @@ class SettingsScreen extends StatelessWidget {
               ),
             ],
           ),
-          SettingsCategory(
+          GroupedSection(
             title: strings.settingsLanguages,
             children: [
               _languageRow(
@@ -89,7 +90,7 @@ class SettingsScreen extends StatelessWidget {
               ),
             ],
           ),
-          SettingsCategory(
+          GroupedSection(
             title: strings.settingsVoice,
             children: [
               SettingsSwitchRow(
@@ -102,7 +103,7 @@ class SettingsScreen extends StatelessWidget {
             ],
           ),
           RemindersCategory(settings: settings),
-          SettingsCategory(
+          GroupedSection(
             title: strings.settingsProgress,
             children: [
               SettingsValueRow(

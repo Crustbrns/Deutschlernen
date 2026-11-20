@@ -158,16 +158,19 @@ class ChoiceRow<T> extends StatelessWidget {
     required this.choice,
     required this.isSelected,
     required this.onTap,
+    this.leading,
   });
 
   final Choice<T> choice;
   final bool isSelected;
   final VoidCallback onTap;
+  final Widget? leading;
 
   @override
   Widget build(BuildContext context) {
     return MenuRow(
       compact: true,
+      leading: leading,
       title: choice.label,
       subtitle: choice.subtitle,
       titleColor: isSelected ? AppPalette.of(context).accentText : null,

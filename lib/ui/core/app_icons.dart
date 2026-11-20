@@ -20,6 +20,7 @@ abstract final class AppIcons {
   static const checkCircle = IconData(0xe184, fontFamily: _font);
   static const circle = IconData(0xe18a, fontFamily: _font);
   static const clockCounterClockwise = IconData(0xe1a0, fontFamily: _font);
+  static const deviceMobile = IconData(0xe1e0, fontFamily: _font);
   static const eye = IconData(0xe220, fontFamily: _font);
   static const info = IconData(0xe2ce, fontFamily: _font);
   static const listChecks = IconData(0xeadc, fontFamily: _font);

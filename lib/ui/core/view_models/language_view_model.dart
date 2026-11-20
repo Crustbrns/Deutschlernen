@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:deutschlernen/data/repositories/language_repository.dart';
 import 'package:deutschlernen/data/repositories/settings_repository.dart';
+import 'package:deutschlernen/data/services/device_languages_service.dart';
 import 'package:deutschlernen/domain/models/app_language.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 
@@ -11,10 +12,12 @@ class LanguageViewModel extends ChangeNotifier {
   LanguageViewModel({
     required this._languageRepository,
     required this._settingsRepository,
+    required this._deviceLanguages,
   });
 
   final LanguageRepository _languageRepository;
   final SettingsRepository _settingsRepository;
+  final DeviceLanguagesService _deviceLanguages;
 
   static const _defaultLanguage = AppLanguage(
     code: 'en',
@@ -25,6 +28,7 @@ class LanguageViewModel extends ChangeNotifier {
   );
 
   List<AppLanguage> _languages = [];
+  List<String> _deviceTags = [];
   AppLanguage _uiLanguage = _defaultLanguage;
   AppLanguage _wordLanguage = _defaultLanguage;
 
@@ -36,6 +40,11 @@ class LanguageViewModel extends ChangeNotifier {
   bool _isLoading = true;
 
   List<AppLanguage> get languages => _languages;
+
+  /// [languages] split into the ones on the phone (keyboards, system) and
+  /// the rest, for the language sheet.
+  ({List<AppLanguage> onDevice, List<AppLanguage> others}) get byDevice =>
+      splitByDevice(_languages, _deviceTags);
 
   /// Language of the interface texts.
   AppLanguage get uiLanguage => _uiLanguage;
@@ -56,6 +65,7 @@ class LanguageViewModel extends ChangeNotifier {
 
   Future<void> load() async {
     _languages = await _languageRepository.getLanguages();
+    _deviceTags = await _deviceLanguages.languageTags();
     final uiCode = await _settingsRepository.loadUiLanguageCode();
     final wordCode = await _settingsRepository.loadWordLanguageCode();
     _uiFollowsSystem = _followsSystem(uiCode);
@@ -67,6 +77,15 @@ class LanguageViewModel extends ChangeNotifier {
       languageCode: _uiLanguage.code,
     );
     _isLoading = false;
+    notifyListeners();
+  }
+
+  /// Re-reads the phone's languages: a keyboard may have been added in the
+  /// phone settings while the app was open.
+  Future<void> refreshDeviceLanguages() async {
+    final tags = await _deviceLanguages.languageTags();
+    if (listEquals(tags, _deviceTags)) return;
+    _deviceTags = tags;
     notifyListeners();
   }
 

@@ -7,6 +7,7 @@ import 'package:deutschlernen/data/services/review_scheduler.dart';
 import 'package:deutschlernen/data/repositories/settings_repository.dart';
 import 'package:deutschlernen/data/repositories/word_repository.dart';
 import 'package:deutschlernen/data/services/notification_service.dart';
+import 'package:deutschlernen/data/services/device_languages_service.dart';
 import 'package:deutschlernen/data/services/speech_service.dart';
 import 'package:deutschlernen/data/repositories/language_repository.dart';
 import 'package:deutschlernen/data/services/asset_service.dart';
@@ -43,6 +44,7 @@ class _MyAppState extends State<MyApp> {
   late final _languageViewModel = LanguageViewModel(
     languageRepository: LanguageRepository(assetService: _assetService),
     settingsRepository: _settingsRepository,
+    deviceLanguages: DeviceLanguagesService(),
   );
   late final _learningViewModel = LearningViewModel(
     wordRepository: WordRepository(assetService: _assetService),

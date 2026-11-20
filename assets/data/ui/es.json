@@ -25,6 +25,8 @@
   "interfaceLanguage": "Idioma de la interfaz",
   "wordsLanguage": "Idioma de las palabras",
   "systemLanguage": "Igual que el sistema",
+  "languagesOnDevice": "En este dispositivo",
+  "languagesAvailable": "Disponibles",
   "noWordsYet": "Aquí aún no hay palabras",
   "wordCountOne": "{n} palabra",
   "wordCountOther": "{n} palabras",
