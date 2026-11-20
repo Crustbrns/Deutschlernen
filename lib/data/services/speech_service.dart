@@ -9,6 +9,17 @@ class SpeechService {
     // Cutting off the previous phrase makes the browser report an error for
     // it. That is expected, so it is only logged.
     _tts.setErrorHandler((message) => debugPrint('TTS: $message'));
+    // The default iOS category is muted by the silent switch; playback is not,
+    // since the user taps "listen" on purpose. kIsWeb first: flutter_tts checks
+    // dart:io Platform, which throws in the browser.
+    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.iOS) {
+      _tts.setIosAudioCategory(
+        IosTextToSpeechAudioCategory.playback,
+        // Music only gets quieter; flutter_tts restores it after the word.
+        [IosTextToSpeechAudioCategoryOptions.duckOthers],
+        IosTextToSpeechAudioMode.spokenAudio,
+      );
+    }
   }
 
   final FlutterTts _tts = FlutterTts();
