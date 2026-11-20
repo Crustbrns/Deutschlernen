@@ -15,15 +15,15 @@ class RevealButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      // The card's main action: the yellow accent, no outline.
-      color: AppColors.yellow,
+      // The card's main action: the lime accent, no outline.
+      color: AppColors.lime,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onPressed,
         child: SizedBox.square(
           dimension: size,
-          child: Icon(AppIcons.eye, size: 28, color: AppColors.onYellow),
+          child: Icon(AppIcons.eye, size: 28, color: AppColors.onLime),
         ),
       ),
     );

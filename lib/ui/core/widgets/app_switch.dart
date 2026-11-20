@@ -125,7 +125,7 @@ class _AppSwitchState extends State<AppSwitch> with TickerProviderStateMixin {
               width: _trackWidth,
               height: _trackHeight,
               decoration: BoxDecoration(
-                color: Color.lerp(offColor, AppColors.yellow, t),
+                color: Color.lerp(offColor, AppColors.lime, t),
                 borderRadius: BorderRadius.circular(_trackHeight / 2),
               ),
               child: Stack(

@@ -48,8 +48,8 @@ class _CardsScreenState extends State<CardsScreen> {
     });
   }
 
-  /// Pink / review word: the outlined "forgot / remember" buttons. New word:
-  /// the split bar, where knowing it is the good side (green) and still to
+  /// Pink / review word: "forgot" (outlined) and "remember" (lime). New word:
+  /// the split bar, where knowing it is the good side (lime) and still to
   /// learn is red.
   Widget _bottomBar(Word word, {required bool isTop}) {
     final drag = isTop ? _swipeController.dragProgress : _still;
