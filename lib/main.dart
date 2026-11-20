@@ -15,6 +15,7 @@ import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/view_models/language_view_model.dart';
 import 'package:deutschlernen/ui/core/view_models/learning_view_model.dart';
 import 'package:deutschlernen/ui/core/view_models/reminders_coordinator.dart';
+import 'package:deutschlernen/ui/core/widgets/muted_banner.dart';
 import 'package:deutschlernen/ui/home/widgets/home_shell.dart';
 import 'package:deutschlernen/ui/settings/view_models/settings_view_model.dart';
 
@@ -111,7 +112,10 @@ class _MyAppState extends State<MyApp> {
             listenable: _languageViewModel,
             builder: (context, _) => AppStringsScope(
               strings: _languageViewModel.strings,
-              child: navigator!,
+              child: MutedBanner(
+                mutedTaps: _speechService.mutedTaps,
+                child: navigator!,
+              ),
             ),
           ),
         ),

@@ -358,7 +358,7 @@ class LearningViewModel extends ChangeNotifier {
 
   void _speakCurrentIfAuto() {
     if (!_settingsViewModel.autoSpeak || _isLoading || isFinished) return;
-    _speechService.speak(_deck[index].withArticle);
+    _speechService.speak(_deck[index].withArticle, warnIfMuted: false);
   }
 
   Iterable<String> _newWordIds() => _words

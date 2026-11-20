@@ -30,6 +30,7 @@ abstract final class AppIcons {
   static const smiley = IconData(0xe436, fontFamily: _font);
   static const smileySad = IconData(0xe43e, fontFamily: _font);
   static const speakerHigh = IconData(0xe44a, fontFamily: _font);
+  static const speakerSlash = IconData(0xe45a, fontFamily: _font);
   static const squaresFour = IconData(0xe464, fontFamily: _font);
   static const x = IconData(0xe4f6, fontFamily: _font);
   static const xCircle = IconData(0xe4f8, fontFamily: _font);
