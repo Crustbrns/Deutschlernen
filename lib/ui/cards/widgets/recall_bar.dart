@@ -5,7 +5,7 @@ import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 
 /// Answer buttons for recalling a word (a pink word, or a review): an
-/// outlined "😞 Забыл" in the card's color and a lime "🙂 Помню" (the main
+/// outlined "😞 Забыл" in the card's color and an accent-filled "🙂 Помню" (the main
 /// action). While the card is dragged, "Забыл" fills up with red, as in
 /// [DecisionBar], and "Помню" gets lighter.
 class RecallBar extends StatelessWidget {
@@ -44,7 +44,7 @@ class RecallBar extends StatelessWidget {
             child: _RecallButton(
               icon: AppIcons.smiley,
               label: strings.remembered,
-              color: AppColors.lime,
+              color: Theme.of(context).colorScheme.primary,
               filled: true,
               highlight: progress.clamp(0.0, 1.0),
               onPressed: onRemembered,
@@ -78,12 +78,16 @@ class _RecallButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final onSurface = Theme.of(context).colorScheme.onSurface;
+    final colors = Theme.of(context).colorScheme;
     final card = AppPalette.of(context).card;
     // Quieter than plain white: outline and icon 40% toward the card, the
     // label 25% (it still has to read first).
-    final line = filled ? AppColors.onLime : Color.lerp(onSurface, card, 0.4)!;
-    final text = filled ? AppColors.onLime : Color.lerp(onSurface, card, 0.25)!;
+    final line = filled
+        ? colors.onPrimary
+        : Color.lerp(colors.onSurface, card, 0.4)!;
+    final text = filled
+        ? colors.onPrimary
+        : Color.lerp(colors.onSurface, card, 0.25)!;
 
     return Material(
       // Filled: the accent, lighter (toward white) as the card is dragged.

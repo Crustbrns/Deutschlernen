@@ -1,11 +1,16 @@
 import 'package:material_ui/material_ui.dart' show ThemeMode;
 import 'package:deutschlernen/domain/models/reminder_settings.dart';
 
+/// The app's accent color, picked in Settings (the colors are in the UI's
+/// app_style.dart). Blue is the default (user's choice, 2026-11-20).
+enum AccentColor { blue, lime, yellow }
+
 /// Everything the user can switch in Settings, except the two languages
 /// (those are kept by the cards view model).
 class AppSettings {
   const AppSettings({
     this.themeMode = ThemeMode.dark,
+    this.accent = AccentColor.blue,
     this.showTranscription = true,
     this.reminders = const ReminderSettings(),
     this.autoSpeak = false,
@@ -15,6 +20,8 @@ class AppSettings {
 
   /// Only light or dark; the app has no "follow the system" option.
   final ThemeMode themeMode;
+
+  final AccentColor accent;
 
   /// The phonetic spelling under the German word.
   final bool showTranscription;
@@ -42,6 +49,7 @@ class AppSettings {
 
   AppSettings copyWith({
     ThemeMode? themeMode,
+    AccentColor? accent,
     bool? showTranscription,
     ReminderSettings? reminders,
     bool? autoSpeak,
@@ -50,6 +58,7 @@ class AppSettings {
   }) {
     return AppSettings(
       themeMode: themeMode ?? this.themeMode,
+      accent: accent ?? this.accent,
       showTranscription: showTranscription ?? this.showTranscription,
       reminders: reminders ?? this.reminders,
       autoSpeak: autoSpeak ?? this.autoSpeak,

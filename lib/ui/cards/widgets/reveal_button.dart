@@ -1,6 +1,5 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:deutschlernen/ui/core/app_icons.dart';
-import 'package:deutschlernen/ui/core/app_style.dart';
 
 /// Only the eye, no label: for new words, where there is nothing to test
 /// yet, just a translation to peek at. The card replaces it with the
@@ -14,16 +13,17 @@ class RevealButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return Material(
-      // The card's main action: the lime accent, no outline.
-      color: AppColors.lime,
+      // The card's main action: the accent, no outline.
+      color: colors.primary,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onPressed,
         child: SizedBox.square(
           dimension: size,
-          child: Icon(AppIcons.eye, size: 28, color: AppColors.onLime),
+          child: Icon(AppIcons.eye, size: 28, color: colors.onPrimary),
         ),
       ),
     );

@@ -43,6 +43,11 @@ class SettingsScreen extends StatelessWidget {
       ThemeMode.dark: strings.themeDark,
       ThemeMode.light: strings.themeLight,
     };
+    final accentLabels = {
+      AccentColor.blue: strings.accentBlue,
+      AccentColor.lime: strings.accentLime,
+      AccentColor.yellow: strings.accentYellow,
+    };
 
     return ListenableBuilder(
       listenable: settings,
@@ -62,6 +67,20 @@ class SettingsScreen extends StatelessWidget {
                   onSelected: settings.setThemeMode,
                   choices: [
                     for (final e in themeLabels.entries) Choice(e.key, e.value),
+                  ],
+                ),
+              ),
+              SettingsValueRow(
+                title: strings.accentColor,
+                value: accentLabels[settings.accent]!,
+                onTap: () => showChoiceSheet<AccentColor>(
+                  context: context,
+                  title: strings.accentColor,
+                  current: settings.accent,
+                  onSelected: settings.setAccent,
+                  choices: [
+                    for (final e in accentLabels.entries)
+                      Choice(e.key, e.value, leading: _Swatch(e.key.fill)),
                   ],
                 ),
               ),
@@ -161,4 +180,18 @@ class SettingsScreen extends StatelessWidget {
   Future<void> _confirmReset(BuildContext context) async {
     if (await confirmResetAllProgress(context)) onResetAllProgress();
   }
+}
+
+/// A round sample of an accent color in the accent picker.
+class _Swatch extends StatelessWidget {
+  const _Swatch(this.color);
+
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) => Container(
+    width: 24,
+    height: 24,
+    decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+  );
 }

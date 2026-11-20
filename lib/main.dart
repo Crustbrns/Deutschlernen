@@ -101,8 +101,8 @@ class _MyAppState extends State<MyApp> {
       listenable: _settingsViewModel,
       builder: (context, _) => MaterialApp(
         title: 'Deutsch lernen',
-        theme: AppTheme.light(),
-        darkTheme: AppTheme.dark(),
+        theme: AppTheme.light(_settingsViewModel.accent),
+        darkTheme: AppTheme.dark(_settingsViewModel.accent),
         themeMode: _settingsViewModel.themeMode,
         // Above the navigator: pushed routes, sheets, dialogs and hero
         // flights all read the strings without wrapping themselves again.

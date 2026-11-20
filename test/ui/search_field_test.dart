@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:deutschlernen/domain/models/app_settings.dart';
 import 'package:deutschlernen/ui/core/app_strings.dart';
 import 'package:deutschlernen/ui/core/app_style.dart';
 import 'package:deutschlernen/ui/core/widgets/search_field.dart';
@@ -11,7 +12,7 @@ void main() {
     sent = [];
     await tester.pumpWidget(
       MaterialApp(
-        theme: AppTheme.dark(),
+        theme: AppTheme.dark(AccentColor.blue),
         home: AppStringsScope(
           strings: const AppStrings({}),
           child: Scaffold(

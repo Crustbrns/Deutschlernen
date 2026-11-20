@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:deutschlernen/domain/models/app_settings.dart';
 import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/domain/models/word_status.dart';
 import 'package:deutschlernen/ui/categories/widgets/word_list.dart';
@@ -25,7 +26,7 @@ void main() {
   ) async {
     await tester.pumpWidget(
       MaterialApp(
-        theme: AppTheme.dark(),
+        theme: AppTheme.dark(AccentColor.blue),
         home: AppStringsScope(
           strings: const AppStrings({}),
           child: Scaffold(

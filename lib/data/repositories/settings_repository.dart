@@ -9,6 +9,7 @@ class SettingsRepository {
   static const _uiLanguageKey = 'ui_language';
   static const _wordLanguageKey = 'word_language';
   static const _themeModeKey = 'theme_mode'; // system / dark / light
+  static const _accentKey = 'accent_color'; // AccentColor name
 
   /// Old bool (dark or light), read while no [_themeModeKey] is saved.
   static const _legacyDarkThemeKey = 'dark_theme';
@@ -66,6 +67,9 @@ class SettingsRepository {
             false => ThemeMode.light,
             null => defaults.themeMode,
           },
+      accent:
+          AccentColor.values.asNameMap()[await _prefs.getString(_accentKey)] ??
+          defaults.accent,
       showTranscription:
           await _prefs.getBool(_showTranscriptionKey) ??
           defaults.showTranscription,
@@ -82,6 +86,9 @@ class SettingsRepository {
 
   Future<void> saveThemeMode(ThemeMode mode) =>
       _prefs.setString(_themeModeKey, mode.name);
+
+  Future<void> saveAccent(AccentColor accent) =>
+      _prefs.setString(_accentKey, accent.name);
 
   Future<void> saveShowTranscription(bool value) =>
       _prefs.setBool(_showTranscriptionKey, value);

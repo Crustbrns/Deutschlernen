@@ -7,7 +7,7 @@ import 'package:deutschlernen/ui/core/highlight.dart';
 import 'package:deutschlernen/ui/core/widgets/play_button.dart';
 
 /// Text styles of the rows. German: white, translations under it: gray.
-/// The marked word is lime in both (a marker in the light theme).
+/// The marked word is in the accent in both (a marker in the light theme).
 ({TextStyle base, TextStyle mark, TextStyle detail}) _tileStyles(
   BuildContext context,
 ) {

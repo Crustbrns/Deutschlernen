@@ -9,15 +9,17 @@ The app has a dark and a light theme. All colors, fonts and sizes come from
 `lib/ui/core/app_style.dart`:
 - `AppPalette.of(context)` — colors that differ per theme: `background`, `card`, `subtleButton`,
   `mutedText`. A new theme-dependent color goes here, with a value for both themes.
-- **One accent: lime** (user's choice, 2026-11-20, from a reference; was yellow `#FFC72C`
-  before, blue before that). Fills —
-  switches, slider, selected segments, primary buttons — `AppColors.lime` `#D6F566` with
-  `AppColors.onLime` (black) content, in both themes. Accent **text and icons** on a surface —
-  chosen values, checks, play buttons, cursor — `palette.accentText`: lime in dark, olive `#5E7A00`
-  in light (lime on white is 1.2:1, this is 4.9:1). `colorScheme.primary` is lime, so default
-  `FilledButton`s and spinners follow. `AppColors.accentBlue` is left only as the color seed
-  (neutral grays), the Learn menu's categories icon and the unknown-article fallback.
-- `AppColors` — fixed accents (`lime`, article colors, …) and helpers computed from the
+- **One accent, picked by the user** in Settings → Оформление → «Цвет акцента» (`AccentColor` in
+  `app_settings.dart`: pastel blue `#A8C8FF` by default, lime `#D6F566`, yellow `#FFC72C`; the
+  values are in `AccentColors` in `app_style.dart`). The user's choice, 2026-11-20: they tried
+  lime and didn't like it. Never hard-code an accent color in a widget. Fills (switches, slider,
+  selected segments, primary buttons, the card's main actions) use `colorScheme.primary` with
+  `colorScheme.onPrimary` (black) content, in both themes. Accent **text and icons** on a
+  surface (chosen values, checks, play buttons, cursor) use `palette.accentText`: the accent
+  itself in dark, its dark shade in light (blue `#3D6DB8` 5.2:1, lime `#5E7A00`, yellow `#9A6700`
+  4.9:1 on white). `AppColors.accentBlue` is left only as the color seed (neutral grays), the
+  Learn menu's categories icon and the unknown-article fallback.
+- `AppColors` — fixed colors (article colors, decision red, …) and helpers computed from the
   `ColorScheme` (`divider`, `quietText`).
 - `AppSizes`, `AppListText` (list row typography).
 
@@ -144,28 +146,28 @@ Separate blocks are only for different kinds of content (e.g. a title, then a li
   separate buttons, 12px apart, 56 tall, radius 14, fill `palette.card` at rest; 1.5px outline
   and face icon 24 (`smileySad` / `smiley`, Regular) in `onSurface` moved 40% toward the card;
   label 17 w700 -0.4 on one line ("Забыл" / "Помню") in `onSurface` moved 25% toward the card.
-  "Помню" is the main action (user's choice, 2026-11-20): solid `AppColors.lime` fill, no
-  outline, icon and label `onLime` (black). On drag "Забыл" is tinted up to α 0.5 red, "Помню"
+  "Помню" is the main action (user's choice, 2026-11-20): solid `colorScheme.primary` fill, no
+  outline, icon and label `onPrimary` (black). On drag "Забыл" is tinted up to α 0.5 red, "Помню"
   gets up to 30% lighter (toward white). New (gray) words keep the split `DecisionBar` below.
 - **Decision bar** buttons: text 17 w600, line height 1.05, letter spacing -0.4; text and arrows
   `colors.onSurface` (white in dark), the "||" divider between them too.
 - **Decision bar highlight** (while dragging, up to α 0.45 at full drag; was 0.18 — too pale;
-  red `#FF3B30`, the accent lime):
-  `AppColors.lime` for the "good" side (user's choice, 2026-11-20; was green),
-  `decisionRed` for the other. New word: left "Уже знаю" lime, right "Начать учить" red.
+  red `#FF3B30`, the accent):
+  `colorScheme.primary` for the "good" side (user's choice, 2026-11-20; was green),
+  `decisionRed` for the other. New word: left "Уже знаю" accent, right "Начать учить" red.
 - **Accent card style** (cards screen and the lookup card, from a reference the user liked:
-  yellow on black, now lime): one accent `AppColors.lime` `#D6F566`, content on it `AppColors.onLime`
-  (black, both themes). Lime = the card's main action (`RevealButton`, "Проверить"), the
+  yellow on black, now the picked accent): the accent `colorScheme.primary`, content on it `colorScheme.onPrimary`
+  (black, both themes). Accent = the card's main action (`RevealButton`, "Проверить"), the
   selected answer mode, the write field's focus border, the session progress bar and the
   highlighted word in examples. Everything else on the card stays neutral (example play
   buttons white); red / green decision colors and article colors are unchanged. The same
-  lime is the accent of the whole app (see the top of this file).
+  accent is the one of the whole app (see the top of this file).
 - **Answer controls on a learning card**: new-words session — only `RevealButton` (64×64,
-  radius 16, no outline, fill `AppColors.lime`, black eye icon, no label, centered); a tap
+  radius 16, no outline, fill `colorScheme.primary`, black eye icon, no label, centered); a tap
   replaces it with the translation (no way back); review session — the three-button
   `AnswerModeBar` (Show / Write / Choose). `WordCard.answerModes` switches them.
-- **Selected / active state**: solid `AppColors.lime` fill, black (`onLime`) icon and text —
-  the period switch on Progress, `_ModeButton` in `answer_mode_bar.dart`. Not lime text on a
+- **Selected / active state**: solid `colorScheme.primary` fill, black (`onPrimary`) icon and text —
+  the period switch on Progress, `_ModeButton` in `answer_mode_bar.dart`. Not accent text on a
   tinted fill: unreadable in the light theme.
 - **Primary action** (one per screen at most): `FilledButton`, radius 14.
 - **Audio**: `PlayButton` (`lib/ui/core/widgets/play_button.dart`) — `accentText` in search results,
@@ -267,8 +269,8 @@ above the Categories search: `headlineSmall`, letter spacing -0.5, 24 from the s
   the system font instead of a geometric one). Examples and the
   definition (`example_tile.dart`): theme font 16 (was 17: long sentences wrapped too much),
   `onSurface` (white), regular; the highlighted word w700 in `palette.markText` on
-  `palette.markFill` — dark: lime text, no fill; light: dark text on a lime marker (α 0.6;
-  user's choice, lime text on white is 1.2:1). Opened translations under them are
+  `palette.markFill` — dark: accent text, no fill; light: dark text on an accent marker (α 0.6;
+  user's choice, pastel text on white is unreadable). Opened translations under them are
   `mutedText` gray with their marked word highlighted the same way (user's choice: accent in
   both lines).
   Expand chevron: 11px
@@ -305,7 +307,7 @@ the level word count (mutedText 50% lighter). Reset all progress: title in `deci
 `AppIcons.arrowCounterClockwise` 22 in `decisionRed`.
 
 - Switches: `AppSwitch` (`lib/ui/core/widgets/app_switch.dart`), same on both platforms: track
-  60×31, oval white thumb 37×25 (wider than tall, user's choice), on = `AppColors.lime`,
+  60×31, oval white thumb 37×25 (wider than tall, user's choice), on = `colorScheme.primary`,
   off = `subtleButton`; the whole row toggles. iOS behavior:
   tap toggles, the thumb can be dragged (snaps to the nearer side, a flick > 300 px/s decides
   by direction), stretches 6px toward the middle while pressed, track color lerps with the
@@ -324,7 +326,7 @@ the level word count (mutedText 50% lighter). Reset all progress: title in `deci
   "Готово" (`SheetDoneButton`) or a swipe closes it.
 - Bottom sheets' drag handle (`AppTheme` → `bottomSheetTheme.dragHandleColor`): quiet, just off the
   sheet background — light: background 10% darker, dark: background 20% lighter.
-- Speech rate: a `MenuRow` header, then a slider (track 6, filled `AppColors.lime`, unfilled
+- Speech rate: a `MenuRow` header, then a slider (track 6, filled `colorScheme.primary`, unfilled
   `palette.sliderTrack` soft pastel gray, white pill thumb 30×20 with the switch's shadow
   (`_PillThumbShape` in `speed_row.dart`), no ripple, no value indicator; `SliderThemeData.padding` 16 horizontal, so
   the track is level with the row text; slow / fast labels at the same 16 edges) and slow / fast 13 gray under it.
@@ -358,8 +360,8 @@ each status now (`latestCounts`). With "all time" selected only the "Всего"
 (the two would repeat). The list doubles as the chart's legend, so the chart has none.
 
 - Period switch (`_PeriodSwitch`): one `palette.card` block, radius 14, padding 4; four equal
-  segments 36 tall, radius 10 — 7 / 30 / 90 days / all time. Selected: solid `AppColors.lime`
-  fill, `onLime` (black) text; others `onSurface`; 14 w600 -0.3.
+  segments 36 tall, radius 10 — 7 / 30 / 90 days / all time. Selected: solid `colorScheme.primary`
+  fill, `onPrimary` (black) text; others `onSurface`; 14 w600 -0.3.
 - Bars show only their own period's activity (user's choice, not the running stock):
   7 and 30 days — a bar per day, 90 days — per week (Monday start), all time — per calendar
   month (label "ноя", `AppStrings.monthShort`). See `chartBars`.

@@ -29,6 +29,10 @@ class AppStrings {
   String get themeDark => _get('themeDark');
   String get themeLight => _get('themeLight');
   String get themeSystem => _get('themeSystem');
+  String get accentColor => _get('accentColor');
+  String get accentBlue => _get('accentBlue');
+  String get accentLime => _get('accentLime');
+  String get accentYellow => _get('accentYellow');
   String get showTranscription => _get('showTranscription');
   String get showTranscriptionHint => _get('showTranscriptionHint');
   String get reminders => _get('reminders');

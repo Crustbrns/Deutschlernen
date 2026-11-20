@@ -6,11 +6,12 @@ import 'package:deutschlernen/ui/core/widgets/menu_row.dart';
 
 /// One option of [showChoiceSheet].
 class Choice<T> {
-  const Choice(this.value, this.label, {this.subtitle});
+  const Choice(this.value, this.label, {this.subtitle, this.leading});
 
   final T value;
   final String label;
   final String? subtitle; // gray line under the label
+  final Widget? leading; // e.g. a language badge or a color swatch
 }
 
 /// Bottom sheet to pick one of [choices], built like the level sheet: title,
@@ -158,19 +159,17 @@ class ChoiceRow<T> extends StatelessWidget {
     required this.choice,
     required this.isSelected,
     required this.onTap,
-    this.leading,
   });
 
   final Choice<T> choice;
   final bool isSelected;
   final VoidCallback onTap;
-  final Widget? leading;
 
   @override
   Widget build(BuildContext context) {
     return MenuRow(
       compact: true,
-      leading: leading,
+      leading: choice.leading,
       title: choice.label,
       subtitle: choice.subtitle,
       titleColor: isSelected ? AppPalette.of(context).accentText : null,

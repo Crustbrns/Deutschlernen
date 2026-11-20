@@ -21,6 +21,7 @@ class SettingsViewModel extends ChangeNotifier {
 
   AppSettings get settings => _settings;
   ThemeMode get themeMode => _settings.themeMode;
+  AccentColor get accent => _settings.accent;
   bool get showTranscription => _settings.showTranscription;
   ReminderSettings get reminders => _settings.reminders;
   bool get autoSpeak => _settings.autoSpeak;
@@ -38,6 +39,13 @@ class SettingsViewModel extends ChangeNotifier {
     _settings = _settings.copyWith(themeMode: mode);
     notifyListeners();
     await _settingsRepository.saveThemeMode(mode);
+  }
+
+  Future<void> setAccent(AccentColor accent) async {
+    if (accent == _settings.accent) return;
+    _settings = _settings.copyWith(accent: accent);
+    notifyListeners();
+    await _settingsRepository.saveAccent(accent);
   }
 
   Future<void> setShowTranscription(bool value) async {

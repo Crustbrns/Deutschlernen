@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:deutschlernen/domain/models/app_settings.dart';
 import 'package:deutschlernen/domain/models/word.dart';
 import 'package:deutschlernen/domain/models/word_status.dart';
 import 'package:deutschlernen/ui/categories/widgets/categories_screen.dart';
@@ -117,7 +118,7 @@ Widget _categoriesApp({
   required VoidCallback onOwnWordsSelected,
   Future<void> Function(String german, String translation)? onAddOwnWord,
 }) => MaterialApp(
-  theme: AppTheme.dark(),
+  theme: AppTheme.dark(AccentColor.blue),
   builder: (context, navigator) => AppStringsScope(
     strings: const AppStrings({
       'tabCategories': 'Categories',

@@ -6,7 +6,7 @@ import 'package:deutschlernen/ui/core/app_style.dart';
 
 /// Answer bar of a new (gray) word: "Already know" on the left, "Start
 /// learning" on the right. Knowing it is the good side, so the left button
-/// lights up lime (the accent) while the card is dragged that way, the right one red.
+/// lights up in the accent while the card is dragged that way, the right one red.
 class DecisionBar extends StatelessWidget {
   const DecisionBar({
     super.key,
@@ -37,7 +37,7 @@ class DecisionBar extends StatelessWidget {
                 icon: AppIcons.arrowLeft,
                 iconFirst: true,
                 highlight: (-progress).clamp(0.0, 1.0),
-                highlightColor: AppColors.lime,
+                highlightColor: Theme.of(context).colorScheme.primary,
                 onPressed: onKnown,
               ),
             ),
@@ -73,10 +73,10 @@ class _DecisionButton extends StatelessWidget {
   final IconData icon;
   final bool iconFirst; // arrow sits on the outer edge of the screen
   final double highlight; // 0..1, how far the card is dragged this way
-  final Color highlightColor; // tint of the highlight (red / lime)
+  final Color highlightColor; // tint of the highlight (red / accent)
   final VoidCallback onPressed;
 
-  // Strong enough to read as clearly red / lime at full drag.
+  // Strong enough to read as clearly red / accent at full drag.
   static const _maxHighlightAlpha = 0.45;
   static const _maxHighlightScale = -0.02;
 

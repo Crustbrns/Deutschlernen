@@ -75,15 +75,17 @@ class _WriteAnswerPanelState extends State<WriteAnswerPanel> {
             fillColor: AppPalette.of(context).subtleButton,
             border: border(Colors.transparent),
             enabledBorder: border(resultColor ?? Colors.transparent),
-            focusedBorder: border(resultColor ?? AppColors.lime),
+            focusedBorder: border(
+              resultColor ?? Theme.of(context).colorScheme.primary,
+            ),
           ),
         ),
         const SizedBox(height: 12),
         FilledButton(
           onPressed: _check,
           style: FilledButton.styleFrom(
-            backgroundColor: AppColors.lime,
-            foregroundColor: AppColors.onLime,
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            foregroundColor: Theme.of(context).colorScheme.onPrimary,
             minimumSize: const Size.fromHeight(48),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(14),

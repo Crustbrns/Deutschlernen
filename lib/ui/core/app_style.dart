@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:deutschlernen/domain/models/app_settings.dart';
 import 'package:deutschlernen/domain/models/word_status.dart';
 
 abstract final class AppSizes {
@@ -51,15 +52,16 @@ class AppPalette extends ThemeExtension<AppPalette> {
   /// 50% lighter, like the count.
   final Color levelPercent;
 
-  /// Highlighted word in the card's examples. Dark: lime text, no fill;
-  /// light: lime text on white is unreadable (1.2:1), so a lime marker
-  /// under dark text (user's choice).
+  /// Highlighted word in the card's examples. Dark: accent text, no fill;
+  /// light: a pastel accent on white is unreadable, so an accent marker
+  /// under dark text (user's choice). Set per accent by [withAccent].
   final Color markText;
   final Color markFill;
 
   /// Accent text and icons on the background or a card (chosen values,
-  /// checks, play buttons). Dark: AppColors.lime; light: dark olive, as
-  /// lime on white is unreadable. Lime fills stay AppColors.lime.
+  /// checks, play buttons). Dark: the accent itself; light: its dark shade,
+  /// as the pastel one on white is unreadable. Accent fills are
+  /// `colorScheme.primary`. Set per accent by [withAccent].
   final Color accentText;
 
   static const dark = AppPalette(
@@ -71,9 +73,10 @@ class AppPalette extends ThemeExtension<AppPalette> {
     secondaryText: Color(0xFF8C8C8C),
     softHint: Color(0xFF696D72),
     levelPercent: Color(0xFFB6B7BA),
-    markText: AppColors.lime,
+    // The accent ones are placeholders: [withAccent] sets them.
+    markText: Color(0x00000000),
     markFill: Color(0x00000000),
-    accentText: AppColors.lime,
+    accentText: Color(0x00000000),
   );
 
   static const light = AppPalette(
@@ -86,9 +89,19 @@ class AppPalette extends ThemeExtension<AppPalette> {
     softHint: Color(0xFFB5B5B8),
     levelPercent: Color(0xFF9C9C9E),
     markText: Color(0xFF080808), // the light theme's onSurface
-    markFill: Color(0x99D6F566), // AppColors.lime at α 0.6
-    accentText: Color(0xFF5E7A00), // 4.9:1 on white
+    // The accent ones are placeholders: [withAccent] sets them.
+    markFill: Color(0x00000000),
+    accentText: Color(0x00000000),
   );
+
+  /// This palette with the accent-dependent colors of [accent].
+  AppPalette withAccent(AccentColor accent, Brightness brightness) =>
+      brightness == Brightness.dark
+      ? copyWith(markText: accent.fill, accentText: accent.fill)
+      : copyWith(
+          markFill: accent.fill.withValues(alpha: 0.6),
+          accentText: accent.lightText,
+        );
 
   static AppPalette of(BuildContext context) =>
       Theme.of(context).extension<AppPalette>() ?? dark;
@@ -139,25 +152,50 @@ class AppPalette extends ThemeExtension<AppPalette> {
   }
 }
 
+/// The colors of each [AccentColor] (user's choice in Settings).
+extension AccentColors on AccentColor {
+  /// Fills: switches, sliders, selected segments, main buttons. Content on
+  /// it is black (`colorScheme.onPrimary`) in both themes.
+  Color get fill => switch (this) {
+    AccentColor.blue => const Color(0xFFA8C8FF), // pastel sky blue
+    AccentColor.lime => const Color(0xFFD6F566),
+    AccentColor.yellow => const Color(0xFFFFC72C),
+  };
+
+  /// Accent text and icons in the light theme: a dark shade, ≥ 4.5:1 on white.
+  Color get lightText => switch (this) {
+    AccentColor.blue => const Color(0xFF3D6DB8), // 5.2:1
+    AccentColor.lime => const Color(0xFF5E7A00), // 4.9:1
+    AccentColor.yellow => const Color(0xFF9A6700), // 4.9:1
+  };
+}
+
 abstract final class AppTheme {
-  // Built once: ColorScheme.fromSeed is costly, and MaterialApp asks for the
-  // themes on every settings change.
-  static final _dark = _build(Brightness.dark, AppPalette.dark);
-  static final _light = _build(Brightness.light, AppPalette.light);
+  // Each one is built once: ColorScheme.fromSeed is costly, and MaterialApp
+  // asks for the themes on every settings change.
+  static final _cache = <(Brightness, AccentColor), ThemeData>{};
 
-  static ThemeData dark() => _dark;
+  static ThemeData dark(AccentColor accent) => _cached(Brightness.dark, accent);
 
-  static ThemeData light() => _light;
+  static ThemeData light(AccentColor accent) =>
+      _cached(Brightness.light, accent);
 
-  static ThemeData _build(Brightness brightness, AppPalette palette) {
+  static ThemeData _cached(Brightness brightness, AccentColor accent) => _cache
+      .putIfAbsent((brightness, accent), () => _build(brightness, accent));
+
+  static ThemeData _build(Brightness brightness, AccentColor accent) {
+    final palette =
+        (brightness == Brightness.dark ? AppPalette.dark : AppPalette.light)
+            .withAccent(accent, brightness);
     return ThemeData(
       colorScheme: ColorScheme.fromSeed(
         // The seed only tints the neutral grays; the accent is set below.
         seedColor: AppColors.accentBlue,
         brightness: brightness,
-        // Default buttons and spinners: lime fill, black content.
-        primary: AppColors.lime,
-        onPrimary: AppColors.onLime,
+        // The accent fill (switches, selected states, default buttons and
+        // spinners) with black content, in both themes.
+        primary: accent.fill,
+        onPrimary: AppColors.onAccentFill,
         // Light theme text: near-black rgb(8,8,8) (user's choice).
         onSurface: brightness == Brightness.light
             ? const Color(0xFF080808)
@@ -166,7 +204,7 @@ abstract final class AppTheme {
       // The cursor and handles are drawn on the background: readable accent.
       textSelectionTheme: TextSelectionThemeData(
         cursorColor: palette.accentText,
-        selectionColor: AppColors.lime.withValues(alpha: 0.4),
+        selectionColor: accent.fill.withValues(alpha: 0.4),
         selectionHandleColor: palette.accentText,
       ),
       scaffoldBackgroundColor: palette.background,
@@ -184,17 +222,14 @@ abstract final class AppTheme {
 
 abstract final class AppColors {
   // The "bad" side of the answer buttons ("Начать учить", "Забыл"); the
-  // good side is [lime]. See CardsScreen.
+  // good side is the accent. See CardsScreen.
   static const decisionRed = Color(0xFFFF3B30); // saturated red
   // Only the color seed, the Learn menu's categories icon and the fallback
-  // article color; the app's accent is [lime].
+  // article color; the app's accent is [AccentColors] (Settings).
   static const accentBlue = Color(0xFF1AA7FF);
-  // The app's accent (lime on black): main actions, selected states,
-  // switches and sliders, the highlighted word. Text and icons on a surface
-  // take AppPalette.accentText instead (readable in the light theme).
-  static const lime = Color(0xFFD6F566);
-  // Text and icons on a lime fill: black in both themes.
-  static const onLime = Color(0xFF000000);
+  // Text and icons on the accent fill (`colorScheme.onPrimary`): black in
+  // both themes, every accent is pastel.
+  static const onAccentFill = Color(0xFF000000);
   static const switchThumbShadow = Color(0x2E000000); // black, α 0.18
 
   // Icons of the learn menu rows (categories / new words / repeat).
