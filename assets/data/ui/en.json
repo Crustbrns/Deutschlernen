@@ -45,6 +45,7 @@
   "speechRate": "Voice speed",
   "speechRateHint": "How fast words are read to you",
   "testSpeech": "Test",
+  "volumeMuted": "Sound is off — turn up the volume",
   "speedSlow": "Slow",
   "speedFast": "Fast",
   "lookupCountOne": "Looked up {n} time",

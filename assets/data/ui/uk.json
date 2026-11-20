@@ -47,6 +47,7 @@
   "speechRate": "Швидкість голосу",
   "speechRateHint": "Як швидко читаються слова",
   "testSpeech": "Перевірити",
+  "volumeMuted": "Звук вимкнено — додай гучність",
   "speedSlow": "Повільно",
   "speedFast": "Швидко",
   "lookupCountOne": "Шукали {n} раз",

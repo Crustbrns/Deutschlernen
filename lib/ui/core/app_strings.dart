@@ -36,6 +36,7 @@ class AppStrings {
   String get speechRate => _get('speechRate');
   String get speechRateHint => _get('speechRateHint');
   String get testSpeech => _get('testSpeech');
+  String get volumeMuted => _get('volumeMuted');
   String get speedSlow => _get('speedSlow');
   String get speedFast => _get('speedFast');
   String get goodWork => _get('goodWork');

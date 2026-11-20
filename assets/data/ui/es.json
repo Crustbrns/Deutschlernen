@@ -45,6 +45,7 @@
   "speechRate": "Velocidad de la voz",
   "speechRateHint": "Qué tan rápido se leen las palabras",
   "testSpeech": "Probar",
+  "volumeMuted": "El sonido está apagado: sube el volumen",
   "speedSlow": "Lenta",
   "speedFast": "Rápida",
   "lookupCountOne": "{n} búsqueda",

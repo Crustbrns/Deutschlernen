@@ -44,6 +44,7 @@
   "speechRate": "语速",
   "speechRateHint": "单词朗读的快慢",
   "testSpeech": "试听",
+  "volumeMuted": "声音已关闭，请调高音量",
   "speedSlow": "慢",
   "speedFast": "快",
   "lookupCountOther": "查过 {n} 次",
